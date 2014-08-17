@@ -1,0 +1,91 @@
+Author = "Code34";
+onLoadName = "COMBAT ASSAULT";
+loadScreen = "famas.jpg";
+OnLoadMission = "COMBAT ASSAULT by Code34";
+Respawn = "BASE";
+RespawnDelay = 10;
+DisabledAI = true;
+joinUnassigned = false; 
+
+class Header
+{
+	gameType=CTI;
+	minPlayers=1;
+	maxPlayers=40;
+};
+
+class Params
+{
+	// Example Parameter
+	class EmtpyLine0 {
+		title = ":: Hardcore insurgency";
+		values[]={0,0};
+		texts[]={ "",""};
+		default = 0;
+	};
+
+	class PARAM_Redlevel
+	{
+		title = "    Opposition force (number of enemies - heavy cpu charge)";
+		values[] = {1,2,3};
+		texts[] = {"LOW", "NORMAL", "HEAVY"};
+		default = 1;
+	};
+
+	class PARAM_Redlevelzonesize
+	{
+		title = "    Enemy can go out of red zone (change clearing zone condition)";
+		values[] = {50,150,300};
+		texts[] = {"No", "150 meter", "300 meter"};
+		default = 150;
+	};
+
+
+	class PARAM_Redzone
+	{
+		title = "    % of Urban Redzone";
+		values[] = {30, 50, 70, 100};
+		texts[] = {"30%", "50%", "70%", "100%"};
+		default = 30;
+	};
+
+	class PARAM_TimeOfDay
+	{
+		title = "    Time of Day";
+		values[] = {1,2,3,4};
+		texts[] = {"04:00", "12:00", "17:00", "22:00"};
+		default = 2;
+	};
+
+	class PARAM_fastime
+	{
+		title = "    Fast time";
+		values[] = {1,2};
+		texts[] = {"Yes", "No"};
+		default = 1;
+	};
+
+	class PARAM_dynamicweather
+	{
+		title = "    Dynamic Weather";
+		values[] = {1,2};
+		texts[] = {"Yes", "No"};
+		default = 1;
+	};
+
+	class PARAM_headlessclient
+	{
+		title = "    Headlessclient is avalaible";
+		values[] = {0,1};
+		texts[] = {"No", "Yes"};
+		default = 0;
+	};
+
+	class PARAM_deleteinidb
+	{
+		title = "    Purge inidb database";
+		values[] = {0,1};
+		texts[] = {"No", "Yes"};
+		default = 0;
+	};
+};

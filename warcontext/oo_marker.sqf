@@ -22,7 +22,7 @@
 
 	CLASS("OO_MARKER")
 		PRIVATE STATIC_VARIABLE("scalar","instanceid");
-		PRIVATE VARIABLE("scalar","markerid");
+		PRIVATE VARIABLE("string","name");
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("string","marker");
 		PRIVATE VARIABLE("bool","blinked");
@@ -38,13 +38,20 @@
 		PRIVATE VARIABLE("array","size");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_mark", "_markerid", "_size", "_text"];
+			private ["_instanceid", "_mark", "_name", "_size", "_text"];
 
-			_markerid = MEMBER("instanceid",nil);
-			if (isNil "_markerid") then {_markerid = 0;};
-			_markerid = _markerid + 1;
-			MEMBER("instanceid",_markerid);
-			MEMBER("markerid",_markerid);
+			_instanceid = MEMBER("instanceid",nil);
+			if (isNil "_instanceid") then {_instanceid = 0;};
+			_instanceid = _instanceid + 1;
+			MEMBER("instanceid",_instanceid);
+
+			if(isDedicated) then {
+				_name = format["SRV_OO_MRK_%1", _instanceid];
+			} else {
+				_name = format["%1_OO_MRK_%2", name player, _instanceid];				
+			};		
+
+			MEMBER("name",_name);
 			MEMBER("local", true);
 			MEMBER("position", _this);
 			MEMBER("dir", 0);
@@ -56,15 +63,30 @@
 			_size = [1,1];
 			MEMBER("size", _size);
 			MEMBER("text", "");
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("string", "Draw") {
+		PUBLIC FUNCTION("","getName") FUNC_GETVAR("name");
+		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
+		PUBLIC FUNCTION("","getDir") FUNC_GETVAR("dir");
+		PUBLIC FUNCTION("","getAlpha") FUNC_GETVAR("alpha");
+		PUBLIC FUNCTION("","getShape") FUNC_GETVAR("shape");
+		PUBLIC FUNCTION("","getType") FUNC_GETVAR("type");
+		PUBLIC FUNCTION("","getBrush") FUNC_GETVAR("brush");
+		PUBLIC FUNCTION("","getColor") FUNC_GETVAR("color");
+		PUBLIC FUNCTION("","getSize") FUNC_GETVAR("size");
+		PUBLIC FUNCTION("","getText") FUNC_GETVAR("text");
+
+		PUBLIC FUNCTION("","isBlinked") FUNC_GETVAR("blinked");
+		PUBLIC FUNCTION("","isAttached") FUNC_GETVAR("attached");
+		PUBLIC FUNCTION("","isLocal") FUNC_GETVAR("local");
+
+		PUBLIC FUNCTION("string", "draw") {
 			private ["_mark"];
 			_mark = MEMBER("marker", nil);
 			if(!isNil "_mark") then { deletemarker _mark;};
-			if!(MEMBER("local", nil)) then {
-				_mark = createMarker [format["oo_marker_%1", MEMBER("markerid", nil)], MEMBER("position", nil)];
+			if!(MEMBER("isLocal", nil)) then {
+				_mark = createMarker [MEMBER("name", nil), MEMBER("position", nil)];
 				_mark setMarkerDir MEMBER("dir", nil);
 				_mark setMarkerAlpha MEMBER("alpha", nil);
 				_mark setMarkerShape MEMBER("shape", nil);
@@ -74,7 +96,7 @@
 				_mark setmarkersize MEMBER("size", nil);
 				_mark setmarkertext MEMBER("text", nil);
 			} else {
-				_mark = createMarkerlocal [format["oo_marker_%1", MEMBER("markerid", nil)], MEMBER("position", nil)];
+				_mark = createMarkerlocal [MEMBER("name", nil), MEMBER("position", nil)];
 				_mark setMarkerDirlocal MEMBER("dir", nil);
 				_mark setMarkerAlphalocal MEMBER("alpha", nil);
 				_mark setMarkerShapelocal MEMBER("shape", nil);
@@ -87,98 +109,102 @@
 			MEMBER("marker", _mark);
 		};
 
-		PUBLIC FUNCTION("bool", "SetLocal") {
+		PUBLIC FUNCTION("string", "setName") {
+			MEMBER("name", _this);
+		};
+
+		PUBLIC FUNCTION("bool", "setLocal") {
 			MEMBER("local", _this);
 		};
 
-		PUBLIC FUNCTION("string", "SetShape") {
+		PUBLIC FUNCTION("string", "setShape") {
 			MEMBER("shape", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("string", "SetType") {
+		PUBLIC FUNCTION("string", "setType") {
 			MEMBER("type", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("string", "SetBrush") {
+		PUBLIC FUNCTION("string", "setBrush") {
 			MEMBER("brush", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("string", "SetColor") {
+		PUBLIC FUNCTION("string", "setColor") {
 			MEMBER("color", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("array", "SetSize") {
+		PUBLIC FUNCTION("array", "setSize") {
 			MEMBER("size", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("string", "SetText") {
+		PUBLIC FUNCTION("string", "setText") {
 			MEMBER("text", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("array", "SetPos") {
+		PUBLIC FUNCTION("array", "setPos") {
 			MEMBER("position", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("scalar", "SetAlpha") {
+		PUBLIC FUNCTION("scalar", "setAlpha") {
 			MEMBER("alpha", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("scalar", "SetDir") {
+		PUBLIC FUNCTION("scalar", "setDir") {
 			MEMBER("dir", _this);
-			MEMBER("Draw", "");
+			MEMBER("draw", "");
 		};
 
-		PUBLIC FUNCTION("object", "Attach") {
+		PUBLIC FUNCTION("object", "attachTo") {
 			MEMBER("attached", true);
 			while {MEMBER("attached", nil)} do {
 				MEMBER("dir", getdir _this);
-				MEMBER("SetPos", position _this);
+				MEMBER("setPos", position _this);
 				sleep 0.1;
 			};
 		};
 
-		PUBLIC FUNCTION("", "Detach") {
+		PUBLIC FUNCTION("", "detach") {
 			MEMBER("attached", false);
 		};
 
-		PUBLIC FUNCTION("scalar", "Blink") {
+		PUBLIC FUNCTION("scalar", "blink") {
 			private ["_time"];
 			_time = _this;
 			MEMBER("blinked", true);
 			while {MEMBER("blinked", nil)} do {
-				MEMBER("SetAlpha", 0);
+				MEMBER("setAlpha", 0);
 				sleep _time;
-				MEMBER("SetAlpha", 1);
+				MEMBER("setAlpha", 1);
 				sleep _time;
 			};
 		};
 
-		PUBLIC FUNCTION("", "Unblink") {
+		PUBLIC FUNCTION("", "unblink") {
 			MEMBER("blinked", false);
 		};
 
-		PUBLIC FUNCTION("scalar", "Fadein") {
+		PUBLIC FUNCTION("scalar", "fadeIn") {
 			private ["_time", "_fade"];
 			_time = (_this / 100);
 			for "_fade" from 0 to 1 step 0.01 do {
-				MEMBER("SetAlpha", _fade);
+				MEMBER("setAlpha", _fade);
 				sleep _time;
 			};
 		};
 
-		PUBLIC FUNCTION("scalar", "Fadeoff") {
+		PUBLIC FUNCTION("scalar", "fadeOff") {
 			private ["_time", "_fade"];
 			_time = (_this / 100);
 			for "_fade" from 1 to 0 step -0.01 do {
-				MEMBER("SetAlpha", _fade);
+				MEMBER("setAlpha", _fade);
 				sleep _time;
 			};
 		};
@@ -186,7 +212,7 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			deleteMarker MEMBER("marker", nil);
-			DELETE_VARIABLE("markerid");
+			DELETE_VARIABLE("name");
 			DELETE_VARIABLE("attached");
 			DELETE_VARIABLE("blinked");
 			DELETE_VARIABLE("marker");

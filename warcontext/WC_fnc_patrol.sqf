@@ -87,7 +87,11 @@
 				_cible = (_shadows call BIS_fnc_selectRandom);
 			};
 
-			_newposition = position _cible;
+			if(vehicle (leader _group) != leader _group) then {
+				_newposition = [position _cible, random (_areasize), random 359] call BIS_fnc_relPos;
+			} else {
+				_newposition = position _cible;
+			};
 
 			_wp = _group addWaypoint [_newposition, 25];
 			_wp setWaypointPosition [_newposition, 25];

@@ -51,7 +51,7 @@
 
 				_around = ["getSectorAllAround", [_key,3]] call _grid;
 				{
-					if(random 1 > 0.75) then {
+					if(random 1 > 0.9) then {
 						global_new_zone = global_new_zone + [_x];
 					};
 				}foreach _around;

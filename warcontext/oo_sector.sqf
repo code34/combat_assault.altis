@@ -75,7 +75,7 @@
 			deletemarker MEMBER("marker", nil);
 		};
 
-		PUBLIC FUNCTION("", "Pop") {
+		PUBLIC FUNCTION("", "popSector") {
 			private ["_marker", "_object", "_units", "_unitstype"];
 
 			_unitstype = MEMBER("unitstype", nil);
@@ -83,31 +83,47 @@
 			_object = MEMBER("getThis", nil);
 
 			for "_i" from 1 to (_unitstype select 0) step 1 do {
-				_units = _units + (MEMBER("popInfantery", nil));
+				_units = _units + MEMBER("popInfantry", nil);
 			};
 										
 			for "_i" from 1 to (_unitstype select 1) step 1 do {
-				_units = _units + (MEMBER("popVehicle", nil));
+				_units = _units + MEMBER("popVehicle", nil);
 			};
 		
 			for "_i" from 1 to (_unitstype select 2) step 1 do {
-				_units = _units + (MEMBER("popAir", nil));
+				_units = _units + MEMBER("popAir", nil);
 			};
 			MEMBER("units", _units);
 		};
 
-		PUBLIC FUNCTION("", "UnPop") {
+		PUBLIC FUNCTION("", "unPopSector") {
+			private ["_group"];
+			_group = [];
+
 			{
+				if!(group _x in _group) then {
+					_group = _group + [group _x];
+				};
 				_x setdammage 1;
 				deletevehicle _x;
+				sleep 0.01;
 			}foreach MEMBER("units", nil);
+
+			{
+				deleteGroup _x;
+				sleep 0.01;
+			}foreach _group;
+
+			_units = [];
+			MEMBER("units", _units);
+
 		};
 
 		PUBLIC FUNCTION("", "Spawn") {
 			private ["_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position"];
 
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
-			MEMBER("Pop", nil);
+			MEMBER("popSector", nil);
 
 			_grid = MEMBER("grid", nil);
 			_time = 0;
@@ -143,7 +159,7 @@
 			};
 			if(_units == 0) then {
 				MEMBER("marker", nil) setmarkercolor "ColorBlue";
-				MEMBER("UnPop", nil);
+				MEMBER("unPopSector", nil);
 			} else {
 				MEMBER("UnSpawn", nil);
 			};
@@ -154,30 +170,31 @@
 		};
 
 		PUBLIC FUNCTION("", "UnSpawn") {
-			private ["_around"];
-
 			global_sector_attack = global_sector_attack - [MEMBER("sector", nil)];
 			global_sector_done = global_sector_done + [MEMBER("sector", nil)];
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
-			MEMBER("UnPop", nil);
-
-			// expansion around zone
-			if(MEMBER("alert", nil)) then {
-				_around = ["getSectorAllAround", [MEMBER("sector", nil),3]] call _grid;
-				{
-					if(random 1 > 0.95) then {
-						global_new_zone = global_new_zone + [_x];
-					};
-				}foreach _around;
-			};
+			MEMBER("unPopSector", nil);
+			if(MEMBER("getAlert", nil)) then { MEMBER("expandSector", nil); };
+			MEMBER("setAlert", false);
 		};
 
-		PUBLIC FUNCTION("", "popInfantry") {
+		PUBLIC FUNCTION("", "expandSector"){
+			private ["_around"];
+			_around = ["getSectorAllAround", [MEMBER("sector", nil),3]] call _grid;
+			{
+				if(random 1 > 0.95) then {
+					global_new_zone = global_new_zone + [_x];
+				};
+			}foreach _around;
+		};
+
+
+		PRIVATE FUNCTION("", "popInfantry") {
 			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];
 
-			_marker			=  MEMBER("marker", nil);		
-			_markerpos 		= getmarkerpos _marker;
-			_markersize		= (getMarkerSize _marker) select 1;
+			_marker	=  MEMBER("marker", nil);		
+			_markerpos = getmarkerpos _marker;
+			_markersize = (getMarkerSize _marker) select 1;
 		
 			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_SniperTeam", "OI_ReconTeam"] call BIS_fnc_selectRandom;
 		
@@ -187,15 +204,16 @@
 		
 			{
 				_handle = [_x, _type] spawn WC_fnc_skill;
+				sleep 0.1;
 			}foreach (units _group);
 		
-			_handle = [_group, position (leader _group), _markersize, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";
+			_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";
 		
-			units _group;			
+			units _group;
 		};
 
 
-		PUBLIC FUNCTION("", "popVehicle") {
+		PRIVATE FUNCTION("", "popVehicle") {
 			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
 		
 			_marker			=  MEMBER("marker", nil);
@@ -219,17 +237,18 @@
 			_group = _array select 2;
 			_vehicle setVehicleLock "LOCKED";
 		
-			_handle = [_group, position (leader _group), 400, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";	
+			_handle = [_group, MEMBER("position", nil), 400, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";	
 		
 			{
-				wcgarbage = [_x, ""] spawn WC_fnc_skill;
-				sleep 0.5;
+				_handle = [_x, ""] spawn WC_fnc_skill;
+				sleep 0.1;
 			}foreach (units _group);
 		
-			units _group;
+			_units = units _group + [_vehicle];
+			_units;
 		};
 
-		PUBLIC FUNCTION("", "popAir") {
+		PRIVATE FUNCTION("", "popAir") {
 			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
 		
 			_marker			=  MEMBER("marker", nil);
@@ -250,14 +269,13 @@
 			_handle = [_group, position (leader _group), 400, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";	
 		
 			{
-				wcgarbage = [_x, ""] spawn WC_fnc_skill;
-				sleep 0.5;
+				_handle = [_x, ""] spawn WC_fnc_skill;
+				sleep 0.1;
 			}foreach (units _group);
 		
-			units _group;
+			_units = units _group + [_vehicle];
+			_units;
 		};
-
-
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("alert");
@@ -267,5 +285,7 @@
 			DELETE_VARIABLE("marker");
 			DELETE_VARIABLE("sector");
 			DELETE_VARIABLE("position");
+			DELETE_VARIABLE("units");
+			DELETE_VARIABLE("unitstype");
 		};
 	ENDCLASS;

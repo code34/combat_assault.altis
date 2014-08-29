@@ -15,6 +15,23 @@
 		"_exist"
 	];
 
+	call compilefinal preprocessFileLineNumbers "client\oo_marker.sqf";
+	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+
+	WC_fnc_skill	 	= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
+	WC_fnc_computezone	= compile preprocessFile "warcontext\scripts\WC_fnc_computezone.sqf";
+	WC_fnc_patrol		= compile preprocessFile "warcontext\scripts\WC_fnc_patrol.sqf";
+	WC_fnc_patrol_air	= compile preprocessFile "warcontext\scripts\WC_fnc_patrol_air.sqf";
+	WC_fnc_setskill		= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
+	WC_fnc_vehiclehandler	= compile preprocessFile "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
+
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
+
+	[] execVM "real_weather\real_weather.sqf";
+
 	global_sector_attack = [];
 	global_sector_done = [];
 	global_new_zone = [];

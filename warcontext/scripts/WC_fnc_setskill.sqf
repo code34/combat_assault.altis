@@ -140,12 +140,14 @@
 					_x reveal (_this select 1);
 				}foreach (units (group (_this select 0)));
 			};
+			(leader (group (_this select 0))) setvariable ['complete', true];
 		};
 	}];
 
 	_unit addEventHandler ['HandleDamage', {
 		if(isplayer(_this select 3)) then {
 			(_this select 0) setdamage (damage(_this select 0) + (random 1));
+			(leader (group (_this select 0))) setvariable ['complete', true];
 		};
 	}];
 

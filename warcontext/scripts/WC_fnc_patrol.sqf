@@ -143,6 +143,7 @@
 				sleep 1;
 			};
 			deletewaypoint _wp;
+			(leader _group) setvariable ['complete', false];
 		};
 		sleep 0.1;
 	};

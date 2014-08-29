@@ -2,10 +2,12 @@ Author = "Code34";
 onLoadName = "COMBAT ASSAULT";
 loadScreen = "famas.jpg";
 OnLoadMission = "COMBAT ASSAULT by Code34";
+onLoadMissionTime = 1;
 Respawn = "BASE";
 RespawnDelay = 10;
+RespawnDialog = 0;
 DisabledAI = true;
-joinUnassigned = false; 
+joinUnassigned = 0;
 
 class Header
 {
@@ -13,6 +15,7 @@ class Header
 	minPlayers=1;
 	maxPlayers=40;
 };
+
 
 class Params
 {

@@ -31,7 +31,7 @@
 		PRIVATE VARIABLE("array","units");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private["_air", "_index", "_type"];
+			private["_air", "_index", "_type", "_vehicle"];
 
 			_index = MEMBER("index",nil);
 			if (isNil "_index") then {_index = 0;};
@@ -45,7 +45,9 @@
 			MEMBER("alert", false);
 
 			if(random 1 > 0.97) then { _air = 1; } else { _air = 0; };
-			_type = [ (1 + round (random 1)), round (random 0.75), _air];
+			if(random 1 > 0.85) then { _vehicle = 1;} else { _vehicle = 0};
+
+			_type = [ (1 + round (random 1)), _vehicle, _air];
 			MEMBER("unitstype", _type);
 		};
 
@@ -207,7 +209,7 @@
 				sleep 0.1;
 			}foreach (units _group);
 		
-			_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";
+			_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
 		
 			units _group;
 		};
@@ -222,7 +224,8 @@
 		
 			if(random 1 > 0.5) then {
 				//light vehicle
-				_vehicle = ["O_MRAP_02_F","O_MRAP_02_hmg_F","O_MRAP_02_gmg_F", "I_MRAP_03_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F"] call BIS_fnc_selectRandom;
+				//_reco = ["O_MRAP_02_F","I_MRAP_03_F"];
+				_vehicle = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F"] call BIS_fnc_selectRandom;
 			} else {
 				//heavy vehicle
 				_vehicle = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_MBT_02_arty_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"] call BIS_fnc_selectRandom;
@@ -236,8 +239,9 @@
 			_vehicle = _array select 0;
 			_group = _array select 2;
 			_vehicle setVehicleLock "LOCKED";
-		
-			_handle = [_group, MEMBER("position", nil), 400, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";	
+
+			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;		
+			_handle = [_group, MEMBER("position", nil), 400, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
 		
 			{
 				_handle = [_x, ""] spawn WC_fnc_skill;
@@ -249,7 +253,7 @@
 		};
 
 		PRIVATE FUNCTION("", "popAir") {
-			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
+			private ["_around", "_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
 		
 			_marker			=  MEMBER("marker", nil);
 			_markerpos 		= getmarkerpos _marker;
@@ -265,8 +269,9 @@
 			_vehicle = _array select 0;
 			_group = _array select 2;
 			_vehicle setVehicleLock "LOCKED";
-		
-			_handle = [_group, position (leader _group), 400, MEMBER("getThis", nil)] execVM "warcontext\WC_fnc_patrol.sqf";	
+
+			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
+			_handle = [_group, position (leader _group), 400, MEMBER("getThis", nil), _vehicle] spawn WC_fnc_patrol_air;
 		
 			{
 				_handle = [_x, ""] spawn WC_fnc_skill;

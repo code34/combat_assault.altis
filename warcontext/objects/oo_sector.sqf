@@ -86,14 +86,17 @@
 
 			for "_i" from 1 to (_unitstype select 0) step 1 do {
 				_units = _units + MEMBER("popInfantry", nil);
+				sleep 0.01;
 			};
 										
 			for "_i" from 1 to (_unitstype select 1) step 1 do {
 				_units = _units + MEMBER("popVehicle", nil);
+				sleep 0.01;
 			};
 		
 			for "_i" from 1 to (_unitstype select 2) step 1 do {
 				_units = _units + MEMBER("popAir", nil);
+				sleep 0.01;
 			};
 			MEMBER("units", _units);
 		};
@@ -118,7 +121,6 @@
 
 			_units = [];
 			MEMBER("units", _units);
-
 		};
 
 		PUBLIC FUNCTION("", "Spawn") {
@@ -161,6 +163,7 @@
 			};
 			if(_units == 0) then {
 				MEMBER("marker", nil) setmarkercolor "ColorBlue";
+				["Remove", [MEMBER("getSector",nil)]] call global_zone_hashmap;
 				MEMBER("unPopSector", nil);
 			} else {
 				MEMBER("UnSpawn", nil);

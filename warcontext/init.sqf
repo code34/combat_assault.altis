@@ -36,6 +36,19 @@
 	global_sector_done = [];
 	global_new_zone = [];
 
+	onPlayerDisconnected {
+		private ["_name"];
+		{
+			if(name _x == _name) then {
+				_x setdammage 1;
+				deletevehicle _x;
+			};
+		}foreach playableUnits;
+		_name = format["%1_OO_MRK_%2", _name, 1];
+		deletemarker _name;
+		diag_log format ["erase %1", _name];
+	};
+
 	global_zone_hashmap  = [] call WC_fnc_computezone;
 	_player_hashmap = ["new", []] call OO_HASHMAP;
 

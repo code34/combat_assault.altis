@@ -28,7 +28,25 @@
 	};
 
 	BME_netcode_wcteleportack = {
-		wcteleportack = _this select 0;
+		_position = _this select 0;
+		switch (format["%1", _position]) do {
+			case "[0,0]": {
+				hint "Too near of enemy position";
+			};
+			case "[0,1]": {
+				hint "Too near of base";
+			};
+			case "[0,2]": {
+				hint "Position in water";
+			};			
+			default {
+				wcteleportposition = _position;
+			};
+		};
+	};
+
+	BME_netcode_death = {
+		playSound "death";
 	};
 
 	// return true when read

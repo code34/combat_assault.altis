@@ -13,6 +13,12 @@
 		_body = player;
 		_mark = ["new", position player] call OO_MARKER;
 
+		player addEventHandler ['Killed', {
+			killer = _this select 1;
+			death = true;
+			["death", "client"] call BME_fnc_publicvariable;
+		}];
+
 		player addEventHandler ['HandleDamage', {
 			if(side(_this select 3) in [east, resistance]) then {
 				(_this select 0) setdamage (damage(_this select 0) + (random 1));
@@ -47,6 +53,19 @@
 			_body = player;
 
 			waituntil {!alive player};
+
+			wccam = "camera" camCreate (position _body);
+			wccam cameraEffect ["internal","back"];
+	
+			//wccam camsettarget _body;
+			//wccam camsetrelpos [0,0,10];
+			//wccam CamCommit 0;
+
+			wccam camsettarget killer;
+			wccam camCommand "inertia on";
+			wccam camSetPos [((position killer) select 0) + 5, ((position killer) select 1) + 5, 10];
+			wccam CamCommit 5;
+
 			"detach" spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setPos", position _body] spawn _mark;
@@ -54,5 +73,9 @@
 			["draw", "ColorRed"] spawn _mark;
 
 			waituntil {alive player};
+
+			wccam cameraEffect ["terminate","back"];
+			camDestroy wccam;
+
 			};
 	};

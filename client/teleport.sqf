@@ -26,15 +26,12 @@
 
 	while { _position distance position player < 50 } do {
 		wcteleport = [];
-		wcteleportack = [];
-		onMapSingleClick "wcteleport = [name player, _pos];";
-		waitUntil{count wcteleport > 0};
-		["wcteleport", "server"] call BME_fnc_publicvariable;
-		waitUntil{count wcteleportack > 0};
-		if(format ["%1", wcteleportack] == "[0,0]") then {
-			hint "Position too near of enemy";
-		} else {
-			player setpos wcteleportack;
+		wcteleportposition = [];
+		onMapSingleClick {
+			wcteleport = [name player, _pos];
+			["wcteleport", "server"] call BME_fnc_publicvariable;
 		};
+		waitUntil{count wcteleportposition > 0};
+		player setpos wcteleportposition;
 		onMapSingleClick "";
 	};

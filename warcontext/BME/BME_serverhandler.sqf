@@ -40,7 +40,14 @@
 		}foreach playableUnits;
 
 		_position = _wcteleport select 1;
-		diag_log format["user: %1", _wcteleport];
+		if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
+			wcteleportack = [0,1];
+			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
+		};
+		if(surfaceIsWater _position) exitwith {
+			wcteleportack = [0,2];
+			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
+		};
 
 		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 		_sector = ["getSectorFromPos", _position] call _grid;

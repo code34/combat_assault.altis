@@ -37,7 +37,7 @@
 			_positions = _positions + [_housezone select _x];
 		}foreach _knownzone;
 	} else {
-		for "_x" from 0 to 30 step 1 do {
+		for "_x" from 0 to 20 step 1 do {
 			_key = _housezone call BIS_fnc_selectRandom;
 			_housezone = _housezone - [_key];
 

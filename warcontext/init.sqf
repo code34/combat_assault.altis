@@ -50,7 +50,7 @@
 	};
 
 	global_zone_hashmap  = [] call WC_fnc_computezone;
-	_player_hashmap = ["new", []] call OO_HASHMAP;
+	global_player_hashmap = ["new", []] call OO_HASHMAP;
 
 	_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 		
@@ -58,10 +58,10 @@
 		{			
 			if(side _x == west) then {
 				_sector = ["getSectorFromPos", position _x] call _grid;
-				if(["containsKey", [name _x]] call _player_hashmap) then {
-					_bck_sector = ["Get", [name _x]] call _player_hashmap;
+				if(["containsKey", [name _x]] call global_player_hashmap) then {
+					_bck_sector = ["Get", [name _x]] call global_player_hashmap;
 					if(format ["%1", _bck_sector] != format["%1", _sector]) then {
-						["Set", [name _x, _sector]] call _player_hashmap;
+						["Set", [name _x, _sector]] call global_player_hashmap;
 						_around = ["getSectorAllAround", [_sector, 3]] call _grid;
 
 						{
@@ -76,7 +76,7 @@
 						}foreach _around;						
 					};
 				} else {
-					["Put", [name _x, _sector]] call _player_hashmap;
+					["Put", [name _x, _sector]] call global_player_hashmap;
 				};
 			};
 			sleep 0.001;

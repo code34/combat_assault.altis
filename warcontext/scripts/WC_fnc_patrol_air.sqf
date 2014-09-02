@@ -10,21 +10,14 @@
 		"_cibles", 
 		"_shadows",
 		"_counter",
-		"_formationtype",
 		"_group", 
 		"_grid",
 		"_list",
-		"_move",
-		"_newposition",
-		"_newx",
-		"_newy",
+		"_nextsector",
 		"_position",
-		"_positions",
-		"_originalsize",
-		"_enemyside",
 		"_sector",
-		"_wp",
-		"_wptype",
+		"_sectors",
+		"_target",
 		"_vehicle"
 	];
 
@@ -35,89 +28,69 @@
 	_vehicle = _this select 4;
 
 	_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-	_positions = [];
-
-	_around = ["getSectorAllAround", ["getSector" call _sector, 8]] call _grid;
-	{
-		_pos = ["getPosFromSector", _x] call _grid;
-		_positions = _positions + [_pos];
-	}foreach _around;
-
-	_newposition = [];
-	_newx = 0;
-	_newy = 0;
-
-	if (isnil "_areasize") exitwith {
-		hintc "WARCONTEXT: patrolscript: areasize parameter is not set";
-	};
-
-	_enemyside = [west];
-
-	_alert = false;
+	_around = ["getSectorAllAround", ["getSector" call _sector, 10]] call _grid;
 
 	while { (count (units _group) > 0) } do {
-		_cibles = [];
-		_shadows = [];
-		_list = _position nearEntities [["Man"], 400];
-		if(count _list > 0) then {
-			{
-				if((side _x in _enemyside) and (isPlayer _x)) then {
-					if((leader _group) knowsAbout _x > 0.4) then {
-						_cibles = _cibles + [_x];
-					} else {
-						_shadows = _shadows + [_x];
-					};
-				} else {
-					_list = _list - [_x];
+		_sectors = [];
+		{
+			if(["containsKey", [_x]] call global_zone_hashmap ) then {
+				_nextsector = ["Get", [_x]] call global_zone_hashmap;
+				if("getAlert" call _nextsector) then {
+					_sectors = _sectors + [_nextsector];
 				};
-				sleep 0.1;
-			}foreach _list;
-			if(count _cibles > 0) then {
-				_alert = true;
-				["setAlert", true] call _sector;
-			} else {
-				_alert = false;
 			};
-		};
+			sleep 0.001;
+		} foreach _around;
 
-		if((_alert) or ("getAlert" call _sector)) then {
+		if(count _sectors > 0) then {		
+			_nextsector = "getSector" call (_sectors call BIS_fnc_selectRandom);
+			_alert = true;
+		} else {
+			_nextsector = (_around call BIS_fnc_selectRandom);
+			_alert = false;
+		};
+		_position = ["getPosFromSector", _nextsector] call _grid;
+
+		if(_alert) then {
+			_list = _position nearEntities [["Man"], 200];
 			_group setBehaviour "COMBAT";
 			_group setCombatMode "RED";
-			if(count _cibles > 0) then {
-				_cible = (_cibles call BIS_fnc_selectRandom);
-			} else {
-				_cible = (_shadows call BIS_fnc_selectRandom);
-			};
-
-			if(vehicle (leader _group) != leader _group) then {
-				_newposition = [position _cible, random (_areasize), random 359] call BIS_fnc_relPos;
-			} else {
-				_newposition = position _cible;
-			};
-
-			{
-				_x dotarget _cible;
-				_x domove _newposition;
-			}foreach (units _group);
-
-			while { moveToCompleted (driver _vehicle)} do {
-				sleep 1;
-			};
 		} else {
-			_group setBehaviour "AWARE";
+			_group setBehaviour "SAFE";
 			_group setCombatMode "GREEN";
+			_list = [];
+		};
 
-			_newposition = _positions call BIS_fnc_selectRandom;
+		if(count _list > 0) then {
+			_target = [_list call BIS_fnc_selectRandom];
+			_position = position (_target select 0);
+		} else {
+			_target = [];
+		};
 
-			while { (position (leader _group)) distance _newposition < 50 } do {
-				_newposition = _positions call BIS_fnc_selectRandom;
-				sleep 0.1;
-			};
-
-			(driver _vehicle) domove _newposition;
-			while { moveToCompleted (driver _vehicle)} do {
-				sleep 1;
+		_attack = true;
+		while { _attack } do {
+			if(count _target > 0) then {
+				if(alive (_target select 0)) then {
+					{
+						_x dotarget (_target select 0);
+						_x domove ([_position, random 20, random 359] call BIS_fnc_relPos);
+					}foreach (units _group);
+					sleep 20;
+				} else {
+					_target = [];
+					_attack = false;
+				};
+			} else {
+				_groundpos = [(position _vehicle) select 0, (position _vehicle) select 1];
+				if(_groundpos distance _position < 200) then {
+					_attack = false;
+				} else {
+					{
+						_x  domove _position;
+					}foreach (units _group);
+					sleep 20;
+				};
 			};
 		};
-		sleep 0.1;
 	};

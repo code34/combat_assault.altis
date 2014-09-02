@@ -51,6 +51,14 @@
 
 		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 		_sector = ["getSectorFromPos", _position] call _grid;
+
+		_pos = ["getPosFromSector", _sector] call _grid;
+		_list = _pos nearEntities [["Man"], 50];
+		if(east countSide _list > 0) exitwith {
+			wcteleportack = [0,0];
+			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
+		};
+
 		_result = _position;
 
 		_around = ["getSectorAround", _sector] call _grid;

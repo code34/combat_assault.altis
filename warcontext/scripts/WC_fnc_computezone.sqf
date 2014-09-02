@@ -52,7 +52,14 @@
 				_around = ["getSectorAllAround", [_key,3]] call _grid;
 				{
 					if(random 1 > 0.9) then {
-						global_new_zone = global_new_zone + [_x];
+						if!(["containsKey", [_x]] call _hashmap) then {
+							_position = ["getPosFromSector", _x] call _grid;
+							if!(surfaceIsWater _position) then {
+								_sector = ["new", [_x, _position, _grid]] call OO_SECTOR;
+								"Draw" call _sector;
+								["Put", [_x, _sector]] call _hashmap;
+							};
+						};
 					};
 				}foreach _around;
 			};

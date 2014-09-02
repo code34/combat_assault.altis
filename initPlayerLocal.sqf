@@ -54,16 +54,16 @@
 
 			waituntil {!alive player};
 
-			wccam = "camera" camCreate (position _body);
+			wccam = "camera" camCreate (position killer);
 			wccam cameraEffect ["internal","back"];
 	
-			//wccam camsettarget _body;
-			//wccam camsetrelpos [0,0,10];
-			//wccam CamCommit 0;
-
 			wccam camsettarget killer;
+			wccam camsetrelpos [-10,-10,5];
+			wccam CamCommit 0;
+
+			wccam camsettarget _body;
 			wccam camCommand "inertia on";
-			wccam camSetPos [((position killer) select 0) + 5, ((position killer) select 1) + 5, 10];
+			wccam camSetPos [((position _body) select 0) + 5, ((position _body) select 1) + 5, 10];
 			wccam CamCommit 5;
 
 			"detach" spawn _mark;

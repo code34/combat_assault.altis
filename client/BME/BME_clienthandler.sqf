@@ -45,6 +45,10 @@
 		};
 	};
 
+	BME_netcode_zonesuccess = {
+		playsound "zonesuccess";
+	};
+
 	BME_netcode_death = {
 		playSound "death";
 	};

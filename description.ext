@@ -26,4 +26,11 @@ class CfgSounds
 		sound[] = {"\sound\death.ogg", 1, 1};
 		titles[] = {};
 	};
+
+	class zonesuccess
+	{
+		name = "zonesuccess";
+		sound[] = {"\sound\zonesuccess.ogg", 1, 1};
+		titles[] = {};
+	};
 };

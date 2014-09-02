@@ -34,6 +34,7 @@
 	global_sector_attack = [];
 	global_sector_done = [];
 	global_new_zone = [];
+	bonuscount = 0;
 
 	onPlayerDisconnected {
 		private ["_name"];

@@ -44,7 +44,7 @@
 
 			MEMBER("alert", false);
 
-			if(random 1 > 0.97) then { _air = 1; } else { _air = 0; };
+			if(random 1 > 0.98) then { _air = 1; } else { _air = 0; };
 			if(random 1 > 0.85) then { _vehicle = 1;} else { _vehicle = 0};
 
 			_type = [ (1 + round (random 1)), _vehicle, _air];
@@ -95,9 +95,14 @@
 			};
 		
 			for "_i" from 1 to (_unitstype select 2) step 1 do {
-				_units = _units + MEMBER("popAir", nil);
+				// air pop only one time
+				MEMBER("popAir", nil);
 				sleep 0.01;
 			};
+
+			_array = [(_unitstype select 0), (_unitstype select 1), 0];
+
+			MEMBER("unitstype", _array);;
 			MEMBER("units", _units);
 		};
 
@@ -163,6 +168,7 @@
 			};
 			if(_units == 0) then {
 				MEMBER("marker", nil) setmarkercolor "ColorBlue";
+				["Put", [MEMBER("getSector",nil), [MEMBER("getThis",nil)]]] call global_zone_done;
 				["Remove", [MEMBER("getSector",nil)]] call global_zone_hashmap;
 				MEMBER("unPopSector", nil);
 			} else {
@@ -184,11 +190,21 @@
 		};
 
 		PUBLIC FUNCTION("", "expandSector"){
-			private ["_around"];
+			private ["_around", "_key", "_exist", "_position", "_sector"];
+
 			_around = ["getSectorAllAround", [MEMBER("sector", nil),3]] call _grid;
 			{
+				_key = _x;
 				if(random 1 > 0.95) then {
-					global_new_zone = global_new_zone + [_x];
+					_exist = (["containsKey", [_key]] call global_zone_hashmap || ["containsKey", [_key]] call global_zone_done);
+					if!(_exist) then {
+						_position = ["getPosFromSector", _key] call _grid;
+						if(!surfaceIsWater _position) then {
+							_sector = ["new", [_key, _position, _grid]] call OO_SECTOR;
+							"Draw" call _sector;
+							["Put", [_key, _sector]] call global_zone_hashmap;
+						};
+					};
 				};
 			}foreach _around;
 		};

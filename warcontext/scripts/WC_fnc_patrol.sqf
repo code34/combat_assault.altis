@@ -18,7 +18,10 @@
 		"_newy",
 		"_position",
 		"_originalsize",
+		"_object",
 		"_enemyside",
+		"_round",
+		"_smokeposition", 
 		"_sector",
 		"_wp",
 		"_wptype"
@@ -56,7 +59,7 @@
 	while { (count (units _group) > 0) } do {
 		_cibles = [];
 		_shadows = [];
-		_list = _position nearEntities [["Man"], 400];
+		_list = _position nearEntities [["Man"], 600];
 		if(count _list > 0) then {
 			{
 				if((side _x in _enemyside) and (isPlayer _x)) then {
@@ -81,10 +84,19 @@
 		if((_alert) or ("getAlert" call _sector)) then {
 			_group setBehaviour "COMBAT";
 			_group setCombatMode "RED";
+
 			if(count _cibles > 0) then {
 				_cible = (_cibles call BIS_fnc_selectRandom);
 			} else {
 				_cible = (_shadows call BIS_fnc_selectRandom);
+			};
+
+			if(random 1 > 0.97) then {
+				_round = ceil(random 3);
+				for "_x" from 0 to _round step 1 do {
+					_smokeposition = [position _cible, random 10, random 359] call BIS_fnc_relPos;
+					_smoke = createVehicle ["SmokeShell", _smokeposition, [], 0, "NONE"];
+				};
 			};
 
 			if(vehicle (leader _group) != leader _group) then {
@@ -92,7 +104,7 @@
 			} else {
 				_newposition = position _cible;
 			};
-
+	
 			_wp = _group addWaypoint [_newposition, 25];
 			_wp setWaypointPosition [_newposition, 25];
 			_wp setWaypointType "MOVE";
@@ -139,6 +151,15 @@
 				};			
 				if(count (units _group) < _originalsize) then {
 					_move = false;
+
+					if(random 1 > 0.97) then {
+						_round = ceil(random 3);
+						for "_x" from 0 to _round step 1 do {
+							_smokeposition = [position (leader _group), 5, random 359] call BIS_fnc_relPos;
+							_object = ["G_40mm_Smoke", "SmokeShell"] call BIS_fnc_selectRandom;
+							_smoke = createVehicle [_object, _smokeposition, [], 0, "NONE"];
+						};
+					};
 				};
 				sleep 1;
 			};

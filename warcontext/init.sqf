@@ -10,7 +10,6 @@
 		"_grid",
 		"_globalindex",
 		"_position",
-		"_positions",
 		"_sector",
 		"_exist"
 	];
@@ -50,9 +49,11 @@
 	};
 
 	global_zone_hashmap  = [] call WC_fnc_computezone;
+	global_zone_done = ["new", []] call OO_HASHMAP;
 	global_player_hashmap = ["new", []] call OO_HASHMAP;
 
 	_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+
 		
 	while { true } do {
 		{			
@@ -81,20 +82,5 @@
 			};
 			sleep 0.001;
 		} foreach playableunits;
-		while { count global_new_zone > 0 } do {
-			_key = global_new_zone select 0;
-			_exist = ["containsKey", [_key]] call global_zone_hashmap;
-
-			if!(_exist) then {
-				_position = ["getPosFromSector", _key] call _grid;
-				if(!surfaceIsWater _position) then {
-					_sector = ["new", [_key, _position, _grid]] call OO_SECTOR;
-					"Draw" call _sector;
-					["Put", [_key, _sector]] call global_zone_hashmap;
-				};
-			};
-			global_new_zone set [0,-1];
-			global_new_zone = global_new_zone - [-1];
-		};
 		sleep 0.1;
 	};

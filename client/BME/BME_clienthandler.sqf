@@ -46,7 +46,7 @@
 	};
 
 	BME_netcode_zonesuccess = {
-		playsound "zonesuccess";
+		//playsound "zonesuccess";
 	};
 
 	BME_netcode_death = {

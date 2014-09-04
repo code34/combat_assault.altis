@@ -173,15 +173,10 @@
 				["Put", [MEMBER("getSector",nil), [MEMBER("getThis",nil)]]] call global_zone_done;
 				["Remove", [MEMBER("getSector",nil)]] call global_zone_hashmap;
 				MEMBER("unPopSector", nil);
-				bonuscount = bonuscount + 1;
-				if(bonuscount > 5) then {
-					bonuscount = 0;
-					_type = ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"] call BIS_fnc_selectRandom;
-					_position = ["getPosFromSector", MEMBER("getSector",nil)] call _grid;
-					_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
-					_vehicle = createVehicle [_type, _position, [], 0, "NONE"];
-					_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
-				};
+
+				_position = ["getPosFromSector", MEMBER("getSector",nil)] call _grid;
+				_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+				["new", [_position]] call OO_BONUSVEHICLE;
 			} else {
 				MEMBER("UnSpawn", nil);
 			};

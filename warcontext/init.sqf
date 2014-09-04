@@ -25,9 +25,11 @@
 	WC_fnc_setskill		= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
 	WC_fnc_vehiclehandler	= compile preprocessFile "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
 
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 
 	[] execVM "real_weather\real_weather.sqf";
 

@@ -43,7 +43,7 @@
 		case "OIA_InfSquad": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.6 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -55,7 +55,7 @@
 		case "OIA_InfTeam": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.6 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -67,7 +67,7 @@
 		case "OIA_InfTeam_AA": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.6 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.7];
@@ -79,7 +79,7 @@
 		case "OIA_InfTeam_AT": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.6];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.6];
@@ -91,12 +91,12 @@
 		case "OI_SniperTeam": {
 			_unit setskill ["aimingAccuracy", 1];
 			_unit setskill ["aimingShake", 1];
-			_unit setskill ["aimingSpeed", 0.5];
+			_unit setskill ["aimingSpeed", 0.7];
 			_unit setskill ["endurance", 0.5];
 			_unit setskill ["spotDistance", 1];
 			_unit setskill ["spotTime", 0.9];
 			_unit setskill ["courage", 0.7];
-			_unit setskill ["reloadSpeed", 0.5];
+			_unit setskill ["reloadSpeed", 0.3];
 			_unit setskill ["commanding", 0.5];	
 		};
 
@@ -115,7 +115,7 @@
 		default {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.6 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.6];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -148,6 +148,9 @@
 		if(isplayer(_this select 3)) then {
 			(_this select 0) setdamage (damage(_this select 0) + (random 1));
 			(leader (group (_this select 0))) setvariable ['complete', true];
+		};
+		if((_this select 0) distance (_this select 3) > 800) then {
+			(leader (group (_this select 0))) setvariable ['support', [(_this select 3)]];
 		};
 	}];
 

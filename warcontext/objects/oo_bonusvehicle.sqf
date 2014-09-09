@@ -21,18 +21,36 @@
 	#include "oop.h"
 
 	CLASS("OO_BONUSVEHICLE")
+		PRIVATE STATIC_VARIABLE("scalar","counter");
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("string","type");
+		PRIVATE VARIABLE("code","marker");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_type", "_position", "_vehicle"];
+			private ["_counter", "_position"];
+
+			_counter = MEMBER("counter",nil);
+			if (isNil "_counter") then {_counter = 0;};
+			_counter = _counter + 1;
+			MEMBER("counter", _counter);
+			if(_counter < 8) exitwith {};
+			MEMBER("counter", 0);
 
 			_position = _this select 0;
 			MEMBER("position", _position);
-
 			MEMBER("setType", nil);
+			MEMBER("popVehicle", nil);
+			MEMBER("setMarker", nil);
+			MEMBER("checkAlive", nil);
+		};
 
+		PUBLIC FUNCTION("","getType") FUNC_GETVAR("type");
+		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
+		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
+
+		PUBLIC FUNCTION("", "popVehicle") {
+			private ["_vehicle"];
 			_vehicle = createVehicle [MEMBER("getType", nil), _position, [], 0, "NONE"];
 			_vehicle addeventhandler ['HandleDamage', {
 				private ["_name", "_gunner", "_commander"];
@@ -47,18 +65,24 @@
 					};
 				};
 			}];
-
 			MEMBER("vehicle", _vehicle);
 		};
-
-		PUBLIC FUNCTION("","getType") FUNC_GETVAR("type");
-		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
-		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
-
 
 		PUBLIC FUNCTION("", "removeVehicle") {
 			MEMBER("getVehicle", nil) setdamage 1;
 			deletevehicle MEMBER("getVehicle", nil);
+		};
+
+		PUBLIC FUNCTION("", "setMarker") {
+			private ["_mark", "_name"];
+			_mark = ["new", position MEMBER("vehicle", nil)] call OO_MARKER;
+			["attachTo", MEMBER("vehicle", nil)] spawn _mark;
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf MEMBER("vehicle", nil)) >> "DisplayName");
+			["setText", _name] spawn _mark;
+			["setColor", "ColorGreen"] spawn _mark;
+			["setType", "mil_arrow"] spawn _mark;
+			["setSize", [0.8,0.8]] spawn _mark;
+			MEMBER("marker", _mark);
 		};
 
 		PUBLIC FUNCTION("", "setType") {
@@ -73,18 +97,21 @@
 			_counter = 0;
 			_vehicle = MEMBER("getVehicle", nil);
 
-			while { ((getDammage _vehicle < 0.9) || (fuel _vehicle > 0)) } do {
-				
+			while { ((getDammage _vehicle < 0.9) and (fuel _vehicle > 0.1)) } do {
 				if(count crew _vehicle == 0) then { _counter = _counter + 1} else {_counter = 0;};
-				if(_counter > 180) then { _vehicle setfuel 0;};
+				if(_counter > 30) then { _vehicle setfuel 0;};
 				sleep 1;
 			}; 
-			sleep 30;
-			MEMBER("delete", nil);
+			sleep 180;
+			MEMBER("deconstructor", nil);
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			["delete", MEMBER("marker", nil)] call OO_MARKER;
+			DELETE_VARIABLE("marker");
 			MEMBER("removeVehicle", nil);
 			DELETE_VARIABLE("vehicle");
+			DELETE_VARIABLE("position");
+			DELETE_VARIABLE("type");
 		};
 	ENDCLASS;

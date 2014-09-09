@@ -3,14 +3,17 @@
 	// WARCONTEXT - Simple Seek & destroy patrol script
 
 	private [
+		"_artillery",
 		"_areasize",
 		"_alert",
+		"_canartillery",
 		"_cible", 
 		"_cibles", 
 		"_shadows",
 		"_counter",
 		"_formationtype",
 		"_group", 
+		"_grid",
 		"_list",
 		"_move",
 		"_newposition",
@@ -23,6 +26,7 @@
 		"_round",
 		"_smokeposition", 
 		"_sector",
+		"_support",
 		"_wp",
 		"_wptype"
 	];
@@ -32,6 +36,14 @@
 	_areasize = _this select 2;
 	_sector = _this select 3;
 
+	if("isArtillery" call _sector) then {
+		_artillery = "getArtillery" call _sector;
+		_canartillery = true;
+		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+	} else {
+		_canartillery = false;
+	};
+
 	_newposition = [];
 	_newx = 0;
 	_newy = 0;
@@ -39,6 +51,9 @@
 	if (isnil "_areasize") exitwith {
 		hintc "WARCONTEXT: patrolscript: areasize parameter is not set";
 	};
+
+	// artillery support
+	(leader _group) setvariable ['support', []];
 
 	switch (side (leader _group)) do {
 		case west: {
@@ -91,11 +106,25 @@
 				_cible = (_shadows call BIS_fnc_selectRandom);
 			};
 
-			if(random 1 > 0.97) then {
-				_round = ceil(random 3);
-				for "_x" from 0 to _round step 1 do {
-					_smokeposition = [position _cible, random 10, random 359] call BIS_fnc_relPos;
-					_smoke = createVehicle ["SmokeShell", _smokeposition, [], 0, "NONE"];
+			if(_canartillery) then {
+				_support = (leader _group) getVariable "support";
+				if(count _support > 0) then {
+					["setTarget", (_support select 0)] call _artillery;
+					"autoSetAmmo" call _artillery;
+					"doFire" call _artillery;
+					(leader _group) setvariable ['support', []];
+				};
+
+				if(random 1 > 0.95) then {
+					_sector = ["getSectorFromPos", position _cible] call _grid;
+					if(["containsKey", [_sector]] call global_zone_hashmap ) then {
+						["setSuppression", true] call _artillery;
+					} else {
+						["setSuppression", false] call _artillery;
+					};
+					["setTarget", _cible] call _artillery;
+					"autoSetAmmo" call _artillery;
+					"doFire" call _artillery;
 				};
 			};
 
@@ -144,6 +173,8 @@
 			while { _move } do {
 				_counter = _counter + 1;
 				if(format["%1", (leader _group) getVariable "complete"] == "true") then {
+					_alert = true;
+					["setAlert", true] call _sector;
 					_move = false;
 				};
 				if(_counter > 29) then {
@@ -151,12 +182,14 @@
 				};			
 				if(count (units _group) < _originalsize) then {
 					_move = false;
+					_alert = true;
+					["setAlert", true] call _sector;
 
 					if(random 1 > 0.97) then {
 						_round = ceil(random 3);
 						for "_x" from 0 to _round step 1 do {
 							_smokeposition = [position (leader _group), 5, random 359] call BIS_fnc_relPos;
-							_object = ["G_40mm_Smoke", "SmokeShell"] call BIS_fnc_selectRandom;
+							_object = ["G_40mm_Smoke"] call BIS_fnc_selectRandom;
 							_smoke = createVehicle [_object, _smokeposition, [], 0, "NONE"];
 						};
 					};

@@ -57,13 +57,9 @@
 
 	_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 
-	_position = getmarkerpos "bonus";
-	["new", [_position]] spawn OO_BONUSVEHICLE;
-
-	//[] spawn WC_fnc_patrol_air2;
 	_dogfight = ["new", []] call OO_DOGFIGHT;
 	"startPatrol" spawn _dogfight;
-	
+
 	while { "Size" call global_zone_hashmap > 0 } do {
 		{			
 			if((side _x == west) and ((position _x) select 2 < 5)) then {

@@ -35,6 +35,7 @@
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("string","ammo");
 		PRIVATE VARIABLE("scalar","round");
+		PRIVATE VARIABLE("bool","suppression");
 
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_position", "_vehicle"];
@@ -64,11 +65,10 @@
 				};
 			}];
 
-			_vehicle addeventhandler ['Fired', { hint "artillery";}];
-
 			MEMBER("vehicle", _vehicle);
 			MEMBER("ammo", "32Rnd_155mm_Mo_shells");
 			MEMBER("round", 3);
+			MEMBER("setSuppression", false);
 			enableEngineArtillery true;
 		};
 
@@ -77,6 +77,11 @@
 		PUBLIC FUNCTION("","getAmmo") FUNC_GETVAR("ammo");
 		PUBLIC FUNCTION("","getTarget") FUNC_GETVAR("target");
 		PUBLIC FUNCTION("","getRound") FUNC_GETVAR("round");
+		PUBLIC FUNCTION("","getSuppression") FUNC_GETVAR("suppression");
+
+		PUBLIC FUNCTION("bool", "setSuppression") {
+			MEMBER("supression", _this);
+		};
 
 		PUBLIC FUNCTION("", "getAmmoAvalaible") {
 			getArtilleryAmmo [MEMBER("getVehicle", nil)];
@@ -96,8 +101,33 @@
 
 
 		PUBLIC FUNCTION("", "removeVehicle") {
+			{
+				_x setdamage 1;
+				deletevehicle _x;
+			}foreach (crew MEMBER("getVehicle", nil));
+
 			MEMBER("getVehicle", nil) setdamage 1;
 			deletevehicle MEMBER("getVehicle", nil);
+		};
+
+		PUBLIC FUNCTION("bool", "autoSetAmmo") {
+			private ["_ammo", "_target"];
+			_target = MEMBER("target", nil);
+
+			if(!MEMBER("suppression", nil)) then {			
+				if( _target iskindof "Man") then {
+					if( format["%1", (surfacetype position _target)] in ["#GdtGrassDry", "#GdtDirt", "#GdtGrassGreen"]) then {
+						_ammo = ["smoke", "cluster", "bomb", "mine"] call BIS_fnc_selectRandom;
+					} else {
+						_ammo = ["smoke", "cluster", "bomb"] call BIS_fnc_selectRandom;
+					};
+				} else {
+					_ammo = ["cluster", "bomb", "mine"] call BIS_fnc_selectRandom;
+				};
+			} else {
+				_ammo = "smoke";
+			};
+			MEMBER("setAmmo", _ammo);
 		};
 
 		PUBLIC FUNCTION("string", "setAmmo") {
@@ -128,6 +158,14 @@
 					_ammo = "6Rnd_155mm_Mo_mine";
 				};
 
+				case "mine": {
+					if(MEMBER("target", nil) != vehicle MEMBER("target", nil)) then {
+						_ammo = "6Rnd_155mm_Mo_AT_mine";
+					} else {
+						_ammo = "6Rnd_155mm_Mo_mine";
+					};
+				};
+
 				default {
 					_ammo = "32Rnd_155mm_Mo_shells";
 				};
@@ -144,19 +182,6 @@
 		};
 
 
-		PUBLIC FUNCTION("", "checkAlive") {
-			private ["_counter", "_vehicle"];
-
-			_counter = 0;
-			_vehicle = MEMBER("getVehicle", nil);
-
-			while { ((getDammage _vehicle < 0.9) || (fuel _vehicle > 0)) } do {		
-				sleep 1;
-			}; 
-			sleep 30;
-			MEMBER("delete", nil);
-		};
-
 		PUBLIC FUNCTION("","deconstructor") { 
 			MEMBER("removeVehicle", nil);
 			DELETE_VARIABLE("vehicle");
@@ -165,5 +190,6 @@
 			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("ammo");
 			DELETE_VARIABLE("round");
+			DELETE VARIABLE("suppression");
 		};
 	ENDCLASS;

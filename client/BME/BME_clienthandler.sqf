@@ -53,5 +53,14 @@
 		playSound "death";
 	};
 
+	BME_netcode_end = {
+		_end = _this;
+		if(_end == "win") then {
+			["end1",false,2] call BIS_fnc_endMission;
+		} else {
+			["epicFail",false,2] call BIS_fnc_endMission;
+		};
+	};
+
 	// return true when read
 	true;

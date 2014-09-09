@@ -7,16 +7,10 @@
 
 		_vehicle = _this select 0;
 
+		_vehicle removeAllEventHandlers "HandleDamage";
 		_vehicle addeventhandler ['HandleDamage', {
-			private ["_name", "_gunner", "_commander"];
-			if(side(_this select 3) in [west, civilian]) then {
-				if ((_this select 2) > 0.4) then {
-					(_this select 0) setHit [(_this select 1), (_this select 2)];
-					(_this select 0) setdamage (damage (_this select 0) + (_this select 2));
-					if(damage (_this select 0) > 0.9) then {
-						(_this select 0) setdamage 1;
-						(_this select 0) removeAllEventHandlers "HandleDamage";
-					};
-				};
+			if(damage (_this select 0) > 0.9) then {
+					(_this select 0) setdamage 1;
+					(_this select 0) removeAllEventHandlers "HandleDamage";
 			};
 		}];

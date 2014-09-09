@@ -191,6 +191,13 @@
 			[_xpos, _ypos];
 		};
 
+		PUBLIC FUNCTION("array", "getMiddlePos") {
+			_position = _this;
+			_sector = MEMBER("getSectorFromPos", _position);
+			_position = MEMBER("getPosFromSector", _sector);
+			_position;
+		};
+
 		PUBLIC FUNCTION("array", "getSectorAround") {
 			private ["_grid", "_params", "_sector"];
 

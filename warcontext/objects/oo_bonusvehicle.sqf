@@ -99,10 +99,11 @@
 
 			while { ((getDammage _vehicle < 0.9) and (fuel _vehicle > 0.1)) } do {
 				if(count crew _vehicle == 0) then { _counter = _counter + 1} else {_counter = 0;};
-				if(_counter > 30) then { _vehicle setfuel 0;};
+				if(_counter > 180) then { _vehicle setfuel 0;};
+				_name= getText (configFile >> "CfgVehicles" >> (typeOf MEMBER("vehicle", nil)) >> "DisplayName") + format[" - %1", (180 -_counter)];
+				["setText", _name] call MEMBER("marker", nil);
 				sleep 1;
 			}; 
-			sleep 180;
 			MEMBER("deconstructor", nil);
 		};
 

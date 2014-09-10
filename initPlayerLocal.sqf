@@ -1,17 +1,17 @@
 	// init warcontext function
-	WC_fnc_teleport = compile preprocessFile "client\teleport.sqf";
+	WC_fnc_teleport = compilefinal preprocessFile "client\teleport.sqf";
+	WC_fnc_teleportplane = compilefinal preprocessFile "client\teleport_plane.sqf";
+	WC_fnc_client = compilefinal preprocessFileLineNumbers "client\client.sqf";
+
 	call compilefinal preprocessFileLineNumbers "client\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
+
 
 	[] execVM "real_weather\real_weather.sqf";
 
 	if (local player) then {
 		sleep 1;
 		enableEnvironment false;
-
-		private ["_body", "_index"];
-		_body = player;
-		_mark = ["new", position player] call OO_MARKER;
 
 		player addEventHandler ['Killed', {
 			killer = _this select 1;
@@ -25,57 +25,12 @@
 			};
 		}];
 
-		while {true} do {
-			_index = player addEventHandler ["HandleDamage", {false}];
-			if !(player hasWeapon "ItemGPS") then {
-				player addWeapon "ItemGPS";
-			};
+		player createDiaryRecord ["Diary", ["Situation", "Things are looking bad. Try to find your way on Altis Island and perphaps you will have a luck to go out of this doom maze"]];
+		_task = player createSimpleTask ["Mission"];
+		_task setSimpleTaskDescription ["Hi! you just come back to Altis Island. A Pretty nice island where you went on holidays when you were young. A this time, it is a fucking island with hot temperatures, under enemies control. Soldier, you have to go to Altis Island and organise the takeover of this island", "Go and investigate on Altis Island", "Task HUD Title"];
 
-			_position = position player;
-			["Open",[true,nil,player]] call bis_fnc_arsenal;
-			while { _position distance position player < 2 } do {
-				sleep 0.1
-			};
+		playMusic "intro";
+		["<t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'>Alpha Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
-			openMap [true, true];
-			mapAnimAdd [1, 0.01, _body]; 
-			mapAnimCommit;
-			deletevehicle _body;
-			[] call WC_fnc_teleport;
-			openMap [false, false];
-
-			player removeEventHandler ["HandleDamage", _index];
-			["attachTo", player] spawn _mark;
-			["setText", name player] spawn _mark;
-			["setColor", "ColorGreen"] spawn _mark;
-			["setType", "mil_arrow"] spawn _mark;
-			["setSize", [0.5,0.5]] spawn _mark;
-			_body = player;
-
-			waituntil {!alive player};
-
-			wccam = "camera" camCreate (position killer);
-			wccam cameraEffect ["internal","back"];
-	
-			wccam camsettarget killer;
-			wccam camsetrelpos [-10,-10,5];
-			wccam CamCommit 0;
-
-			wccam camsettarget _body;
-			wccam camCommand "inertia on";
-			wccam camSetPos [((position _body) select 0) + 5, ((position _body) select 1) + 5, 10];
-			wccam CamCommit 5;
-
-			"detach" spawn _mark;
-			["setColor", "ColorRed"] spawn _mark;
-			["setPos", position _body] spawn _mark;
-			["setType", "mil_flag"] spawn _mark;
-			["draw", "ColorRed"] spawn _mark;
-
-			waituntil {alive player};
-
-			wccam cameraEffect ["terminate","back"];
-			camDestroy wccam;
-
-			};
+		[] spawn WC_fnc_client;
 	};

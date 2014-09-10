@@ -26,6 +26,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";

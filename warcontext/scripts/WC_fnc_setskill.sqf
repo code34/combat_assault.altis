@@ -30,7 +30,7 @@
 	switch (_type) do {
 		case "OIA_InfSquad_Weapons":{
 			_unit setskill ["aimingAccuracy", 0.6];
-			_unit setskill ["aimingShake", 0.6 + round(random (0.4))];
+			_unit setskill ["aimingShake", 0.4 + round(random (0.4))];
 			_unit setskill ["aimingSpeed", 0.6];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
@@ -43,7 +43,7 @@
 		case "OIA_InfSquad": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.3))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -55,7 +55,7 @@
 		case "OIA_InfTeam": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.3))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -67,7 +67,7 @@
 		case "OIA_InfTeam_AA": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.3))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.7];
@@ -79,7 +79,7 @@
 		case "OIA_InfTeam_AT": {
 			_unit setskill ["aimingAccuracy", 0.6];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.4 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.4 + round(random (0.3))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.6];

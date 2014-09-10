@@ -17,8 +17,6 @@
 		"_list",
 		"_move",
 		"_newposition",
-		"_newx",
-		"_newy",
 		"_position",
 		"_originalsize",
 		"_object",
@@ -45,8 +43,6 @@
 	};
 
 	_newposition = [];
-	_newx = 0;
-	_newy = 0;
 
 	if (isnil "_areasize") exitwith {
 		hintc "WARCONTEXT: patrolscript: areasize parameter is not set";

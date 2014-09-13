@@ -23,9 +23,10 @@
 	CLASS("OO_SECTOR")
 		PRIVATE STATIC_VARIABLE("scalar","index");
 		PRIVATE VARIABLE("bool","alert");
-		PRIVATE VARIABLE("code","grid");
+		PRIVATE VARIABLE("code","grid");	
 		PRIVATE VARIABLE("string","marker");
 		PRIVATE VARIABLE("array","sector");
+		PRIVATE VARIABLE("scalar","state");
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("array","unitstype");
 		PRIVATE VARIABLE("array","units");
@@ -44,6 +45,7 @@
 			MEMBER("position", _this select 1);
 			MEMBER("grid", _this select 2);
 
+			MEMBER("state", 0);
 			MEMBER("alert", false);
 
 			if(random 1 > 0.97) then { _air = 1; } else { _air = 0; };
@@ -60,6 +62,7 @@
 		PUBLIC FUNCTION("","getAlert") FUNC_GETVAR("alert");
 		PUBLIC FUNCTION("","getArtillery") FUNC_GETVAR("artillery");
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
+		PUBLIC FUNCTION("","getState") FUNC_GETVAR("state");
 
 		PUBLIC FUNCTION("", "getThis") {
 			private ["_key", "_sector"];
@@ -68,19 +71,18 @@
 			_sector;
 		};
 
+		PRIVATE FUNCTION("scalar", "setState") {
+			MEMBER("state", _this);
+		};
+
 		PUBLIC FUNCTION("", "isArtillery") FUNC_GETVAR("artilleryactive");
 
 		PUBLIC FUNCTION("", "popArtillery") {
 			private ["_position", "_artillery"];
-			_position = [MEMBER("position", nil), (3000 + (random 2000)), random 359] call BIS_fnc_relPos;
-			_position = ["getMiddlePos", _position] call MEMBER("grid", nil);
+			_position = [MEMBER("position", nil), 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
 
-			diag_log format["midd position : %1", _position];
-
-			if(!surfaceiswater _position) then {
-				_artillery = ["new", [_position]] call OO_ARTILLERY;
-				MEMBER("artillery", _artillery);
-			};
+			_artillery = ["new", [_position]] call OO_ARTILLERY;
+			MEMBER("artillery", _artillery);
 		};
 
 		PUBLIC FUNCTION("", "Draw") {
@@ -98,7 +100,7 @@
 		};
 
 		PUBLIC FUNCTION("", "popSector") {
-			private ["_marker", "_object", "_units", "_unitstype"];
+			private ["_array", "_marker", "_object", "_units", "_unitstype"];
 
 			_unitstype = MEMBER("unitstype", nil);
 			_units = [];
@@ -159,6 +161,7 @@
 		PUBLIC FUNCTION("", "Spawn") {
 			private ["_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type"];
 
+			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
 			MEMBER("popSector", nil);
 
@@ -199,12 +202,12 @@
 				zonesuccess = true;
 				["zonesuccess", "client"] call BME_fnc_publicvariable;
 				["Put", [MEMBER("getSector",nil), [MEMBER("getThis",nil)]]] call global_zone_done;
-				["Remove", [MEMBER("getSector",nil)]] call global_zone_hashmap;
 				MEMBER("unPopSector", nil);
 
 				_position = ["getPosFromSector", MEMBER("getSector",nil)] call _grid;
 				_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
 				["new", [_position]] spawn OO_BONUSVEHICLE;
+				MEMBER("state", 2);
 			} else {
 				MEMBER("UnSpawn", nil);
 			};
@@ -219,28 +222,11 @@
 			global_sector_done = global_sector_done + [MEMBER("sector", nil)];
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
-			if(MEMBER("getAlert", nil)) then { MEMBER("expandSector", nil); };
+			if(MEMBER("getAlert", nil)) then { 
+				["expandSector", MEMBER("getSector", nil)] call global_controller;
+			};
 			MEMBER("setAlert", false);
-		};
-
-		PUBLIC FUNCTION("", "expandSector"){
-			private ["_around", "_key", "_exist", "_position", "_sector"];
-
-			_around = ["getSectorAllAround", [MEMBER("sector", nil),3]] call _grid;
-			{
-				_key = _x;
-				if(random 1 > 0.95) then {
-					_exist = (["containsKey", [_key]] call global_zone_hashmap || ["containsKey", [_key]] call global_zone_done);
-					if!(_exist) then {
-						_position = ["getPosFromSector", _key] call _grid;
-						if(!surfaceIsWater _position) then {
-							_sector = ["new", [_key, _position, _grid]] call OO_SECTOR;
-							"Draw" call _sector;
-							["Put", [_key, _sector]] call global_zone_hashmap;
-						};
-					};
-				};
-			}foreach _around;
+			MEMBER("state", 0);
 		};
 
 
@@ -340,6 +326,7 @@
 			}foreach (units _group);
 		};
 
+
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("alert");
 			DELETE_VARIABLE("grid");
@@ -350,5 +337,6 @@
 			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("units");
 			DELETE_VARIABLE("unitstype");
+			DELETE_VARIABLE("state");		
 		};
 	ENDCLASS;

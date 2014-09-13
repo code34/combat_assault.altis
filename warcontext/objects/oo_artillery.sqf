@@ -65,6 +65,7 @@
 				};
 			}];
 
+			MEMBER("target", _vehicle);
 			MEMBER("vehicle", _vehicle);
 			MEMBER("ammo", "32Rnd_155mm_Mo_shells");
 			MEMBER("round", 3);
@@ -80,7 +81,7 @@
 		PUBLIC FUNCTION("","getSuppression") FUNC_GETVAR("suppression");
 
 		PUBLIC FUNCTION("bool", "setSuppression") {
-			MEMBER("supression", _this);
+			MEMBER("suppression", _this);
 		};
 
 		PUBLIC FUNCTION("", "getAmmoAvalaible") {
@@ -185,11 +186,12 @@
 		PUBLIC FUNCTION("","deconstructor") { 
 			MEMBER("removeVehicle", nil);
 			DELETE_VARIABLE("vehicle");
+			deleteGroup MEMBER("group", nil);
 			DELETE_VARIABLE("group");
 			DELETE_VARIABLE("target");
 			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("ammo");
 			DELETE_VARIABLE("round");
-			DELETE VARIABLE("suppression");
+			DELETE_VARIABLE("suppression");
 		};
 	ENDCLASS;

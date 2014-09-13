@@ -51,7 +51,7 @@
 				scopename "oo_hashmap_key";
 				if(format["%1", _key] == format["%1", _x]) then {
 					_return = true;
-					//breakout "oo_hashmap_key";
+					breakout "oo_hashmap_key";
 				};
 				sleep 0.000000001;
 			}foreach MEMBER("index", nil);

@@ -72,6 +72,7 @@
 				MEMBER("detectTargets", nil);
 				MEMBER("setTarget", nil);	
 				MEMBER("intercept", nil);
+				MEMBER("setFuel", nil);
 				MEMBER("cleaner", nil);
 				sleep 20;
 			};
@@ -111,6 +112,15 @@
 			};
 		};
 
+		PUBLIC FUNCTION("", "setFuel") {
+			private ["_setFuel"];
+			{
+				_vehicle = _x select 0;
+				_vehicle setfuel ((fuel _vehicle) - 0.05);
+				sleep 0.001;
+			}foreach MEMBER("squadron", nil);
+		};
+
 		PUBLIC FUNCTION("", "detectTargets") {
 			private ["_array"];
 
@@ -120,6 +130,9 @@
 					if((getposatl _x) select 2 > 10) then {
 						_array = _array + [_x];
 					};
+				};
+				if(typeof _x == "B_crew_F") then {
+					_array = _array + [_x];
 				};
 			}foreach playableunits;
 			MEMBER("targets", _array);
@@ -133,6 +146,7 @@
 
 			_vehicle = _array select 0;
 			_crew = (_array select 1) select 0;
+
 			_mark = ["new", position _vehicle] call OO_MARKER;
 
 			["attachTo", _vehicle] spawn _mark;
@@ -147,7 +161,7 @@
 		};
 
 		PUBLIC FUNCTION("object", "unpopMember") {
-			private ["_counter", "_squad"];
+			private ["_counter", "_group", "_squad"];
 
 			_counter = 0;
 			_squad = MEMBER("squadron", nil);
@@ -155,8 +169,10 @@
 				if(_x select 0 == _this) then {
 					(_x select 0) setdammage 1;
 					deletevehicle (_x select 0) ;
+					_group = group (_x select 1);
 					(_x select 1) setdammage 1;
-					deletevehicle (_x select 1) ;
+					deletevehicle (_x select 1);
+					deletegroup _group;
 					"detach" call (_x select 2);
 					["delete", (_x select 2)] call OO_MARKER;
 					_squad set [_counter, -1];

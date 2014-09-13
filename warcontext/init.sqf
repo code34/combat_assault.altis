@@ -24,13 +24,14 @@
 	WC_fnc_vehiclehandler	= compile preprocessFile "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 
 	[] execVM "real_weather\real_weather.sqf";
 	_temp = "Land_LampDecor_F" createVehicle (getMarkerPos "base_lamp");
@@ -53,43 +54,12 @@
 	};
 
 	global_zone_hashmap  = [] call WC_fnc_computezone;
-	global_zone_done = ["new", []] call OO_HASHMAP;
-	global_player_hashmap = ["new", []] call OO_HASHMAP;
-
-	_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 
 	_dogfight = ["new", []] call OO_DOGFIGHT;
 	"startPatrol" spawn _dogfight;
 
-	while { "Size" call global_zone_hashmap > 0 } do {
-		{			
-			if((side _x == west) and ((position _x) select 2 < 5)) then {
-				_sector = ["getSectorFromPos", position _x] call _grid;
-				if(["containsKey", [name _x]] call global_player_hashmap) then {
-					_bck_sector = ["Get", [name _x]] call global_player_hashmap;
-					if(format ["%1", _bck_sector] != format["%1", _sector]) then {
-						["Set", [name _x, _sector]] call global_player_hashmap;
-						_around = ["getSectorAllAround", [_sector, 3]] call _grid;
+	global_controller = ["new", []] call OO_CONTROLLER;
+	"startController" call global_controller;
 
-						{
-							if!(_x in global_sector_attack) then {
-								if(["containsKey", [_x]] call global_zone_hashmap ) then {
-									global_sector_attack = global_sector_attack + [_x];
-									_sector = ["Get", [_x]] call global_zone_hashmap ;
-									"Spawn" spawn _sector;
-								};
-							};
-							sleep 0.001;
-						}foreach _around;						
-					};
-				} else {
-					["Put", [name _x, _sector]] call global_player_hashmap;
-				};
-			};
-			sleep 0.001;
-		} foreach playableunits;
-		sleep 0.1;
-	};
-
-	end = "win";
-	["end", "all"] call BME_fnc_publicvariable;
+	//end = "win";
+	//["end", "all"] call BME_fnc_publicvariable;

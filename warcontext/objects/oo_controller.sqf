@@ -64,7 +64,10 @@
 
 		PUBLIC FUNCTION("", "setGroundPlayers") {
 			private ["_temp"];
-			_temp = MEMBER("getPlayersOfType", "B_Soldier_F");
+				
+			_temp = MEMBER("getPlayersOfType", "B_crew_F");
+			_temp = _temp + MEMBER("getPlayersOfType", "B_Soldier_F");
+
 			MEMBER("groundplayers", _temp);
 		};
 
@@ -105,7 +108,25 @@
 			_around;
 		};
 
+
 		PUBLIC FUNCTION("array", "expandSector"){
+			private ["_around", "_key", "_exist", "_position", "_sector"];
+
+			_sector = _this;
+			_exist = ["containsKey", [_key]] call MEMBER("zone_hashmap",nil);
+			if!(_exist) then {
+				_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
+				if(!surfaceIsWater _position) then {
+					_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
+					"Draw" call _sector;
+					["Put", [_key, _sector]] call MEMBER("zone_hashmap",nil);
+				};
+			} else {
+				MEMBER("expandSectorAround", _sector);
+			};
+		};
+
+		PUBLIC FUNCTION("array", "expandSectorAround"){
 			private ["_around", "_key", "_exist", "_position", "_sector"];
 
 			_sector = _this;

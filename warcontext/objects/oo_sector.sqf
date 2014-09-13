@@ -34,7 +34,7 @@
 		PRIVATE VARIABLE("code","artillery");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private["_air", "_index", "_type", "_vehicle"];
+			private["_air", "_index", "_sniper", "_type", "_vehicle"];
 
 			_index = MEMBER("index",nil);
 			if (isNil "_index") then {_index = 0;};
@@ -48,9 +48,11 @@
 			MEMBER("state", 0);
 			MEMBER("alert", false);
 
+			if(random 1 > 0.90) then { _sniper = 1; } else { _sniper = 0;};
 			if(random 1 > 0.97) then { _air = 1; } else { _air = 0; };
 			if(random 1 > 0.85) then { _vehicle = 1;} else { _vehicle = 0};
-			_type = [ (1 + round (random 1)), _vehicle, _air];
+
+			_type = [ 1, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
 
 			if(random 1 > 0.85) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
@@ -100,7 +102,7 @@
 		};
 
 		PUBLIC FUNCTION("", "popSector") {
-			private ["_array", "_marker", "_object", "_units", "_unitstype"];
+			private ["_marker", "_object", "_units", "_unitstype", "_type"];
 
 			_unitstype = MEMBER("unitstype", nil);
 			_units = [];
@@ -114,21 +116,26 @@
 				_units = _units + MEMBER("popInfantry", nil);
 				sleep 0.01;
 			};
+
+			for "_i" from 1 to (_unitstype select 2) step 1 do {
+				_units = _units + MEMBER("popSniper", nil);
+				sleep 0.01;
+			};
 										
-			for "_i" from 1 to (_unitstype select 1) step 1 do {
+			for "_i" from 1 to (_unitstype select 2) step 1 do {
 				_units = _units + MEMBER("popVehicle", nil);
 				sleep 0.01;
 			};
 		
-			for "_i" from 1 to (_unitstype select 2) step 1 do {
+			for "_i" from 1 to (_unitstype select 3) step 1 do {
 				// air pop only one time
 				MEMBER("popAir", nil);
 				sleep 0.01;
 			};
 
-			_array = [(_unitstype select 0), (_unitstype select 1), 0];
+			_type = [ 1, (_unitstype select 1), (_unitstype select 2), 0];
 
-			MEMBER("unitstype", _array);;
+			MEMBER("unitstype", _type);;
 			MEMBER("units", _units);
 		};
 
@@ -201,9 +208,7 @@
 				MEMBER("marker", nil) setmarkercolor "ColorBlue";
 				zonesuccess = true;
 				["zonesuccess", "client"] call BME_fnc_publicvariable;
-				["Put", [MEMBER("getSector",nil), [MEMBER("getThis",nil)]]] call global_zone_done;
 				MEMBER("unPopSector", nil);
-
 				_position = ["getPosFromSector", MEMBER("getSector",nil)] call _grid;
 				_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
 				["new", [_position]] spawn OO_BONUSVEHICLE;
@@ -218,12 +223,10 @@
 		};
 
 		PUBLIC FUNCTION("", "UnSpawn") {
-			global_sector_attack = global_sector_attack - [MEMBER("sector", nil)];
-			global_sector_done = global_sector_done + [MEMBER("sector", nil)];
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
 			if(MEMBER("getAlert", nil)) then { 
-				["expandSector", MEMBER("getSector", nil)] call global_controller;
+				["expandSectorAround", MEMBER("getSector", nil)] call global_controller;
 			};
 			MEMBER("setAlert", false);
 			MEMBER("state", 0);
@@ -237,10 +240,31 @@
 			_markerpos = getmarkerpos _marker;
 			_markersize = (getMarkerSize _marker) select 1;
 		
-			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_SniperTeam", "OI_ReconTeam"] call BIS_fnc_selectRandom;
+			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] call BIS_fnc_selectRandom;
 		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
 		
+			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
+		
+			{
+				_handle = [_x, _type] spawn WC_fnc_skill;
+				sleep 0.1;
+			}foreach (units _group);
+		
+			_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
+		
+			units _group;
+		};
+
+		PRIVATE FUNCTION("", "popSniper") {
+			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];
+
+			_marker	=  MEMBER("marker", nil);		
+			_markerpos = getmarkerpos _marker;
+			_markersize = (getMarkerSize _marker) select 1;
+
+			_type = "OI_SniperTeam";		
+			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
 			{

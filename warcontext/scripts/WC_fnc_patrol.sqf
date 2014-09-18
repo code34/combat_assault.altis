@@ -70,16 +70,16 @@
 	while { (count (units _group) > 0) } do {
 		_cibles = [];
 		_shadows = [];
-		_list = _position nearEntities [["Man"], 600];
+		_list = _position nearEntities [["Man", "Tank"], 600];
 		if(count _list > 0) then {
 			{
-				if((side _x in _enemyside) and (isPlayer _x)) then {
+				if(side _x in _enemyside) then {
 					if((leader _group) knowsAbout _x > 0.4) then {
 						_cibles = _cibles + [_x];
 					} else {
 						_shadows = _shadows + [_x];
 					};
-				} else {
+				} else {			
 					_list = _list - [_x];
 				};
 				sleep 0.1;
@@ -159,7 +159,7 @@
 			_wp setWaypointType (_wptype call BIS_fnc_selectRandom);
 			_wp setWaypointVisible true;
 			_wp setWaypointSpeed "LIMITED";
-			_wp setWaypointStatements ["true", "(leader _group) setvariable ['complete', true]; false"];
+			_wp setWaypointStatements ["true", "this setvariable ['complete', true]; false"];
 			_group setCurrentWaypoint _wp;
 
 			_move = true;
@@ -169,8 +169,7 @@
 			while { _move } do {
 				_counter = _counter + 1;
 				if(format["%1", (leader _group) getVariable "complete"] == "true") then {
-					_alert = true;
-					["setAlert", true] call _sector;
+					(leader _group) setvariable ['complete', false];
 					_move = false;
 				};
 				if(_counter > 29) then {
@@ -185,15 +184,13 @@
 						_round = ceil(random 3);
 						for "_x" from 0 to _round step 1 do {
 							_smokeposition = [position (leader _group), 5, random 359] call BIS_fnc_relPos;
-							_object = ["G_40mm_Smoke"] call BIS_fnc_selectRandom;
-							_smoke = createVehicle [_object, _smokeposition, [], 0, "NONE"];
+							_smoke = createVehicle ["G_40mm_Smoke", _smokeposition, [], 0, "NONE"];
 						};
 					};
 				};
 				sleep 1;
 			};
 			deletewaypoint _wp;
-			(leader _group) setvariable ['complete', false];
 		};
 		sleep 0.1;
 	};

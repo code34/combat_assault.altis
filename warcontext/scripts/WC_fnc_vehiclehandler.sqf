@@ -12,5 +12,8 @@
 			if(damage (_this select 0) > 0.9) then {
 					(_this select 0) setdamage 1;
 					(_this select 0) removeAllEventHandlers "HandleDamage";
+					{
+						_x setdamage 1;
+					}foreach (crew (_this select 0));
 			};
 		}];

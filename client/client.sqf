@@ -1,9 +1,18 @@
-		private ["_body", "_index", "_position", "_mark", "_vehicle"];
+		private ["_body", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
 
 		_body = player;
 		_vehicle = vehicle player;
 
 		_mark = ["new", position player] call OO_MARKER;
+
+		_tag = ["new", []] call OO_HUD;
+		"drawAll" spawn _tag;	
+
+		playertype = player getvariable "type";
+
+		if((playertype == "bomber") or (playertype == "fighter")) then {
+			_reload = ["new", []] call OO_RELOADPLANE;
+		};
 
 		while {true} do {
 			_index = player addEventHandler ["HandleDamage", {false}];
@@ -23,12 +32,24 @@
 			deletevehicle _body;
 			deletevehicle _vehicle;
 
-			switch (typeof player) do {
-				case "B_Soldier_F": {
+			switch (playertype) do {
+				case "soldier": {
 					[] call WC_fnc_teleport;
 				};
-				case "B_Pilot_F": {
+				case "fighter": {
 					[] call WC_fnc_teleportplane;
+					"start" spawn _reload;
+				};
+				case "bomber": {
+					[] call WC_fnc_teleportplane;
+					"start" spawn _reload;
+				};
+				case "tank": {
+					[] call WC_fnc_teleporttank;
+				};
+
+				case "tankaa": {
+					[] call WC_fnc_teleporttank;
 				};
 			};
 
@@ -42,6 +63,7 @@
 			["setSize", [0.5,0.5]] spawn _mark;
 			_body = player;
 			_vehicle = vehicle player;
+			_group = group player;
 
 			waituntil {!alive player};
 
@@ -62,6 +84,10 @@
 			["setPos", position _body] spawn _mark;
 			["setType", "mil_flag"] spawn _mark;
 			["draw", "ColorRed"] spawn _mark;
+
+			if((playertype == "bomber") or (playertype == "fighter")) then {
+				"stop" call _reload;
+			};
 
 			waituntil {alive player};
 

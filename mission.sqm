@@ -16,8 +16,8 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 0.016";
-		overviewText="By Code34";
+		briefingName="COMBAT ASSAULT 0.025";
+		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
 		startWaves=0.099999994;
@@ -39,7 +39,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=4;
+		items=10;
 		class Item0
 		{
 			side="WEST";
@@ -55,6 +55,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item1
 				{
@@ -64,6 +65,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item2
 				{
@@ -73,6 +75,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item3
 				{
@@ -82,6 +85,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item4
 				{
@@ -91,6 +95,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item5
 				{
@@ -100,6 +105,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 			};
 		};
@@ -115,9 +121,10 @@ class Mission
 					id=6;
 					side="WEST";
 					vehicle="B_Soldier_F";
-					player="PLAY CDG";
+					player="PLAYER COMMANDER";
 					leader=1;
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item1
 				{
@@ -127,6 +134,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item2
 				{
@@ -136,6 +144,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item3
 				{
@@ -145,6 +154,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item4
 				{
@@ -154,6 +164,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item5
 				{
@@ -163,6 +174,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 			};
 		};
@@ -181,6 +193,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item1
 				{
@@ -190,6 +203,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item2
 				{
@@ -199,6 +213,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item3
 				{
@@ -208,6 +223,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item4
 				{
@@ -217,6 +233,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item5
 				{
@@ -226,6 +243,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 			};
 		};
@@ -244,6 +262,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item1
 				{
@@ -253,6 +272,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item2
 				{
@@ -262,6 +282,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item3
 				{
@@ -271,6 +292,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item4
 				{
@@ -280,6 +302,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
 				};
 				class Item5
 				{
@@ -289,18 +312,183 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
+					init="this setvariable [""type"", ""soldier""];";
+				};
+			};
+		};
+		class Item4
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13564.999,13.403589,12068.586};
+					id=24;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""fighter""];";
+					description="Fighter";
+				};
+			};
+		};
+		class Item5
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13592.218,14.82205,12071.161};
+					id=25;
+					side="WEST";
+					vehicle="B_crew_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""tankaa""];";
+					description="Tank AA";
+				};
+			};
+		};
+		class Item6
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13596.087,14.054802,12067.131};
+					id=26;
+					side="WEST";
+					vehicle="B_crew_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""tank""];";
+					description="Tank";
+				};
+			};
+		};
+		class Item7
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13589.106,15.211679,12074.613};
+					id=27;
+					side="WEST";
+					vehicle="B_crew_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""tank""];";
+					description="Tank";
+				};
+			};
+		};
+		class Item8
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13571.369,12.940662,12062.887};
+					id=28;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""fighter""];";
+					description="Fighter";
+				};
+			};
+		};
+		class Item9
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13567.505,12.809404,12065.875};
+					id=29;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""bomber""];";
+					description="Bomber";
 				};
 			};
 		};
 	};
 	class Markers
 	{
-		items=1;
+		items=6;
 		class Item0
 		{
-			position[]={13552.376,16.645681,12092.436};
+			position[]={13558.62,16.108418,12100.498};
 			name="respawn_west";
 			type="Empty";
+		};
+		class Item1
+		{
+			position[]={13563.415,16.298088,12094.621};
+			name="base_lamp";
+			type="Empty";
+		};
+		class Item2
+		{
+			position[]={11529.202,22.994894,11672.126};
+			name="air1";
+			text="air1";
+			markerType="ELLIPSE";
+			type="Empty";
+			colorName="ColorBlue";
+			fillName="FDiagonal";
+			a=300;
+			b=300;
+		};
+		class Item3
+		{
+			position[]={14881.773,17.929546,16549.014};
+			name="air2";
+			text="air2";
+			markerType="ELLIPSE";
+			type="Empty";
+			colorName="ColorBlue";
+			fillName="FDiagonal";
+			a=300;
+			b=300;
+		};
+		class Item4
+		{
+			position[]={11526.13,23.053497,11649.581};
+			name="CROCODILE AIRPORT";
+			text="CROCODILE AIRPORT";
+			type="mil_pickup";
+		};
+		class Item5
+		{
+			position[]={14908.812,18.166849,16542.092};
+			name="COCONUTS AIRPORT";
+			text="COCONUTS AIRPORT";
+			type="mil_pickup";
 		};
 	};
 };

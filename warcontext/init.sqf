@@ -17,7 +17,7 @@
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 
-	WC_fnc_skill	 	= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
+	WC_fnc_setskill	 	= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
 	WC_fnc_computezone	= compile preprocessFile "warcontext\scripts\WC_fnc_computezone.sqf";
 	WC_fnc_patrol		= compile preprocessFile "warcontext\scripts\WC_fnc_patrol.sqf";
 	WC_fnc_setskill		= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
@@ -25,6 +25,7 @@
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
@@ -35,11 +36,6 @@
 
 	[] execVM "real_weather\real_weather.sqf";
 	_temp = "Land_LampDecor_F" createVehicle (getMarkerPos "base_lamp");
-
-
-	global_sector_attack = [];
-	global_sector_done = [];
-	global_new_zone = [];
 
 	onPlayerDisconnected {
 		private ["_name"];
@@ -59,7 +55,10 @@
 	"startPatrol" spawn _dogfight;
 
 	global_controller = ["new", []] call OO_CONTROLLER;
-	"startController" call global_controller;
+	"queueSector" spawn global_controller;
+	"startZone" spawn global_controller;
+	"startConvoy" spawn global_controller;
+
 
 	//end = "win";
 	//["end", "all"] call BME_fnc_publicvariable;

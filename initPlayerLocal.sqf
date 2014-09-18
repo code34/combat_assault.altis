@@ -1,11 +1,13 @@
 	// init warcontext function
 	WC_fnc_teleport = compilefinal preprocessFile "client\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\teleport_plane.sqf";
+	WC_fnc_teleporttank = compilefinal preprocessFile "client\teleport_tank.sqf";
 	WC_fnc_client = compilefinal preprocessFileLineNumbers "client\client.sqf";
 
 	call compilefinal preprocessFileLineNumbers "client\oo_marker.sqf";
-	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
-
+	call compilefinal preprocessFileLineNumbers "client\oo_hud.sqf";
+	call compilefinal preprocessFileLineNumbers "client\oo_reloadplane.sqf";
+	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";	
 
 	[] execVM "real_weather\real_weather.sqf";
 

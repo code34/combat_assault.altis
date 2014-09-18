@@ -247,7 +247,7 @@
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
 			{
-				_handle = [_x, _type] spawn WC_fnc_skill;
+				_handle = [_x, _type] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
 		
@@ -268,7 +268,7 @@
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
 			{
-				_handle = [_x, _type] spawn WC_fnc_skill;
+				_handle = [_x, _type] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
 		
@@ -307,7 +307,7 @@
 			_handle = [_group, MEMBER("position", nil), 400, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
 		
 			{
-				_handle = [_x, ""] spawn WC_fnc_skill;
+				_handle = [_x, ""] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
 		
@@ -345,7 +345,7 @@
 			"patrol" spawn _patrol;
 		
 			{
-				_handle = [_x, ""] spawn WC_fnc_skill;
+				_handle = [_x, ""] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
 		};

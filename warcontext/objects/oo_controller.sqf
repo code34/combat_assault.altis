@@ -23,6 +23,7 @@
 	CLASS("OO_CONTROLLER")
 		PRIVATE VARIABLE("array","groundplayers");
 		PRIVATE VARIABLE("array","airplayers");
+		PRIVATE VARIABLE("array","queuesector");
 		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("code","zone_hashmap");
 		PRIVATE VARIABLE("code","zonedone_hashmap");
@@ -39,6 +40,9 @@
 			MEMBER("zonedone_hashmap", _hashmap);
 			_hashmap = ["new", []] call OO_HASHMAP;
 			MEMBER("player_hashmap", _hashmap);
+
+			_array = [];
+			MEMBER("queuesector", _array);
 		};
 
 		PUBLIC FUNCTION("","getAirPlayers") FUNC_GETVAR("airplayers");
@@ -110,42 +114,43 @@
 
 
 		PUBLIC FUNCTION("array", "expandSector"){
-			private ["_around", "_key", "_exist", "_position", "_sector"];
-
-			_sector = _this;
-			_exist = ["containsKey", [_key]] call MEMBER("zone_hashmap",nil);
-			if!(_exist) then {
-				_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
-				if(!surfaceIsWater _position) then {
-					_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
-					"Draw" call _sector;
-					["Put", [_key, _sector]] call MEMBER("zone_hashmap",nil);
-				};
-			} else {
-				MEMBER("expandSectorAround", _sector);
-			};
+			private ["_queue"];
+			_queue = MEMBER("queuesector", nil) + [_this];
+			MEMBER("queuesector", _queue);
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
-			private ["_around", "_key", "_exist", "_position", "_sector"];
+			private ["_around", "_sector"];
 
 			_sector = _this;
-			_around = ["getSectorAllAround", [_sector,3]] call _grid;
+			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
+
 			{
-				_key = _x;
-				if(random 1 > 0.95) then {
-					_exist = ["containsKey", [_key]] call MEMBER("zone_hashmap",nil);
-					if!(_exist) then {
-						_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
-						if(!surfaceIsWater _position) then {
-							_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
-							"Draw" call _sector;
-							["Put", [_key, _sector]] call MEMBER("zone_hashmap",nil);
-						};
-					};
+				if(random 1 > 0.9) then {
+					MEMBER("expandSector", _x);
 				};
 				sleep 0.001;
 			}foreach _around;
+		};
+
+		PUBLIC FUNCTION("", "queueSector"){
+			private ["_queue", "_key", "_exist", "_position", "_sector"];
+			while { true } do {
+				waituntil { count MEMBER("queuesector", nil) > 0 };
+				_key = MEMBER("queuesector", nil) select 0;
+				_exist = ["containsKey", [_key]] call MEMBER("zone_hashmap",nil);
+				if!(_exist) then {
+					_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
+					if(!surfaceIsWater _position) then {
+						_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
+						"Draw" call _sector;
+						["Put", [_key, _sector]] call MEMBER("zone_hashmap",nil);
+					};
+				};
+				MEMBER("queuesector", nil) set [0, objnull]; 
+				_queue = MEMBER("queuesector", nil) - [objnull];
+				MEMBER("queuesector", _queue);
+			};
 		};
 
 		PUBLIC FUNCTION("object", "getPlayerSector") {
@@ -191,6 +196,17 @@
 			}foreach MEMBER("getNewSectorAround", nil);
 		};
 
+		PUBLIC FUNCTION("", "spawnConvoy") {
+			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
+
+			_key = ("keySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
+			_sector = ["Get", [_key]] call MEMBER("zone_hashmap",nil);	
+			_startposition = ["getPosFromSector", "getSector" call _sector] call MEMBER("grid",nil);
+	
+			_convoy = ["new", _startposition] call OO_CONVOY;
+			"startConvoy" spawn _convoy;
+		};
+
 		PUBLIC FUNCTION("", "checkVictory") {
 			private ["_victory"];
 			_victory = true;
@@ -205,7 +221,14 @@
 			_victory;
 		};
 
-		PUBLIC FUNCTION("", "startController") {
+		PUBLIC FUNCTION("", "startConvoy") {
+			while { true } do {
+				MEMBER("spawnConvoy", nil);
+				sleep 300;
+			};
+		};
+
+		PUBLIC FUNCTION("", "startZone") {
 			private ["_sector"];
 			while { true } do {
 				MEMBER("setGroundPlayers", nil);
@@ -215,6 +238,7 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("queuesector");
 			DELETE_VARIABLE("groundplayers");
 			DELETE_VARIABLE("airplayers");
 			DELETE_VARIABLE("grid");

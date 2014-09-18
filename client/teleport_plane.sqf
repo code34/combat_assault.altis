@@ -33,11 +33,33 @@
 		};
 		waitUntil{count wcteleportposition > 0};
 		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 500];
-		_array = [_newposition, 0, "B_Plane_CAS_01_F", west] call bis_fnc_spawnvehicle;
+
+		if(playertype == "bomber") then {
+			_array = [_newposition, 0, "B_Plane_CAS_01_F", west] call bis_fnc_spawnvehicle;
+		};
+
+		if(playertype == "fighter") then {
+			_array = [_newposition, 0, "I_Plane_Fighter_03_AA_F", west] call bis_fnc_spawnvehicle;
+		};
+		_vehicle = _array select 0;
+
+		_vehicle removeAllEventHandlers "HandleDamage";
+		_vehicle addeventhandler ['HandleDamage', {
+			if(damage (_this select 0) > 0.9) then {
+					(_this select 0) setdamage 1;
+					(_this select 0) removeAllEventHandlers "HandleDamage";
+					{
+						_x setdamage 1;
+					}foreach (crew (_this select 0));
+			};
+		}];
+
 		{
 			_x setdammage 1;
 			deletevehicle _x;
 		}foreach units (_array select 2);
+		deletegroup (_array select 2);
+
 		player moveindriver (_array select 0);
 		onMapSingleClick "";
 	};

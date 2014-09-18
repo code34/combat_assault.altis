@@ -47,7 +47,7 @@
 	_timesync = 60;
 
 	// Mission starting date is 25/09/2013 at 12:00
-	_startingdate = [2014, 10, 26, 12, 00];
+	_startingdate = [2014, 10, 26, 8, 00];
 
 	// Mission starting weather "CLEAR|CLOUDY|RAIN";
 	_startingweather = "CLEAR";
@@ -117,6 +117,9 @@
 
 			while {true} do {
 				skiptime _skiptime;
+				if((date select 3 > 20) and (date select 3 <6)) then {
+					skiptime _skiptime;
+				};
 				sleep 10;
 			};
 		};

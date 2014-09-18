@@ -22,6 +22,8 @@
 
 	CLASS("OO_DOGFIGHT")
 		PRIVATE VARIABLE("array","squadron");
+		PRIVATE VARIABLE("array","airtargets");
+		PRIVATE VARIABLE("array","groundtargets");
 		PRIVATE VARIABLE("array","targets");
 		PRIVATE VARIABLE("array","target");
 		PRIVATE VARIABLE("bool","patrol");
@@ -32,6 +34,8 @@
 			_array = [];
 			MEMBER("patrol", false);
 			MEMBER("squadron", _array);
+			MEMBER("airtargets", _array);
+			MEMBER("groundtargets", _array);
 			MEMBER("targets", _array);
 			MEMBER("target", _array);
 			MEMBER("squadronsize", 0);
@@ -50,13 +54,15 @@
 					sleep 10;	
 					MEMBER("unpopMember", _vehicle);
 				};
+				sleep 0.001;
 			}foreach MEMBER("squadron", nil);
 		};
 
 		PUBLIC FUNCTION("", "setSquadronSize") {
-			private ["_multiplicator", "_size"];
-			_multiplicator = count MEMBER("targets", nil);
-			_size = 3 * _multiplicator;
+			private ["_ground", "_air", "_size"];
+			_ground = count MEMBER("groundtargets", nil);
+			_air = count MEMBER("airtargets", nil);
+			_size = _ground + (3 * _air);
 			MEMBER("squadronsize", _size);		
 		};
 
@@ -92,6 +98,7 @@
 						_score = score _x;
 						_target = [_x];
 					};
+					sleep 0.001;
 				} foreach MEMBER("targets", nil);
 			} else {
 				_target = [];
@@ -108,34 +115,53 @@
 					_vehicle = _x select 0;
 					_vehicle domove (position _target);
 					_vehicle dotarget _target;
+					sleep 0.001;
 				}foreach MEMBER("squadron", nil);
 			};
 		};
 
 		PUBLIC FUNCTION("", "setFuel") {
-			private ["_setFuel"];
+			private ["_fuel", "_vehicle"];
 			{
 				_vehicle = _x select 0;
-				_vehicle setfuel ((fuel _vehicle) - 0.05);
+				_fuel = fuel _vehicle;
+				if(speed _vehicle > 200) then {
+					_vehicle setfuel (_fuel - 0.001);
+				};
+				if(speed _vehicle > 350) then {
+					_vehicle setfuel (_fuel - 0.002);
+				};
+				if(speed _vehicle > 500) then {
+					_vehicle setfuel (_fuel - 0.005);
+				};
+				if(speed _vehicle > 600) then {
+					_vehicle setfuel (_fuel - 0.007);
+				};
 				sleep 0.001;
 			}foreach MEMBER("squadron", nil);
 		};
 
 		PUBLIC FUNCTION("", "detectTargets") {
-			private ["_array"];
+			private ["_groundtargets", "_airtargets"];
 
-			_array = [];
+			_groundtargets = [];
+			_airtargets = [];
 			{
-				if(typeof _x == "B_Pilot_F") then {
-					if((getposatl _x) select 2 > 10) then {
-						_array = _array + [_x];
+				if((vehicle _x != _x) and (alive _x)) then {
+					if(typeof _x == "B_Pilot_F") then {
+						if((getposatl _x) select 2 > 10) then {
+							_airtargets = _airtargets + [_x];
+						};
+					};
+					if(typeof _x == "B_crew_F") then {
+						_groundtargets = _groundtargets + [_x];
 					};
 				};
-				if(typeof _x == "B_crew_F") then {
-					_array = _array + [_x];
-				};
+				sleep 0.001;
 			}foreach playableunits;
-			MEMBER("targets", _array);
+			MEMBER("airtargets", _airtargets);
+			MEMBER("groundtargets", _groundtargets);
+			MEMBER("targets", _airtargets + _groundtargets);
 		};
 
 		PUBLIC FUNCTION("", "popMember") {
@@ -178,6 +204,7 @@
 					_squad set [_counter, -1];
 				};
 				_counter = _counter + 1;
+				sleep 0.001;
 			}foreach _squad;
 			_squad = _squad - [-1];
 			MEMBER("squadron", _squad);
@@ -196,11 +223,14 @@
 		PUBLIC FUNCTION("", "unpopSquadron") {
 			{
 				MEMBER("unpopMember", _x select 0);
+				sleep 0.001;
 			}foreach MEMBER("squadron", nil);
 		};
 
 		
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("airtargets");
+			DELETE_VARIABLE("groundtargets");
 			DELETE_VARIABLE("patrol");
 			DELETE_VARIABLE("squadron");
 			DELETE_VARIABLE("targets");

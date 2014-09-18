@@ -1,7 +1,7 @@
 Author = "Code34";
 onLoadName = "COMBAT ASSAULT";
 loadScreen = "combatassault.jpg";
-OnLoadMission = "COMBAT ASSAULT by Code34";
+OnLoadMission = "COMBAT ASSAULT - www.combat-assault.eu";
 onLoadMissionTime = 1;
 Respawn = "BASE";
 RespawnDelay = 10;

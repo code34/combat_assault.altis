@@ -9,7 +9,7 @@
 
 		_vehicle removeAllEventHandlers "HandleDamage";
 		_vehicle addeventhandler ['HandleDamage', {
-			if(damage (_this select 0) > 0.9) then {
+			if(getdammage (_this select 0) > 0.9) then {
 					(_this select 0) setdamage 1;
 					(_this select 0) removeAllEventHandlers "HandleDamage";
 					{

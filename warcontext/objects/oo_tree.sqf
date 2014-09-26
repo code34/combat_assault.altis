@@ -125,10 +125,18 @@
 			}foreach _array;
 		};
 
-		PUBLIC FUNCTION("", "parse") {
+		PUBLIC FUNCTION("", "entrySet") {
 			_node = MEMBER("root", nil);
+			"parseChildEntrySet" call _node;
+		};
 
-			"getChilds" call _node;
+		PUBLIC FUNCTION("", "keySet") {
+			_node = MEMBER("root", nil);
+			"parseChildKeySet" call _node;
+		};
+
+		PUBLIC FUNCTION("", "size") {
+			count MEMBER("entrySet", nil);
 		};
 
 

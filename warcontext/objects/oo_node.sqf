@@ -59,6 +59,32 @@
 			_return;
 		};
 
+		PUBLIC FUNCTION("", "parseChildKeySet") {
+			private ["_array", "_value"];
+			_array = [];
+			{
+				_array = _array + ("parseChildKeySet" call (_x select 1));
+				_value = "getCurrent" call (_x select 1);
+				if(_value > 0) then {
+					_array = _array + [_value];
+				};
+			}foreach MEMBER("childrens", nil);
+			_array;
+		};
+
+		PUBLIC FUNCTION("", "parseChildEntrySet") {
+			private ["_array", "_value"];
+			_array = [];
+			{
+				_array = _array + ("parseChildEntrySet" call (_x select 1));
+				_value = "getValue" call (_x select 1);
+				if(count _value > 0) then {
+					_array = _array + _value;
+				};
+			}foreach MEMBER("childrens", nil);
+			_array;
+		};
+
 		PUBLIC FUNCTION("", "getChild") {
 			private ["_return"];
 			if(count MEMBER("childrens", nil) == 0) then { 

@@ -1,4 +1,4 @@
-		private ["_body", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
+		private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
 
 		_body = player;
 		_vehicle = vehicle player;
@@ -35,21 +35,26 @@
 			switch (playertype) do {
 				case "soldier": {
 					[] call WC_fnc_teleport;
+					_icon =	"mil_arrow";
 				};
 				case "fighter": {
 					[] call WC_fnc_teleportplane;
 					"start" spawn _reload;
+					_icon = "b_plane";
 				};
 				case "bomber": {
 					[] call WC_fnc_teleportplane;
 					"start" spawn _reload;
+					_icon = "b_plane";
 				};
 				case "tank": {
 					[] call WC_fnc_teleporttank;
+					_icon = "b_armor";
 				};
 
 				case "tankaa": {
 					[] call WC_fnc_teleporttank;
+					_icon = "b_armor";
 				};
 			};
 
@@ -59,7 +64,7 @@
 			["attachTo", player] spawn _mark;
 			["setText", name player] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
-			["setType", "mil_arrow"] spawn _mark;
+			["setType", _icon] spawn _mark;
 			["setSize", [0.5,0.5]] spawn _mark;
 			_body = player;
 			_vehicle = vehicle player;

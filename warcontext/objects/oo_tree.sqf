@@ -1,0 +1,138 @@
+﻿	/*
+	Author: code34 nicolas_boiteux@yahoo.fr
+	Copyright (C) 2014 Nicolas BOITEUX
+
+	CLASS OO_TREE
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+	*/
+
+	#include "oop.h"
+
+	CLASS("OO_TREE")
+
+		PRIVATE VARIABLE("code","root");
+
+		PUBLIC FUNCTION("array","constructor") {
+			_root = ["new", [0,0]] call OO_NODE;
+			MEMBER("root", _root);
+		};
+
+		PUBLIC FUNCTION("","getRoot") FUNC_GETVAR("root");
+
+		PUBLIC FUNCTION("string", "searchKey") {
+			private ["_node", "_scalars", "_counter", "_length"];
+
+			_scalars = toArray (_this);
+			_node = MEMBER("root", nil);
+
+			{
+				scopeName "oo_tree_searchkey";
+				_node = ["nextChild", _x ] call _node;
+				if(typename _node == "SCALAR") then {
+					_node = MEMBER("root", nil); 
+					breakout "oo_tree_searchkey";
+				};
+			}foreach _scalars;
+			_node;
+		};
+
+		PUBLIC FUNCTION("array", "put") {
+			private ["_key", "_value", "_node", "_scalars", "_counter", "_length", "_scalar"];
+
+			_key = _this select 0;
+			_value = _this select 1;
+
+			_scalars = toArray (_key);
+			_node = MEMBER("root", nil);
+			_counter = 0;
+			_length = count _scalars;
+
+			while { _counter < _length } do {		
+				scopeName "oo_tree_put";
+				_scalar = _scalars select _counter;
+				if(typename (["nextChild", _scalar ] call _node) == "SCALAR") then {
+					breakout "oo_tree_put";
+				} else {
+					_node = ["nextChild", _scalar ] call _node;
+					_counter = _counter + 1;
+				};
+			};
+
+			while { _counter < _length } do {
+				_scalar = _scalars select _counter;
+				_node = ["addChild", _scalar] call _node;
+				_counter = _counter + 1;
+			};
+
+			["setValue", [_value]] call _node;
+		};
+
+		PUBLIC FUNCTION("string", "get") {
+			private ["_key", "_node"];
+			_key = _this;
+			_node = MEMBER("searchKey", _key);
+			("getValue" call _node) select 0;
+		};
+
+		PUBLIC FUNCTION("string", "remove") {
+			private ["_scalar", "_node", "_scalars", "_counter", "_length", "_array", "_remove"];
+
+			_scalars = toArray (_this);
+			_node = MEMBER("root", nil);
+			_array = [_node];
+
+			{
+				_node = ["nextChild", _x ] call _node;
+				_array = [_node] + _array ;
+			}foreach _scalars;
+
+			["setValue", []] call (_array select 0);
+			
+			// si le noeud n'a pas d enfant
+			// si le noeud n'a pas de valeur
+			// recuperer le scalar du noeud courant
+			// remonter au pere
+			// supprimer le fils avec le scalar
+			// retirer la reference du fils
+
+			_remove = false;
+			{
+				if(_remove) then {
+					["removeChild", _scalar] call _x;
+					_remove = false;
+				};
+				if(count ("getChildrens" call _x) == 0) then {
+					if(count ("getValue" call _x) == 0) then {
+						_scalar = "getCurrent" call _x;
+						if(_scalar > 0) then {
+							["delete", _x] call OO_NODE;
+							_remove = true;
+						};
+					};
+				};
+			}foreach _array;
+		};
+
+		PUBLIC FUNCTION("", "parse") {
+			_node = MEMBER("root", nil);
+
+			"getChilds" call _node;
+		};
+
+
+		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("root");
+		};
+	ENDCLASS;

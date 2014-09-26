@@ -31,8 +31,10 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_tree.sqf";
 
 	[] execVM "real_weather\real_weather.sqf";
 	_temp = "Land_LampDecor_F" createVehicle (getMarkerPos "base_lamp");

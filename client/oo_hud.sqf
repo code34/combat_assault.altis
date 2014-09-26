@@ -1,0 +1,60 @@
+﻿	/*
+	Author: code34 nicolas_boiteux@yahoo.fr
+	Copyright (C) 2014 Nicolas BOITEUX
+
+	CLASS OO_PLAYERTAG
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+	*/
+
+	#include "oop.h"
+
+	CLASS("OO_HUD")
+		PRIVATE VARIABLE("bool","playertag");
+
+		PUBLIC FUNCTION("array","constructor") {
+			MEMBER("playertag", true);			
+		};
+
+		PUBLIC FUNCTION("", "setPlayerTag") {
+			MEMBER("playertag", true);
+		};
+
+		PUBLIC FUNCTION("", "drawPlayerTag") {
+			private ["_code"];
+	
+			_code = "
+					{	_vehicle = _x;
+						_distance = (player distance _vehicle) / 15;
+						_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
+						_color set [3, 1 - _distance];
+						 drawIcon3D [ '', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 2 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
+					}foreach playableunits - [player];
+			";
+			_code;
+		};
+
+		PUBLIC FUNCTION("", "drawAll") {
+			private ["_code"];
+			_code = "";
+			if(MEMBER("playertag", nil)) then {
+				_code = _code + MEMBER("drawPlayerTag", nil);
+			};
+			call compile format["onEachFrame {%1};", _code];
+		};
+
+		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("playertag", nil);
+		};
+	ENDCLASS;

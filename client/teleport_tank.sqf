@@ -28,8 +28,8 @@
 		wcteleport = [];
 		wcteleportposition = [];
 		onMapSingleClick {
-			wcteleport = [name player, _pos];
-			["wcteleport", "server"] call BME_fnc_publicvariable;
+			wcteleporttank = [name player, _pos];
+			["wcteleporttank", "server"] call BME_fnc_publicvariable;
 		};
 		waitUntil{count wcteleportposition > 0};
 		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 0];

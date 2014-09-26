@@ -178,7 +178,7 @@
 			["attachTo", _vehicle] spawn _mark;
 			["setText", "Mig"] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
-			["setType", "mil_arrow"] spawn _mark;
+			["setType", "o_plane"] spawn _mark;
 			["setSize", [0.5,0.5]] spawn _mark;
 
 			_squad = MEMBER("squadron", nil);

@@ -26,7 +26,6 @@
 		PRIVATE VARIABLE("array","queuesector");
 		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("code","zone_hashmap");
-		PRIVATE VARIABLE("code","zonedone_hashmap");
 		PRIVATE VARIABLE("code","player_hashmap");
 
 		PUBLIC FUNCTION("array","constructor") {
@@ -34,10 +33,8 @@
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
 
-			_hashmap = ["new", []] call OO_HASHMAP;
 			MEMBER("zone_hashmap", global_zone_hashmap);
-			_hashmap = ["new", []] call OO_HASHMAP;
-			MEMBER("zonedone_hashmap", _hashmap);
+
 			_hashmap = ["new", []] call OO_HASHMAP;
 			MEMBER("player_hashmap", _hashmap);
 
@@ -134,17 +131,17 @@
 		};
 
 		PUBLIC FUNCTION("", "queueSector"){
-			private ["_queue", "_key", "_exist", "_position", "_sector"];
+			private ["_queue", "_key", "_position", "_sector"];
 			while { true } do {
 				waituntil { count MEMBER("queuesector", nil) > 0 };
 				_key = MEMBER("queuesector", nil) select 0;
-				_exist = ["containsKey", [_key]] call MEMBER("zone_hashmap",nil);
-				if!(_exist) then {
+				_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
+				if(isnil "_sector") then {
 					_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
 					if(!surfaceIsWater _position) then {
 						_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
 						"Draw" call _sector;
-						["Put", [_key, _sector]] call MEMBER("zone_hashmap",nil);
+						["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
 					};
 				};
 				MEMBER("queuesector", nil) set [0, objnull]; 
@@ -186,8 +183,8 @@
 		PUBLIC FUNCTION("", "spawnSector") {
 			private ["_sector"];
 			{
-				if(["containsKey", [_x]] call MEMBER("zone_hashmap",nil)) then {
-					_sector = ["Get", [_x]] call MEMBER("zone_hashmap",nil);
+				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				if!(isnil "_sector") then {
 					if("getState" call _sector == 0) then { 
 						"Spawn" spawn _sector;
 					};
@@ -199,8 +196,7 @@
 		PUBLIC FUNCTION("", "spawnConvoy") {
 			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
 
-			_key = ("keySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
-			_sector = ["Get", [_key]] call MEMBER("zone_hashmap",nil);	
+			_sector = ("entrySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
 			_startposition = ["getPosFromSector", "getSector" call _sector] call MEMBER("grid",nil);
 	
 			_convoy = ["new", _startposition] call OO_CONVOY;
@@ -243,7 +239,6 @@
 			DELETE_VARIABLE("airplayers");
 			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("zone_hashmap");
-			DELETE_VARIABLE("zonedone_hashmap");
 			DELETE_VARIABLE("player_hashmap");
 		};
 	ENDCLASS;

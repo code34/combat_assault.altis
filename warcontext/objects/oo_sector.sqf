@@ -69,7 +69,7 @@
 		PUBLIC FUNCTION("", "getThis") {
 			private ["_key", "_sector"];
 			_key = MEMBER("sector", nil);
-			_sector = ["Get", [_key]] call global_zone_hashmap ;
+			_sector = ["Get", str(_key)] call global_zone_hashmap;
 			_sector;
 		};
 

@@ -116,17 +116,34 @@
 			MEMBER("queuesector", _queue);
 		};
 
+		PUBLIC FUNCTION("array", "canExpandToSector"){
+			private ["_key", "_sector", "_cost", "_costmin", "_grid"];
+
+			_key = _this;
+			_grid = MEMBER("grid", nil);
+
+			_costmin = 4;
+			{
+				_sector = ["getSectorFromPos", position _x] call _grid;
+				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;
+				if(_cost < _costmin) then {_costmin = _cost;};
+				sleep 0.0001;
+			}foreach MEMBER("groundplayers", nil);
+			if(_costmin >3) then {true;} else {false;};
+		};
+
 		PUBLIC FUNCTION("array", "expandSectorAround"){
-			private ["_around", "_sector"];
+			private ["_around", "_sector", "_player_sector", "_cost", "_costmin"];
 
 			_sector = _this;
 			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
 
 			{
+				_sector = _x;
 				if(random 1 > 0.9) then {
-					MEMBER("expandSector", _x);
+					MEMBER("expandSector", _sector);
 				};
-				sleep 0.001;
+				sleep 0.0001;
 			}foreach _around;
 		};
 
@@ -139,9 +156,11 @@
 				if(isnil "_sector") then {
 					_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
 					if(!surfaceIsWater _position) then {
-						_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
-						"Draw" call _sector;
-						["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
+						if(MEMBER("canExpandToSector", _key)) then {
+							_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
+							"Draw" call _sector;
+							["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
+						};
 					};
 				};
 				MEMBER("queuesector", nil) set [0, objnull]; 

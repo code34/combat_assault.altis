@@ -151,7 +151,7 @@
 			if(MEMBER("airport",nil) == "air1") then { _name = "CROCODILE";};
 			if(MEMBER("airport",nil) == "air2") then { _name = "COCONUTS";};
 	
-			_txt =  "MESSAGE FROM: "+ _name + " Air Traffic Control<br />";
+			_txt =  "<t color='#ff0000'>MESSAGE FROM: "+ _name + " Air Traffic Control</t><br />";
 			_txt2 = "Vehicule Refuel ! Good luck !<br />";
 			hint parseText (_txt + _txt2); 
 		};

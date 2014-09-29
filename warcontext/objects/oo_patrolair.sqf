@@ -46,20 +46,19 @@
 		PUBLIC FUNCTION("","getAround") FUNC_GETVAR("around");
 		PUBLIC FUNCTION("","getUnderAlert") FUNC_GETVAR("underalert");
 
-
 		PUBLIC FUNCTION("", "patrol") {
 			private ["_group"];
 			_group = MEMBER("group", nil);
 			while { count (units _group) > 0 } do {
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
-				MEMBER("revealTarget", nil);
 				MEMBER("moveToNext", nil);
 				sleep 0.1;
 			};
 			MEMBER("deconstructor", nil);
 		};
 
+		// get all sector around the base sector
 		PUBLIC FUNCTION("", "getSectorAround") {
 			private ["_around", "_sector"];
 			_sector = "getSector" call MEMBER("sector", nil);
@@ -67,6 +66,8 @@
 			MEMBER("around", _around);
 		};
 
+		// retrieve all sectors around under Alert state
+		// if none return empty array
 		PUBLIC FUNCTION("", "getSectorUnderAlert") {
 			private ["_around", "_sectors", "_nextsector"];
 			_sectors = [];
@@ -82,6 +83,7 @@
 			MEMBER("underalert", _sectors);
 		};
 
+		// movetoNext target position
 		PUBLIC FUNCTION("", "moveToNext") {
 			private ["_group", "_vehicle", "_wp"];
 
@@ -104,7 +106,8 @@
 			private ["_nextsector", "_position"];
 
 			if(count MEMBER("underalert", nil) > 0) then {
-				_nextsector = "getSector" call (MEMBER("underalert", nil) call BIS_fnc_selectRandom);
+				_nextsector = ("getSector" call MEMBER("underalert", nil)) call BIS_fnc_selectRandom;
+				MEMBER("revealTarget", nil);
 			} else {
 				_nextsector = MEMBER("around", nil) call BIS_fnc_selectRandom;
 			};
@@ -115,7 +118,7 @@
 		PUBLIC FUNCTION("", "revealTarget") {
 			private ["_list"];	
 
-			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man"], 400];
+			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man", "Tank"], 400];
 			{
 				leader MEMBER("group", nil) reveal [_x, 4];
 				sleep 0.01;
@@ -128,7 +131,6 @@
 			MEMBER("group", nil) setSpeedMode "FULL";
 		};		
 
-
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("around");
 			DELETE_VARIABLE("vehicle");
@@ -136,5 +138,6 @@
 			DELETE_VARIABLE("sector");
 			DELETE_VARIABLE("underalert");
 			DELETE_VARIABLE("target");
+			DELETE_VARIABLE("grid");		
 		};
 	ENDCLASS;

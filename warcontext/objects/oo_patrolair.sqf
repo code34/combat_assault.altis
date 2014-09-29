@@ -28,14 +28,15 @@
 		PRIVATE VARIABLE("array","underalert");
 		PRIVATE VARIABLE("code", "grid");
 		PRIVATE VARIABLE("array", "target");
+		PRIVATE VARIABLE("code", "marker");
 			
-
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("vehicle", _this select 0);
 			MEMBER("group", _this select 1);
 			MEMBER("sector", _this select 2);
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
+			MEMBER("setMarker", nil);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setCombatMode", nil);
 		};
@@ -56,6 +57,19 @@
 				sleep 0.1;
 			};
 			MEMBER("deconstructor", nil);
+		};
+
+		PUBLIC FUNCTION("", "setMarker") {
+			private ["_vehicle", "_mark"];
+			_vehicle = MEMBER("vehicle", nil);
+			_mark = ["new", position _vehicle] call OO_MARKER;
+			["attachTo", _vehicle] spawn _mark;
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			["setText", _name] spawn _mark;
+			["setColor", "ColorRed"] spawn _mark;
+			["setType", "o_plane"] spawn _mark;
+			["setSize", [0.8,0.8]] spawn _mark;
+			MEMBER("marker", _mark);
 		};
 
 		// get all sector around the base sector
@@ -132,6 +146,8 @@
 		};		
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			["delete", MEMBER("marker", nil)] call OO_MARKER;
+			DELETE_VARIABLE("marker");
 			DELETE_VARIABLE("around");
 			DELETE_VARIABLE("vehicle");
 			DELETE_VARIABLE("group");

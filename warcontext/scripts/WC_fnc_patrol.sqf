@@ -14,6 +14,7 @@
 		"_formationtype",
 		"_group", 
 		"_grid",
+		"_key",
 		"_list",
 		"_move",
 		"_newposition",
@@ -112,8 +113,9 @@
 				};
 
 				if(random 1 > 0.95) then {
-					_sector = ["getSectorFromPos", position _cible] call _grid;
-					if(["containsKey", [_sector]] call global_zone_hashmap ) then {
+					_key = ["getSectorFromPos", position _cible] call _grid;
+					_sector = ["Get", str(_key)] call global_zone_hashmap;
+					if(!isnil "_sector") then {
 						["setSuppression", true] call _artillery;
 					} else {
 						["setSuppression", false] call _artillery;

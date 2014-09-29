@@ -6,6 +6,7 @@
 
 	private [
 		"_around",
+		"_end",
 		"_key",
 		"_globalindex",
 		"_position",
@@ -24,6 +25,7 @@
 	WC_fnc_vehiclehandler	= compile preprocessFile "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
@@ -32,6 +34,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_tree.sqf";
@@ -61,6 +64,14 @@
 	"startZone" spawn global_controller;
 	"startConvoy" spawn global_controller;
 
+	// check all sector for victory
+	_end = false;
+	while { !_end} do {
+		if("checkVictory" call global_controller) then {
+			_end = true;	
+		};
+		sleep 60;
+	};
 
-	//end = "win";
-	//["end", "all"] call BME_fnc_publicvariable;
+	end = "win";
+	["end", "all"] call BME_fnc_publicvariable;

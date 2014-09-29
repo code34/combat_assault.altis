@@ -54,7 +54,7 @@
 	};
 
 	BME_netcode_end = {
-		_end = _this;
+		_end = _this select 0;
 		if(_end == "win") then {
 			["end1",false,2] call BIS_fnc_endMission;
 		} else {

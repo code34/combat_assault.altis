@@ -65,6 +65,12 @@
 				};
 			}];
 
+			_vehicle addeventhandler ['Hit', {
+				if(_this select 2 > 0.30) then {
+					(_this select 0) setdamage (getdammage (_this select 0) + random (1));
+				};
+			}];
+
 			MEMBER("target", _vehicle);
 			MEMBER("vehicle", _vehicle);
 			MEMBER("ammo", "32Rnd_155mm_Mo_shells");

@@ -63,8 +63,11 @@
 
 		_around = ["getSectorAround", _sector] call _grid;
 		{
-			if(["containsKey", [_x]] call global_zone_hashmap ) then {
-				_result = [0,0];
+			_sector = ["Get", str(_x)] call global_zone_hashmap;
+			if(!isnil "_sector") then {
+				if("getState" call _sector < 2) then {
+					_result = [0,0];
+				};
 			};
 		}foreach _around;
 		wcteleportack = _result;
@@ -107,8 +110,11 @@
 
 		_around = ["getSectorAllAround", [_sector, 3]] call _grid;
 		{
-			if(["containsKey", [_x]] call global_zone_hashmap ) then {
-				_result = [0,0];
+			_sector = ["Get", str(_x)] call global_zone_hashmap;
+			if(!isnil "_sector") then {
+				if("getState" call _sector < 2) then {
+					_result = [0,0];
+				};
 			};
 		}foreach _around;
 		wcteleportack = _result;

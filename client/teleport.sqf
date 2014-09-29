@@ -35,3 +35,5 @@
 		player setpos wcteleportposition;
 		onMapSingleClick "";
 	};
+
+	hintSilent "";

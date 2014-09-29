@@ -63,3 +63,5 @@
 		player moveindriver (_array select 0);
 		onMapSingleClick "";
 	};
+	
+	hintSilent "";

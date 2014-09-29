@@ -52,8 +52,16 @@
 					}foreach (crew (_this select 0));
 			};
 		}];
+
+		_vehicle addeventhandler ['Hit', {
+			if(_this select 2 > 0.30) then {
+				(_this select 0) setdamage (getdammage (_this select 0) + random (1));
+			};
+		}];
 		
 		player moveIndriver _vehicle;
 		
 		onMapSingleClick "";
 	};
+
+	hintSilent "";

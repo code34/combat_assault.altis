@@ -54,7 +54,7 @@
 
 			_type = [ 1, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
-
+			
 			if(random 1 > 0.85) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
 		};
 
@@ -77,7 +77,17 @@
 			MEMBER("state", _this);
 		};
 
-		PUBLIC FUNCTION("", "isArtillery") FUNC_GETVAR("artilleryactive");
+		PUBLIC FUNCTION("", "isArtillery") {
+			private ["_artillery", "_result"];
+			_result = false;
+			if(MEMBER("artilleryactive", nil)) then {
+				_artillery = "getVehicle" call MEMBER("artillery", nil);
+				if!(isnil "_artillery") then {
+					if(getdammage _artillery < 0.9) then { _result = true; } else { _result = false; };
+				};
+			};
+			_result;
+		};
 
 		PUBLIC FUNCTION("", "popArtillery") {
 			private ["_position", "_artillery"];
@@ -108,7 +118,7 @@
 			_units = [];
 			_object = MEMBER("getThis", nil);
 
-			if(MEMBER("isArtillery", nil)) then {
+			if(MEMBER("artilleryactive", nil)) then {
 				MEMBER("popArtillery", nil);
 			};
 
@@ -157,7 +167,7 @@
 				sleep 0.01;
 			}foreach _group;
 
-			if(MEMBER("isArtillery", nil)) then {
+			if(MEMBER("artilleryactive", nil)) then {
 				["delete", MEMBER("artillery", nil)] call OO_ARTILLERY;
 			};
 
@@ -206,13 +216,13 @@
 			};
 			if(_units == 0) then {
 				MEMBER("marker", nil) setmarkercolor "ColorBlue";
+				MEMBER("state", 2);
 				zonesuccess = true;
 				["zonesuccess", "client"] call BME_fnc_publicvariable;
 				MEMBER("unPopSector", nil);
 				_position = ["getPosFromSector", MEMBER("getSector",nil)] call _grid;
 				_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
 				["new", [_position]] spawn OO_BONUSVEHICLE;
-				MEMBER("state", 2);
 			} else {
 				MEMBER("UnSpawn", nil);
 			};
@@ -251,8 +261,11 @@
 				sleep 0.1;
 			}foreach (units _group);
 		
-			_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
-		
+			//_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
+			
+			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
+			"patrol" spawn _patrol;
+
 			units _group;
 		};
 
@@ -328,15 +341,6 @@
 			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;
-
-			_mark = ["new", position _vehicle] call OO_MARKER;
-			["attachTo", _vehicle] spawn _mark;
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
-			["setText", _name] spawn _mark;
-			["setColor", "ColorRed"] spawn _mark;
-			["setType", "mil_arrow"] spawn _mark;
-			["setSize", [0.8,0.8]] spawn _mark;
-
 			_group = _array select 2;
 			_vehicle setVehicleLock "LOCKED";
 

@@ -51,7 +51,7 @@
 			if(MEMBER("playertag", nil)) then {
 				_code = _code + MEMBER("drawPlayerTag", nil);
 			};
-			call compile format["onEachFrame {%1};", _code];
+			call compile format["addMissionEventHandler ['Draw3D', {%1}];", _code];
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

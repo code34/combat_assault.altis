@@ -45,6 +45,14 @@
 			_code;
 		};
 
+		PUBLIC FUNCTION("array", "hint") {
+			_title = _this select 0;
+			_text = _this select 1;
+
+			_title=  "<t color='#ff0000'>"+ _title + "</t><br />";
+			hint parseText (_title + _text); 			
+		};
+
 		PUBLIC FUNCTION("", "drawAll") {
 			private ["_code"];
 			_code = "";

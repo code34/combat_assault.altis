@@ -3,10 +3,8 @@
 	// WARCONTEXT - Simple Seek & destroy patrol script
 
 	private [
-		"_artillery",
 		"_areasize",
 		"_alert",
-		"_canartillery",
 		"_cible", 
 		"_cibles", 
 		"_shadows",
@@ -22,10 +20,7 @@
 		"_originalsize",
 		"_object",
 		"_enemyside",
-		"_round",
-		"_smokeposition", 
 		"_sector",
-		"_support",
 		"_wp",
 		"_wptype"
 	];
@@ -35,37 +30,10 @@
 	_areasize = _this select 2;
 	_sector = _this select 3;
 
-	if("isArtillery" call _sector) then {
-		_artillery = "getArtillery" call _sector;
-		_canartillery = true;
-		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-	} else {
-		_canartillery = false;
-	};
-
 	_newposition = [];
-
-	if (isnil "_areasize") exitwith {
-		hintc "WARCONTEXT: patrolscript: areasize parameter is not set";
-	};
-
-	// artillery support
 	(leader _group) setvariable ['support', []];
 
-	switch (side (leader _group)) do {
-		case west: {
-			_enemyside = [east];
-		};
-
-		case east: {
-			_enemyside = [west];
-		};
-
-		default {
-			_enemyside = [west];
-		};
-	};
-
+	_enemyside = [west];
 	_alert = false;
 
 	while { (count (units _group) > 0) } do {
@@ -87,7 +55,7 @@
 			}foreach _list;
 			if(count _cibles > 0) then {
 				_alert = true;
-				["setAlert", true] call _sector;
+				["setAlertAround", true] call _sector;
 			} else {
 				_alert = false;
 			};
@@ -103,35 +71,9 @@
 				_cible = (_shadows call BIS_fnc_selectRandom);
 			};
 
-			if(_canartillery) then {
-				_support = (leader _group) getVariable "support";
-				if(count _support > 0) then {
-					["setTarget", (_support select 0)] call _artillery;
-					"autoSetAmmo" call _artillery;
-					"doFire" call _artillery;
-					(leader _group) setvariable ['support', []];
-				};
 
-				if(random 1 > 0.95) then {
-					_key = ["getSectorFromPos", position _cible] call _grid;
-					_sector = ["Get", str(_key)] call global_zone_hashmap;
-					if(!isnil "_sector") then {
-						["setSuppression", true] call _artillery;
-					} else {
-						["setSuppression", false] call _artillery;
-					};
-					["setTarget", _cible] call _artillery;
-					"autoSetAmmo" call _artillery;
-					"doFire" call _artillery;
-				};
-			};
+			_newposition = [position _cible, (25 + random (_areasize)), random 359] call BIS_fnc_relPos;
 
-			if(vehicle (leader _group) != leader _group) then {
-				_newposition = [position _cible, random (_areasize), random 359] call BIS_fnc_relPos;
-			} else {
-				_newposition = position _cible;
-			};
-	
 			_wp = _group addWaypoint [_newposition, 25];
 			_wp setWaypointPosition [_newposition, 25];
 			_wp setWaypointType "MOVE";
@@ -181,14 +123,6 @@
 					_move = false;
 					_alert = true;
 					["setAlert", true] call _sector;
-
-					if(random 1 > 0.97) then {
-						_round = ceil(random 3);
-						for "_x" from 0 to _round step 1 do {
-							_smokeposition = [position (leader _group), 5, random 359] call BIS_fnc_relPos;
-							_smoke = createVehicle ["G_40mm_Smoke", _smokeposition, [], 0, "NONE"];
-						};
-					};
 				};
 				sleep 1;
 			};

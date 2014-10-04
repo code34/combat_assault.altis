@@ -49,8 +49,8 @@
 			MEMBER("alert", false);
 
 			if(random 1 > 0.90) then { _sniper = 1; } else { _sniper = 0;};
-			if(random 1 > 0.97) then { _air = 1; } else { _air = 0; };
-			if(random 1 > 0.85) then { _vehicle = 1;} else { _vehicle = 0};
+			if(random 1 > 0.98) then { _air = 1; } else { _air = 0; };
+			if(random 1 > 0.90) then { _vehicle = 1;} else { _vehicle = 0};
 
 			_type = [ 1, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
@@ -73,6 +73,9 @@
 			_sector;
 		};
 
+		// 0 - unactivate
+		// 1 - activate
+		// 2 - done
 		PRIVATE FUNCTION("scalar", "setState") {
 			MEMBER("state", _this);
 		};
@@ -232,6 +235,11 @@
 			MEMBER("alert", _this);
 		};
 
+		PUBLIC FUNCTION("bool", "setAlertAround") {
+			MEMBER("alert", _this);
+			["expandAlertAround", MEMBER("getSector", nil)] call global_controller;
+		};
+
 		PUBLIC FUNCTION("", "UnSpawn") {
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
@@ -260,8 +268,6 @@
 				_handle = [_x, _type] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
-		
-			//_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
 			
 			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
 			"patrol" spawn _patrol;
@@ -285,7 +291,8 @@
 				sleep 0.1;
 			}foreach (units _group);
 		
-			_handle = [_group, MEMBER("position", nil), _markersize, MEMBER("getThis", nil)] spawn WC_fnc_patrol;
+			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
+			"patrol" spawn _patrol;
 		
 			units _group;
 		};
@@ -336,8 +343,6 @@
 			_markersize		= (getMarkerSize _marker) select 1;
 		
 			_vehicle = ["O_Heli_Light_02_F", "3O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
-			//_vehicle = ["O_Plane_CAS_02_F"] call BIS_fnc_selectRandom;
-		
 			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;

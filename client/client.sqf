@@ -1,3 +1,4 @@
+		
 		private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
 
 		_body = player;
@@ -5,8 +6,8 @@
 
 		_mark = ["new", position player] call OO_MARKER;
 
-		_tag = ["new", []] call OO_HUD;
-		"drawAll" spawn _tag;	
+		hud = ["new", []] call OO_HUD;
+		"drawAll" spawn hud;
 
 		playertype = player getvariable "type";
 
@@ -21,11 +22,17 @@
 			};
 
 			_position = position player;
+
+			_title = "Select your equipment";
+			_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
+			["hint", [_title, _text]] call hud;
+			
 			["Open",[true,nil,player]] call bis_fnc_arsenal;
+
 			while { _position distance position player < 2 } do {
 				sleep 0.1
 			};
-
+	
 			openMap [true, true];
 			mapAnimAdd [1, 0.01, _body]; 
 			mapAnimCommit;

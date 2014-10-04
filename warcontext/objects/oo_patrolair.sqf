@@ -54,6 +54,7 @@
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
 				MEMBER("moveToNext", nil);
+				MEMBER("checkAlt", nil);
 				sleep 0.1;
 			};
 			MEMBER("deconstructor", nil);
@@ -70,6 +71,15 @@
 			["setType", "o_plane"] spawn _mark;
 			["setSize", [0.8,0.8]] spawn _mark;
 			MEMBER("marker", _mark);
+		};
+
+		PUBLIC FUNCTION("", "checkAlt") {
+			private ["_position", "_group"];
+			_position = position MEMBER("vehicle", nil);
+			_group = MEMBER("group", nil);
+			if(_position select 2 < 10) then {
+				{_x setdammage 1;}foreach units _group;
+			};
 		};
 
 		// get all sector around the base sector
@@ -110,6 +120,8 @@
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
 
+			sleep 5;
+
 			while { (speed _vehicle > 70) } do {
 				sleep 1;
 			};
@@ -120,7 +132,7 @@
 			private ["_nextsector", "_position"];
 
 			if(count MEMBER("underalert", nil) > 0) then {
-				_nextsector = ("getSector" call MEMBER("underalert", nil)) call BIS_fnc_selectRandom;
+				_nextsector = "getSector" call (MEMBER("underalert", nil) call BIS_fnc_selectRandom);
 				MEMBER("revealTarget", nil);
 			} else {
 				_nextsector = MEMBER("around", nil) call BIS_fnc_selectRandom;
@@ -132,9 +144,9 @@
 		PUBLIC FUNCTION("", "revealTarget") {
 			private ["_list"];	
 
-			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man", "Tank"], 400];
+			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man", "Tank"], 600];
 			{
-				leader MEMBER("group", nil) reveal [_x, 4];
+				(leader MEMBER("group", nil)) reveal [_x, 4];
 				sleep 0.01;
 			}foreach _list;
 		};

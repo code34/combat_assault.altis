@@ -28,6 +28,13 @@
 		PRIVATE VARIABLE("bool","run");
 
 		PUBLIC FUNCTION("array","constructor") {
+			MEMBER("init", nil);
+		};
+
+		PUBLIC FUNCTION("","getReloadTime") FUNC_GETVAR("time");
+		PUBLIC FUNCTION("","getAirport") FUNC_GETVAR("airport");
+
+		PUBLIC FUNCTION("", "init") {
 			MEMBER("time", 0);
 			MEMBER("contacttime", 0);
 			MEMBER("state", 0);
@@ -35,16 +42,15 @@
 			MEMBER("run", false);
 		};
 
-		PUBLIC FUNCTION("","getReloadTime") FUNC_GETVAR("time");
-
 		PUBLIC FUNCTION("", "start") {
+			MEMBER("init", nil);
 			MEMBER("run", true);
 			while { MEMBER("run", nil) } do {
 				INC_VAR("time");
 				if(MEMBER("needFuel", nil)) then {
 					if(MEMBER("state", nil) == 0) then {
 						MEMBER("state", 1);
-						MEMBER("getAirPort", nil);
+						MEMBER("setAirPort", nil);
 					};
 					MEMBER("setContactTime", nil);
 					if(MEMBER("getContactTime", nil) < 1) then {
@@ -90,7 +96,7 @@
 			};
 		};
 
-		PUBLIC FUNCTION("", "getAirPort") {
+		PUBLIC FUNCTION("", "setAirPort") {
 			private ["_distance", "_airport"];
 			_distance = 100000;
 			_airport = "";

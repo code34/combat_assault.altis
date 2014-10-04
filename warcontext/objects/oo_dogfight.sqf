@@ -54,7 +54,7 @@
 					sleep 10;	
 					MEMBER("unpopMember", _vehicle);
 				};
-				sleep 0.001;
+				sleep 0.01;
 			}foreach MEMBER("squadron", nil);
 		};
 
@@ -80,7 +80,7 @@
 				MEMBER("intercept", nil);
 				MEMBER("setFuel", nil);
 				MEMBER("cleaner", nil);
-				sleep 20;
+				sleep 30;
 			};
 		};
 
@@ -98,7 +98,7 @@
 						_score = score _x;
 						_target = [_x];
 					};
-					sleep 0.001;
+					sleep 0.01;
 				} foreach MEMBER("targets", nil);
 			} else {
 				_target = [];
@@ -113,9 +113,16 @@
 				_target = MEMBER("target", nil) select 0;
 				{
 					_vehicle = _x select 0;
-					_vehicle domove (position _target);
-					_vehicle dotarget _target;
-					sleep 0.001;
+					if(fuel _vehicle > 0.4) then {
+						_vehicle domove (position _target);
+						_vehicle dotarget _target;
+					} else {
+						_vehicle domove [100,100];
+						if(_vehicle distance [100,100] < 2000) then {
+							_vehicle setdammage 1;
+						};
+					};
+					sleep 0.01;
 				}foreach MEMBER("squadron", nil);
 			};
 		};
@@ -126,18 +133,18 @@
 				_vehicle = _x select 0;
 				_fuel = fuel _vehicle;
 				if(speed _vehicle > 200) then {
-					_vehicle setfuel (_fuel - 0.001);
+					_vehicle setfuel (_fuel - (0.002 * 10));
 				};
 				if(speed _vehicle > 350) then {
-					_vehicle setfuel (_fuel - 0.002);
+					_vehicle setfuel (_fuel - (0.003 * 10));
 				};
 				if(speed _vehicle > 500) then {
-					_vehicle setfuel (_fuel - 0.005);
+					_vehicle setfuel (_fuel - (0.007 * 10));
 				};
 				if(speed _vehicle > 600) then {
-					_vehicle setfuel (_fuel - 0.007);
+					_vehicle setfuel (_fuel - (0.01 * 10));
 				};
-				sleep 0.001;
+				sleep 0.01;
 			}foreach MEMBER("squadron", nil);
 		};
 
@@ -152,12 +159,11 @@
 						if((getposatl _x) select 2 > 10) then {
 							_airtargets = _airtargets + [_x];
 						};
-					};
-					if(typeof _x == "B_crew_F") then {
+					} else {
 						_groundtargets = _groundtargets + [_x];
 					};
 				};
-				sleep 0.001;
+				sleep 0.01;
 			}foreach playableunits;
 			MEMBER("airtargets", _airtargets);
 			MEMBER("groundtargets", _groundtargets);
@@ -187,10 +193,9 @@
 		};
 
 		PUBLIC FUNCTION("object", "unpopMember") {
-			private ["_counter", "_group", "_squad"];
+			private ["_counter", "_group", "_squadron"];
 
-			_counter = 0;
-			_squad = MEMBER("squadron", nil);
+			_squadron = MEMBER("squadron", nil);
 			{
 				if(_x select 0 == _this) then {
 					(_x select 0) setdammage 1;
@@ -201,13 +206,12 @@
 					deletegroup _group;
 					"detach" call (_x select 2);
 					["delete", (_x select 2)] call OO_MARKER;
-					_squad set [_counter, -1];
+					_squadron set [_foreachindex, -1];
 				};
-				_counter = _counter + 1;
-				sleep 0.001;
-			}foreach _squad;
-			_squad = _squad - [-1];
-			MEMBER("squadron", _squad);
+				sleep 0.01;
+			}foreach _squadron;
+			_squadron = _squadron - [-1];
+			MEMBER("squadron", _squadron);
 		};
 
 		PUBLIC FUNCTION("", "popSquadron") {
@@ -223,7 +227,7 @@
 		PUBLIC FUNCTION("", "unpopSquadron") {
 			{
 				MEMBER("unpopMember", _x select 0);
-				sleep 0.001;
+				sleep 0.01;
 			}foreach MEMBER("squadron", nil);
 		};
 

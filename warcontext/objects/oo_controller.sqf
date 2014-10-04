@@ -133,17 +133,33 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
-			private ["_around", "_sector", "_player_sector", "_cost", "_costmin"];
+			private ["_around", "_sector"];
 
 			_sector = _this;
 			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
 
 			{
 				_sector = _x;
-				if(random 1 > 0.9) then {
+				if(random 1 > 0.95) then {
 					MEMBER("expandSector", _sector);
 				};
 				sleep 0.0001;
+			}foreach _around;
+		};
+
+		PUBLIC FUNCTION("array", "expandAlertAround"){
+			private ["_sector", "_around"];
+			_sector = _this;
+			_around = ["getSectorAllAround", [_sector,2]] call MEMBER("grid", nil);
+
+			{
+				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				if!(isnil "_sector") then {
+					if(("getState" call _sector) == 1) then {
+						["setAlert", true] call _sector;
+					};
+				};
+				sleep 0.001;
 			}foreach _around;
 		};
 

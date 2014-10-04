@@ -22,7 +22,9 @@
 
 	_position = position player;
 
-	hintSilent "Click on the map where you'd like to Insert.";
+	_title = "Select your destination zone";
+	_text = "Click on the map where you'd like to Insert!";
+	["hint", [_title, _text]] call hud;
 
 	while { _position distance position player < 50 } do {
 		wcteleport = [];

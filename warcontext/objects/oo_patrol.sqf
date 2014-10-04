@@ -260,7 +260,7 @@
 		};		
 
 		PUBLIC FUNCTION("", "setAlert") {
-			["setAlert", true] call MEMBER("sector", nil);
+			["setAlertAround", true] call MEMBER("sector", nil);
 			MEMBER("alert", true);
 		};
 
@@ -332,6 +332,10 @@
 				if(!MEMBER("isCompleteGroup" ,nil)) then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
+					_counter = 30;
+				};
+				if("getAlert" call MEMBER("sector", nil)) then {
+					MEMBER("alert", true);
 					_counter = 30;
 				};
 				MEMBER("scanTargets", nil);

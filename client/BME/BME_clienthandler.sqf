@@ -31,13 +31,19 @@
 		_position = _this select 0;
 		switch (format["%1", _position]) do {
 			case "[0,0]": {
-				hint "Too near of enemy position";
+				_title = "Too near of enemy position";
+				_text = "Choose a square far of enemy positions";
+				["hint", [_title, _text]] call hud;
 			};
 			case "[0,1]": {
-				hint "Too near of base";
+				_title = "Too near of base";
+				_text = "Choose a square far of base";
+				["hint", [_title, _text]] call hud;
 			};
 			case "[0,2]": {
-				hint "Position in water";
+				_title = "Too near of water";
+				_text = "Choose a square far of water";
+				["hint", [_title, _text]] call hud;
 			};			
 			default {
 				wcteleportposition = _position;
@@ -50,7 +56,7 @@
 	};
 
 	BME_netcode_death = {
-		playSound "death";
+		//playSound "death";
 	};
 
 	BME_netcode_end = {

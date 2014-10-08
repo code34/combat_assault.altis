@@ -209,6 +209,21 @@
 			_grid;
 		};
 
+		PUBLIC FUNCTION("array", "getSectorCrossAround") {
+			private ["_grid", "_sector"];
+
+			_sector = _this select 0;
+
+			_grid = [
+				[(_sector select 0), (_sector select 1) - 1],
+				[(_sector select 0) -1, (_sector select 1)],
+				[(_sector select 0) + 1, (_sector select 1)],
+				[(_sector select 0), (_sector select 1) + 1]
+				];
+			_grid;
+		};
+
+
 		PUBLIC FUNCTION("array", "getSectorAllAround") {
 			private ["_grid", "_scale", "_sector", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
 

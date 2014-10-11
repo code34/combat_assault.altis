@@ -50,8 +50,21 @@
 			_text = _this select 1;
 
 			_title=  "<t color='#ff0000'>"+ _title + "</t><br />";
-			hint parseText (_title + _text); 			
+			hintsilent parseText (_title + _text); 			
 		};
+
+		PUBLIC FUNCTION("array", "hintScore") {
+			_ticket = _this select 0;
+			_type = _this select 1;
+			_credit = _this select 2;
+
+			_title = str(_ticket);
+			_text = format["%2 ticket(s) for %1", _type, _credit];
+
+			waituntil { alive player};
+			_title=  "<t size='2.2' color='#ff0000'>"+ _title + "</t><br />";
+			hintsilent parseText (_title + _text); 			
+		};		
 
 		PUBLIC FUNCTION("", "drawAll") {
 			private ["_code"];

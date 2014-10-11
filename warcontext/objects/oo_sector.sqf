@@ -48,14 +48,15 @@
 			MEMBER("state", 0);
 			MEMBER("alert", false);
 
-			if(random 1 > 0.90) then { _sniper = 1; } else { _sniper = 0;};
-			if(random 1 > 0.98) then { _air = 1; } else { _air = 0; };
+			if(random 1 > 0.85) then { _sniper = 1; } else { _sniper = 0;};
+			if(random 1 > 0.93) then { _air = 1; } else { _air = 0; };
 			if(random 1 > 0.90) then { _vehicle = 1;} else { _vehicle = 0};
 
 			_type = [ 1, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
 			
-			if(random 1 > 0.85) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
+			if(random 1 > 0.90) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
+			if(random 1 > 0.90) then { MEMBER("setMission", nil); };
 		};
 
 		PUBLIC FUNCTION("","getIndex") FUNC_GETVAR("index");
@@ -78,6 +79,12 @@
 		// 2 - done
 		PRIVATE FUNCTION("scalar", "setState") {
 			MEMBER("state", _this);
+		};
+
+		PUBLIC FUNCTION("", "setMission") {
+			private ["_position"];
+			_position = MEMBER("getPosition", nil);
+			_mission = ["new", [_position]] spawn OO_MISSION;
 		};
 
 		PUBLIC FUNCTION("", "isArtillery") {
@@ -217,18 +224,23 @@
 				if(_units == 0) then { _run = false; };
 				sleep 1;
 			};
+			
 			if(_units == 0) then {
-				MEMBER("marker", nil) setmarkercolor "ColorBlue";
-				MEMBER("state", 2);
-				zonesuccess = true;
-				["zonesuccess", "client"] call BME_fnc_publicvariable;
+				MEMBER("setVictory", nil);
 				MEMBER("unPopSector", nil);
-				_position = ["getPosFromSector", MEMBER("getSector",nil)] call _grid;
-				_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
-				["new", [_position]] spawn OO_BONUSVEHICLE;
 			} else {
 				MEMBER("UnSpawn", nil);
 			};
+		};
+
+		PUBLIC FUNCTION("", "setVictory") {
+			private ["_position"];
+			MEMBER("marker", nil) setmarkercolor "ColorBlue";
+			MEMBER("state", 2);
+			["setTicket", "bluezone"] call global_ticket;
+			_position = ["getPosFromSector", MEMBER("getSector",nil)] call MEMBER("grid", nil);
+			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+			["new", [_position]] spawn OO_BONUSVEHICLE;
 		};
 
 		PUBLIC FUNCTION("bool", "setAlert") {
@@ -246,7 +258,7 @@
 			if(MEMBER("getAlert", nil)) then { 
 				["expandSectorAround", MEMBER("getSector", nil)] call global_controller;
 			};
-			MEMBER("setAlert", false);
+			//MEMBER("setAlert", false);
 			MEMBER("state", 0);
 		};
 
@@ -307,11 +319,10 @@
 		
 			if(random 1 > 0.5) then {
 				//light vehicle
-				//_reco = ["O_MRAP_02_F","I_MRAP_03_F"];
 				_vehicle = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F"] call BIS_fnc_selectRandom;
 			} else {
 				//heavy vehicle
-				_vehicle = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_MBT_02_arty_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"] call BIS_fnc_selectRandom;
+				_vehicle = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"] call BIS_fnc_selectRandom;
 			};
 		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
@@ -338,11 +349,11 @@
 		PRIVATE FUNCTION("", "popAir") {
 			private ["_around", "_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
 		
-			_marker			=  MEMBER("marker", nil);
+			_marker		=  MEMBER("marker", nil);
 			_markerpos 		= getmarkerpos _marker;
 			_markersize		= (getMarkerSize _marker) select 1;
 		
-			_vehicle = ["O_Heli_Light_02_F", "3O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
+			_vehicle = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
 			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;

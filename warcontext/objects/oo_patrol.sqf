@@ -41,7 +41,7 @@
 			MEMBER("sizegroup", count units (_this select 0));
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
-			//MEMBER("getBuildings", nil);
+			MEMBER("getBuildings", nil);
 			MEMBER("alert", false);
 		};
 
@@ -55,13 +55,16 @@
 			_group = MEMBER("group", nil);
 			_position = "getPosition" call MEMBER("sector",nil);
 
-			MEMBER("setSafeMode", nil);
 			while { count (units _group) > 0 } do {
 				MEMBER("getTargets", _position);
 				if(MEMBER("alert", nil)) then {
 					MEMBER("attack", nil);
 				} else {
-					MEMBER("walk", nil);
+					if(MEMBER("city", nil)) then {
+						MEMBER("walkInBuildings", nil);
+					} else {
+						MEMBER("walk", nil);	
+					};
 				};
 				sleep 1;
 			};
@@ -315,6 +318,8 @@
 			_group = MEMBER("group", nil);
 			_leader = leader _group;
 			_areasize = MEMBER("areasize", nil);
+
+			MEMBER("setSafeMode", nil);
 			
 			_formationtype = ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"] call BIS_fnc_selectRandom;
 			_group setFormation _formationtype;
@@ -363,16 +368,11 @@
 			_group = MEMBER("group", nil);
 			_leader = leader _group;
 			_areasize = MEMBER("areasize", nil);
-			
-			_formationtype = ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"] call BIS_fnc_selectRandom;
-			_group setFormation _formationtype;
 
-			_leader domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
-			diag_log "patrolling";
-
-			//{
-			//	_x domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
-			//}foreach units MEMBER("group", nil);
+			MEMBER("setBuildingMode", nil);
+			{
+				_x domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
+			}foreach units MEMBER("group", nil);
 
 			_counter = 0;
 			while { _counter < 30 } do {
@@ -395,6 +395,12 @@
 				sleep 1;
 			};
 		};		
+
+		PUBLIC FUNCTION("", "setBuildingMode") {
+			MEMBER("group", nil) setBehaviour "SAFE";
+			MEMBER("group", nil) setCombatMode "WHITE";
+			MEMBER("group", nil) setSpeedMode "FULL";
+		};
 
 		PUBLIC FUNCTION("", "setSafeMode") {
 			MEMBER("group", nil) setBehaviour "SAFE";

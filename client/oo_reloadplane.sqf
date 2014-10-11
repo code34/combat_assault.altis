@@ -25,7 +25,7 @@
 		PRIVATE VARIABLE("string","type");
 		
 		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("type", _this);
+			MEMBER("type", _this select 0);
 		};
 
 		PUBLIC FUNCTION("", "start") {
@@ -35,7 +35,6 @@
 			_message = false;
 
 			while { MEMBER("run", nil) } do {
-				//hint format ["type: %1", MEMBER("type", nil)];		
 				MEMBER("setFuel", nil);
 				if(_time > 120) then {
 					if!(_message) then {
@@ -57,7 +56,6 @@
 				_time = _time + 1;
 				sleep 1;
 			};
-			MEMBER("deconstructor", nil);
 		};
 
 		PUBLIC FUNCTION("", "stop") {

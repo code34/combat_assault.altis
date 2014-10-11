@@ -116,12 +116,47 @@
 			MEMBER("queuesector", _queue);
 		};
 
+		PUBLIC FUNCTION("array", "getNumberNeighour"){
+			private ["_cross", "_key", "_neighbour"];
+
+			_key = _this;
+			
+			_cross = ["getSectorCrossAround", [_key]] call _grid;
+			_neighbour = 1;
+			{
+				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				if!(isnil "_sector") then {
+					if("getState" call _sector < 2) then {
+						_neighbour = _neighbour + 1;
+					};
+				};
+			} foreach _cross;
+			_neighbour;
+		};
+
+		PUBLIC FUNCTION("array", "canExpandToNeighbour"){	
+			private ["_can", "_cross", "_key", "_boundaries", "_neighbour"];
+
+			_key = _this;
+			_can = true;
+			_boundaries = MEMBER("getNumberNeighour", _key);
+			if(_boundaries < 4) then {
+				_cross = ["getSectorCrossAround", [_key]] call _grid;
+				{
+					_boundaries = MEMBER("getNumberNeighour", _x);
+					if(_boundaries > 3) then {_can = false;};
+				}foreach _cross;
+			} else {
+				_can = false;
+			};
+			_can;
+		};
+
 		PUBLIC FUNCTION("array", "canExpandToSector"){
-			private ["_key", "_sector", "_cost", "_costmin", "_grid"];
+			private ["_key", "_sector", "_cost", "_costmin", "_grid", "_neighbour", "_return"];
 
 			_key = _this;
 			_grid = MEMBER("grid", nil);
-
 			_costmin = 4;
 			{
 				_sector = ["getSectorFromPos", position _x] call _grid;
@@ -129,7 +164,17 @@
 				if(_cost < _costmin) then {_costmin = _cost;};
 				sleep 0.0001;
 			}foreach MEMBER("groundplayers", nil);
-			if(_costmin >3) then {true;} else {false;};
+			
+			if(_costmin >3) then {
+				if(MEMBER("canExpandToNeighbour", _key)) then {
+					_return = true;
+				}else{
+					_return = false;
+				};
+			} else {
+				_return = false;
+			};
+			_return;
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
@@ -146,6 +191,27 @@
 				sleep 0.0001;
 			}foreach _around;
 		};
+
+		PUBLIC FUNCTION("array", "expandFriendlyAround"){
+			private ["_sector", "_around", "_position"];
+			_position = _this;
+			_sector = ["getSectorFromPos", _position] call MEMBER("grid", nil);
+			_around = ["getSectorAllAround", [_sector,2]] call MEMBER("grid", nil);
+
+			{
+				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				if(isnil "_sector") then {
+					if(random 1 > 0.95) then {
+						_position = ["getPosFromSector", _x] call MEMBER("grid", nil);
+						_sector = ["new", [str(_x), _position, MEMBER("grid", nil)]] call OO_SECTOR;
+						"Draw" call _sector;
+						"setVictory" call _sector;
+						["Put", [str(_x), _sector]] call MEMBER("zone_hashmap",nil);
+					};
+				};
+				sleep 0.001;
+			}foreach _around;
+		};		
 
 		PUBLIC FUNCTION("array", "expandAlertAround"){
 			private ["_sector", "_around"];
@@ -176,6 +242,7 @@
 							_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
 							"Draw" call _sector;
 							["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
+							["setTicket", "redzone"] call global_ticket;
 						};
 					};
 				};
@@ -228,6 +295,13 @@
 			}foreach MEMBER("getNewSectorAround", nil);
 		};
 
+		PUBLIC FUNCTION("", "startConvoy") {
+			while { true } do {
+				MEMBER("spawnConvoy", nil);
+				sleep 1200;
+			};
+		};		
+
 		PUBLIC FUNCTION("", "spawnConvoy") {
 			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
 
@@ -247,16 +321,9 @@
 					_victory = false;
 					breakout "oo_check_victory";
 				};
-				sleep 0.0001;
+				sleep 0.01;
 			}foreach ("entrySet" call MEMBER("zone_hashmap",nil));
 			_victory;
-		};
-
-		PUBLIC FUNCTION("", "startConvoy") {
-			while { true } do {
-				MEMBER("spawnConvoy", nil);
-				sleep 300;
-			};
 		};
 
 		PUBLIC FUNCTION("", "startZone") {

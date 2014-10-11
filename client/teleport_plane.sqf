@@ -27,14 +27,17 @@
 	["hint", [_title, _text]] call hud;
 
 	while { _position distance position player < 50 } do {
-		wcteleport = [];
-		wcteleportposition = [];
+		wcteleport = position player;
 		onMapSingleClick {
-			wcteleport = [name player, _pos];
-			["wcteleport", "server"] call BME_fnc_publicvariable;
+			wcteleport = _pos;
 		};
-		waitUntil{count wcteleportposition > 0};
-		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 500];
+		while { !surfaceIsWater wcteleport} do {
+			_title = "Select your destination zone";
+			_text = "Click on the sea where you'd like to Insert!";
+			["hint", [_title, _text]] call hud;
+			sleep 1;
+		};
+		_newposition = [wcteleport select 0, wcteleport select 1, 500];
 
 		if(playertype == "bomber") then {
 			_array = [_newposition, 0, "B_Plane_CAS_01_F", west] call bis_fnc_spawnvehicle;

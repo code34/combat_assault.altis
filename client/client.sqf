@@ -9,10 +9,11 @@
 		hud = ["new", []] call OO_HUD;
 		"drawAll" spawn hud;
 
-		playertype = player getvariable "type";
+		localplayerstats = [];
 
+		playertype = player getvariable "type";
 		if((playertype == "bomber") or (playertype == "fighter")) then {
-			_reload = ["new", []] call OO_RELOADPLANE;
+			_reload = ["new", [playertype]] call OO_RELOADPLANE;
 		};
 
 		while {true} do {
@@ -42,7 +43,7 @@
 			switch (playertype) do {
 				case "soldier": {
 					[] call WC_fnc_teleport;
-					_icon =	"mil_arrow";
+					_icon =	"mil_arrow2";
 				};
 				case "fighter": {
 					[] call WC_fnc_teleportplane;
@@ -79,6 +80,7 @@
 
 			waituntil {!alive player};
 
+			if(isnil "killer") then { killer = _body;};
 			wccam = "camera" camCreate (position killer);
 			wccam cameraEffect ["internal","back"];
 	

@@ -1,4 +1,4 @@
-﻿	/*
+	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
 	Copyright (C) 2014 Nicolas BOITEUX
 
@@ -216,8 +216,8 @@
 
 			_grid = [
 				[(_sector select 0), (_sector select 1) - 1],
-				[(_sector select 0) -1, (_sector select 1)],
-				[(_sector select 0) + 1, (_sector select 1)],
+				[(_sector select 0)-1, (_sector select 1)],
+				[(_sector select 0)+1, (_sector select 1)],
 				[(_sector select 0), (_sector select 1) + 1]
 				];
 			_grid;
@@ -263,6 +263,15 @@
 		};
 
 		PUBLIC FUNCTION("array", "isBuilding") {
+			private ["_positions", "_result"];
+
+			_sector = _this;
+			_positions = MEMBER("getPositionsBuilding", _sector);
+			if (count _positions > 10) then { _result = true;} else { _result = false;};
+			_result;
+		};
+
+		PUBLIC FUNCTION("array", "getPositionsBuilding") {
 			private ["_index", "_buildings", "_position", "_positions", "_result"];
 
 			_sector = _this;
@@ -280,8 +289,7 @@
 					};
 				}foreach _buildings;
 			};
-			if (count _positions > 10) then { _result = true;} else { _result = false;};
-			_result;
+			_positions;
 		};
 
 

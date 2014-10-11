@@ -159,6 +159,12 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			["delete", MEMBER("marker", nil)] call OO_MARKER;
+			deletevehicle MEMBER("vehicle", nil);
+			{
+				_x setdammage 1;
+				deletevehicle _x;
+			}foreach units MEMBER("group", nil);
+			deletegroup MEMBER("group", nil);
 			DELETE_VARIABLE("marker");
 			DELETE_VARIABLE("around");
 			DELETE_VARIABLE("vehicle");

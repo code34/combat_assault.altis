@@ -185,7 +185,7 @@
 
 			{
 				_sector = _x;
-				if(random 1 > 0.95) then {
+				if(random 1 > 0.90) then {
 					MEMBER("expandSector", _sector);
 				};
 				sleep 0.0001;
@@ -237,12 +237,14 @@
 				_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
 				if(isnil "_sector") then {
 					_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
-					if(!surfaceIsWater _position) then {
-						if(MEMBER("canExpandToSector", _key)) then {
-							_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
-							"Draw" call _sector;
-							["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
-							["setTicket", "redzone"] call global_ticket;
+					if((getmarkerpos "respawn_west" distance _position > 1300)) then {
+						if(!surfaceIsWater _position) then {
+							if(MEMBER("canExpandToSector", _key)) then {
+								_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
+								"Draw" call _sector;
+								["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
+								["setTicket", "redzone"] call global_ticket;
+							};
 						};
 					};
 				};

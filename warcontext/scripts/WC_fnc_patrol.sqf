@@ -71,8 +71,11 @@
 				_cible = (_shadows call BIS_fnc_selectRandom);
 			};
 
-
-			_newposition = [position _cible, (25 + random (_areasize)), random 359] call BIS_fnc_relPos;
+			_newposition = [position _cible, (50 + random (_areasize)), random 359] call BIS_fnc_relPos;
+			while { (position _cible) distance _newposition < 25 } do {
+				_newposition = [position _cible, (50 + random (_areasize)), random 359] call BIS_fnc_relPos;
+				sleep 0.1;
+			};
 
 			_wp = _group addWaypoint [_newposition, 25];
 			_wp setWaypointPosition [_newposition, 25];

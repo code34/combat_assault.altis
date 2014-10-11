@@ -30,6 +30,8 @@
 		PRIVATE VARIABLE("code","sector");
 		PRIVATE VARIABLE("scalar","sizegroup");
 		PRIVATE VARIABLE("code","grid");
+		PRIVATE VARIABLE("array","buildings");
+		PRIVATE VARIABLE("bool","city");
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("group", _this select 0);
@@ -39,6 +41,7 @@
 			MEMBER("sizegroup", count units (_this select 0));
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
+			//MEMBER("getBuildings", nil);
 			MEMBER("alert", false);
 		};
 
@@ -79,6 +82,18 @@
 			};			
 		};
 
+		PUBLIC FUNCTION("", "getBuildings") {
+			private ["_sector", "_positions"];
+			_sector = "getSector" call MEMBER("sector", nil);
+			_positions = ["getPositionsBuilding", _sector] call MEMBER("grid", nil);
+			MEMBER("buildings", _positions);
+			if(count _positions > 10) then {
+				MEMBER("city", true);
+			}else{
+				MEMBER("city", false);
+			};
+		};		
+
 		PUBLIC FUNCTION("", "engageTarget") {
 			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden"];
 
@@ -101,7 +116,7 @@
 					};
 				};
 			};
-			if(random 1 > 0.95) then {
+			if(random 1 > 0.9) then {
 				MEMBER("callArtillery", MEMBER("target", nil));
 			};
 		};
@@ -279,21 +294,18 @@
 			private ["_key", "_sector", "_artillery", "_target"];
 
 			_target = _this;	
-
 			_sector = MEMBER("sector", nil);
+
 			if("isArtillery" call _sector) then { 
 				_artillery = "getArtillery" call _sector;
 				_key = ["getSectorFromPos", position _target] call MEMBER("grid", nil);
 				_sector = ["Get", str(_key)] call global_zone_hashmap;
-				
 				if(!isnil "_sector") then {
 					["setSuppression", true] call _artillery;
 				} else {
 					["setSuppression", false] call _artillery;
 				};
-				["setTarget", _target] call _artillery;
-				"autoSetAmmo" call _artillery;
-				"doFire" call _artillery;
+				["callFireOnTarget", _target] call _artillery;
 			};
 		};		
 
@@ -345,6 +357,45 @@
 			deletewaypoint _wp;
 		};
 
+		PUBLIC FUNCTION("", "walkInBuildings") {
+			private ["_areasize", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp"];
+			
+			_group = MEMBER("group", nil);
+			_leader = leader _group;
+			_areasize = MEMBER("areasize", nil);
+			
+			_formationtype = ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"] call BIS_fnc_selectRandom;
+			_group setFormation _formationtype;
+
+			_leader domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
+			diag_log "patrolling";
+
+			//{
+			//	_x domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
+			//}foreach units MEMBER("group", nil);
+
+			_counter = 0;
+			while { _counter < 30 } do {
+				_leader = leader _group;
+				if(format["%1",  _leader getVariable "complete"] == "true") then {
+					_leader setvariable ['complete', false];
+					_counter = 30;
+				};
+				if(!MEMBER("isCompleteGroup" ,nil)) then {
+					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
+					MEMBER("setAlert", nil);
+					_counter = 30;
+				};
+				if("getAlert" call MEMBER("sector", nil)) then {
+					MEMBER("alert", true);
+					_counter = 30;
+				};
+				MEMBER("scanTargets", nil);
+				_counter = _counter + 1;
+				sleep 1;
+			};
+		};		
+
 		PUBLIC FUNCTION("", "setSafeMode") {
 			MEMBER("group", nil) setBehaviour "SAFE";
 			MEMBER("group", nil) setCombatMode "GREEN";
@@ -365,6 +416,8 @@
 			DELETE_VARIABLE("sector");
 			DELETE_VARIABLE("target");
 			DELETE_VARIABLE("targets");
-			DELETE_VARIABLE("grid");		
+			DELETE_VARIABLE("grid");
+			DELETE_VARIABLE("buildings");
+			DELETE_VARIABLE("city");
 		};
 	ENDCLASS;

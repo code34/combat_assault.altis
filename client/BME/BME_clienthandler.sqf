@@ -27,6 +27,16 @@
 		hint bme_message;
 	};
 
+	BME_netcode_wcticket = {
+		private ["_value", "_type", "_ticket", "_credit"];
+		_value = _this select 0;
+		_ticket = _value select 0;
+		_type = _value select 1;
+		_credit = _value select 2;
+
+		["hintScore", [_ticket, _type, _credit]] call hud;
+	};
+
 	BME_netcode_wcteleportack = {
 		_position = _this select 0;
 		switch (format["%1", _position]) do {
@@ -55,8 +65,27 @@
 		//playsound "zonesuccess";
 	};
 
-	BME_netcode_death = {
-		//playSound "death";
+	BME_netcode_playerstats = {
+		private ["_player", "_stats", "_done", "_value"];
+
+		_player = (_this select 0) select 0;
+		_stats = (_this select 0) select 1;
+		_done = false;
+		
+		{
+			if(_player == _x select 0) then {
+				_value = [_player, _stats];
+				localplayerstats set [_foreachindex, _value];
+				_done = true;
+			};
+			sleep 0.01;
+		}foreach localplayerstats;
+
+		if!(_done) then {
+			_value = [_player, _stats];
+			localplayerstats = localplayerstats + [_value];
+		};
+		diag_log format ["%1", localplayerstats];
 	};
 
 	BME_netcode_end = {

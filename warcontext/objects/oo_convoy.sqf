@@ -75,8 +75,9 @@
 				["setText", "Support - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
 				["setText", "Support - Expanding failed"] spawn MEMBER("marker", nil);
+				["setTicket", "mission"] call global_ticket;
 			};
-			sleep 5;
+			sleep 60;
 			MEMBER("deconstructor", nil);
 		};
 

@@ -27,6 +27,40 @@
 		diag_log format["BME: %1", bme_log];
 	};
 
+	BME_netcode_server_wcdeath = {
+		private ["_array", "_player", "_stat", "_score", "_death", "_playertype"];
+
+		_array = _this select 0;
+		_player = _array select 0;
+		_playertype = _array select 1;
+		
+		["setTicket", _playertype] call global_ticket;
+
+		{	
+			if(_player == name _x) then {
+				_score = score _x;	
+			};
+		}forEach allDead;
+
+		if(_score < 1) then {
+			_score = 1;
+		};
+
+		_death = ["get", _player] call global_scores;
+		if(isnil "_death") then {
+			_death = 0;
+		};
+		_death = _death + 1;
+		_stat = _score/_death;
+
+		if(isnil "_stat") then {_stat = 0;};
+		if(_death < 10) then {_stat = 0;};
+		
+		["Put", [_player, _death]] call global_scores;
+		playerstats = [_player, _stat];
+		["playerstats", "client"] call BME_fnc_publicvariable;
+	};		
+
 	BME_netcode_server_wcteleport = {
 		private ["_name", "_playerid", "_position", "_grid", "_sector", "_result", "_around"];
 
@@ -120,7 +154,6 @@
 		wcteleportack = _result;
 		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 	};
-
 
 	// return true when read
 	true;

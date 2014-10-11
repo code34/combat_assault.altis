@@ -106,6 +106,15 @@
 			MEMBER("getVehicle", nil) getArtilleryETA [(position MEMBER("target", nil)), currentMagazine MEMBER("getVehicle", nil)];
 		};
 
+		PUBLIC FUNCTION("object", "callFireOnTarget") {
+			private ["_target"];
+			
+			_target = _this;
+			
+			MEMBER("setTarget", _target);
+			MEMBER("autoSetAmmo", nil);
+			MEMBER("doFire", nil);
+		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {
 			{

@@ -5,14 +5,11 @@
 		_vehicle = vehicle player;
 
 		_mark = ["new", position player] call OO_MARKER;
-
-		hud = ["new", []] call OO_HUD;
-		"drawAll" spawn hud;
-
 		localplayerstats = [];
 
 		playertype = player getvariable "type";
 		if((playertype == "bomber") or (playertype == "fighter")) then {
+			setviewdistance 3000;
 			_reload = ["new", [playertype]] call OO_RELOADPLANE;
 		};
 

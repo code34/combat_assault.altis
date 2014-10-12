@@ -31,14 +31,32 @@
 		PRIVATE VARIABLE("code", "marker");
 			
 		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("vehicle", _this select 0);
-			MEMBER("group", _this select 1);
-			MEMBER("sector", _this select 2);
+			MEMBER("popMember", nil);
+			MEMBER("sector", _this select 0);
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
 			MEMBER("setMarker", nil);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setCombatMode", nil);
+		};
+
+		PUBLIC FUNCTION("", "popMember") {
+			private ["_array", "_group", "_vehicle"];
+			
+			_vehicle = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
+			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
+		
+			_vehicle = _array select 0;
+			_group = _array select 2;
+			{
+				_handle = [_x, ""] spawn WC_fnc_setskill;
+				sleep 0.1;
+			}foreach (units _group);
+			_vehicle setVehicleLock "LOCKED";
+			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
+			
+			MEMBER("vehicle", _vehicle);
+			MEMBER("group", _group);
 		};
 
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");

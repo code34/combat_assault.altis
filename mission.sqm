@@ -16,7 +16,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 0.034";
+		briefingName="COMBAT ASSAULT 0.046";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -39,7 +39,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=10;
+		items=12;
 		class Item0
 		{
 			side="WEST";
@@ -121,7 +121,7 @@ class Mission
 					id=6;
 					side="WEST";
 					vehicle="B_Soldier_F";
-					player="PLAYER COMMANDER";
+					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -332,7 +332,7 @@ class Mission
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""fighter""];";
-					description="Fighter";
+					description="Fighter - Plane";
 				};
 			};
 		};
@@ -352,7 +352,7 @@ class Mission
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""tankaa""];";
-					description="Tank AA";
+					description="Tank Anti Air";
 				};
 			};
 		};
@@ -372,7 +372,7 @@ class Mission
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""tank""];";
-					description="Tank";
+					description="Tank - Offensive";
 				};
 			};
 		};
@@ -392,7 +392,7 @@ class Mission
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""tank""];";
-					description="Tank";
+					description="Tank - Offensive";
 				};
 			};
 		};
@@ -412,7 +412,7 @@ class Mission
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""fighter""];";
-					description="Fighter";
+					description="Fighter - Plane";
 				};
 			};
 		};
@@ -432,14 +432,56 @@ class Mission
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""bomber""];";
-					description="Bomber";
+					description="Bomber - Plane";
+				};
+			};
+		};
+		class Item10
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13550.002,11.521226,12057.56};
+					special="NONE";
+					id=30;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""chopper""];";
+					description="Chopper - transport";
+				};
+			};
+		};
+		class Item11
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={13553.7,11.980171,12053.862};
+					special="NONE";
+					id=31;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.60000002;
+					init="this setvariable [""type"", ""chopper""];";
+					description="Chopper - transport";
 				};
 			};
 		};
 	};
 	class Markers
 	{
-		items=6;
+		items=12;
 		class Item0
 		{
 			position[]={13558.62,16.108418,12100.498};
@@ -455,8 +497,8 @@ class Mission
 		class Item2
 		{
 			position[]={11529.202,22.994894,11672.126};
-			name="air1";
-			text="air1";
+			name="crocodile";
+			text="crocodile";
 			markerType="ELLIPSE";
 			type="Empty";
 			colorName="ColorBlue";
@@ -467,8 +509,8 @@ class Mission
 		class Item3
 		{
 			position[]={14881.773,17.929546,16549.014};
-			name="air2";
-			text="air2";
+			name="coconuts";
+			text="coconuts";
 			markerType="ELLIPSE";
 			type="Empty";
 			colorName="ColorBlue";
@@ -488,6 +530,63 @@ class Mission
 			position[]={14908.812,18.166849,16542.092};
 			name="COCONUTS AIRPORT";
 			text="COCONUTS AIRPORT";
+			type="mil_pickup";
+		};
+		class Item6
+		{
+			position[]={9173.4424,16.552162,21523.377};
+			name="liberty";
+			text="liberty";
+			markerType="ELLIPSE";
+			type="Empty";
+			colorName="ColorBlue";
+			fillName="FDiagonal";
+			a=300;
+			b=300;
+		};
+		class Item7
+		{
+			position[]={9170.3701,16.590117,21500.834};
+			name="LIBERTY AIRPORT";
+			text="LIBERTY AIRPORT";
+			type="mil_pickup";
+		};
+		class Item8
+		{
+			position[]={26972.115,21.095276,24730.303};
+			name="hurricane";
+			text="hurricane";
+			markerType="ELLIPSE";
+			type="Empty";
+			colorName="ColorBlue";
+			fillName="FDiagonal";
+			a=300;
+			b=300;
+		};
+		class Item9
+		{
+			position[]={26999.152,21.393234,24723.381};
+			name="HURRICANE AIRPORT";
+			text="HURRICANE AIRPORT";
+			type="mil_pickup";
+		};
+		class Item10
+		{
+			position[]={21091.389,20.704063,7334.8657};
+			name="viking";
+			text="viking";
+			markerType="ELLIPSE";
+			type="Empty";
+			colorName="ColorBlue";
+			fillName="FDiagonal";
+			a=300;
+			b=300;
+		};
+		class Item11
+		{
+			position[]={21118.426,20.739408,7327.9438};
+			name="VIKING AIRPORT";
+			text="VIKING AIRPORT";
 			type="mil_pickup";
 		};
 	};

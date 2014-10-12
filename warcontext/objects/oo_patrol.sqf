@@ -346,6 +346,11 @@
 					_leader setvariable ['complete', false];
 					_counter = 30;
 				};
+				if(format["%1",  _leader getVariable "combat"] == "true") then {
+					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
+					MEMBER("setAlert", nil);
+					_counter = 30;
+				};
 				if(!MEMBER("isCompleteGroup" ,nil)) then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
@@ -379,6 +384,11 @@
 				_leader = leader _group;
 				if(format["%1",  _leader getVariable "complete"] == "true") then {
 					_leader setvariable ['complete', false];
+					_counter = 30;
+				};
+				if(format["%1",  _leader getVariable "combat"] == "true") then {
+					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
+					MEMBER("setAlert", nil);
 					_counter = 30;
 				};
 				if(!MEMBER("isCompleteGroup" ,nil)) then {

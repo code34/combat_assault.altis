@@ -61,7 +61,6 @@
 				MEMBER("isFriendly", nil);
 				sleep 1;
 			};
-			MEMBER("deconstructor", nil);
 		};
 
 		PUBLIC FUNCTION("", "stop") {

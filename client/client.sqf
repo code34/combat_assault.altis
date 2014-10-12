@@ -61,6 +61,11 @@
 					[] call WC_fnc_teleporttank;
 					_icon = "b_armor";
 				};
+
+				case "chopper": {
+					[] call WC_fnc_teleportchopper;
+					_icon = "b_air";
+				};
 			};
 
 			openMap [false, false];

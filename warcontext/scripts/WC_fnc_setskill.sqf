@@ -140,18 +140,24 @@
 					_x reveal (_this select 1);
 				}foreach (units (group (_this select 0)));
 			};
-			(leader (group (_this select 0))) setvariable ['complete', true];
+			(leader (group (_this select 0))) setvariable ['combat', true];
 		};
 	}];
 
 	_unit addEventHandler ['HandleDamage', {
 		if(isplayer(_this select 3)) then {
-			(_this select 0) setdamage (damage(_this select 0) + (random 1));
-			(leader (group (_this select 0))) setvariable ['complete', true];
+			if(alive (_this select 0)) then {
+				_damage = 1 - damage(_this select 0);
+				(_this select 0) setdamage (damage(_this select 0) + random(_damage));
+			};
+			(leader (group (_this select 0))) setvariable ['combat', true];
+			{
+				_x reveal (_this select 3);
+			}foreach (units (group (_this select 0)));
 		};
-		if((_this select 0) distance (_this select 3) > 800) then {
-			(leader (group (_this select 0))) setvariable ['support', [(_this select 3)]];
-		};
+		//if((_this select 0) distance (_this select 3) > 800) then {
+		//(leader (group (_this select 0))) setvariable ['support', [(_this select 3)]];
+		//};
 	}];
 
 	true;

@@ -22,21 +22,29 @@
 
 	CLASS("OO_TICKET")
 		PRIVATE VARIABLE("scalar","ticket");
+		PRIVATE VARIABLE("bool","active");
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("ticket", 1000);
+			MEMBER("active", false);
 		};
 
 		PUBLIC FUNCTION("","getTicket") FUNC_GETVAR("ticket");
+		PUBLIC FUNCTION("","getActive") FUNC_GETVAR("active");
 
 		PUBLIC FUNCTION("scalar", "add"){
 			_value = MEMBER("ticket", nil) + _this;
 			MEMBER("ticket", _value);
-		};		
+		};
+
+		PUBLIC FUNCTION("bool", "setActive"){
+			MEMBER("active", _this);
+		};
 
 		PUBLIC FUNCTION("string", "setTicket"){
 			private ["_type", "_credit", "_value"];
-			
+			if!(MEMBER("active", nil)) exitwith {};
+
 			_type = _this;
 			_credit = MEMBER("getCredit", _type);
 			MEMBER("add", _credit);
@@ -61,6 +69,9 @@
 
 			_type = _this;
 			switch (_type) do { 
+				case "chopper": {
+					_credit = -3;
+				};
 				case "tank": {
 					_credit = -3;
 				};
@@ -81,7 +92,10 @@
 				};
 				case "redzone": {
 					_credit = -10;
-				};				
+				};
+				case "convoy": {
+					_credit = 10;
+				};			
 				case "mission": {
 					_credit = 5;
 				};
@@ -93,6 +107,7 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("active");
 			DELETE_VARIABLE("ticket");
 		};
 	ENDCLASS;

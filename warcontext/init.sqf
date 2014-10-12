@@ -74,6 +74,7 @@
 
 	// check all sector for victory
 	sleep 30;
+	["setActive", true] call global_ticket;
 
 	_end = false;
 	while { !_end} do {

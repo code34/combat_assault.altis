@@ -149,6 +149,7 @@
 			private["_array"];
 			{
 				deletemarker _x;
+				sleep 0.01;
 			}foreach MEMBER("gridmarker", nil);
 			_array = [];
 			MEMBER("gridmarker", _array);			
@@ -259,6 +260,7 @@
 				} else {
 					_cost = 1;
 				};
+				sleep 0.01;
 			}foreach _grid;
 		};
 
@@ -286,7 +288,9 @@
 					while { format ["%1", _x buildingPos _index] != "[0,0,0]" } do {
 						_positions = _positions + [(_x buildingPos _index)];
 						_index = _index + 1;
+						sleep 0.01;
 					};
+					sleep 0.01;
 				}foreach _buildings;
 			};
 			_positions;
@@ -335,7 +339,7 @@
 						_nextsector = _x;
 					};
 				};
-				sleep 0.001;
+				sleep 0.01;
 			}foreach _neighbors;
 
 			_nextsector;
@@ -353,7 +357,7 @@
 				_array = [_currentsector, _goalsector];
 				_currentsector = MEMBER("getNextSector", _array);
 				["DrawSector", _currentsector] call _grid;
-				sleep 0.001;
+				sleep 0.01;
 			};
 			_sectors;
 		};
@@ -366,7 +370,7 @@
 				{
 					_sector = MEMBER("getSectorFromPos", position _x);
 					_sectors = _sectors + [sector];
-					sleep 0.1;
+					sleep 0.01;
 				}foreach playableunits;
 				MEMBER("playersector", _sectors);
 				sleep 10;

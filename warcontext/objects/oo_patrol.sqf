@@ -160,7 +160,7 @@
 		PUBLIC FUNCTION("", "revealTarget") {
 			{
 				leader MEMBER("group", nil) reveal [_x, 4];
-				sleep 0.001;
+				sleep 0.01;
 			}foreach units MEMBER("targets", nil);
 		};		
 
@@ -174,7 +174,7 @@
 				if(side _x != west) then {
 					_list set [_foreachindex, -1];
 				};
-				sleep 0.001;
+				sleep 0.01;
 			}foreach _list;
 			_list = _list - [-1];
 			MEMBER("targets", _list);
@@ -215,11 +215,12 @@
 			while { format ["%1", _building buildingPos _index] != "[0,0,0]" } do {
 				_positions = _positions + [(_building buildingPos _index)];
 				_index = _index + 1;
-				sleep 0.0001;
+				sleep 0.01;
 			};
 
 			{
 				_x domove (_positions call BIS_fnc_selectRandom);
+				sleep 0.01;
 			}foreach units MEMBER("group", nil);
 			sleep 30;
 		};
@@ -328,7 +329,7 @@
 
 			while { (position _leader) distance _position < 20 } do {
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;
-				sleep 0.1;
+				sleep 0.01;
 			};
 
 			_wp = _group addWaypoint [_position, 25];
@@ -377,6 +378,7 @@
 			MEMBER("setBuildingMode", nil);
 			{
 				_x domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
+				sleep 0.01;
 			}foreach units MEMBER("group", nil);
 
 			_counter = 0;

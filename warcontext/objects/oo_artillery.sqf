@@ -120,6 +120,7 @@
 			{
 				_x setdamage 1;
 				deletevehicle _x;
+				sleep 0.01;
 			}foreach (crew MEMBER("getVehicle", nil));
 
 			MEMBER("getVehicle", nil) setdamage 1;

@@ -56,7 +56,7 @@
 			MEMBER("unitstype", _type);
 			
 			if(random 1 > 0.90) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
-			if(random 1 > 0.90) then { MEMBER("setMission", nil); };
+			if(random 1 > 0.85) then { MEMBER("setMission", nil); };
 		};
 
 		PUBLIC FUNCTION("","getIndex") FUNC_GETVAR("index");
@@ -219,7 +219,7 @@
 
 				{
 					if(alive _x) then { _units = _units + 1;};
-					sleep 0.001
+					sleep 0.01
 				}foreach MEMBER("units", nil);
 				if(_units == 0) then { _run = false; };
 				sleep 1;

@@ -96,7 +96,10 @@
 			_position = position MEMBER("vehicle", nil);
 			_group = MEMBER("group", nil);
 			if(_position select 2 < 10) then {
-				{_x setdammage 1;}foreach units _group;
+				{
+					_x setdammage 1;
+					sleep 0.01;
+				}foreach units _group;
 			};
 		};
 
@@ -120,7 +123,7 @@
 						_sectors = _sectors + [_nextsector];
 					};
 				};
-				sleep 0.001;
+				sleep 0.01;
 			} foreach MEMBER("around", nil);
 			MEMBER("underalert", _sectors);
 		};
@@ -181,6 +184,7 @@
 			{
 				_x setdammage 1;
 				deletevehicle _x;
+				sleep 0.1;
 			}foreach units MEMBER("group", nil);
 			deletegroup MEMBER("group", nil);
 			DELETE_VARIABLE("marker");

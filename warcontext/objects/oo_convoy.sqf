@@ -121,6 +121,7 @@
 			{
 				_x setdamage 1;
 				deletevehicle _x;
+				sleep 0.01;
 			}foreach units (MEMBER("group", nil));
 
 			MEMBER("getVehicle", nil) setdamage 1;

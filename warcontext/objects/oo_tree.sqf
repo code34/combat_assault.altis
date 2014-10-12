@@ -44,7 +44,7 @@
 					_node = MEMBER("root", nil); 
 					breakout "oo_tree_searchkey";
 				};
-				sleep 0.0001;
+				sleep 0.01;
 			}foreach _scalars;
 			_node;
 		};
@@ -69,12 +69,14 @@
 					_node = ["nextChild", _scalar ] call _node;
 					_counter = _counter + 1;
 				};
+				sleep 0.01;
 			};
 
 			while { _counter < _length } do {
 				_scalar = _scalars select _counter;
 				_node = ["addChild", _scalar] call _node;
 				_counter = _counter + 1;
+				sleep 0.01;
 			};
 
 			["setValue", [_value]] call _node;
@@ -97,7 +99,7 @@
 			{
 				_node = ["nextChild", _x ] call _node;
 				_array = [_node] + _array ;
-				sleep 0.0001;
+				sleep 0.01;
 			}foreach _scalars;
 
 			["setValue", []] call (_array select 0);
@@ -124,7 +126,7 @@
 						};
 					};
 				};
-				sleep 0.0001;
+				sleep 0.01;
 			}foreach _array;
 		};
 

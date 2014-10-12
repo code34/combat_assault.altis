@@ -347,27 +347,10 @@
 		};
 
 		PRIVATE FUNCTION("", "popAir") {
-			private ["_around", "_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
-		
-			_marker		=  MEMBER("marker", nil);
-			_markerpos 		= getmarkerpos _marker;
-			_markersize		= (getMarkerSize _marker) select 1;
-		
-			_vehicle = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
-			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
-		
-			_vehicle = _array select 0;
-			_group = _array select 2;
-			_vehicle setVehicleLock "LOCKED";
+			private ["_patrol"];
 
-			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
-			_patrol = ["new", [_vehicle, _group, MEMBER("getThis", nil)]] call OO_PATROLAIR;
+			_patrol = ["new", [MEMBER("getThis", nil)]] call OO_PATROLAIR;
 			"patrol" spawn _patrol;
-		
-			{
-				_handle = [_x, ""] spawn WC_fnc_setskill;
-				sleep 0.1;
-			}foreach (units _group);
 		};
 
 

@@ -36,7 +36,7 @@
 		waitUntil{count wcteleportposition > 0};
 
 		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 50];
-		_array = [_newposition, 0, "I_Heli_light_03_unarmed_F", west] call bis_fnc_spawnvehicle;
+		_array = [_newposition, 0, "B_Heli_Transport_01_camo_F", west] call bis_fnc_spawnvehicle;
 		_vehicle = _array select 0;
 
 		_vehicle removeAllEventHandlers "HandleDamage";

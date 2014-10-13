@@ -58,7 +58,7 @@
 				if(typeof _x == _this) then {
 					_array = _array + [_x];
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach playableUnits;
 			_array;
 		};
@@ -93,7 +93,7 @@
 					MEMBER("setPlayerSaveSector", _array);
 					_newsector = _newsector + [_sector];
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("groundplayers", nil);
 			_newsector;
 		};
@@ -105,7 +105,7 @@
 			{
 				_temp = ["getSectorAllAround", [_x, 3]] call MEMBER("grid", nil);
 				_around = _around + _temp;
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _array; 
 			_around;
 		};
@@ -131,7 +131,7 @@
 						_neighbour = _neighbour + 1;
 					};
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			} foreach _cross;
 			_neighbour;
 		};
@@ -147,7 +147,7 @@
 				{
 					_boundaries = MEMBER("getNumberNeighour", _x);
 					if(_boundaries > 3) then {_can = false;};
-					sleep 0.01;
+					sleep 0.0001;
 				}foreach _cross;
 			} else {
 				_can = false;
@@ -165,7 +165,7 @@
 				_sector = ["getSectorFromPos", position _x] call _grid;
 				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;
 				if(_cost < _costmin) then {_costmin = _cost;};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("groundplayers", nil);
 			
 			if(_costmin >3) then {
@@ -191,7 +191,7 @@
 				if(random 1 > 0.90) then {
 					MEMBER("expandSector", _sector);
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _around;
 		};
 
@@ -212,23 +212,23 @@
 						["Put", [str(_x), _sector]] call MEMBER("zone_hashmap",nil);
 					};
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _around;
 		};		
 
 		PUBLIC FUNCTION("array", "expandAlertAround"){
 			private ["_sector", "_around"];
 			_sector = _this;
-			_around = ["getSectorAllAround", [_sector,2]] call MEMBER("grid", nil);
+			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
 				if!(isnil "_sector") then {
-					if(("getState" call _sector) == 1) then {
+					if(("getState" call _sector) < 2) then {
 						["setAlert", true] call _sector;
 					};
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _around;
 		};
 
@@ -326,7 +326,7 @@
 					_victory = false;
 					breakout "oo_check_victory";
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach ("entrySet" call MEMBER("zone_hashmap",nil));
 			_victory;
 		};
@@ -336,7 +336,7 @@
 			while { true } do {
 				MEMBER("setGroundPlayers", nil);
 				MEMBER("spawnSector", nil);
-				sleep 0.01;
+				sleep 0.0001;
 			};
 		};
 

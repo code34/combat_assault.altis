@@ -65,8 +65,6 @@
 	
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;
-	"startConvoy" spawn global_controller;
-
 	[global_zone_hashmap] call WC_fnc_computezone;
 	
 	"startPatrol" spawn global_dogfight;
@@ -74,6 +72,7 @@
 
 	// check all sector for victory
 	sleep 30;
+	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;
 
 	_end = false;

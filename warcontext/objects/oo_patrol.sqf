@@ -66,7 +66,7 @@
 						MEMBER("walk", nil);	
 					};
 				};
-				sleep 1;
+				sleep 0.1;
 			};
 			MEMBER("deconstructor", nil);
 		};
@@ -81,7 +81,7 @@
 				MEMBER("getTargets", _position);
 				MEMBER("getNextTarget", nil);
 				MEMBER("engageTarget", nil);
-				sleep 1;
+				sleep 0.1;
 			};			
 		};
 
@@ -106,15 +106,25 @@
 			_isvisible = MEMBER("seeTarget", nil);
 
 			if(_isvehicle) then {
+				MEMBER("setMoveMode", nil);
 				MEMBER("moveAround", 50);
 			} else {
-				if((_isvisible) and (!_isbuilding)) then {
-					MEMBER("doFire", nil);
-					MEMBER("moveToTarget", nil);
+				if(_isbuilding) then {
+					hint "movebuilding";
+					if(_isvisible) then {
+						MEMBER("doFire", nil);
+					};
+					MEMBER("setMoveMode", nil);
+					MEMBER("moveInto", nearestbuilding _target);
 				} else {
-					if(_isbuilding) then {
-						MEMBER("moveInto", nearestbuilding _target);
+					if(_isvisible) then {
+						hint "moveto";
+						MEMBER("setCombatMode", nil);
+						MEMBER("doFire", nil);
+						MEMBER("moveToTarget", nil);
 					} else {
+						hint "movearound";
+						MEMBER("setMoveMode", nil);
 						MEMBER("moveAround", 25);
 					};
 				};
@@ -135,7 +145,7 @@
 			{
 				_index = floor (MEMBER("estimateTarget", _x));
 				_candidats = _candidats + [[_index, _x]];
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("targets", nil);
 
 			if(!isnil "_target") then {
@@ -152,7 +162,7 @@
 					_target = _x select 1;
 					_min = _x select 0;
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _candidats;
 			MEMBER("target", _target);
 		};		
@@ -160,7 +170,7 @@
 		PUBLIC FUNCTION("", "revealTarget") {
 			{
 				leader MEMBER("group", nil) reveal [_x, 4];
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach units MEMBER("targets", nil);
 		};		
 
@@ -168,13 +178,13 @@
 			private ["_position", "_list"];
 
 			_position = _this;
-			_list = _position nearEntities [["Man", "Tank"], 600];
+			_list = _position nearEntities [["Man", "Tank"], 800];
 			sleep 0.5;
 			{
 				if(side _x != west) then {
 					_list set [_foreachindex, -1];
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _list;
 			_list = _list - [-1];
 			MEMBER("targets", _list);
@@ -200,7 +210,7 @@
 		PUBLIC FUNCTION("", "doFire") {
 			{
 				_x dofire MEMBER("target", nil);
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 		};
 
@@ -215,12 +225,12 @@
 			while { format ["%1", _building buildingPos _index] != "[0,0,0]" } do {
 				_positions = _positions + [(_building buildingPos _index)];
 				_index = _index + 1;
-				sleep 0.01;
+				sleep 0.0001;
 			};
 
 			{
 				_x domove (_positions call BIS_fnc_selectRandom);
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 			sleep 30;
 		};
@@ -234,9 +244,22 @@
 
 		// move around target
 		PUBLIC FUNCTION("scalar", "moveAround") {
-			private ["_areasize", "_position"];
+			private ["_areasize", "_dir", "_leader", "_position", "_target"];
+			
 			_areasize = _this;
-			_position = [position MEMBER("target", nil), random (_areasize), random 359] call BIS_fnc_relPos;
+			_target = MEMBER("target", nil);
+			_leader = leader MEMBER("group", nil);
+			_dir = [_leader, _target] call BIS_fnc_dirTo;
+
+			if(random 1 > 0.5) then {
+				_dir = _dir + 90;
+			} else {
+				_dir = _dir - 90;
+			};
+			if(_dir > 359) then {_dir = _dir - 360};
+			if(_dir < 0) then {_dir = _dir + 360};
+
+			_position = [position _target, 50, _dir] call BIS_fnc_relPos;
 			MEMBER("moveTo", _position);
 		};
 
@@ -246,8 +269,8 @@
 
 			_position = _this;
 			_group = MEMBER("group", nil);
-			_wp = _group addWaypoint [_position, 25];
-			_wp setWaypointPosition [_position, 25];
+			_wp = _group addWaypoint [_position, 0];
+			_wp setWaypointPosition [_position, 0];
 			_wp setWaypointType "MOVE";
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
@@ -286,11 +309,10 @@
 
 		PUBLIC FUNCTION("", "scanTargets") {
 			{
-				_know = (leader MEMBER("group", nil)) knowsAbout _x;
-				if((leader MEMBER("group", nil)) knowsAbout _x > 0.4) then {
+				if((leader MEMBER("group", nil)) knowsAbout _x > 0.40) then {
 					MEMBER("setAlert", nil);
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("targets", nil);
 		};		
 
@@ -329,7 +351,7 @@
 
 			while { (position _leader) distance _position < 20 } do {
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;
-				sleep 0.01;
+				sleep 0.0001;
 			};
 
 			_wp = _group addWaypoint [_position, 25];
@@ -341,29 +363,29 @@
 			_group setCurrentWaypoint _wp;
 
 			_counter = 0;
-			while { _counter < 30 } do {
+			while { _counter < 300 } do {
 				_leader = leader _group;
 				if(format["%1",  _leader getVariable "complete"] == "true") then {
 					_leader setvariable ['complete', false];
-					_counter = 30;
+					_counter = 300;
 				};
 				if(format["%1",  _leader getVariable "combat"] == "true") then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
-					_counter = 30;
+					_counter = 300;
 				};
-				if(!MEMBER("isCompleteGroup" ,nil)) then {
-					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
-					MEMBER("setAlert", nil);
-					_counter = 30;
-				};
+				//if(!MEMBER("isCompleteGroup" ,nil)) then {
+				//	if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
+				//	MEMBER("setAlert", nil);
+				//	_counter = 300;
+				//};
 				if("getAlert" call MEMBER("sector", nil)) then {
 					MEMBER("alert", true);
-					_counter = 30;
+					_counter = 300;
 				};
 				MEMBER("scanTargets", nil);
 				_counter = _counter + 1;
-				sleep 1;
+				sleep 0.1;
 			};
 			deletewaypoint _wp;
 		};
@@ -378,33 +400,33 @@
 			MEMBER("setBuildingMode", nil);
 			{
 				_x domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 
 			_counter = 0;
-			while { _counter < 30 } do {
+			while { _counter < 300 } do {
 				_leader = leader _group;
 				if(format["%1",  _leader getVariable "complete"] == "true") then {
 					_leader setvariable ['complete', false];
-					_counter = 30;
+					_counter = 300;
 				};
 				if(format["%1",  _leader getVariable "combat"] == "true") then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
-					_counter = 30;
+					_counter = 300;
 				};
-				if(!MEMBER("isCompleteGroup" ,nil)) then {
-					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
-					MEMBER("setAlert", nil);
-					_counter = 30;
-				};
+				//if(!MEMBER("isCompleteGroup" ,nil)) then {
+				//	if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
+				//	MEMBER("setAlert", nil);
+				//	_counter = 300;
+				//};
 				if("getAlert" call MEMBER("sector", nil)) then {
 					MEMBER("alert", true);
-					_counter = 30;
+					_counter = 300;
 				};
 				MEMBER("scanTargets", nil);
 				_counter = _counter + 1;
-				sleep 1;
+				sleep 0.1;
 			};
 		};		
 
@@ -413,6 +435,12 @@
 			MEMBER("group", nil) setCombatMode "WHITE";
 			MEMBER("group", nil) setSpeedMode "FULL";
 		};
+
+		PUBLIC FUNCTION("", "setMoveMode") {
+			MEMBER("group", nil) setBehaviour "AWARE";
+			MEMBER("group", nil) setCombatMode "RED";
+			MEMBER("group", nil) setSpeedMode "FULL";
+		};		
 
 		PUBLIC FUNCTION("", "setSafeMode") {
 			MEMBER("group", nil) setBehaviour "SAFE";

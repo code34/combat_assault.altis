@@ -55,7 +55,7 @@
 					_return = _x select 1;
 					breakout "oo_node_nextchild";
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("childrens", nil);
 			_return;
 		};
@@ -69,7 +69,7 @@
 				if(_value > 0) then {
 					_array = _array + [_value];
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("childrens", nil);
 			_array;
 		};
@@ -83,7 +83,7 @@
 				if(count _value > 0) then {
 					_array = _array + _value;
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach MEMBER("childrens", nil);
 			_array;
 		};
@@ -119,7 +119,7 @@
 				if(_x select 0 == _scalar) then {
 					_array set [_foreachindex, -1];
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _array;
 			_array = _array - [-1];
 			MEMBER("childrens", _array);

@@ -56,7 +56,8 @@
 			MEMBER("unitstype", _type);
 			
 			if(random 1 > 0.90) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
-			if(random 1 > 0.85) then { MEMBER("setMission", nil); };
+			//if(random 1 > 0.85) then { MEMBER("setMission", nil); };
+			MEMBER("setMission", nil);
 		};
 
 		PUBLIC FUNCTION("","getIndex") FUNC_GETVAR("index");
@@ -208,15 +209,17 @@
 					sleep 0.01;
 				}foreach playableunits;
 
-				if(_mincost > 0 and _mincost <4) then {
+				if(_mincost <4) then {
 					MEMBER("marker", nil) setmarkercolor "ColorOrange";
 					_run = true;
 				};
-				if(_mincost == 0) then {
+				if(MEMBER("alert", nil)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
-					_run = true;
 				};
-
+				//if(_mincost == 0) then {
+				//	MEMBER("marker", nil) setmarkercolor "ColorPink";
+				//	_run = true;
+				//};
 				{
 					if(alive _x) then { _units = _units + 1;};
 					sleep 0.01

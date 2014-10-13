@@ -40,18 +40,22 @@
 		PUBLIC FUNCTION("","getTarget") FUNC_GETVAR("target");
 
 		PUBLIC FUNCTION("", "setTarget") {
-			private ["_list", "_target", "_mark", "_return"];
+			private ["_list", "_target", "_return", "_targets"];
 			
-			_list = nearestObjects [ MEMBER("position", nil), ["House_F"], 25];
+			_targets = ["Land_Lighthouse_small_F", "Land_Airport_Tower_F", "Land_Hangar_F", "Land_dp_bigTank_F", "Land_dp_mainFactory_F", "Land_dp_smallTank_F", "Land_dp_transformer_F", "Land_Factory_Main_F", "Land_FuelStation_Feed_F", "Land_fs_feed_F", "Land_IndPipe1_ground_F", "Land_HighVoltageEnd_F", "Land_HighVoltageTower_F", "Land_HighVoltageTower_largeCorner_F", "  	Land_ReservoirTank_Airport_F", "Land_ReservoirTank_V1_F", "Land_ReservoirTower_F", "Land_Tank_rust_F", "Land_TTowerBig_1_F", "Land_TBox_F", "Land_TTowerBig_2_F", "MetalBarrel_burning_F", "Land_MetalBarrel_F", "Land_Cargo_House_V1_F", "Land_Cargo_House_V2_F", "Land_Cargo_House_V3_F", "Land_Cargo_HQ_V1_F", "Land_Cargo_HQ_V2_F", "Land_Cargo_HQ_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Cargo_Patrol_V2_F", "Land_Cargo_Patrol_V3_F", "Land_Cargo_Tower_V1_F", "Land_Cargo_Tower_V2_F", "Land_Cargo_Tower_V3_F", "Land_Radar_F", "Land_MilOffices_V1_F", "Land_Radar_Small_F", "Land_Dome_Small_F", "Land_Research_house_V1_F", "Land_Research_HQ_F"];
+
+			_list = nearestObjects [ MEMBER("position", nil), _targets, 25];
 	
 			if(count _list > 0) then {
 				_target = _list call BIS_fnc_selectRandom;
-				if(MEMBER("sizeBuilding", _target) > 1) then {
-					MEMBER("target", _target);
-					_return = true;
-				} else {
-					_return = false;
-				};
+				MEMBER("target", _target);
+				_return = true;
+				//if(MEMBER("sizeBuilding", _target) > 1) then {
+				//	MEMBER("target", _target);
+				//	_return = true;
+				//} else {
+				//	_return = false;
+				//};
 			} else {
 				_return = false;
 			};

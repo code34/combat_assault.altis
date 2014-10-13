@@ -116,8 +116,9 @@
 			_skiptime = _this select 0;
 
 			while {true} do {
-				skiptime _skiptime;
-				if((date select 3 > 20) and (date select 3 <6)) then {
+				if((date select 3 > 17) and (date select 3 <6)) then {
+					skiptime (_skiptime * 2);
+				} else {
 					skiptime _skiptime;
 				};
 				sleep 10;

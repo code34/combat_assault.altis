@@ -114,7 +114,8 @@
 					if(_isvisible) then {
 						MEMBER("doFire", nil);
 					};
-					MEMBER("setMoveMode", nil);
+					MEMBER("setCombatMode", nil);
+					//MEMBER("setMoveMode", nil);
 					MEMBER("moveInto", nearestbuilding _target);
 				} else {
 					if(_isvisible) then {
@@ -124,7 +125,8 @@
 						MEMBER("moveToTarget", nil);
 					} else {
 						hint "movearound";
-						MEMBER("setMoveMode", nil);
+						MEMBER("setCombatMode", nil);
+						//MEMBER("setMoveMode", nil);
 						MEMBER("moveAround", 25);
 					};
 				};
@@ -191,11 +193,17 @@
 		};		
 
 		PUBLIC FUNCTION("", "seeTarget") {
-			private ["_leader", "_target", "_objects"];
-			_leader = leader MEMBER("group", nil);
+			private ["_target", "_objects", "_see"];
+			_see = false;
 			_target =  MEMBER("target", nil);
-			_objects = lineIntersectsWith [eyePos _leader, position _target];
-			if(count _objects > 0) then {true;}else{false;};
+			{
+				if(alive _x) then {
+					_objects = lineIntersectsWith [eyePos _x, position _target];
+					if(count _objects == 0) then { _see = true;};
+				};
+				sleep 0.0001;
+			} foreach units MEMBER("group", nil);
+			_see;
 		};		
 
 		PUBLIC FUNCTION("object", "estimateTarget") {

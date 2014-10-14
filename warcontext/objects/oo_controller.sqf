@@ -207,9 +207,9 @@
 					if(random 1 > 0.95) then {
 						_position = ["getPosFromSector", _x] call MEMBER("grid", nil);
 						_sector = ["new", [str(_x), _position, MEMBER("grid", nil)]] call OO_SECTOR;
-						"Draw" call _sector;
+						"draw" call _sector;
 						"setVictory" call _sector;
-						["Put", [str(_x), _sector]] call MEMBER("zone_hashmap",nil);
+						["put", [str(_x), _sector]] call MEMBER("zone_hashmap",nil);
 					};
 				};
 				sleep 0.0001;
@@ -232,6 +232,14 @@
 			}foreach _around;
 		};
 
+		PUBLIC FUNCTION("array", "deleteSector"){
+			private ["_key", "_sector"];
+			_key = _this;
+			_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
+			["remove", str(_key)] call MEMBER("zone_hashmap",nil);
+			["delete", _sector] call OO_SECTOR;
+		};
+
 		PUBLIC FUNCTION("", "queueSector"){
 			private ["_queue", "_key", "_position", "_sector"];
 			while { true } do {
@@ -244,8 +252,8 @@
 						if(!surfaceIsWater _position) then {
 							if(MEMBER("canExpandToSector", _key)) then {
 								_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
-								"Draw" call _sector;
-								["Put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
+								"draw" call _sector;
+								["put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
 								["setTicket", "redzone"] call global_ticket;
 							};
 						};

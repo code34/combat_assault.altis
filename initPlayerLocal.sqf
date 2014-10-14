@@ -34,9 +34,9 @@
 			};
 		}];
 
-		player createDiaryRecord ["Diary", ["Situation", "Things are looking bad. Try to find your way on Altis Island and perphaps you will have a luck to go out of this doom maze"]];
+		player createDiaryRecord ["Diary", ["Situation", "Things are going bad on Altis Island. Try to find a way to defeat the enemy and perphaps you will have a luck to go out of this doom maze"]];
 		_task = player createSimpleTask ["Mission"];
-		_task setSimpleTaskDescription ["Hi! you just come back to Altis Island. A Pretty nice island where you went on holidays when you were young. A this time, it is a fucking island with hot temperatures, under enemies control. Soldier, you have to go to Altis Island and organise the takeover of this island", "Go and investigate on Altis Island", "Task HUD Title"];
+		_task setSimpleTaskDescription ["Hi! you just come back to Altis Island. A Pretty nice island where you went on holidays. A this time, it is a fucking island with hot temperatures, under enemies control. Soldier, you have to go to Altis Island and organise the takeover of this island", "Go and retrieve the Altis Island", "Task HUD Title"];
 
 		playMusic "intro";
 		["<t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>Beta</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;

@@ -71,7 +71,7 @@
 		PUBLIC FUNCTION("", "getThis") {
 			private ["_key", "_sector"];
 			_key = MEMBER("sector", nil);
-			_sector = ["Get", str(_key)] call global_zone_hashmap;
+			_sector = ["get", str(_key)] call global_zone_hashmap;
 			_sector;
 		};
 
@@ -108,7 +108,7 @@
 			MEMBER("artillery", _artillery);
 		};
 
-		PUBLIC FUNCTION("", "Draw") {
+		PUBLIC FUNCTION("", "draw") {
 			private ["_marker"];
 			_marker = createMarker [format["mrk%1", MEMBER("index", nil)], MEMBER("position", nil)];
 			_marker setMarkerShape "RECTANGLE";
@@ -118,7 +118,7 @@
 			MEMBER("marker", _marker);
 		};
 
-		PUBLIC FUNCTION("", "UnDraw") {
+		PUBLIC FUNCTION("", "unDraw") {
 			deletemarker MEMBER("marker", nil);
 		};
 
@@ -186,7 +186,7 @@
 			MEMBER("units", _units);
 		};
 
-		PUBLIC FUNCTION("", "Spawn") {
+		PUBLIC FUNCTION("", "spawn") {
 			private ["_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type"];
 
 			MEMBER("state", 1);
@@ -244,6 +244,8 @@
 			_position = ["getPosFromSector", MEMBER("getSector",nil)] call MEMBER("grid", nil);
 			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
 			["new", [_position]] spawn OO_BONUSVEHICLE;
+			sleep 120;
+			["deleteSector", MEMBER("getSector", nil)] call global_controller;
 		};
 
 		PUBLIC FUNCTION("bool", "setAlert") {

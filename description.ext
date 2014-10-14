@@ -1,6 +1,6 @@
 Author = "Code34";
 onLoadName = "COMBAT ASSAULT";
-loadScreen = "combatassault.jpg";
+loadScreen = "loading.jpg";
 OnLoadMission = "COMBAT ASSAULT - www.combat-assault.eu";
 onLoadMissionTime = 1;
 Respawn = "BASE";
@@ -15,19 +15,6 @@ class Header
 	minPlayers=1;
 	maxPlayers=40;
 };
-
-
-class CfgSounds
-{
-	sounds[] = {};  
-	class death
-	{
-		name = "death";
-		sound[] = {"\sound\death.ogg", 1, 1};
-		titles[] = {};
-	};
-};
-
 
 class CfgMusic {
 	tracks[]={intro};

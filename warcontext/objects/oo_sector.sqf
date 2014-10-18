@@ -229,7 +229,6 @@
 			
 			if(_units == 0) then {
 				MEMBER("setVictory", nil);
-				MEMBER("unPopSector", nil);
 			} else {
 				MEMBER("UnSpawn", nil);
 			};
@@ -240,9 +239,10 @@
 			MEMBER("marker", nil) setmarkercolor "ColorBlue";
 			MEMBER("state", 2);
 			["setTicket", "bluezone"] call global_ticket;
-			_position = ["getPosFromSector", MEMBER("getSector",nil)] call MEMBER("grid", nil);
+			_position = MEMBER("getPosition", nil);
 			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
 			["new", [_position]] spawn OO_BONUSVEHICLE;
+			MEMBER("unPopSector", nil);
 			sleep 120;
 			["deleteSector", MEMBER("getSector", nil)] call global_controller;
 		};
@@ -271,8 +271,8 @@
 			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];
 
 			_marker	=  MEMBER("marker", nil);		
-			_markerpos = getmarkerpos _marker;
-			_markersize = (getMarkerSize _marker) select 1;
+			_markerpos 	= getmarkerpos _marker;
+			_markersize	= (getMarkerSize _marker) select 1;
 		
 			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] call BIS_fnc_selectRandom;
 		
@@ -294,9 +294,9 @@
 		PRIVATE FUNCTION("", "popSniper") {
 			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];
 
-			_marker	=  MEMBER("marker", nil);		
-			_markerpos = getmarkerpos _marker;
-			_markersize = (getMarkerSize _marker) select 1;
+			_marker 	=  MEMBER("marker", nil);		
+			_markerpos 	= getmarkerpos _marker;
+			_markersize 	= (getMarkerSize _marker) select 1;
 
 			_type = "OI_SniperTeam";		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
@@ -317,7 +317,7 @@
 		PRIVATE FUNCTION("", "popVehicle") {
 			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
 		
-			_marker			=  MEMBER("marker", nil);
+			_marker		=  MEMBER("marker", nil);
 			_markerpos 		= getmarkerpos _marker;
 			_markersize		= (getMarkerSize _marker) select 1;
 		
@@ -368,6 +368,9 @@
 			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("units");
 			DELETE_VARIABLE("unitstype");
-			DELETE_VARIABLE("state");		
+			DELETE_VARIABLE("state");
+			DELETE_VARIABLE("artilleryactive");
+			["delete", MEMBER("artillery", nil)] call OO_ARTILLERY;
+			DELETE_VARIABLE("artillery");
 		};
 	ENDCLASS;

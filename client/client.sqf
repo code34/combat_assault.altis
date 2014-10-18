@@ -76,6 +76,7 @@
 					[] call WC_fnc_teleportchopper;
 					_icon = "b_air";
 					["setSize", [150,150]] spawn _markchopper;
+					["attachTo", player] spawn _markchopper;
 				};
 			};
 
@@ -118,6 +119,7 @@
 			};
 
 			if(playertype == "chopper") then {
+				"detach" spawn _markchopper;
 				["setSize", [1,1]] spawn _markchopper;
 			};
 

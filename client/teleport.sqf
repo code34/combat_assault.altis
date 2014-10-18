@@ -18,7 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_position"];
+	private ["_position", "_list", "_vehicle"];
 
 	_position = position player;
 
@@ -34,7 +34,18 @@
 			["wcteleport", "server"] call BME_fnc_publicvariable;
 		};
 		waitUntil{count wcteleportposition > 0};
-		player setpos wcteleportposition;
+		
+		_list = wcteleportposition nearEntities ["B_Heli_Transport_01_camo_F", 150];
+		if (count _list > 0) then {
+			_vehicle = _list select 0;
+			if (count (crew _vehicle) < 10) then {
+				player moveInAny _vehicle;
+			} else {
+				player setpos wcteleportposition;
+			};
+		} else {
+			player setpos wcteleportposition;
+		};
 		onMapSingleClick "";
 	};
 

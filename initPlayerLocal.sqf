@@ -11,6 +11,8 @@
 		call compilefinal preprocessFileLineNumbers "client\oo_reloadplane.sqf";
 		call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";	
 
+		mystats = 0;
+
 		hud = ["new", []] call OO_HUD;
 		"drawAll" spawn hud;
 
@@ -39,7 +41,32 @@
 		_task setSimpleTaskDescription ["Hi! you just come back to Altis Island. A Pretty nice island where you went on holidays. A this time, it is a fucking island with hot temperatures, under enemies control. Soldier, you have to go to Altis Island and organise the takeover of this island", "Go and retrieve the Altis Island", "Task HUD Title"];
 
 		playMusic "intro";
+		//playMusic ["LeadTrack01a_F", 2];
+
 		["<t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>Beta</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
 		[] spawn WC_fnc_client;
+
+		[] spawn {
+			private ["_weight"];
+			disableSerialization;
+			cutrsc ['bottomhud','PLAIN'];
+			while { true} do {
+				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
+				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl -1;
+				_text = format ["Stamina: %1", (100 - round(getfatigue player * 100))];
+				_text = _text + "<br/>" + format ["Health: %1", (100 - round(getDammage player * 100))];
+				_text = _text + "<br/>" + format ["Azimut: %1", round(getdir player)];
+				if (systemOfUnits != 2) then {
+					_weight = format ["%1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
+				} else {
+					_weight = format ["%1 %2", round ((loadabs player)*0.1), "lb."];
+				}; 
+				_text = _text + "<br/>" + format ["Weight: %1", _weight];
+				_text = _text + "<br/>" + format ["Stats: %1", mystats];
+				_ctrl ctrlSetStructuredText parseText _text;
+				_ctrl ctrlcommit 0;
+				sleep 1;			
+			};
+		};
 	};

@@ -32,14 +32,14 @@
 		};
 
 		PUBLIC FUNCTION("", "drawPlayerTag") {
-			private ["_code"];
-	
+			private ["_code", "_vehicle"];
+			
 			_code = "
 					{	_vehicle = _x;
 						_distance = (player distance _vehicle) / 15;
 						_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
 						_color set [3, 1 - _distance];
-						 drawIcon3D [ '', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
+						 drawIcon3D ['', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
 					}foreach playableunits - [player];
 			";
 			_code;

@@ -28,25 +28,28 @@
 	};
 
 	BME_netcode_server_wcdeath = {
-		private ["_array", "_player", "_stat", "_score", "_death", "_playertype"];
+		private ["_array", "_name", "_player", "_stat", "_score", "_death", "_playertype", "_uid"];
 
 		_array = _this select 0;
-		_player = _array select 0;
+		_name = _array select 0;
 		_playertype = _array select 1;
 		
 		["setTicket", _playertype] call global_ticket;
 
 		{	
-			if(_player == name _x) then {
+			if(_name == name _x) then {
+				_player = _x;
+				_uid = getPlayerUID _x;
 				_score = score _x;	
 			};
+			sleep 0.0001;
 		}forEach allDead;
 
 		if(_score < 1) then {
 			_score = 1;
 		};
 
-		_death = ["get", _player] call global_scores;
+		_death = ["get", _name] call global_scores;
 		if(isnil "_death") then {
 			_death = 0;
 		};
@@ -56,8 +59,8 @@
 		if(isnil "_stat") then {_stat = 0;};
 		if(_death < 10) then {_stat = 0;};
 		
-		["Put", [_player, _death]] call global_scores;
-		playerstats = [_player, _stat];
+		["Put", [_name, _death]] call global_scores;
+		playerstats = [_name, _stat];
 		["playerstats", "client"] call BME_fnc_publicvariable;
 	};		
 
@@ -71,6 +74,7 @@
 			if (name _x == _name) then {
 				_playerid = owner _x;
 			};
+			sleep 0.0001;
 		}foreach playableUnits;
 
 		_position = _wcteleport select 1;
@@ -104,6 +108,7 @@
 				};
 			};
 		}foreach _around;
+
 		wcteleportack = _result;
 		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 	};
@@ -118,6 +123,7 @@
 			if (name _x == _name) then {
 				_playerid = owner _x;
 			};
+			sleep 0.0001;
 		}foreach playableUnits;
 
 		_position = _wcteleport select 1;
@@ -150,6 +156,7 @@
 					_result = [0,0];
 				};
 			};
+			sleep 0.0001;
 		}foreach _around;
 		wcteleportack = _result;
 		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
@@ -165,6 +172,7 @@
 			if (name _x == _name) then {
 				_playerid = owner _x;
 			};
+			sleep 0.0001;
 		}foreach playableUnits;
 
 		_position = _wcteleport select 1;
@@ -197,6 +205,7 @@
 					_result = [0,0];
 				};
 			};
+			sleep 0.0001;
 		}foreach _around;
 		wcteleportack = _result;
 		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;

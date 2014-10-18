@@ -34,6 +34,10 @@
 		_type = _value select 1;
 		_credit = _value select 2;
 
+		_index = round ((random 30) + 87);
+		_entry = configFile >> "CfgMusic";
+		_track = configName(_entry select _index);
+		playMusic _track;
 		["hintScore", [_ticket, _type, _credit]] call hud;
 	};
 
@@ -71,6 +75,10 @@
 		_player = (_this select 0) select 0;
 		_stats = (_this select 0) select 1;
 		_done = false;
+
+		if(_player == name player) then {
+			mystats = _stats;
+		};		
 		
 		{
 			if(_player == _x select 0) then {

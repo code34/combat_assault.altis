@@ -1,5 +1,5 @@
 		
-		private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
+		private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload", "_markchopper"];
 
 		_body = player;
 		_vehicle = vehicle player;
@@ -11,6 +11,16 @@
 		if((playertype == "bomber") or (playertype == "fighter")) then {
 			setviewdistance 3000;
 			_reload = ["new", [playertype]] call OO_RELOADPLANE;
+		};
+
+		if(playertype == "chopper") then {
+			setviewdistance 3000;
+			_markchopper = ["new", position player] call OO_MARKER;
+			["attachTo", player] spawn _markchopper;
+			["setShape", "ELLIPSE"] spawn _markchopper;
+			["setText", name player] spawn _markchopper;
+			["setColor", "ColorBlue"] spawn _markchopper;
+			["setSize", [1,1]] spawn _markchopper;
 		};
 
 		while {true} do {
@@ -65,6 +75,7 @@
 				case "chopper": {
 					[] call WC_fnc_teleportchopper;
 					_icon = "b_air";
+					["setSize", [150,150]] spawn _markchopper;
 				};
 			};
 
@@ -101,8 +112,13 @@
 			["setType", "mil_flag"] spawn _mark;
 			["draw", "ColorRed"] spawn _mark;
 
+
 			if((playertype == "bomber") or (playertype == "fighter")) then {
 				"stop" call _reload;
+			};
+
+			if(playertype == "chopper") then {
+				["setSize", [1,1]] spawn _markchopper;
 			};
 
 			waituntil {alive player};

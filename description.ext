@@ -41,9 +41,39 @@ class CfgDebriefing
 	{
 		title = "Mission Failed";
 		subtitle = "";
-		description = "You totaly failed to defended Altis against the enemies!";
+		description = "You failed to defended Altis against the enemies!";
 		pictureBackground = "";
 		picture = "";
 		pictureColor[] = {0.0,0.3,0.6,1};
 	};
+};
+
+#define CT_STRUCTURED_TEXT  13
+ #define ST_LEFT 0x00
+
+class RscTitles { 
+	class bottomhud { 
+		idd = -1; 
+		duration = 100000000; 
+		onLoad = "uiNamespace setVariable ['wcdisplay', _this select 0];";
+		fadein = 0;
+		fadeout = 0;
+		class controls {
+			class botlle { 
+				idc = -1; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = safeZoneX + safeZoneW - 0.4 * 3 / 4; 
+				y = (1 + ((0 + SafeZoneY) * -1) - 0.30);
+				w = 0.3 * 3 / 4;
+				h = 0.20;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				sizeEx = 0.03; 
+				colorBackground[] = {0,0,0,0.4}; 
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			}; 
+		};
+	}; 
 };

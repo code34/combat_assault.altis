@@ -27,11 +27,13 @@
 		PRIVATE VARIABLE("object","target");
 		PRIVATE VARIABLE("array","targets");
 		PRIVATE VARIABLE("group","group");
+		PRIVATE VARIABLE("scalar","flank");
 		PRIVATE VARIABLE("code","sector");
 		PRIVATE VARIABLE("scalar","sizegroup");
 		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("array","buildings");
 		PRIVATE VARIABLE("bool","city");
+
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("group", _this select 0);
@@ -43,12 +45,21 @@
 			MEMBER("grid", _grid);
 			MEMBER("getBuildings", nil);
 			MEMBER("alert", false);
+			MEMBER("setFlank", nil);
 		};
 
 		PUBLIC FUNCTION("","getGrid") FUNC_GETVAR("grid");
 		PUBLIC FUNCTION("","getGroup") FUNC_GETVAR("group");
 		PUBLIC FUNCTION("","getTarget") FUNC_GETVAR("target");
 		PUBLIC FUNCTION("","getSector") FUNC_GETVAR("sector");
+
+		PUBLIC FUNCTION("", "setFlank") {
+			if(random 1 > 0.5) then {
+				MEMBER("flank", 110);
+			} else {
+				MEMBER("flank", -110);
+			};
+		};
 
 		PUBLIC FUNCTION("", "patrol") {
 			private ["_group", "_position"];
@@ -119,12 +130,12 @@
 					MEMBER("moveInto", nearestbuilding _target);
 				} else {
 					if(_isvisible) then {
-						hint "moveto";
+						hint format ["moveto %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
 						MEMBER("doFire", nil);
 						MEMBER("moveToTarget", nil);
 					} else {
-						hint "movearound";
+						hint format ["movearound %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
 						//MEMBER("setMoveMode", nil);
 						MEMBER("moveAround", 25);
@@ -138,22 +149,27 @@
 
 
 		PUBLIC FUNCTION("", "getNextTarget") {
-			private ["_candidats", "_index", "_leader", "_target", "_min"];
+			private ["_array", "_candidats", "_index", "_leader", "_target", "_min", "_oldtarget"];
 			
 			_leader = leader MEMBER("group", nil);
 			_candidats = [];
 			_target = MEMBER("target", nil);
+			_oldtarget = objnull;
 			
 			{
-				_index = floor (MEMBER("estimateTarget", _x));
+				_array = [_leader, _x];
+				_index = floor (MEMBER("estimateTarget", _array));
 				_candidats = _candidats + [[_index, _x]];
 				sleep 0.0001;
 			}foreach MEMBER("targets", nil);
 
 			if(!isnil "_target") then {
 				if(alive _target) then {
-					_index = floor (MEMBER("estimateTarget", MEMBER("target", nil)));
-					_candidats = _candidats + [[_index, MEMBER("target", nil)]];
+					_oldtarget = MEMBER("target", nil);
+					_array = [_leader, _oldtarget];
+					_index = floor (MEMBER("estimateTarget", _array));
+					_candidats = _candidats + [[_index, _oldtarget]];
+
 				};
 			};
 
@@ -166,7 +182,11 @@
 				};
 				sleep 0.0001;
 			}foreach _candidats;
-			MEMBER("target", _target);
+
+			if(_oldtarget != _target) then {
+				MEMBER("target", _target);
+				MEMBER("setFlank", nil);
+			};
 		};		
 
 		PUBLIC FUNCTION("", "revealTarget") {
@@ -196,28 +216,36 @@
 			private ["_target", "_objects", "_see"];
 			_see = false;
 			_target =  MEMBER("target", nil);
+
 			{
 				if(alive _x) then {
-					_objects = lineIntersectsWith [eyePos _x, position _target];
-					if(count _objects == 0) then { _see = true;};
+					//_objects = lineIntersectsWith [eyePos _x, position _target];
+					//if(count _objects == 0) then { _see = true;};
+					_array = [_x, _target];
+					if(MEMBER("estimateTarget", _array) < 2) then {_see = true;};
 				};
 				sleep 0.0001;
 			} foreach units MEMBER("group", nil);
 			_see;
 		};		
 
-		PUBLIC FUNCTION("object", "estimateTarget") {
-			private ["_target", "_leader", "_position", "_realposition"];
-			_target = _this;
-			_leader = leader MEMBER("group", nil);	
-			_position = _leader getHideFrom _target;
+		PUBLIC FUNCTION("array", "estimateTarget") {
+			private ["_target", "_position", "_realposition", "_source"];
+			_source = _this select 0;
+			_target = _this select 1;
+			
+			_position = _source getHideFrom _target;
 			_realposition = position _target;
 			_position distance _realposition;
-		};		
+		};
 
 		PUBLIC FUNCTION("", "doFire") {
+			private ["_target"];
+			
+			_target = MEMBER("target", nil);
 			{
-				_x dofire MEMBER("target", nil);
+				_x dotarget _target;
+				_x dofire _target;
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 		};
@@ -259,15 +287,11 @@
 			_leader = leader MEMBER("group", nil);
 			_dir = [_leader, _target] call BIS_fnc_dirTo;
 
-			if(random 1 > 0.5) then {
-				_dir = _dir + 90;
-			} else {
-				_dir = _dir - 90;
-			};
+			_dir = _dir + MEMBER("flank", nil);
 			if(_dir > 359) then {_dir = _dir - 360};
 			if(_dir < 0) then {_dir = _dir + 360};
 
-			_position = [position _target, 50, _dir] call BIS_fnc_relPos;
+			_position = [position _target, 25, _dir] call BIS_fnc_relPos;
 			MEMBER("moveTo", _position);
 		};
 
@@ -277,13 +301,19 @@
 
 			_position = _this;
 			_group = MEMBER("group", nil);
-			_wp = _group addWaypoint [_position, 0];
-			_wp setWaypointPosition [_position, 0];
-			_wp setWaypointType "MOVE";
-			_wp setWaypointSpeed "FULL";
-			_group setCurrentWaypoint _wp;
+			//_wp = _group addWaypoint [_position, 5];
+			//_wp setWaypointPosition [_position, 5];
+			//_wp setWaypointType "HOLD";
+			//_wp setWaypointSpeed "FULL";
+			//_group setCurrentWaypoint _wp;
+
+			{
+				_x domove _position;
+				sleep 0.001;
+			}foreach units _group;
+
 			sleep 30;
-			deletewaypoint _wp;
+			//deletewaypoint _wp;
 		};		
 
 		PUBLIC FUNCTION("", "isCompleteGroup") {
@@ -473,5 +503,6 @@
 			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("buildings");
 			DELETE_VARIABLE("city");
+			DELETE_VARIABLE("flank");
 		};
 	ENDCLASS;

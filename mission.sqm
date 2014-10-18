@@ -16,7 +16,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 0.046";
+		briefingName="COMBAT ASSAULT 0.051";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -490,9 +490,10 @@ class Mission
 		};
 		class Item1
 		{
-			position[]={13563.415,16.298088,12094.621};
+			position[]={13563.753,16.284613,12094.836};
 			name="base_lamp";
 			type="Empty";
+			colorName="Color4_FD_F";
 		};
 		class Item2
 		{

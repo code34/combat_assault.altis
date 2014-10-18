@@ -56,7 +56,6 @@
 			MEMBER("unitstype", _type);
 			
 			if(random 1 > 0.90) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
-			//if(random 1 > 0.85) then { MEMBER("setMission", nil); };
 			MEMBER("setMission", nil);
 		};
 

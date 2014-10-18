@@ -35,7 +35,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.7];
 			_unit setskill ["commanding", 1];	
 		};
@@ -47,7 +47,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.7];
 			_unit setskill ["commanding", 1];	
 		};
@@ -59,7 +59,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.7];
 			_unit setskill ["commanding", 1];	
 		};
@@ -71,7 +71,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.7];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.5];
 			_unit setskill ["commanding", 1];	
 		};
@@ -83,7 +83,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.6];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.5];
 			_unit setskill ["commanding", 1];
 		};
@@ -95,9 +95,9 @@
 			_unit setskill ["endurance", 0.5];
 			_unit setskill ["spotDistance", 1];
 			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.3];
-			_unit setskill ["commanding", 0.5];	
+			_unit setskill ["commanding", 1];	
 		};
 
 		case "OI_ReconTeam": {
@@ -107,7 +107,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.8];
 			_unit setskill ["commanding", 1];	
 		};
@@ -119,7 +119,7 @@
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 0.7];
+			_unit setskill ["courage", 1];
 			_unit setskill ["reloadSpeed", 0.7];
 			_unit setskill ["commanding", 1];	
 		};

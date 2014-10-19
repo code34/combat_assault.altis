@@ -5,7 +5,8 @@ class Mission
 	{
 		"A3_Characters_F_BLUFOR",
 		"a3_characters_f",
-		"a3_map_altis"
+		"a3_map_altis",
+		"A3_Air_F_Beta_Heli_Transport_01"
 	};
 	addOnsAuto[]=
 	{
@@ -16,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 0.051";
+		briefingName="COMBAT ASSAULT 0.054";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;

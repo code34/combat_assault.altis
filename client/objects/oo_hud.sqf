@@ -2,7 +2,7 @@
 	Author: code34 nicolas_boiteux@yahoo.fr
 	Copyright (C) 2014 Nicolas BOITEUX
 
-	CLASS OO_PLAYERTAG
+	CLASS OO_HUD
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -29,6 +29,29 @@
 
 		PUBLIC FUNCTION("", "setPlayerTag") {
 			MEMBER("playertag", true);
+		};
+
+		PUBLIC FUNCTION("", "bottomHud") {
+			private ["_ctrl", "_text", "_weight"];
+			disableSerialization;
+			cutrsc ['bottomhud','PLAIN'];
+			while { true} do {
+				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
+				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl -1;
+				_text = format ["Stamina: %1", (100 - round(getfatigue player * 100))];
+				_text = _text + "<br/>" + format ["Health: %1", (100 - round(getDammage player * 100))];
+				_text = _text + "<br/>" + format ["Azimut: %1", round(getdir player)];
+				if (systemOfUnits != 2) then {
+					_weight = format ["%1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
+				} else {
+					_weight = format ["%1 %2", round ((loadabs player)*0.1), "lb."];
+				}; 
+				_text = _text + "<br/>" + format ["Weight: %1", _weight];
+				_text = _text + "<br/>" + format ["Stats: %1", mystats];
+				_ctrl ctrlSetStructuredText parseText _text;
+				_ctrl ctrlcommit 0;
+				sleep 1;			
+			};
 		};
 
 		PUBLIC FUNCTION("", "drawPlayerTag") {

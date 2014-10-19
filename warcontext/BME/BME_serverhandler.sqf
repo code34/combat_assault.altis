@@ -28,7 +28,10 @@
 	};
 
 	BME_netcode_server_wcdeath = {
-		private ["_array", "_name", "_player", "_stat", "_score", "_death", "_playertype", "_uid"];
+		// @interface
+		// wcdeath = [name player, playertype];
+		
+		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid"];
 
 		_array = _this select 0;
 		_name = _array select 0;
@@ -54,13 +57,14 @@
 			_death = 0;
 		};
 		_death = _death + 1;
-		_stat = _score/_death;
-
-		if(isnil "_stat") then {_stat = 0;};
-		if(_death < 10) then {_stat = 0;};
+		if(_death < 10) then {
+			_ratio = 0;
+		} else {
+			_ratio = _score/_death;
+		};
 		
 		["Put", [_name, _death]] call global_scores;
-		playerstats = [_name, _stat];
+		playerstats = [_name, _ratio];
 		["playerstats", "client"] call BME_fnc_publicvariable;
 	};		
 

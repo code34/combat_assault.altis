@@ -51,7 +51,7 @@
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
 				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];				
-				_text = _text + "<br/>" + format ["Rank: %1", rank player];
+				//_text = _text + "<br/>" + format ["Rank: %1", rank player];
 				_text = _text + "<br/>" + format ["Stats: %1", mystats];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 

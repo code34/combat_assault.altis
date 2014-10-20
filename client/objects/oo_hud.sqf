@@ -37,19 +37,28 @@
 			cutrsc ['bottomhud','PLAIN'];
 			while { true} do {
 				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
-				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl -1;
-				_text = format ["Stamina: %1", (100 - round(getfatigue player * 100))];
-				_text = _text + "<br/>" + format ["Health: %1", (100 - round(getDammage player * 100))];
-				_text = _text + "<br/>" + format ["Azimut: %1", round(getdir player)];
-				if (systemOfUnits != 2) then {
-					_weight = format ["%1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
-				} else {
-					_weight = format ["%1 %2", round ((loadabs player)*0.1), "lb."];
-				}; 
-				_text = _text + "<br/>" + format ["Weight: %1", _weight];
-				_text = _text + "<br/>" + format ["Stats: %1", mystats];
+				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl 1001;
+				_text = "<t align='center'>"+format ["%1", (100 - round(getDammage player * 100))] + "</t>";
 				_ctrl ctrlSetStructuredText parseText _text;
+
+				_ctrl2 =(uiNamespace getVariable "wcdisplay") displayCtrl 1002;
+				_text = "<t align='center'>"+ format ["%1", (100 - round(getfatigue player * 100))] + "</t>";
+				_ctrl2 ctrlSetStructuredText parseText _text;
+
+				_ctrl3 =(uiNamespace getVariable "wcdisplay") displayCtrl 1003;
+				_text = "<t align='center'>"+format ["%1", round(getdir player)] + "</t>";
+				_ctrl3 ctrlSetStructuredText parseText _text;
+		
+				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
+				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];				
+				_text = _text + "<br/>" + format ["Rank: %1", rank player];
+				_text = _text + "<br/>" + format ["Stats: %1", mystats];
+				_ctrl4 ctrlSetStructuredText parseText _text;
+
 				_ctrl ctrlcommit 0;
+				_ctrl2 ctrlcommit 0;
+				_ctrl3 ctrlcommit 0;
+				_ctrl4 ctrlcommit 0;
 				sleep 1;			
 			};
 		};
@@ -58,12 +67,14 @@
 			private ["_code", "_vehicle"];
 			
 			_code = "
-					{	_vehicle = _x;
-						_distance = (player distance _vehicle) / 15;
-						_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
-						_color set [3, 1 - _distance];
-						 drawIcon3D ['', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
-					}foreach playableunits - [player];
+					if(vehicle player == player) then {
+						{	_vehicle = _x;
+							_distance = (player distance _vehicle) / 15;
+							_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
+							_color set [3, 1 - _distance];
+							 drawIcon3D ['', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
+						}foreach playableunits - [player];
+					};
 			";
 			_code;
 		};

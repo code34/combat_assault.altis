@@ -40,13 +40,15 @@
 	enableEnvironment false;
 
 	player addEventHandler ['Killed', {
-		killer = _this select 1;
-		wcdeath = [name player, playertype];
-		["wcdeath", "server"] call BME_fnc_publicvariable;
+		killer = _this select 1;	
+		wcdeath = [name player, playertype, name killer];
+		["wcdeath", "all"] call BME_fnc_publicvariable;
 	}];
 
 	player addEventHandler ['HandleDamage', {
+		private ["_name"];
 		if(side(_this select 3) in [east, resistance]) then {
+			_name = name (_this select 3);
 			if(alive (_this select 0)) then {
 				_damage = 1 - damage(_this select 0);
 				(_this select 0) setdamage (damage(_this select 0) + random(_damage));

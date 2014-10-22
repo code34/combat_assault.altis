@@ -32,11 +32,17 @@
 		};
 
 		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_text", "_weight"];
+			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_text", "_weight", "_time", "_message"];
+
 			disableSerialization;
 			cutrsc ['bottomhud','PLAIN'];
+
+			_time = 0;
+			killzone = [];
+
 			while { true} do {
 				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
+
 				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl 1001;
 				_text = "<t align='center'>"+format ["%1", (100 - round(getDammage player * 100))] + "</t>";
 				_ctrl ctrlSetStructuredText parseText _text;
@@ -50,17 +56,102 @@
 				_ctrl3 ctrlSetStructuredText parseText _text;
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
-				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];				
-				//_text = _text + "<br/>" + format ["Rank: %1", rank player];
-				_text = _text + "<br/>" + format ["Stats: %1", mystats];
+				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
+				_img = [player,"texture"] call BIS_fnc_rankParams;
+				_text = _text + MEMBER("getRankText", mystats);
 				_ctrl4 ctrlSetStructuredText parseText _text;
 
+				if(vehicle player != player) then {
+					_ctrl5 =(uiNamespace getVariable "wcdisplay") displayCtrl 1000;
+					_text = MEMBER("getCrewText", nil);
+					_ctrl5 ctrlSetStructuredText parseText _text;
+					_ctrl5 ctrlSetBackgroundColor [0, 0, 0, 0.4];
+				
+				} else {
+					_ctrl5 =(uiNamespace getVariable "wcdisplay") displayCtrl 1000;
+					_ctrl5 ctrlSetStructuredText parseText "";
+					_ctrl5 ctrlSetBackgroundColor [0, 0, 0, 0];
+				};
+
+				_ctrl6 =(uiNamespace getVariable "wcdisplay") displayCtrl 999;
+				if(count killzone > 0) then {
+					if(_time > 5) then {
+						_time = 0;
+						killzone set [0, -1];
+						killzone = killzone - [-1];
+						_ctrl6 ctrlSetStructuredText parseText "";
+						_ctrl6 ctrlSetBackgroundColor [0, 0, 0, 0];
+					} else {
+						_message = killzone select 0;
+						_ctrl6 ctrlSetStructuredText parseText _message;
+						_ctrl6 ctrlSetBackgroundColor [0, 0, 0, 0.4];
+					};
+					_time = _time  + 1;
+				};
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
 				_ctrl3 ctrlcommit 0;
 				_ctrl4 ctrlcommit 0;
+				_ctrl5 ctrlcommit 0;
+				_ctrl6 ctrlcommit 0;
 				sleep 1;			
 			};
+		};
+
+		PUBLIC FUNCTION("", "getCrewText") {
+			private ["_name", "_text"];
+			_text = "";
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf vehicle player) >> "DisplayName");
+			_name= format ["<t shadow='true' color='#AAAAFF'>%1</t><br/>", _name];
+			{
+				_text = "<t color='#99CC00'>+ "+ name _x +"</t><br/>"+_text;
+				sleep 0.01;
+			}foreach crew (vehicle player);
+			_text = _name + _text;
+			_text;
+		};
+
+
+		PUBLIC FUNCTION("scalar", "getRankText") {
+			private ["_img", "_player", "_ratio", "_text", "_rank"];
+			_ratio = _this;
+
+			switch (_ratio) do {
+				case (_ratio < 1) : {
+					_rank = "PRIVATE";
+				};
+
+				case (_ratio > 0.99 and _ratio < 2) : {
+					_rank = "CORPORAL";
+				};
+
+				case (_ratio > 1.99 and _ratio < 3) : {
+					_rank = "SERGEANT";
+				};
+
+				case (_ratio > 2.99 and _ratio < 4) : {
+					_rank = "LIEUTENANT";
+				};
+
+				case (_ratio > 3.99 and _ratio < 5) : {
+					_rank = "CAPTAIN";
+				};
+
+				case (_ratio > 4.99 and _ratio < 6) : {
+					_rank = "MAJOR";
+				};				
+
+				case (_ratio > 5.99 and _ratio < 7) : {
+					_rank = "COLONEL" ;
+				};		
+
+				default {
+					_rank = "PRIVATE";
+				};
+			};
+			_img = [_rank,"texture"] call BIS_fnc_rankParams;
+			_text = "<br/><img image='" + _img + "'/> " + format ["%1", _rank];
+			_text;
 		};
 
 		PUBLIC FUNCTION("", "drawPlayerTag") {

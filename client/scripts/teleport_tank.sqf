@@ -33,7 +33,9 @@
 			wcteleporttank = [name player, _pos];
 			["wcteleporttank", "server"] call BME_fnc_publicvariable;
 		};
-		waitUntil{count wcteleportposition > 0};
+		while {count wcteleportposition == 0} do { sleep 0.1;};
+		onMapSingleClick "";
+
 		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 0];
 
 		if(playertype == "tank") then {
@@ -59,11 +61,8 @@
 			if(_this select 2 > 0.30) then {
 				(_this select 0) setdamage (getdammage (_this select 0) + random (1));
 			};
-		}];
-		
+		}];	
 		player moveIndriver _vehicle;
-		
-		onMapSingleClick "";
 	};
 
 	hintSilent "";

@@ -35,10 +35,11 @@
 			_title = "Select your destination zone";
 			_text = "Click on the sea where you'd like to Insert!";
 			["hint", [_title, _text]] call hud;
-			sleep 1;
+			sleep 0.1;
 		};
-		_newposition = [wcteleport select 0, wcteleport select 1, 500];
+		onMapSingleClick "";
 
+		_newposition = [wcteleport select 0, wcteleport select 1, 500];
 		if(playertype == "bomber") then {
 			_array = [_newposition, 0, "B_Plane_CAS_01_F", west] call bis_fnc_spawnvehicle;
 		};
@@ -66,7 +67,6 @@
 		deletegroup (_array select 2);
 
 		player moveindriver (_array select 0);
-		onMapSingleClick "";
 	};
 	
 	hintSilent "";

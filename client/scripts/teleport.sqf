@@ -33,7 +33,8 @@
 			wcteleport = [name player, _pos];
 			["wcteleport", "server"] call BME_fnc_publicvariable;
 		};
-		waitUntil{count wcteleportposition > 0};
+		while {count wcteleportposition == 0} do { sleep 0.1;};
+		onMapSingleClick "";
 		
 		_list = wcteleportposition nearEntities ["B_Heli_Transport_01_camo_F", 150];
 		if (count _list > 0) then {
@@ -46,7 +47,6 @@
 		} else {
 			player setpos wcteleportposition;
 		};
-		onMapSingleClick "";
 	};
 
 	hintSilent "";

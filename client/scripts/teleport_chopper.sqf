@@ -33,7 +33,8 @@
 			wcteleportchopper = [name player, _pos];
 			["wcteleportchopper", "server"] call BME_fnc_publicvariable;
 		};
-		waitUntil{count wcteleportposition > 0};
+		while {count wcteleportposition == 0} do { sleep 0.1;};
+		onMapSingleClick "";
 
 		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 50];
 		_array = [_newposition, 0, "B_Heli_Transport_01_camo_F", west] call bis_fnc_spawnvehicle;
@@ -56,8 +57,6 @@
 		}foreach units (_array select 2);
 		deletegroup (_array select 2);
 		player moveindriver _vehicle;
-		
-		onMapSingleClick "";
 	};
 
 	hintSilent "";

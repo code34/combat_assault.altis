@@ -26,6 +26,7 @@
 		_variablename = _message select 0;
 		_variable = _message select 1;
 		_destination = _message select 2;
+		_code = nil;
 
 		if(isserver and ((_destination == "server") or (_destination == "all"))) then {
 			_code = (missionNamespace getVariable (format ["BME_netcode_server_%1", _variablename]));
@@ -38,7 +39,7 @@
 		} else {
 			format["BME: handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
 		};
-
+		
 		bme_queue set [0, objnull]; 
 		bme_queue = bme_queue - [objnull];
 		sleep 0.1;

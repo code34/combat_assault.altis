@@ -107,12 +107,21 @@
 		mapAnimAdd [1, 0.01, _body]; 
 		mapAnimCommit;
 		deletevehicle _body;
-		deletevehicle _vehicle;
+		_vehicle spawn {
+			while { count (crew _this) > 0 } do { sleep 1; };
+			deletevehicle _this;
+		};
+		
 
 		switch (playertype) do {
 			case "soldier": {
 				[] call WC_fnc_teleport;
 				_icon =	"mil_arrow2";
+			};
+
+			case "medic": {
+				[] call WC_fnc_teleport;
+				_icon = "b_med";
 			};
 	
 			case "fighter": {
@@ -146,8 +155,8 @@
 		};
 
 		openMap [false, false];
-			
-		player removeEventHandler ["HandleDamage", _index];
+		// debug end	
+		//player removeEventHandler ["HandleDamage", _index];
 		["attachTo", player] spawn _mark;
 		["setText", name player] spawn _mark;
 		["setColor", "ColorGreen"] spawn _mark;

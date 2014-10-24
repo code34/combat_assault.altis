@@ -32,7 +32,6 @@
 		if!(typename _destination == "STRING") exitwith {"BME: wrong type destination parameter, should be STRING" call BME_fnc_log;};
 		if!(_destination in ["client", "server", "all"]) exitwith {"BME: wrong destination parameter should be client|server|all" call BME_fnc_log;};
 
-
 		bme_addqueue = [_variablename, _variablevalue, _destination];
 
 		switch (_destination) do {
@@ -44,17 +43,19 @@
 				if(!isnil "_playerid") then {
 					_playerid publicvariableclient "bme_addqueue";
 				} else {
-					if((local player) and (isserver)) then {
-						(owner player) publicvariableclient "bme_addqueue";
-					};
+					//if((local player) and (isserver)) then {
+					//	(owner player) publicvariableclient "bme_addqueue";
+					//};
+					bme_queue set [count bme_queue, bme_addqueue];
 					publicvariable "bme_addqueue";
 				};
 			};
 
 			default {
-				if((local player) and (isserver)) then {
-					(owner player) publicvariableclient "bme_addqueue";
-				};
+				//if((local player) and (isserver)) then {
+				//	(owner player) publicvariableclient "bme_addqueue";
+				//};
+				bme_queue set [count bme_queue, bme_addqueue];
 				publicvariable "bme_addqueue";
 			};
 		};

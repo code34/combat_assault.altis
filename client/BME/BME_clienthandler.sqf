@@ -27,7 +27,7 @@
 		hint bme_message;
 	};
 
-	BME_netcode_wcdeath = {
+	BME_netcode_wcdeathlistner = {
 		private ["_player", "_killer", "_message"];
 		_array = _this select 0;
 		_player = _array select 0;
@@ -82,28 +82,21 @@
 	BME_netcode_playerstats = {
 		private ["_player", "_stats", "_done", "_value"];
 
-		_player = (_this select 0) select 0;
-		_stats = (_this select 0) select 1;
-		_done = false;
-
-		if(_player == name player) then {
-			mystats = _stats;
-		};		
+		mystats = (_this select 0);
 		
-		{
-			if(_player == _x select 0) then {
-				_value = [_player, _stats];
-				localplayerstats set [_foreachindex, _value];
-				_done = true;
-			};
-			sleep 0.01;
-		}foreach localplayerstats;
+		//{
+		//	if(_player == _x select 0) then {
+		//		_value = [_player, _stats];
+		//		localplayerstats set [_foreachindex, _value];
+		//		_done = true;
+		//	};
+		//	sleep 0.01;
+		//}foreach localplayerstats;
 
-		if!(_done) then {
-			_value = [_player, _stats];
-			localplayerstats = localplayerstats + [_value];
-		};
-		diag_log format ["%1", localplayerstats];
+		//if!(_done) then {
+		//	_value = [_player, _stats];
+		//	localplayerstats = localplayerstats + [_value];
+		//};
 	};
 
 	BME_netcode_end = {

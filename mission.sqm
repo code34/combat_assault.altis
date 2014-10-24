@@ -172,7 +172,7 @@ class Mission
 					position[]={13560.786,15.495601,12106.49};
 					id=11;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -310,7 +310,7 @@ class Mission
 					position[]={13538.058,14.319768,12111.093};
 					id=23;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";

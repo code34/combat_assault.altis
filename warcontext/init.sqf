@@ -86,8 +86,9 @@
 	"startPatrol" spawn global_dogfight;
 	"start" spawn global_atc;
 
-	// check all sector for victory
-	sleep 30;
+	// init for slow server
+	sleep 60;
+
 	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;
 

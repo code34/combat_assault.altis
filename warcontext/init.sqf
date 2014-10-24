@@ -99,5 +99,10 @@
 		sleep 60;
 	};
 
+	// write scores on media
+	{
+		"flushBDD" call _x;
+	} foreach ("entrySet" call global_scores);
+
 	end = "win";
 	["end", "all"] call BME_fnc_publicvariable;

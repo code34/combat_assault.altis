@@ -24,7 +24,7 @@
 		PRIVATE VARIABLE("bool","playertag");
 
 		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("playertag", true);			
+			MEMBER("playertag", true);
 		};
 
 		PUBLIC FUNCTION("", "setPlayerTag") {
@@ -57,8 +57,18 @@
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
 				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
-				_img = [player,"texture"] call BIS_fnc_rankParams;
-				_text = _text + MEMBER("getRankText", mystats);
+				
+				_ratio = mystats select 0;
+				_globalratio = mystats select 1;
+				_number = mystats select 2;
+
+				_rank = MEMBER("getRankText", _ratio);
+				_img = [_rank,"texture"] call BIS_fnc_rankParams;
+				_text = _text + "<br/><img image='" + _img + "'/> " + format ["%1", _rank];
+
+				_rank = MEMBER("getRankText", _globalratio);
+				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
+				_text = _text + format ["<br/><t size='0.7'>Match: %1</t>", _number];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 
 				if(vehicle player != player) then {
@@ -113,35 +123,36 @@
 
 
 		PUBLIC FUNCTION("scalar", "getRankText") {
-			private ["_img", "_player", "_ratio", "_text", "_rank"];
+			private ["_img", "_player", "_ratio", "_text", "_rank", "_stats"];
+			
 			_ratio = _this;
 
-			switch (_ratio) do {
+			switch (true) do {
 				case (_ratio < 1) : {
 					_rank = "PRIVATE";
 				};
 
-				case (_ratio > 0.99 and _ratio < 2) : {
+				case (_ratio > 0.99 and _ratio < 3) : {
 					_rank = "CORPORAL";
 				};
 
-				case (_ratio > 1.99 and _ratio < 3) : {
+				case (_ratio > 2.99 and _ratio < 5) : {
 					_rank = "SERGEANT";
 				};
 
-				case (_ratio > 2.99 and _ratio < 4) : {
+				case (_ratio > 4.99 and _ratio < 7) : {
 					_rank = "LIEUTENANT";
 				};
 
-				case (_ratio > 3.99 and _ratio < 5) : {
+				case (_ratio > 6.99 and _ratio < 9) : {
 					_rank = "CAPTAIN";
 				};
 
-				case (_ratio > 4.99 and _ratio < 6) : {
+				case (_ratio > 8.99 and _ratio < 11) : {
 					_rank = "MAJOR";
 				};				
 
-				case (_ratio > 5.99 and _ratio < 7) : {
+				case (_ratio > 10.99) : {
 					_rank = "COLONEL" ;
 				};		
 
@@ -149,9 +160,7 @@
 					_rank = "PRIVATE";
 				};
 			};
-			_img = [_rank,"texture"] call BIS_fnc_rankParams;
-			_text = "<br/><img image='" + _img + "'/> " + format ["%1", _rank];
-			_text;
+			_rank;
 		};
 
 		PUBLIC FUNCTION("", "drawPlayerTag") {

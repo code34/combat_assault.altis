@@ -46,9 +46,7 @@
 	}];
 
 	player addEventHandler ['HandleDamage', {
-		private ["_name"];
 		if(side(_this select 3) in [east, resistance]) then {
-			_name = name (_this select 3);
 			if(alive (_this select 0)) then {
 				_damage = 1 - damage(_this select 0);
 				(_this select 0) setdamage (damage(_this select 0) + random(_damage));

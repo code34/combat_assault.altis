@@ -56,6 +56,11 @@
 				_value = [_ticket, _type, _credit];
 				MEMBER("send", _value);
 			} else {
+				// write scores on media
+				{
+					"flushBDD" call _x;
+				} foreach ("entrySet" call global_scores);
+
 				end = "loose";
 				["end", "client"] call BME_fnc_publicvariable;
 				["epicFail",false,2] call BIS_fnc_endMission;

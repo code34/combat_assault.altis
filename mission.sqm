@@ -103,10 +103,10 @@ class Mission
 					position[]={13551.845,16.711176,12084.712};
 					id=5;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""medic""];";
 				};
 			};
 		};
@@ -175,7 +175,7 @@ class Mission
 					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""medic""];";
 				};
 			};
 		};
@@ -241,10 +241,10 @@ class Mission
 					position[]={13581.959,14.410699,12093.018};
 					id=17;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""medic""];";
 				};
 			};
 		};
@@ -313,7 +313,7 @@ class Mission
 					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""medic""];";
 				};
 			};
 		};

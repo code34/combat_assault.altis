@@ -28,25 +28,22 @@
 	};
 
 	BME_netcode_server_wcdeath = {
-		// @interface
-		// wcdeath = [name player, playertype];
-		
-		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid"];
+		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid", "_killer"];
 
 		_array = _this select 0;
 		_name = _array select 0;
 		_playertype = _array select 1;
-		
+		_killer = _array select 2;
+	
 		["setTicket", _playertype] call global_ticket;
-
+		
 		{	
 			if(_name == name _x) then {
-				_player = _x;
 				_uid = getPlayerUID _x;
 				_score = score _x;	
 			};
 			sleep 0.0001;
-		}forEach allDead;
+		}forEach (allDead + playableUnits);
 
 		if(_score < 1) then {
 			_score = 1;

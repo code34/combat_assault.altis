@@ -42,13 +42,16 @@
 		};
 
 		PUBLIC FUNCTION("string", "setTicket"){
-			private ["_type", "_credit", "_value"];
+			private ["_type", "_credit", "_value", "_ticket"];
+			
 			if!(MEMBER("active", nil)) exitwith {};
 
 			_type = _this;
 			_credit = MEMBER("getCredit", _type);
+
 			MEMBER("add", _credit);
 			_ticket = MEMBER("ticket", nil);
+
 			if(_ticket > 0) then {
 				_value = [_ticket, _type, _credit];
 				MEMBER("send", _value);

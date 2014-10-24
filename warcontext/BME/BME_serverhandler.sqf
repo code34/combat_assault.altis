@@ -28,19 +28,23 @@
 	};
 
 	BME_netcode_server_wcdeath = {
-		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid", "_killer", "_points"];
+		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid", "_killer", "_points", "_netid"];
 
 		_array = _this select 0;
 		_name = _array select 0;
 		_playertype = _array select 1;
 		_killer = _array select 2;
 	
+		wcdeathlistner = _array;
+		["wcdeathlistner", "client"] call BME_fnc_publicvariable;
+
 		["setTicket", _playertype] call global_ticket;
 
 		{	
 			if(_name == name _x) then {
 				_uid = getPlayerUID _x;
-				_points = score _x;	
+				_points = score _x;
+				_netid = owner _x;	
 			};
 			sleep 0.0001;
 		}forEach (allDead + playableUnits);
@@ -48,15 +52,16 @@
 		_score = ["get", _uid] call global_scores;
 		if(isnil "_score") then {
 			_score = ["new", [_uid]] call OO_SCORE;
-			["Put", [_name, _score]] call global_scores;
+			["Put", [_uid, _score]] call global_scores;
 		};
 
 		"addDeath" call _score;
 		["setScore", _points] call _score;
 		_ratio = "getRatio" call _score;
-
-		playerstats = [_name, _ratio];
-		["playerstats", "client"] call BME_fnc_publicvariable;
+		_number = "getNumber" call _score;
+		_globalratio = "getGlobalRatio" call _score;
+		playerstats = [_ratio, _globalratio, _number];
+		["playerstats", "client", _netid] call BME_fnc_publicvariable;
 	};		
 
 	BME_netcode_server_wcteleport = {

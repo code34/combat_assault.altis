@@ -36,27 +36,9 @@
 		while {count wcteleportposition == 0} do { sleep 0.1;};
 		onMapSingleClick "";
 
-		_newposition = [wcteleportposition select 0, wcteleportposition select 1, 50];
-		_array = [_newposition, 0, "B_Heli_Transport_01_camo_F", west] call bis_fnc_spawnvehicle;
-		_vehicle = _array select 0;
-
-		_vehicle removeAllEventHandlers "HandleDamage";
-		_vehicle addeventhandler ['HandleDamage', {
-			if(getDammage (_this select 0) > 0.9) then {
-					(_this select 0) setdamage 1;
-					(_this select 0) removeAllEventHandlers "HandleDamage";
-					{
-						_x setdamage 1;
-					}foreach (crew (_this select 0));
-			};
-		}];
-
-		{
-			_x setdammage 1;
-			deletevehicle _x;
-		}foreach units (_array select 2);
-		deletegroup (_array select 2);
-		player moveindriver _vehicle;
+		_chopper = ["popInAir", wcteleportposition] call chopper;
+		"checkAlive" spawn chopper;
+		player moveindriver _chopper;
 	};
 
 	hintSilent "";

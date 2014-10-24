@@ -26,9 +26,9 @@
 		PRIVATE VARIABLE("scalar","globaldeath");
 		PRIVATE VARIABLE("scalar","globalratio");
 		PRIVATE VARIABLE("scalar","globalnumber");
-		PRIVATE VARIABLE("scalar","gamescore");
 		PRIVATE VARIABLE("scalar","gamedeath");
-
+		PRIVATE VARIABLE("scalar","gamescore");
+	
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_key", "_array"];
 			_key = (_this select 0) + "cba";
@@ -59,10 +59,13 @@
 			private ["_key", "_array"];
 			_key = MEMBER("uid", nil);
 			_array = MEMBER("compute", nil);
-			profileNamespace setVariable [_key, _array];
+			if(_array select 2 > 0) then {
+				profileNamespace setVariable [_key, _array];
+			};
 		};
 
 		PUBLIC FUNCTION("", "addDeath") {
+			private ["_death"];
 			_death = MEMBER("gamedeath", nil) + 1;
 			MEMBER("gamedeath", _death);
 		};
@@ -85,9 +88,20 @@
 			_death;
 		};
 
+		PUBLIC FUNCTION("", "getGlobalRatio") {
+			MEMBER("globalratio", nil);
+		};
+
 		PUBLIC FUNCTION("", "getRatio") {
-			private ["_ratio"];
-			_ratio = MEMBER("getScore", nil) / MEMBER("getDeath", nil);
+			private ["_death", "_ratio", "_score"];
+
+			_score =  MEMBER("getScore", nil);
+			_death = MEMBER("getDeath", nil);
+			if(_death < 5) then {
+				_ratio = 0;
+			} else {
+				_ratio = _score / _death;
+			};
 			_ratio;
 		};
 

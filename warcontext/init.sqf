@@ -41,7 +41,6 @@
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bdd.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
@@ -53,6 +52,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_tree.sqf";

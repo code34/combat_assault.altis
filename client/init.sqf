@@ -167,7 +167,7 @@
 
 		openMap [false, false];
 		// debug end	
-		//player removeEventHandler ["HandleDamage", _index];
+		player removeEventHandler ["HandleDamage", _index];
 		["attachTo", player] spawn _mark;
 		["setText", name player] spawn _mark;
 		["setColor", "ColorGreen"] spawn _mark;

@@ -79,10 +79,6 @@
 		};
 	};
 
-	BME_netcode_zonesuccess = {
-		//playsound "zonesuccess";
-	};
-
 	BME_netcode_playerstats = {
 		private ["_player", "_stats", "_done", "_value"];
 

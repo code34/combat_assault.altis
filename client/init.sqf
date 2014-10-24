@@ -23,6 +23,7 @@
 	WC_fnc_teleporttank = compilefinal preprocessFile "client\scripts\teleport_tank.sqf";
 	WC_fnc_teleportchopper = compilefinal preprocessFile "client\scripts\teleport_chopper.sqf";
 
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_chopper.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
@@ -88,12 +89,24 @@
 
 	if(playertype == "chopper") then {
 		setviewdistance 3000;
-		_markchopper = ["new", position player] call OO_MARKER;
-		["attachTo", player] spawn _markchopper;
-		["setShape", "ELLIPSE"] spawn _markchopper;
-		["setText", name player] spawn _markchopper;
-		["setColor", "ColorBlue"] spawn _markchopper;
-		["setSize", [1,1]] spawn _markchopper;
+		chopper = ["new", []] call OO_CHOPPER;
+
+		[] spawn {
+			private ["_action"];
+			while { true} do {
+				if(vehicle player == player) then {
+					if(isnil "_action") then {
+						_action = player addAction ["Get Chopper", "client\scripts\popchopper.sqf"];
+					};
+				} else {
+					if(!isnil "_action") then {
+						player removeAction _action;
+						_action = nil;
+					};
+				};
+				sleep 10;
+			};
+		};
 	};
 
 	// MAIN LOOP
@@ -160,8 +173,6 @@
 			case "chopper": {
 				[] call WC_fnc_teleportchopper;
 				_icon = "b_air";
-				["setSize", [150,150]] spawn _markchopper;
-				["attachTo", player] spawn _markchopper;
 			};
 		};
 
@@ -201,11 +212,6 @@
 
 		if((playertype == "bomber") or (playertype == "fighter")) then {
 			"stop" call _reload;
-		};
-
-		if(playertype == "chopper") then {
-			"detach" spawn _markchopper;
-			["setSize", [1,1]] spawn _markchopper;
 		};
 
 		waituntil {alive player};

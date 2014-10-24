@@ -28,7 +28,7 @@
 		"_exist"
 	];
 
-	call compilefinal preprocessFileLineNumbers "config.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\config.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";

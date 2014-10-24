@@ -65,16 +65,23 @@
 
 		PUBLIC FUNCTION("", "setGroundPlayers") {
 			private ["_temp"];
-				
-			_temp = MEMBER("getPlayersOfType", "B_crew_F");
-			_temp = _temp + MEMBER("getPlayersOfType", "B_Soldier_F");
+			
+			_temp = [];
+			{
+				_temp = _temp + MEMBER("getPlayersOfType", _x);
+			}foreach wcgroundplayerstype;
 
 			MEMBER("groundplayers", _temp);
 		};
 
 		PUBLIC FUNCTION("", "setAirPlayers") {
 			private ["_temp"];
-			_temp = MEMBER("getPlayersOfType", "B_Pilot_F");
+
+			_temp = [];
+			{
+				_temp = _temp + MEMBER("getPlayersOfType", _x);
+			}foreach wcairplayerstype;
+
 			MEMBER("airplayers", _temp);
 		};
 

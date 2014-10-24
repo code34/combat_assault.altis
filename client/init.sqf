@@ -28,7 +28,7 @@
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";	
 
-	mystats = 0;
+	mystats = [0,0,0];
 
 	hud = ["new", []] call OO_HUD;
 	"drawAll" spawn hud;
@@ -53,7 +53,7 @@
 		};
 
 		wcdeath = [name player, playertype, _name];
-		["wcdeath", "all"] call BME_fnc_publicvariable;
+		["wcdeath", "server"] call BME_fnc_publicvariable;
 	}];
 
 	player addEventHandler ['HandleDamage', {

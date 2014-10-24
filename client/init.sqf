@@ -40,8 +40,19 @@
 	enableEnvironment false;
 
 	player addEventHandler ['Killed', {
-		killer = _this select 1;	
-		wcdeath = [name player, playertype, name killer];
+		private ["_name"];
+		
+		killer = _this select 1;
+		_name = "";
+
+		if(killer isKindOf "Man") then {
+			_name = name killer;
+			if(_name == "Error: No unit") then { _name = "";} ;
+		} else {
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf killer) >> "DisplayName");
+		};
+
+		wcdeath = [name player, playertype, _name];
 		["wcdeath", "all"] call BME_fnc_publicvariable;
 	}];
 

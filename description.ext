@@ -48,10 +48,21 @@ class CfgDebriefing
 	};
 };
 
+class Params
+{ 
+	class wcaccurencylevel
+	{
+		title = "AI ACCURENCY LEVEL";
+		values[] = {1, 2, 3, 4};
+		texts[] = {"NOOBIES", "NORMAL", "VETERAN", "CHEATED"};
+		default = 2;
+	};
+};
+
 #define CT_STRUCTURED_TEXT  13
- #define ST_LEFT 0x00
- #define ST_CENTER 0x02
- #define ST_VCENTER 0x0c
+#define ST_LEFT 0x00
+#define ST_CENTER 0x02
+#define ST_VCENTER 0x0c
 
 class RscTitles { 
 	class bottomhud { 

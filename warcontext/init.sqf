@@ -28,10 +28,10 @@
 		"_exist"
 	];
 
+	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\config.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 
 	WC_fnc_setskill	 	= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
 	WC_fnc_computezone	= compile preprocessFile "warcontext\scripts\WC_fnc_computezone.sqf";

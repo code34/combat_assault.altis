@@ -13,24 +13,11 @@
 	
 	_unit 	= _this select 0;
 	_type 	= _this select 1; 
-	
-	_skill = [
-		"aimingAccuracy",
-		"aimingShake",
-		"aimingSpeed",
-		"endurance",
-		"spotDistance",
-		"spotTime",
-		"courage",
-		"reloadSpeed",
-		"commanding",
-		"general"
-		];
 
 	switch (_type) do {
 		case "OIA_InfSquad_Weapons":{
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
-			_unit setskill ["aimingShake", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingSpeed", 0.6];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
@@ -41,9 +28,9 @@
 		};
 			
 		case "OIA_InfSquad": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -53,9 +40,9 @@
 		};
 
 		case "OIA_InfTeam": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];
@@ -65,9 +52,9 @@
 		};
 
 		case "OIA_InfTeam_AA": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.7];
@@ -77,9 +64,9 @@
 		};
 
 		case "OIA_InfTeam_AT": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
 			_unit setskill ["spotTime", 0.6];
@@ -101,7 +88,7 @@
 		};
 
 		case "OI_ReconTeam": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingShake", 0.8];
 			_unit setskill ["aimingSpeed", 0.6];
 			_unit setskill ["endurance", 0.8];
@@ -113,7 +100,7 @@
 		};
 
 		default {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (0.4))];
+			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingShake", 0.6];
 			_unit setskill ["aimingSpeed", 0.6];
 			_unit setskill ["endurance", 0.8];
@@ -155,9 +142,6 @@
 				_x reveal (_this select 3);
 			}foreach (units (group (_this select 0)));
 		};
-		//if((_this select 0) distance (_this select 3) > 800) then {
-		//(leader (group (_this select 0))) setvariable ['support', [(_this select 3)]];
-		//};
 	}];
 
 	true;

@@ -58,26 +58,11 @@
 			}foreach MEMBER("squadron", nil);
 		};
 
-		PUBLIC FUNCTION("array", "getVehicles") {
-			private ["_array", "_temp"];
-			_array = _this;
-			_temp = [];
-			{
-				if!((vehicle _x) in _temp) then {
-					_temp = _temp + [vehicle _x];
-				};
-			}foreach _array;
-			_temp;
-		};
-
 		PUBLIC FUNCTION("", "setSquadronSize") {
 			private ["_array", "_ground", "_air", "_size"];
 
-			_array = MEMBER("groundtargets", nil);
-			_ground = count MEMBER("getVehicles", _array);
-			
-			_array = MEMBER("airtargets", nil);
-			_air = count MEMBER("getVehicles", _array);
+			_ground = count MEMBER("groundtargets", nil);
+			_air = count MEMBER("airtargets", nil);
 
 			_size = _ground + (3 * _air);
 			MEMBER("squadronsize", _size);		
@@ -122,7 +107,7 @@
 			if(count MEMBER("targets", nil) > 0) then {
 				_score = -1000;
 				{
-					_newscore = MEMBER("checkScoreByVehicle", vehicle _x);
+					_newscore = MEMBER("checkScoreByVehicle", _x);
 					if(_newscore > _score) then {
 						_score = _newscore;
 						_target = [_x];
@@ -165,24 +150,29 @@
 				_conso = (speed _vehicle * 0.0010) / 10;
 				_vehicle setfuel (_fuel - _conso);
 
-				sleep 0.001;
+				sleep 0.0001;
 			}foreach MEMBER("squadron", nil);
 		};
 
 		PUBLIC FUNCTION("", "detectTargets") {
-			private ["_groundtargets", "_airtargets"];
+			private ["_groundtargets", "_airtargets", "_vehicle"];
 
 			_groundtargets = [];
 			_airtargets = [];
 			{
-				if((vehicle _x != _x) and (alive _x)) then {
+				_vehicle = vehicle _x;
+				if((_vehicle != _x) and (alive _x)) then {
 					if((getposatl _x) select 2 > 10) then {
-						_airtargets = _airtargets + [_x];
+						if!(_vehicle in _airtargets) then {
+							_airtargets = _airtargets + [_vehicle];
+						};
 					} else {
-						_groundtargets = _groundtargets + [_x];
+						if!(_vehicle in _groundtargets) then {
+							_groundtargets = _groundtargets + [_vehicle];
+						};
 					};
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach playableunits;
 			MEMBER("airtargets", _airtargets);
 			MEMBER("groundtargets", _groundtargets);

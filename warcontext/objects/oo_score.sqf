@@ -62,6 +62,7 @@
 			if(_array select 2 > 0) then {
 				profileNamespace setVariable [_key, _array];
 			};
+			saveProfileNamespace;
 		};
 
 		PUBLIC FUNCTION("", "addDeath") {

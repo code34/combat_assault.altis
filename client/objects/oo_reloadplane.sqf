@@ -82,56 +82,12 @@
 		};
 
 		PUBLIC FUNCTION("", "setFuel") {
-			private ["_vehicle", "_fuel"];
+			private ["_conso", "_vehicle", "_fuel"];
 			_vehicle = vehicle player;
 			_fuel = fuel _vehicle;
 			
-			switch (MEMBER("type", nil)) do {
-				case "fighter":  {
-					if(speed _vehicle > 200) then {
-						_vehicle setfuel (_fuel - 0.002);
-					};
-					if(speed _vehicle > 350) then {
-						_vehicle setfuel (_fuel - 0.003);
-					};
-					if(speed _vehicle > 500) then {
-						_vehicle setfuel (_fuel - 0.007);
-					};
-					if(speed _vehicle > 600) then {
-						_vehicle setfuel (_fuel - 0.01);
-					};
-				};
-
-				case "bomber": {
-					if(speed _vehicle > 200) then {
-						_vehicle setfuel (_fuel - 0.0015);
-					};
-					if(speed _vehicle > 350) then {
-						_vehicle setfuel (_fuel - 0.0020);
-					};
-					if(speed _vehicle > 500) then {
-						_vehicle setfuel (_fuel - 0.005);
-					};
-					if(speed _vehicle > 600) then {
-						_vehicle setfuel (_fuel - 0.008);
-					};
-				};
-
-				default {
-					if(speed _vehicle > 200) then {
-						_vehicle setfuel (_fuel - 0.002);
-					};
-					if(speed _vehicle > 350) then {
-						_vehicle setfuel (_fuel - 0.003);
-					};
-					if(speed _vehicle > 500) then {
-						_vehicle setfuel (_fuel - 0.007);
-					};
-					if(speed _vehicle > 600) then {
-						_vehicle setfuel (_fuel - 0.01);
-					};
-				};
-			};
+			_conso = (speed _vehicle * 0.0010) / 100;
+			_vehicle setfuel (_fuel - _conso);
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

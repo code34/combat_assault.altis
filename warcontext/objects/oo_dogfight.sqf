@@ -88,17 +88,29 @@
 			MEMBER("patrol", false);
 		};
 
+		PUBLIC FUNCTION("object", "checkScoreByVehicle") {
+			private ["_score", "_vehicle"];
+			_vehicle = _this;
+			_score = 0;
+			{
+				_score = _score + score _x;
+				sleep 0.0001;
+			}foreach (crew _vehicle);
+			_score;
+		};
+
 		PUBLIC FUNCTION("", "setTarget") {
-			private ["_target", "_score"];
+			private ["_target", "_score", "_newscore"];
 
 			if(count MEMBER("targets", nil) > 0) then {
 				_score = -1000;
-				{			
-					if(score _x > _score) then {
-						_score = score _x;
+				{
+					_newscore = MEMBER("checkScoreByVehicle", vehicle _x);
+					if(_newscore > _score) then {
+						_score = _newscore;
 						_target = [_x];
 					};
-					sleep 0.01;
+					sleep 0.0001;
 				} foreach MEMBER("targets", nil);
 			} else {
 				_target = [];
@@ -128,23 +140,15 @@
 		};
 
 		PUBLIC FUNCTION("", "setFuel") {
-			private ["_fuel", "_vehicle"];
+			private ["_conso", "_fuel", "_vehicle"];
 			{
 				_vehicle = _x select 0;
 				_fuel = fuel _vehicle;
-				if(speed _vehicle > 200) then {
-					_vehicle setfuel (_fuel - (0.002 * 10));
-				};
-				if(speed _vehicle > 350) then {
-					_vehicle setfuel (_fuel - (0.003 * 10));
-				};
-				if(speed _vehicle > 500) then {
-					_vehicle setfuel (_fuel - (0.007 * 10));
-				};
-				if(speed _vehicle > 600) then {
-					_vehicle setfuel (_fuel - (0.01 * 10));
-				};
-				sleep 0.01;
+
+				_conso = (speed _vehicle * 0.0010) / 10;
+				_vehicle setfuel (_fuel - _conso);
+
+				sleep 0.001;
 			}foreach MEMBER("squadron", nil);
 		};
 
@@ -155,10 +159,8 @@
 			_airtargets = [];
 			{
 				if((vehicle _x != _x) and (alive _x)) then {
-					if(typeof _x == "B_Pilot_F") then {
-						if((getposatl _x) select 2 > 10) then {
-							_airtargets = _airtargets + [_x];
-						};
+					if((getposatl _x) select 2 > 10) then {
+						_airtargets = _airtargets + [_x];
 					} else {
 						_groundtargets = _groundtargets + [_x];
 					};

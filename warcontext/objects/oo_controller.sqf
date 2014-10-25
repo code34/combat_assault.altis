@@ -296,7 +296,6 @@
 								["put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
 								["setTicket", "redzone"] call global_ticket;
 								_counter = _counter + 1;
-								hint format ["zone just pop! %1", _counter];
 							};
 						};
 					};

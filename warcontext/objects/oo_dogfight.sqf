@@ -58,10 +58,27 @@
 			}foreach MEMBER("squadron", nil);
 		};
 
+		PUBLIC FUNCTION("array", "getVehicles") {
+			private ["_array", "_temp"];
+			_array = _this;
+			_temp = [];
+			{
+				if!((vehicle _x) in _temp) then {
+					_temp = _temp + [vehicle _x];
+				};
+			}foreach _array;
+			_temp;
+		};
+
 		PUBLIC FUNCTION("", "setSquadronSize") {
-			private ["_ground", "_air", "_size"];
-			_ground = count MEMBER("groundtargets", nil);
-			_air = count MEMBER("airtargets", nil);
+			private ["_array", "_ground", "_air", "_size"];
+
+			_array = MEMBER("groundtargets", nil);
+			_ground = count MEMBER("getVehicles", _array);
+			
+			_array = MEMBER("airtargets", nil);
+			_air = count MEMBER("getVehicles", _array);
+
 			_size = _ground + (3 * _air);
 			MEMBER("squadronsize", _size);		
 		};

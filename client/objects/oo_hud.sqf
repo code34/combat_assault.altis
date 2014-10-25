@@ -128,31 +128,31 @@
 			_ratio = _this;
 
 			switch (true) do {
-				case (_ratio < 1) : {
+				case (_ratio < 2) : {
 					_rank = "PRIVATE";
 				};
 
-				case (_ratio > 0.99 and _ratio < 3) : {
+				case (_ratio > 1.99 and _ratio < 4) : {
 					_rank = "CORPORAL";
 				};
 
-				case (_ratio > 2.99 and _ratio < 5) : {
+				case (_ratio > 3.99 and _ratio < 6) : {
 					_rank = "SERGEANT";
 				};
 
-				case (_ratio > 4.99 and _ratio < 7) : {
+				case (_ratio > 5.99 and _ratio < 8) : {
 					_rank = "LIEUTENANT";
 				};
 
-				case (_ratio > 6.99 and _ratio < 9) : {
+				case (_ratio > 7.99 and _ratio < 10) : {
 					_rank = "CAPTAIN";
 				};
 
-				case (_ratio > 8.99 and _ratio < 11) : {
+				case (_ratio > 9.99 and _ratio < 12) : {
 					_rank = "MAJOR";
 				};				
 
-				case (_ratio > 10.99) : {
+				case (_ratio > 11.99) : {
 					_rank = "COLONEL" ;
 				};		
 

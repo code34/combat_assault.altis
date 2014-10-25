@@ -148,7 +148,7 @@
 					} else {
 						_vehicle domove [100,100];
 						if(_vehicle distance [100,100] < 2000) then {
-							_vehicle setdammage 1;
+							MEMBER("unpopMember", _vehicle);
 						};
 					};
 					sleep 0.01;
@@ -237,10 +237,11 @@
 		PUBLIC FUNCTION("", "popSquadron") {
 			private ["_size"];
 			_size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);
-
-			for "_i" from 1 to _size do {
-				MEMBER("popMember", nil);
-				sleep 10;
+			if(_size > 0) then {
+				for "_i" from 1 to _size do {
+					MEMBER("popMember", nil);
+					sleep 10;
+				};
 			};
 		};
 

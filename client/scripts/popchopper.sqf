@@ -1,3 +1,3 @@
 	
-	_chopper = ["pop", position player] call chopper;
-	"checkAlive" spawn chopper;
+	chopper = [name player, position player, owner player];
+	["chopper", "server"] call BME_fnc_publicvariable;

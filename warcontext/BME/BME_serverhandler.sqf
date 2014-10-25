@@ -27,6 +27,22 @@
 		diag_log format["BME: %1", bme_log];
 	};
 
+	BME_netcode_server_chopper = {
+		private ["_array", "_chopper", "_name", "_position", "_netid"];
+		
+		_array = _this select 0;
+		_name = _array select 0;
+		_position = _array select 1;
+		_netid = _array select 2;
+		
+		_chopper = ["get", _name] call global_choppers;
+		if(isnil "_chopper") then {
+			_chopper = ["new", []] call OO_CHOPPER;
+			["Put", [_name, _chopper]] call global_choppers;
+		};	
+		_vehicle = ["pop", [_position, _netid]] spawn _chopper;
+	};
+
 	BME_netcode_server_wcdeath = {
 		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid", "_killer", "_points", "_netid"];
 

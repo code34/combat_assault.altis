@@ -170,7 +170,7 @@
 
 			case "chopper": {
 				[] call WC_fnc_teleport;
-				_icon = "b_air";
+				_icon = "mil_arrow2";
 			};
 		};
 

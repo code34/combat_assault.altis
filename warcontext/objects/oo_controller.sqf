@@ -67,9 +67,18 @@
 			private ["_temp"];
 			
 			_temp = [];
+			//{
+			//	_temp = _temp + MEMBER("getPlayersOfType", _x);
+			//}foreach wcgroundplayerstype;
+
 			{
-				_temp = _temp + MEMBER("getPlayersOfType", _x);
-			}foreach wcgroundplayerstype;
+				if(vehicle _x == _x) then {
+					if((getposatl _x) select 2 < 50) then {
+						_temp = _temp + [_x];
+					};
+				};
+				sleep 0.0001;
+			} foreach playableunits;
 
 			MEMBER("groundplayers", _temp);
 		};
@@ -78,9 +87,18 @@
 			private ["_temp"];
 
 			_temp = [];
+			//{
+			//	_temp = _temp + MEMBER("getPlayersOfType", _x);
+			//}foreach wcairplayerstype;
+
 			{
-				_temp = _temp + MEMBER("getPlayersOfType", _x);
-			}foreach wcairplayerstype;
+				if(vehicle _x != _x) then {
+					if((getposatl _x) select 2 > 10) then {
+						_temp = _temp + [_x];
+					};
+				};
+				sleep 0.0001;
+			} foreach playableunits;
 
 			MEMBER("airplayers", _temp);
 		};

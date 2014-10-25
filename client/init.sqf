@@ -16,14 +16,13 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload", "_markchopper"];
+	private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
 
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
 	WC_fnc_teleporttank = compilefinal preprocessFile "client\scripts\teleport_tank.sqf";
 	WC_fnc_teleportchopper = compilefinal preprocessFile "client\scripts\teleport_chopper.sqf";
 
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_chopper.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
@@ -89,8 +88,6 @@
 
 	if(playertype == "chopper") then {
 		setviewdistance 3000;
-		chopper = ["new", []] call OO_CHOPPER;
-
 		[] spawn {
 			private ["_action"];
 			while { true} do {
@@ -104,7 +101,8 @@
 						_action = nil;
 					};
 				};
-				sleep 10;
+				if(!alive player) then {_action = nil;};
+				sleep 1;
 			};
 		};
 	};
@@ -171,7 +169,7 @@
 			};
 
 			case "chopper": {
-				[] call WC_fnc_teleportchopper;
+				[] call WC_fnc_teleport;
 				_icon = "b_air";
 			};
 		};

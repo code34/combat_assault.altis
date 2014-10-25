@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 0.60";
+		briefingName="COMBAT ASSAULT 0.67";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -40,7 +40,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=12;
+		items=7;
 		class Item0
 		{
 			side="WEST";
@@ -93,7 +93,7 @@ class Mission
 					position[]={13560.036,16.164936,12085.06};
 					id=4;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_soldier_exp_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -152,7 +152,7 @@ class Mission
 					position[]={13568.196,15.934416,12109.242};
 					id=9;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_soldier_exp_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -221,7 +221,7 @@ class Mission
 					position[]={13589.369,12.774197,12095.77};
 					id=15;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_soldier_exp_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -290,7 +290,7 @@ class Mission
 					position[]={13545.468,14.435697,12113.845};
 					id=21;
 					side="WEST";
-					vehicle="B_Soldier_F";
+					vehicle="B_soldier_exp_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -322,31 +322,11 @@ class Mission
 			side="WEST";
 			class Vehicles
 			{
-				items=1;
-				class Item0
-				{
-					position[]={13564.999,13.403589,12068.586};
-					id=24;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""fighter""];";
-					description="Fighter - Plane";
-				};
-			};
-		};
-		class Item5
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
+				items=3;
 				class Item0
 				{
 					position[]={13592.218,14.82205,12071.161};
-					id=25;
+					id=24;
 					side="WEST";
 					vehicle="B_crew_F";
 					player="PLAY CDG";
@@ -355,78 +335,40 @@ class Mission
 					init="this setvariable [""type"", ""tankaa""];";
 					description="Tank Anti Air";
 				};
-			};
-		};
-		class Item6
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
+				class Item1
 				{
 					position[]={13596.087,14.054802,12067.131};
+					id=25;
+					side="WEST";
+					vehicle="B_crew_F";
+					player="PLAY CDG";
+					skill=0.60000002;
+					init="this setvariable [""type"", ""tank""];";
+					description="Tank - Offensive";
+				};
+				class Item2
+				{
+					position[]={13589.106,15.211679,12074.613};
 					id=26;
 					side="WEST";
 					vehicle="B_crew_F";
 					player="PLAY CDG";
-					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""tank""];";
 					description="Tank - Offensive";
 				};
 			};
 		};
-		class Item7
+		class Item5
 		{
 			side="WEST";
 			class Vehicles
 			{
-				items=1;
-				class Item0
-				{
-					position[]={13589.106,15.211679,12074.613};
-					id=27;
-					side="WEST";
-					vehicle="B_crew_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""tank""];";
-					description="Tank - Offensive";
-				};
-			};
-		};
-		class Item8
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={13571.369,12.940662,12062.887};
-					id=28;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""fighter""];";
-					description="Fighter - Plane";
-				};
-			};
-		};
-		class Item9
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
+				items=3;
 				class Item0
 				{
 					position[]={13567.505,12.809404,12065.875};
-					id=29;
+					id=27;
 					side="WEST";
 					vehicle="B_Pilot_F";
 					player="PLAY CDG";
@@ -435,17 +377,39 @@ class Mission
 					init="this setvariable [""type"", ""bomber""];";
 					description="Bomber - Plane";
 				};
+				class Item1
+				{
+					position[]={13564.999,13.403589,12068.586};
+					id=28;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					skill=0.60000002;
+					init="this setvariable [""type"", ""fighter""];";
+					description="Fighter - Plane";
+				};
+				class Item2
+				{
+					position[]={13571.369,12.940662,12062.887};
+					id=29;
+					side="WEST";
+					vehicle="B_Pilot_F";
+					player="PLAY CDG";
+					skill=0.60000002;
+					init="this setvariable [""type"", ""fighter""];";
+					description="Fighter - Plane";
+				};
 			};
 		};
-		class Item10
+		class Item6
 		{
 			side="WEST";
 			class Vehicles
 			{
-				items=1;
+				items=2;
 				class Item0
 				{
-					position[]={13550.002,11.521226,12057.56};
+					position[]={13553.7,11.980171,12053.862};
 					special="NONE";
 					id=30;
 					side="WEST";
@@ -456,23 +420,14 @@ class Mission
 					init="this setvariable [""type"", ""chopper""];";
 					description="Chopper - transport";
 				};
-			};
-		};
-		class Item11
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
+				class Item1
 				{
-					position[]={13553.7,11.980171,12053.862};
+					position[]={13550.002,11.521226,12057.56};
 					special="NONE";
 					id=31;
 					side="WEST";
 					vehicle="B_Pilot_F";
 					player="PLAY CDG";
-					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""chopper""];";
 					description="Chopper - transport";

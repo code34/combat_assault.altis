@@ -113,10 +113,11 @@
 
 			_mark = ["new", _position] call OO_MARKER;
 			["attachTo", _chopper] spawn _mark;
-			["setShape", "ELLIPSE"] spawn _mark;
-			["setText",  typeof _chopper] spawn _mark;
-			["setColor", "ColorBlue"] spawn _mark;
-			["setSize", [150,150]] spawn _mark;
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf _chopper) >> "DisplayName");
+			["setText", _name] spawn _mark;
+			["setColor", "ColorGreen"] spawn _mark;
+			["setType", "b_air"] spawn _mark;
+			["setSize", [0.8,0.8]] spawn _mark;
 			MEMBER("marker", _mark);
 		};
 
@@ -128,5 +129,6 @@
 			DELETE_VARIABLE("type", nil);
 			DELETE_VARIABLE("chopper", nil);
 			DELETE_VARIABLE("marker", nil);
+			DELETE_VARIABLE("alive", nil);
 		};
 	ENDCLASS;

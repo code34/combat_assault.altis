@@ -36,17 +36,7 @@
 		while {count wcteleportposition == 0} do { sleep 0.1;};
 		onMapSingleClick "";
 		
-		_list = wcteleportposition nearEntities ["B_Heli_Transport_01_camo_F", 150];
-		if (count _list > 0) then {
-			_vehicle = _list select 0;
-			if (count (crew _vehicle) < 10) then {
-				player moveInAny _vehicle;
-			} else {
-				player setpos wcteleportposition;
-			};
-		} else {
-			player setpos wcteleportposition;
-		};
+		player setpos wcteleportposition;
 	};
 
 	hintSilent "";

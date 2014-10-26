@@ -34,6 +34,12 @@
 			MEMBER("alive", false);
 		};
 
+		PUBLIC FUNCTION("","getType") FUNC_GETVAR("type");
+
+		PUBLIC FUNCTION("string", "setType") {
+			MEMBER("type", _this);
+		};
+
 		PUBLIC FUNCTION("", "checkAlive") {
 			private ["_counter", "_vehicle"];
 

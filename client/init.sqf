@@ -84,10 +84,10 @@
 	if((playertype == "chopper") or (playertype == "tank") or (playertype == "tankaa")) then {
 		[] spawn {
 			private ["_action", "_script"];
-			_script = format ["client\scripts\pop%1.sqf", playertype]	;
 			while { true} do {
 				if(vehicle player == player) then {
 					if(isnil "_action") then {
+						_script = format ["client\scripts\pop%1.sqf", playertype];
 						_action = player addAction [format ["Get %1", playertype], _script];
 					};
 				} else {

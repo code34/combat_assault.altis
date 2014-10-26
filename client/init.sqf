@@ -20,8 +20,6 @@
 
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
-	WC_fnc_teleporttank = compilefinal preprocessFile "client\scripts\teleport_tank.sqf";
-	WC_fnc_teleportchopper = compilefinal preprocessFile "client\scripts\teleport_chopper.sqf";
 
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
@@ -83,14 +81,14 @@
 		_reload = ["new", [playertype]] call OO_RELOADPLANE;
 	};
 
-	if(playertype == "chopper") then {
-		setviewdistance 3000;
+	if((playertype == "chopper") or (playertype == "tank") or (playertype == "tankaa")) then {
 		[] spawn {
-			private ["_action"];
+			private ["_action", "_script"];
+			_script = format ["client\scripts\pop%1.sqf", playertype]	;
 			while { true} do {
 				if(vehicle player == player) then {
 					if(isnil "_action") then {
-						_action = player addAction ["Get Chopper", "client\scripts\popchopper.sqf"];
+						_action = player addAction [format ["Get %1", playertype], _script];
 					};
 				} else {
 					if(!isnil "_action") then {
@@ -156,13 +154,13 @@
 			};
 	
 			case "tank": {
-				[] call WC_fnc_teleporttank;
-				_icon = "b_armor";
+				[] call WC_fnc_teleport;
+				_icon = "mil_arrow2";
 			};
 
 			case "tankaa": {
-				[] call WC_fnc_teleporttank;
-				_icon = "b_armor";
+				[] call WC_fnc_teleport;
+				_icon = "mil_arrow2";
 			};
 
 			case "chopper": {

@@ -185,8 +185,22 @@
 			MEMBER("units", _units);
 		};
 
+		PUBLIC FUNCTION("", "occupedSector") {
+			private ["_sector", "_sectors"];
+			_sectors = [];
+			{
+				_sector = ["getSectorFromPos", position _x] call _grid;
+				if!(_sector in _sectors) then {
+					_sectors = _sectors + [_sector];
+				};
+				sleep 0.0001;
+			}foreach MEMBER("units", nil);
+			_sectors = _sectors + [MEMBER("sector", nil)];
+			_sectors;
+		};
+
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type"];
+			private ["_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -201,14 +215,18 @@
 				_units = 0;
 				_mincost = 100;
 
+				_sectors = MEMBER("occupedSector", nil);
 				{
 					_player_sector = ["getSectorFromPos", position _x] call _grid;
-					_cost = ["GetEstimateCost", [_player_sector, MEMBER("sector", nil)]] call _grid;
-					if(_cost < _mincost) then { _mincost = _cost;};
-					sleep 0.01;
+					{
+						_cost = ["GetEstimateCost", [_player_sector, _x]] call _grid;
+						if(_cost < _mincost) then { _mincost = _cost;};
+						sleep 0.0001;
+					}foreach _sectors;
+					sleep 0.0001;
 				}foreach playableunits;
 
-				if(_mincost <4) then {
+				if(_mincost < 4) then {
 					MEMBER("marker", nil) setmarkercolor "ColorOrange";
 					_run = true;
 				};

@@ -23,15 +23,26 @@
 	CLASS("OO_ATC")
 		PRIVATE VARIABLE("bool","run");
 		PRIVATE VARIABLE("code","grid");
+		PRIVATE VARIABLE("array","west");
+		PRIVATE VARIABLE("array","east");
 
 		PUBLIC FUNCTION("array","constructor") {
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+			_array = [];
 			MEMBER("grid", _grid);
 			MEMBER("run", false);
+			MEMBER("west", _array);
+			MEMBER("east", _array);
 		};
 
+		PUBLIC FUNCTION("","getWest") FUNC_GETVAR("west");
+		PUBLIC FUNCTION("","getEast") FUNC_GETVAR("east");
+
 		PUBLIC FUNCTION("", "isFriendly") {
-			private ["_enemies", "_sector", "_around"];
+			private ["_enemies", "_sector", "_around", "_wairport", "_eairport"];
+			
+			_wairport = [];
+			_eairport = [];
 			{						
 				_enemies = false;
 				_sector = ["getSectorFromPos", getmarkerpos _x] call MEMBER("grid", nil);
@@ -48,11 +59,23 @@
 				
 				if(_enemies) then {
 					_x setmarkercolor "colorRed";
+					_eairport = _eairport + [_x];
 				} else {
 					_x setmarkercolor "colorBlue";
+					_wairport = _wairport + [_x];
 				};
 				sleep 1;
 			}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+			MEMBER("west", _wairport);
+			MEMBER("east", _eairport);
+		};
+
+		PUBLIC FUNCTION("", "countWest") {
+			count MEMBER("west", nil);
+		};
+
+		PUBLIC FUNCTION("", "countEast") {
+			count MEMBER("east", nil);
 		};
 
 		PUBLIC FUNCTION("", "start") {
@@ -69,6 +92,8 @@
 
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("west");
+			DELETE_VARIABLE("east");
 			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("run");
 		};

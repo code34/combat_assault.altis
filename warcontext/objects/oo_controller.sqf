@@ -67,9 +67,6 @@
 			private ["_temp"];
 			
 			_temp = [];
-			//{
-			//	_temp = _temp + MEMBER("getPlayersOfType", _x);
-			//}foreach wcgroundplayerstype;
 
 			{
 				if(vehicle _x == _x) then {

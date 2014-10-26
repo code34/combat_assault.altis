@@ -24,6 +24,7 @@
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("array","startposition");
 		PRIVATE VARIABLE("array","endposition");
+		PRIVATE VARIABLE("array","escort");
 		PRIVATE VARIABLE("code","marker");
 		PRIVATE VARIABLE("group","group");
 		PRIVATE VARIABLE("code","grid");
@@ -42,14 +43,18 @@
 
 			_array = [];
 			MEMBER("vehicle", _array);
+			MEMBER("escort", _array);
 			MEMBER("popSupport", nil);
+			MEMBER("popEscort", nil);
 		};
 
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
 
 		PUBLIC FUNCTION("", "startConvoy") {
-			private ["_rate", "_vehicle", "_sector", "_text"];
-			MEMBER("moveTo", nil);
+			private ["_rate", "_vehicle", "_sector", "_text", "_position"];
+			
+			_array = [MEMBER("endposition", nil), MEMBER("group", nil)];
+			MEMBER("moveTo", _array);
 			_vehicle = MEMBER("vehicle", nil);
 
 			_rate = 0;
@@ -58,12 +63,8 @@
 					_rate = _rate + 1;
 					_text = format["Support - Expanding %1", _rate] +"%";
 					["setText", _text] spawn MEMBER("marker", nil);
-
 					if(_rate > 99) then {
 						_vehicle setdammage 1;
-						_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
-						["expandSector", _sector] call global_controller;
-						["expandSectorAround", _sector] call global_controller;
 					};
 				} else {
 					_rate = 0;
@@ -71,7 +72,11 @@
 				};
 				sleep 1;
 			};
+
 			if(_rate > 99) then {
+				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
+				["expandSector", _sector] call global_controller;
+				["expandSectorAround", _sector] call global_controller;
 				["setText", "Support - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
 				["setText", "Support - Expanding failed"] spawn MEMBER("marker", nil);
@@ -108,13 +113,47 @@
 			MEMBER("marker", _mark);
 		};
 
-		// armor
-		//_armor = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_MBT_02_arty_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"];
-		//for "_i" from 1 to 2 step 1 do {
-		//	_type = _armor call BIS_fnc_selectRandom;
-		//	_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
-		//	_array = [_position, random 359, _type, east] call bis_fnc_spawnvehicle;
-		//};
+
+		PUBLIC FUNCTION("", "popEscort") {
+			 private ["_array", "_armor", "_group", "_position", "_vehicles", "_units", "_newgroup", "_type", "_leader"];
+
+			 _position = position MEMBER("vehicle", nil);
+			 //_group = creategroup east;
+			 _group = MEMBER("group", nil);
+			 _vehicles = [];
+
+			_armor = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"];
+
+			for "_i" from 1 to 2 step 1 do {
+				_type = _armor call BIS_fnc_selectRandom;
+				_position = [_position, 25 + random 25, random 360] call BIS_fnc_relPos;
+				_array = [_position, random 359, _type, east] call bis_fnc_spawnvehicle;
+				_vehicles = _vehicles + [_array select 0];
+				_newgroup = _array select 2;
+				_leader = leader _newgroup;
+				(_array select 1) joinsilent _group;
+				deletegroup _newgroup;
+				sleep 1;
+			};
+			_group selectLeader _leader;
+
+			_array = [MEMBER("endposition", nil),  _group];
+			MEMBER("moveTo", _array);
+			MEMBER("escort", _vehicles);
+		};
+
+		PUBLIC FUNCTION("", "unPopEscort") {
+			{
+				{
+					_x setdammage 1;
+					deletevehicle _x;
+					sleep 0.001;
+				}foreach (crew _x);
+				_x setdammage 1;
+				deletevehicle _x;
+				sleep 0.001;
+			} foreach MEMBER("escort", nil);
+		};
 
 
 		PUBLIC FUNCTION("", "removeVehicle") {
@@ -128,12 +167,12 @@
 			deletevehicle MEMBER("getVehicle", nil);
 		};
 
-		PUBLIC FUNCTION("", "moveTo") {
+		PUBLIC FUNCTION("array", "moveTo") {
 			private ["_group", "_wp", "_position"];
 
-			_group = MEMBER("group", nil);
-			_position = MEMBER("endposition", nil);
-
+			_position = _this select 0;
+			_group = _this select 1;
+			
 			_wp = _group addwaypoint [_position, 0];
 			_wp setWaypointPosition [_position, 5];
 			_wp setWaypointType "MOVE";
@@ -144,8 +183,10 @@
 		PUBLIC FUNCTION("","deconstructor") { 
 			["delete", MEMBER("marker", nil)] call OO_MARKER;
 			MEMBER("removeVehicle", nil);
+			MEMBER("unPopEscort", nil);
 			DELETE_VARIABLE("vehicle");
 			deletegroup MEMBER("group", nil);
+			DELETE_VARIABLE("escort");
 			DELETE_VARIABLE("startposition");
 			DELETE_VARIABLE("endposition");
 			DELETE_VARIABLE("group");

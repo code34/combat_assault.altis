@@ -27,8 +27,8 @@
 		hint bme_message;
 	};
 	
-	BME_netcode_chopperavalaible = {
-		["hint", ["Chopper servicing", "chopper is not yet avalaible"]] call hud;
+	BME_netcode_vehicleavalaible = {
+		["hint", ["Vehicle servicing", "Vehicle is not yet avalaible"]] call hud;
 	};
 
 	BME_netcode_wcdeathlistner = {

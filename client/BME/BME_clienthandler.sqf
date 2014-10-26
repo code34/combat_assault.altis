@@ -45,6 +45,17 @@
 		killzone = killzone + [_message];
 	};
 
+	BME_netcode_wcmissioncompleted = {
+		private ["_message", "_win"];
+		_win = _this select 0;
+		if(_win) then {
+			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t></t>";
+		} else {
+			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t></t>";
+		};
+		killzone = killzone + [_message];
+	};
+
 	BME_netcode_wcticket = {
 		private ["_value", "_type", "_ticket", "_credit"];
 		_value = _this select 0;

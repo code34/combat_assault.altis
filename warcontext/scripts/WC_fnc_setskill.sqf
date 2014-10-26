@@ -101,8 +101,8 @@
 
 		default {
 			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.6];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
 			_unit setskill ["spotTime", 0.9];

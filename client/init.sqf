@@ -23,6 +23,7 @@
 	WC_fnc_teleporttank = compilefinal preprocessFile "client\scripts\teleport_tank.sqf";
 	WC_fnc_teleportchopper = compilefinal preprocessFile "client\scripts\teleport_chopper.sqf";
 
+	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
@@ -64,10 +65,6 @@
 			};
 		};
 	}];
-
-	player createDiaryRecord ["Diary", ["Situation", "Things are going bad on Altis Island. Try to find a way to defeat the enemy and perphaps you will have a luck to go out of this doom maze"]];
-	_task = player createSimpleTask ["Mission"];
-	_task setSimpleTaskDescription ["Hi! you just come back to Altis Island. A Pretty nice island where you went on holidays. A this time, it is a fucking island with hot temperatures, under enemies control. Soldier, you have to go to Altis Island and organise the takeover of this island", "Go and retrieve the Altis Island", "Task HUD Title"];
 
 	playMusic "intro";
 	//playMusic ["LeadTrack01a_F", 2];

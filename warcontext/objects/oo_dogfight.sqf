@@ -21,6 +21,7 @@
 	#include "oop.h"
 
 	CLASS("OO_DOGFIGHT")
+		PRIVATE VARIABLE("code","atc");
 		PRIVATE VARIABLE("array","squadron");
 		PRIVATE VARIABLE("array","airtargets");
 		PRIVATE VARIABLE("array","groundtargets");
@@ -32,6 +33,7 @@
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_array"];
 			_array = [];
+			MEMBER("atc", _this select 0);
 			MEMBER("patrol", false);
 			MEMBER("squadron", _array);
 			MEMBER("airtargets", _array);
@@ -65,6 +67,7 @@
 			_air = count MEMBER("airtargets", nil);
 
 			_size = _ground + (3 * _air);
+			if(_size > 6) then { _size = 6;};
 			MEMBER("squadronsize", _size);		
 		};
 
@@ -225,12 +228,18 @@
 		};
 
 		PUBLIC FUNCTION("", "popSquadron") {
-			private ["_size"];
-			_size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);
-			if(_size > 0) then {
-				for "_i" from 1 to _size do {
-					MEMBER("popMember", nil);
-					sleep 10;
+			private ["_atc", "_airport", "_size"];		
+			
+			_atc = MEMBER("atc", nil);
+			_airport = "countEast" call _atc;
+
+			if(_airport > 0) then {
+				_size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);			
+				if(_size > 0) then {
+					for "_i" from 1 to _size do {
+						MEMBER("popMember", nil);
+						sleep 10;
+					};
 				};
 			};
 		};
@@ -244,6 +253,7 @@
 
 		
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("atc");
 			DELETE_VARIABLE("airtargets");
 			DELETE_VARIABLE("groundtargets");
 			DELETE_VARIABLE("patrol");

@@ -27,21 +27,40 @@
 		diag_log format["BME: %1", bme_log];
 	};
 
-	BME_netcode_server_chopper = {
-		private ["_array", "_chopper", "_name", "_position", "_netid"];
+	BME_netcode_server_playervehicle = {
+		private ["_array", "_vehicle", "_name", "_position", "_netid", "_type"];
 		
 		_array = _this select 0;
 		_name = _array select 0;
 		_position = _array select 1;
 		_netid = _array select 2;
+		_type = _array select 3;
+
+		switch (_type) do {
+			case "chopper" : {
+				_type = "B_Heli_Transport_01_camo_F";
+			};
+
+			case "tank" : {
+				_type = "B_MBT_01_cannon_F";
+			};
+
+			case "tankaa" : {
+				_type = "B_APC_Tracked_01_AA_F";
+			};
+
+			default {
+				_type = "B_MBT_01_cannon_F";
+			};
+		};
 		
-		_chopper = ["get", _name] call global_choppers;
-		if(isnil "_chopper") then {
-			_chopper = ["new", []] call OO_CHOPPER;
-			["Put", [_name, _chopper]] call global_choppers;
+		_vehicle = ["get", _name] call global_vehicles;
+		if(isnil "_vehicle") then {
+			_vehicle = ["new", [_type]] call OO_PLAYERVEHICLE;
+			["Put", [_name, _vehicle]] call global_vehicles;
 		};	
-		_vehicle = ["pop", [_position, _netid]] spawn _chopper;
-	};
+		_vehicle = ["pop", [_position, _netid, _name]] spawn _vehicle;
+	};		
 
 	BME_netcode_server_wcdeath = {
 		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid", "_killer", "_points", "_netid"];
@@ -129,103 +148,6 @@
 		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 	};
 
-	BME_netcode_server_wcteleporttank = {
-		private ["_name", "_playerid", "_position", "_grid", "_sector", "_result", "_around"];
-
-		_wcteleport = _this select 0;
-		_name = _wcteleport select 0;
-
-		{
-			if (name _x == _name) then {
-				_playerid = owner _x;
-			};
-			sleep 0.0001;
-		}foreach playableUnits;
-
-		_position = _wcteleport select 1;
-		if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
-			wcteleportack = [0,1];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
-		if(surfaceIsWater _position) exitwith {
-			wcteleportack = [0,2];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
-
-		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-		_sector = ["getSectorFromPos", _position] call _grid;
-
-		_pos = ["getPosFromSector", _sector] call _grid;
-		_list = _pos nearEntities [["Man"], 50];
-		if(east countSide _list > 0) exitwith {
-			wcteleportack = [0,0];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
-
-		_result = _position;
-
-		_around = ["getSectorAllAround", [_sector, 3]] call _grid;
-		{
-			_sector = ["Get", str(_x)] call global_zone_hashmap;
-			if(!isnil "_sector") then {
-				if("getState" call _sector < 2) then {
-					_result = [0,0];
-				};
-			};
-			sleep 0.0001;
-		}foreach _around;
-		wcteleportack = _result;
-		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-	};
-
-	BME_netcode_server_wcteleportchopper = {
-		private ["_name", "_playerid", "_position", "_grid", "_sector", "_result", "_around"];
-
-		_wcteleport = _this select 0;
-		_name = _wcteleport select 0;
-
-		{
-			if (name _x == _name) then {
-				_playerid = owner _x;
-			};
-			sleep 0.0001;
-		}foreach playableUnits;
-
-		_position = _wcteleport select 1;
-		if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
-			wcteleportack = [0,1];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
-		if(surfaceIsWater _position) exitwith {
-			wcteleportack = [0,2];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
-
-		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-		_sector = ["getSectorFromPos", _position] call _grid;
-
-		_pos = ["getPosFromSector", _sector] call _grid;
-		_list = _pos nearEntities [["Man"], 50];
-		if(east countSide _list > 0) exitwith {
-			wcteleportack = [0,0];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
-
-		_result = _position;
-
-		_around = ["getSectorAllAround", [_sector, 3]] call _grid;
-		{
-			_sector = ["Get", str(_x)] call global_zone_hashmap;
-			if(!isnil "_sector") then {
-				if("getState" call _sector < 2) then {
-					_result = [0,0];
-				};
-			};
-			sleep 0.0001;
-		}foreach _around;
-		wcteleportack = _result;
-		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-	};	
 
 	// return true when read
 	true;

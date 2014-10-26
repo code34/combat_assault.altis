@@ -103,6 +103,11 @@
 			if(_win)	then {
 				["expandFriendlyAround", MEMBER("position", nil)] call global_controller;
 				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = true;
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			} else {
+				wcmissioncompleted = false;
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 		};
 
@@ -118,6 +123,11 @@
 			_type = _civils call BIS_fnc_selectRandom;
 			_civil = _group createUnit [_type, _position, [], 5, "FORM"];
 			_civil stop true;
+
+			if!(alive _civil) exitwith {
+				deletevehicle _civil;
+				deletegroup _group;
+			};
 			
 			MEMBER("target", _civil);
 
@@ -140,6 +150,16 @@
 					};
 				};
 
+				if(_count > 2) then {
+					_list = nearestObjects [_position, ["MAN"], 100];
+					sleep 0.5;
+					_count = east countSide _list;
+					if(_count == 0) then {
+						_run = false;
+						_win = true;
+					};
+				};
+
 				if(getdammage _civil > 0.9) then {
 					_run = false;
 				};
@@ -156,9 +176,15 @@
 
 			if(_win)	then {
 				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = true;
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			} else {
+				wcmissioncompleted = false;
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 			sleep 60;
 			deletevehicle _civil;
+			deletegroup _group;
 		};
 
 

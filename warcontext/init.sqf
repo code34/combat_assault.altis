@@ -79,7 +79,7 @@
 	global_vehicles = ["new", []] call OO_TREE;
 	global_ticket = ["new", []] call OO_TICKET;
 	global_atc = ["new", []] call OO_ATC;
-	global_dogfight = ["new", []] call OO_DOGFIGHT;
+	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
 	
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;

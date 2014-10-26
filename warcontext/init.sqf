@@ -43,7 +43,6 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_chopper.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
@@ -53,6 +52,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_playervehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
@@ -76,7 +76,7 @@
 	global_zone_hashmap  = ["new", []] call OO_TREE;
 	global_controller = ["new", []] call OO_CONTROLLER;
 	global_scores = ["new", []] call OO_TREE;
-	global_choppers = ["new", []] call OO_TREE;
+	global_vehicles = ["new", []] call OO_TREE;
 	global_ticket = ["new", []] call OO_TICKET;
 	global_atc = ["new", []] call OO_ATC;
 	global_dogfight = ["new", []] call OO_DOGFIGHT;

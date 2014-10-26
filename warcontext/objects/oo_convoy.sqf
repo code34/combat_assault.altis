@@ -36,14 +36,12 @@
 			MEMBER("grid", _grid);
 
 			_startposition = _this;
-			_endposition = [_startposition, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;		
-
 			MEMBER("startposition", _startposition);
-			MEMBER("endposition", _endposition);
 
 			_array = [];
 			MEMBER("vehicle", _array);
 			MEMBER("escort", _array);
+			MEMBER("setTarget", nil);
 			MEMBER("popSupport", nil);
 			MEMBER("popEscort", nil);
 		};
@@ -84,6 +82,18 @@
 			};
 			sleep 60;
 			MEMBER("deconstructor", nil);
+		};
+
+		PUBLIC FUNCTION("", "setTarget") {
+			private ["_endposition", "_marker"];
+
+			if("countWest" call global_atc > 1) then {
+				_marker = ("getWest" call global_atc) call BIS_fnc_selectRandom;
+				_endposition = getmarkerpos _maker;				
+			} else {
+				_endposition = [_startposition, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
+			};
+			MEMBER("endposition", _endposition);
 		};
 
 		PUBLIC FUNCTION("", "popSupport") {

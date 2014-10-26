@@ -6,6 +6,6 @@
 		case 2 : {wcskill = 0.3;};
 		case 3:  {wcskill = 0.4;};
 		case 4:  {wcskill = 0.5;};
-		default {wcskill = 0.3;};
+		default {wcskill = 0.2;};
 	};
 	diag_log format ["COMBAT ASSAULT starts at: %1 %2 difficulty", wcskill, wcaccurencylevel];

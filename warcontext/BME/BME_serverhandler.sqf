@@ -58,7 +58,9 @@
 		if(isnil "_vehicle") then {
 			_vehicle = ["new", [_type]] call OO_PLAYERVEHICLE;
 			["Put", [_name, _vehicle]] call global_vehicles;
-		};	
+		} else {
+			["setType", _type] call _vehicle;
+		};
 		_vehicle = ["pop", [_position, _netid, _name]] spawn _vehicle;
 	};		
 

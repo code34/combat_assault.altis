@@ -357,7 +357,7 @@
 		PUBLIC FUNCTION("", "startZone") {
 			private ["_sector"];
 			while { true } do {
-				MEMBER("setGroundPlayers", nil);
+				MEMBER("setPlayers", nil);
 				MEMBER("spawnSector", nil);
 				sleep 0.0000001;
 			};

@@ -63,46 +63,23 @@
 			_array;
 		};
 
-		PUBLIC FUNCTION("", "setGroundPlayers") {
-			private ["_temp"];
-			
-			_temp = [];
-
-			{
-				if(vehicle _x == _x) then {
-					if((getposatl _x) select 2 < 50) then {
-						_temp = _temp + [_x];
-					};
-				};
-				sleep 0.0000001;
-			} foreach playableunits;
-
-			MEMBER("groundplayers", _temp);
-		};
-
-		PUBLIC FUNCTION("", "setAirPlayers") {
-			private ["_temp"];
-
-			_temp = [];
-			//{
-			//	_temp = _temp + MEMBER("getPlayersOfType", _x);
-			//}foreach wcairplayerstype;
-
-			{
-				if(vehicle _x != _x) then {
-					if((getposatl _x) select 2 > 10) then {
-						_temp = _temp + [_x];
-					};
-				};
-				sleep 0.0000001;
-			} foreach playableunits;
-
-			MEMBER("airplayers", _temp);
-		};
-
 		PUBLIC FUNCTION("", "setPlayers") {
-			MEMBER("setGroundPlayers", nil);
-			MEMBER("setAirPlayers", nil);
+			private ["_groundplayers", "_airplayers"];
+
+			_groundplayers = [];
+			_airplayers = [];
+
+			{
+				if((getpos _x) select 2 < 20) then {
+					_groundplayers = _groundplayers + [_x];
+				} else {
+					_airplayers = _airplayers + [_x];
+				};
+				sleep 0.0000001;
+			} foreach playableunits;
+			
+			MEMBER("airplayers", _airplayers);
+			MEMBER("groundplayers", _groundplayers);
 		};
 
 		PUBLIC FUNCTION("", "getNewSector") {

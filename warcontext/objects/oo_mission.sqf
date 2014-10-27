@@ -150,7 +150,7 @@
 					};
 				};
 
-				if(_count > 2) then {
+				if(_count > 1) then {
 					_list = nearestObjects [_position, ["MAN"], 100];
 					sleep 0.5;
 					_count = east countSide _list;

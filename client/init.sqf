@@ -64,10 +64,9 @@
 		};
 	}];
 
-	playMusic "intro";
-	//playMusic ["LeadTrack01a_F", 2];
+	playMusic "BackgroundTrack02_F_EPC";
 
-	["<t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>Beta</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
+	["-- Birth of a New Empire --<br/><br/><t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>GOLD</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
 	_body = player;
 	_vehicle = vehicle player;

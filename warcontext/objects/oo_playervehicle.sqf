@@ -48,7 +48,7 @@
 			MEMBER("alive", true);
 			while { _counter < 60} do {
 				if(count (crew _vehicle) == 0) then { _counter = _counter + 1} else {_counter = 0;};
-				if(getDammage _vehicle > 0.9) then { _counter = 60; sleep 10;};
+				if(getDammage _vehicle > 0.9) then { _counter = 60; sleep 120;};
 				sleep 1;
 			}; 
 			MEMBER("alive", false);

@@ -16,15 +16,6 @@ class Header
 	maxPlayers=40;
 };
 
-class CfgMusic {
-	tracks[]={intro};
-	class intro
-	{
-		name = "intro";
-		sound[] = {"\sound\intro.ogg", db+10, 1.0};
-	};
-};
-
 class CfgDebriefing
 {  
 	class End1

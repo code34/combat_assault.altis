@@ -8,6 +8,8 @@
 
 	player createDiaryRecord ["Diary", ["Personnal Scoring System", "A system of individual score appears at the bottom right of the interface. The rank of the players depends on their ratio fatalities, death. When a player has a good ratio, then it climbs in the ranking. There are two types of individual score. Individual score of the current game, and the individual score of the server keeps a history of all games played by the player. "]];
 
+	player createDiaryRecord ["Diary", ["Missions", "Missions appear on the map. These missions are not mandatory but allow return tickets and thus dramatically increase the chances to finish the game. "]];
+
 	player createDiaryRecord ["Diary", ["Ticket System", "This mission uses a ticket system. Every important moment affects the ticket system and is winning or losing tickets. When this happens, a window appears in the upper right of the screen to indicate the number of ticket won or lost. If the ticket number is reduced to 0 then the game is lost"]];
 
 	player createDiaryRecord ["Diary", ["Interface color codes", "Three color codes are used by the interface. Red indicates your level of health. Green indicates your level of fatigue. Blue indicates the azimuth you look."]];

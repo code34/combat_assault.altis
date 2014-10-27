@@ -102,10 +102,10 @@
 					_credit = -10;
 				};
 				case "convoy": {
-					_credit = 20;
+					_credit = 40;
 				};			
 				case "mission": {
-					_credit = 30;
+					_credit = 40;
 				};
 				default {
 					_credit = -1;

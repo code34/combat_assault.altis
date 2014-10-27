@@ -47,6 +47,8 @@
 		};
 
 		PUBLIC FUNCTION("","getNumber") FUNC_GETVAR("globalnumber");
+		PUBLIC FUNCTION("","getGlobalScore") FUNC_GETVAR("globalscore");
+		PUBLIC FUNCTION("","getGlobalDeath") FUNC_GETVAR("globaldeath");
 
 		PUBLIC FUNCTION("string", "initBDD") {
 			private ["_key", "_array"];

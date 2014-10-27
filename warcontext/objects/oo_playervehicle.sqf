@@ -75,20 +75,8 @@
 			
 			MEMBER("setHandler", _vehicle);
 			MEMBER("vehicle", _vehicle);
-			MEMBER("moveIn", _name);
 			MEMBER("mark", nil);
 			MEMBER("checkAlive", nil);
-		};
-
-		PUBLIC FUNCTION("string", "moveIn") {
-			private ["_name"];
-
-			_name = _this;
-			{
-				if(name _x == _name) then {
-					_x moveIndriver MEMBER("vehicle", nil);
-				};
-			}foreach playableunits;
 		};
 
 		PUBLIC FUNCTION("", "unPop") {

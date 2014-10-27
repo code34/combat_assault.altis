@@ -33,8 +33,14 @@
 		_array = _this select 0;
 		_name = _array select 0;
 		_position = _array select 1;
-		_netid = _array select 2;
-		_type = _array select 3;
+		_type = _array select 2;
+
+		{	
+			if(_name == name _x) then {
+				_netid = owner _x;	
+			};
+			sleep 0.0001;
+		}forEach playableunits;
 
 		switch (_type) do {
 			case "chopper" : {

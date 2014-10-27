@@ -46,8 +46,8 @@
 	// shortest time do not improve weather sync
 	_timesync = 60;
 
-	// Mission starting date is 25/09/2013 at 12:00
-	_startingdate = [2014, 10, 26, 8, 00];
+	// Mission starting date is 28/010/2014 at 06:45
+	_startingdate = [2014, 10, 28, 6, 45];
 
 	// Mission starting weather "CLEAR|CLOUDY|RAIN";
 	_startingweather = "CLEAR";

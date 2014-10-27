@@ -98,20 +98,6 @@
 		private ["_player", "_stats", "_done", "_value"];
 
 		mystats = (_this select 0);
-		
-		//{
-		//	if(_player == _x select 0) then {
-		//		_value = [_player, _stats];
-		//		localplayerstats set [_foreachindex, _value];
-		//		_done = true;
-		//	};
-		//	sleep 0.01;
-		//}foreach localplayerstats;
-
-		//if!(_done) then {
-		//	_value = [_player, _stats];
-		//	localplayerstats = localplayerstats + [_value];
-		//};
 	};
 
 	BME_netcode_end = {

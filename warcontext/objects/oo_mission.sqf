@@ -103,16 +103,16 @@
 			if(_win)	then {
 				["expandFriendlyAround", MEMBER("position", nil)] call global_controller;
 				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = true;
+				wcmissioncompleted = [true, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			} else {
-				wcmissioncompleted = false;
+				wcmissioncompleted = [false, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 		};
 
 		PUBLIC FUNCTION("array", "rescue") {
-			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list"];
+			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list", "_text"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 1, 0 ] call BIS_fnc_findSafePos;
@@ -176,10 +176,10 @@
 
 			if(_win)	then {
 				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = true;
+				wcmissioncompleted = [true, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			} else {
-				wcmissioncompleted = false;
+				wcmissioncompleted = [false, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 			sleep 60;

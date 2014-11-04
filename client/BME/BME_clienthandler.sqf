@@ -46,12 +46,16 @@
 	};
 
 	BME_netcode_wcmissioncompleted = {
-		private ["_message", "_win"];
-		_win = _this select 0;
+		private ["_array", "_message", "_win", "_text"];
+		_array = _this select 0;
+		
+		_win = _array select 0;
+		_text = _array select 1;
+
 		if(_win) then {
-			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t></t>";
+			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t>: "+_text+"</t>";
 		} else {
-			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t></t>";
+			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t>: "+_text+"</t>";
 		};
 		killzone = killzone + [_message];
 	};

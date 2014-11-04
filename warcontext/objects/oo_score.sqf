@@ -108,6 +108,47 @@
 			_ratio;
 		};
 
+		PUBLIC FUNCTION("scalar", "getRank") {
+			private ["_ratio", "_rank"];
+			
+			_ratio = _this;
+
+			switch (true) do {
+				case (_ratio < 2) : {
+					_rank = "PRIVATE";
+				};
+
+				case (_ratio > 1.99 and _ratio < 4) : {
+					_rank = "CORPORAL";
+				};
+
+				case (_ratio > 3.99 and _ratio < 6) : {
+					_rank = "SERGEANT";
+				};
+
+				case (_ratio > 5.99 and _ratio < 8) : {
+					_rank = "LIEUTENANT";
+				};
+
+				case (_ratio > 7.99 and _ratio < 10) : {
+					_rank = "CAPTAIN";
+				};
+
+				case (_ratio > 9.99 and _ratio < 12) : {
+					_rank = "MAJOR";
+				};				
+
+				case (_ratio > 11.99) : {
+					_rank = "COLONEL" ;
+				};		
+
+				default {
+					_rank = "PRIVATE";
+				};
+			};
+			_rank;
+		};
+
 		PUBLIC FUNCTION("", "compute") {
 			private ["_array", "_death", "_globalnumber", "_ratio", "_score"];
 			_score = MEMBER("globalscore", nil) + MEMBER("gamescore", nil);

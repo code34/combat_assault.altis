@@ -77,7 +77,7 @@
 			
 			_target = MEMBER("target", nil);
 			
-			_text= "Destroy: " + getText (configFile >> "CfgVehicles" >> (typeOf _target) >> "DisplayName");
+			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _target) >> "DisplayName");
 			MEMBER("setMarker", _text);
 
 			_mark = MEMBER("marker", nil);
@@ -131,7 +131,7 @@
 			
 			MEMBER("target", _civil);
 
-			_text = "Rescue: " + name _civil;
+			_text = "Rescue " + name _civil;
 			MEMBER("setMarker", _text);
 
 			_run = true;

@@ -123,7 +123,7 @@
 
 
 		PUBLIC FUNCTION("scalar", "getRankText") {
-			private ["_img", "_player", "_ratio", "_text", "_rank", "_stats"];
+			private ["_ratio","_rank"];
 			
 			_ratio = _this;
 

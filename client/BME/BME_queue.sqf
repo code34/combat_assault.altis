@@ -39,6 +39,7 @@
 		} else {
 			format["BME: handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
 		};
+
 		bme_queue set [0, objnull]; 
 		bme_queue = bme_queue - [objnull];
 		sleep 0.1;

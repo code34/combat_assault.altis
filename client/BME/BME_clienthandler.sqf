@@ -31,18 +31,36 @@
 		["hint", ["Vehicle servicing", "Vehicle is not yet avalaible"]] call hud;
 	};
 
+	BME_netcode_wcaideath = {
+		private ["_unit", "_killer", "_message"];
+		
+		_array = _this select 0;
+		_unit = _array select 0;
+		_killer = _array select 1;
+
+		if!(_killer == "") then {
+			_message = "<t color='#FF9933'>"+_unit + "</t> was killed by <t color='#FF9933'>"+_killer+"</t><br/>";
+		} else {
+			_message = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
+		};
+		rollmessage = rollmessage + [_message];		
+	};
+
 	BME_netcode_wcdeathlistner = {
-		private ["_player", "_killer", "_message"];
+		private ["_player", "_killer", "_message", "_message2"];
 		_array = _this select 0;
 		_player = _array select 0;
 		_killer = _array select 2;
 
 		if!(_killer == "") then {
 			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t>";
+			_message2 = "<t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t><br/>";
 		} else {
 			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed</t>";
+			_message2 = "<t color='#FF9933'>"+_player + "</t> was killed<br/>";
 		};
 		killzone = killzone + [_message];
+		rollmessage = rollmessage + [_message2];
 	};
 
 	BME_netcode_wcmissioncompleted = {
@@ -53,9 +71,9 @@
 		_text = _array select 1;
 
 		if(_win) then {
-			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t>: "+_text+"</t>";
+			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t>: "+_text+"</t><br/>";
 		} else {
-			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t>: "+_text+"</t>";
+			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t>: "+_text+"</t><br/>";
 		};
 		killzone = killzone + [_message];
 	};

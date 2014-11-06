@@ -98,13 +98,38 @@
 					};
 					_time = _time  + 1;
 				};
+
+				_ctrl7 =(uiNamespace getVariable "wcdisplay") displayCtrl 1005;
+				_ctrl7 ctrlSetStructuredText parsetext rollprintmessage;
+				if(rollprintmessage == "") then {
+					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
+				} else {
+					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
+				};
+
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
 				_ctrl3 ctrlcommit 0;
 				_ctrl4 ctrlcommit 0;
 				_ctrl5 ctrlcommit 0;
 				_ctrl6 ctrlcommit 0;
+				_ctrl7 ctrlcommit 0;
 				sleep 1;			
+			};
+		};
+
+		PUBLIC FUNCTION("", "rollMessage") {
+			private ["_temp"];
+
+			while { true } do {
+				_temp = "";
+				{
+					sleep 0.001;
+					_temp =  _temp  + _x;
+				}foreach rollmessage;
+				rollprintmessage = _temp;
+				rollmessage deleteat 0;
+				sleep 1;
 			};
 		};
 

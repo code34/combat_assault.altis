@@ -167,6 +167,7 @@
 				if!(group _x in _group) then {
 					_group = _group + [group _x];
 				};
+				_x removeEventHandler ["killed", 0];
 				_x setdammage 1;
 				deletevehicle _x;
 				sleep 0.01;

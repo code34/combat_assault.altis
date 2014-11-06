@@ -38,7 +38,7 @@
 			
 		case "OIA_InfSquad": {
 			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
@@ -50,7 +50,7 @@
 
 		case "OIA_InfTeam": {
 			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
@@ -62,7 +62,7 @@
 
 		case "OIA_InfTeam_AA": {
 			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
@@ -74,7 +74,7 @@
 
 		case "OIA_InfTeam_AT": {
 			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.7];
@@ -98,7 +98,7 @@
 
 		case "OI_ReconTeam": {
 			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.8];
+			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
 			_unit setskill ["aimingSpeed", 0.6];
 			_unit setskill ["endurance", 0.8];
 			_unit setskill ["spotDistance", 0.5];
@@ -150,6 +150,24 @@
 				_x reveal (_this select 3);
 			}foreach (units (group (_this select 0)));
 		};
+	}];
+
+	_unit addeventhandler ['Killed', {
+		private ["_unit", "_killer", "_name"];
+
+		_unit = name (_this select 0);
+		_killer = _this select 1;
+		_name = "";
+		
+		if(_killer isKindOf "Man") then {
+			_name = name _killer;
+			if(_name == "Error: No unit") then { _name = "";} ;
+		} else {
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
+		};
+
+		wcaideath = [ _unit, _name];
+		["wcaideath", "client"] call BME_fnc_publicvariable;
 	}];
 
 	true;

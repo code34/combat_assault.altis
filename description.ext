@@ -152,7 +152,24 @@ class RscTitles {
 				colorBackground[] = {0,0,0,0.4};
 				colorText[] = {0.5,1,1,1}; 
 				text = ""; 
-			}; 			
+			}; 
+
+
+			class rollmessage { 
+				idc = 1005; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT;  
+				x = safeZoneX + 0.02 * 3 / 4; 
+				y = safeZoneY + 0.02 * 4/3;
+				w = 0.6 * 3 / 4;
+				h = 0.10 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0,0,0.3};
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			}; 
+
 		};
 	}; 
 };

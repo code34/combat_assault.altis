@@ -50,10 +50,12 @@ class Params
 	};
 };
 
+#define CT_STATIC 0
 #define CT_STRUCTURED_TEXT  13
 #define ST_LEFT 0x00
 #define ST_CENTER 0x02
 #define ST_VCENTER 0x0c
+#define ST_TILE_PICTURE 144
 
 class RscTitles { 
 	class bottomhud { 
@@ -63,7 +65,6 @@ class RscTitles {
 		fadein = 0;
 		fadeout = 0;
 		class controls {
-
 			class killzone { 
 				idc = 999; 
 				type = CT_STRUCTURED_TEXT; 
@@ -105,7 +106,7 @@ class RscTitles {
 				h = 0.03 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.038;
-				colorBackground[] = {1,0,0,0.4}; 
+				colorBackground[] = {1,0,0,1}; 
 				colorText[] = {0.5,1,1,1}; 
 				text = ""; 
 			}; 
@@ -121,7 +122,7 @@ class RscTitles {
 				h = 0.03 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.038; 
-				colorBackground[] = {0,1,0,0.4}; 
+				colorBackground[] = {0,1,0, 1}; 
 				colorText[] = {0.5,1,1,1}; 
 				text = ""; 
 			}; 
@@ -137,10 +138,26 @@ class RscTitles {
 				h = 0.03 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.038;
-				colorBackground[] = {0,0,1,0.4}; 
+				colorBackground[] = {0,0,1, 1}; 
 				colorText[] = {0.5,1,1,1}; 
 				text = ""; 
 			}; 
+
+			class infohud2 { 
+				idc = 1006; 
+				type = CT_STATIC;
+				style = ST_TILE_PICTURE; 
+				x = safeZoneX + safeZoneW - 0.31 * 3 / 4; 
+				y = safeZoneY + safeZoneH - 0.25* 4/3;
+				w = 0.30* 3 / 4;
+				h = 0.17 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.035;
+				colorBackground[] = {0,0.4,0.8,0.2};
+				colorText[] = {0,0.4,0.8,0.2}; 
+				text = "pics\grille.paa"; 
+				sizeEx = 0;
+			}; 			
 
 			class infohud { 
 				idc = 1004; 
@@ -156,23 +173,7 @@ class RscTitles {
 				colorBackground[] = {0,0.4,0.8,0.4};
 				colorText[] = {0.5,1,1,1}; 
 				text = ""; 
-			}; 
-
-			class infohud2 { 
-				idc = 1006; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_LEFT; 
-				x = safeZoneX + safeZoneW - 0.31 * 3 / 4; 
-				y = safeZoneY + safeZoneH - 0.21* 4/3;
-				w = 0.30* 3 / 4;
-				h = 0.13 * 4/3;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.035;
-				colorBackground[] = {0,0.4,0.8,0.2};
-				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
 			}; 			
-
 
 			class rollmessage { 
 				idc = 1005; 

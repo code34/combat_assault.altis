@@ -246,6 +246,7 @@
 			{
 				_x dotarget _target;
 				_x dofire _target;
+				_x setUnitPos "Middle";
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 		};

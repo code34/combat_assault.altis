@@ -70,7 +70,7 @@
 			_airplayers = [];
 
 			{
-				if((getpos _x) select 2 < 20) then {
+				if((getpos _x) select 2 < 4) then {
 					_groundplayers = _groundplayers + [_x];
 				} else {
 					_airplayers = _airplayers + [_x];

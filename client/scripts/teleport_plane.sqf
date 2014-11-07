@@ -18,7 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_position", "_array"];
+	private ["_continue", "_position", "_array"];
 
 	_position = position player;
 
@@ -31,10 +31,18 @@
 		onMapSingleClick {
 			wcteleport = _pos;
 		};
-		while { !surfaceIsWater wcteleport} do {
-			_title = "Select your destination zone";
-			_text = "Click on the sea where you'd like to Insert!";
+		_continue = false;
+		while { !_continue} do {
+			_title = "Select  an Airport";
+			_text = "Click on a friendly Airport to Insert!";
 			["hint", [_title, _text]] call hud;
+			{
+				if(getmarkerpos _x distance wcteleport < 300) then {
+					if(getmarkercolor _x == "ColorBlue") then {
+						_continue = true;
+					};
+				};
+			}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 			sleep 0.1;
 		};
 		onMapSingleClick "";

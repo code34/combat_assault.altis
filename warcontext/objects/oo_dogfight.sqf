@@ -183,9 +183,13 @@
 		};
 
 		PUBLIC FUNCTION("", "popMember") {
-			private ["_crew", "_vehicle", "_mark", "_position", "_squad"];
-		
-			_position = [[500,500,500], [29000,29000,100], [500,29000,100], [29000,500,100]] call BIS_fnc_selectRandom;
+			private ["_atc", "_crew", "_vehicle", "_mark", "_position", "_squad"];
+			
+			_atc = MEMBER("atc", nil);
+			_array = "getEast" call _atc;
+			_marker =  _array call BIS_fnc_selectRandom;
+			 _position = getmarkerpos _marker;
+			_position = [_position select 0, _position select 1, 100];
 			_array = [_position, 0, "O_Plane_CAS_02_F", east] call bis_fnc_spawnvehicle;
 
 			_vehicle = _array select 0;

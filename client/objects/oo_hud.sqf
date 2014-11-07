@@ -56,19 +56,23 @@
 				_ctrl3 ctrlSetStructuredText parseText _text;
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
-				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
-				
+								
 				_ratio = mystats select 0;
 				_globalratio = mystats select 1;
 				_number = mystats select 2;
 
 				_rank = MEMBER("getRankText", _ratio);
 				_img = [_rank,"texture"] call BIS_fnc_rankParams;
-				_text = _text + "<br/><img image='" + _img + "'/> " + format ["%1", _rank];
+				//_text = "<t color='#66FFFF'><img image='" + _img + "'/> " + format ["%1</t>", _rank];
+				_text = "<img image='" + _img + "'/> " + format ["%1", _rank];
 
 				_rank = MEMBER("getRankText", _globalratio);
+				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Server Ranking: %1</t></t>", _rank];
 				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
+				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Match: %1</t></t>", _number];
 				_text = _text + format ["<br/><t size='0.7'>Match: %1</t>", _number];
+				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Weight: %1 %2</t></t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
+				_text = _text + format ["<br/><t size='0.7'>Weight: %1 %2</t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 
 				if(vehicle player != player) then {

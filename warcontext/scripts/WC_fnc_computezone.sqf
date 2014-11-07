@@ -47,5 +47,3 @@
 			["expandSectorAround", _sector] call global_controller;
 		};
 	} foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
-
-	//_tree;

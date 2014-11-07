@@ -87,7 +87,7 @@
 		PUBLIC FUNCTION("", "setTarget") {
 			private ["_endposition", "_marker"];
 
-			if("countWest" call global_atc > 1) then {
+			if("countWest" call global_atc >  0) then {
 				_marker = ("getWest" call global_atc) call BIS_fnc_selectRandom;
 				_endposition = getmarkerpos _marker;				
 			} else {

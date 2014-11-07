@@ -16,13 +16,14 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
+	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
 
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
 
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";	
@@ -36,6 +37,7 @@
 	"rollMessage" spawn hud;
 	"bottomHud" spawn hud;
 
+	inventory = ["new", [player]] call OO_INVENTORY;
 	[] execVM "real_weather\real_weather.sqf";
 
 	sleep 1;
@@ -102,7 +104,7 @@
 				sleep 1;
 			};
 		};
-	};
+	};	
 
 	// MAIN LOOP
 	while {true} do {
@@ -111,17 +113,21 @@
 			player addWeapon "ItemGPS";
 		};
 
+		["load", player] call inventory;
 		_position = position player;
-
-		_title = "Select your equipment";
-		_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
-		["hint", [_title, _text]] call hud;
 		
-		["Open",[true,nil,player]] call bis_fnc_arsenal;
 		while { _position distance position player < 2 } do {
+			if(isnil "_action") then {
+				_action = player addAction ["Choose your equipment", "client\scripts\arsenal.sqf"];
+			};
 			sleep 0.1
 		};
-	
+		player removeAction _action;
+		_action = nil;
+
+		["save", player] call inventory;
+
+		openMap [false, false] ;
 		openMap [true, true];
 		mapAnimAdd [1, 0.01, _body]; 
 		mapAnimCommit;

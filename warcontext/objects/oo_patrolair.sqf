@@ -30,21 +30,31 @@
 		PRIVATE VARIABLE("array", "target");
 		PRIVATE VARIABLE("code", "marker");
 			
-		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("popMember", nil);
-			MEMBER("sector", _this select 0);
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-			MEMBER("grid", _grid);
-			MEMBER("setMarker", nil);
-			MEMBER("getSectorAround", nil);
-			MEMBER("setCombatMode", nil);
+		PUBLIC FUNCTION("array","constructor") {		
+			private ["_airport"];
+
+			_airport = "countEast" call global_atc;
+			if(_airport > 0) then {
+				MEMBER("popMember", nil);
+				MEMBER("sector", _this select 0);
+				_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+				MEMBER("grid", _grid);
+				MEMBER("setMarker", nil);
+				MEMBER("getSectorAround", nil);
+				MEMBER("setCombatMode", nil);
+			};
 		};
 
 		PUBLIC FUNCTION("", "popMember") {
-			private ["_array", "_group", "_vehicle"];
+			private ["_array", "_group", "_vehicle", "_marker"];
+
+			_array = "getEast" call global_atc;
+			_marker =  _array call BIS_fnc_selectRandom;
+			_position = getmarkerpos _marker;
+			_position = [_position select 0, _position select 1, 100];
 			
 			_vehicle = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
-			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
+			_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;
 			_group = _array select 2;

@@ -109,11 +109,9 @@
 	// MAIN LOOP
 	while {true} do {
 		_index = player addEventHandler ["HandleDamage", {false}];
-		if !(player hasWeapon "ItemGPS") then {
-			player addWeapon "ItemGPS";
-		};
 
 		["load", player] call inventory;
+		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
 		_position = position player;
 		
 		while { _position distance position player < 2 } do {

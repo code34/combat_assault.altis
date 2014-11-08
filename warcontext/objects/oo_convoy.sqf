@@ -41,7 +41,7 @@
 			_array = [];
 			MEMBER("vehicle", _array);
 			MEMBER("escort", _array);
-			MEMBER("setTarget", nil);
+			MEMBER("setTarget", _startposition);
 			MEMBER("popSupport", nil);
 			MEMBER("popEscort", nil);
 		};
@@ -84,14 +84,24 @@
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("", "setTarget") {
-			private ["_endposition", "_marker"];
+		PUBLIC FUNCTION("array", "setTarget") {
+			private ["_distance", "_endposition", "_markers", "_marker", "_position"];
+
+			_position = _this;
 
 			if("countWest" call global_atc >  0) then {
-				_marker = ("getWest" call global_atc) call BIS_fnc_selectRandom;
+				_markers = "getWest" call global_atc;
+				_distance = 30000;
+				{
+					if ((getmarkerpos _x ) distance _position < _distance) then {
+						_distance = (getmarkerpos _x ) distance _position;
+						_marker = _x;
+					};
+					sleep 0.0001;
+				}foreach _markers;
 				_endposition = getmarkerpos _marker;				
 			} else {
-				_endposition = [_startposition, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
+				_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
 			};
 			MEMBER("endposition", _endposition);
 		};
@@ -188,6 +198,12 @@
 			_wp setWaypointType "MOVE";
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
+
+			_mark = ["new", _position] call OO_MARKER;
+			["setText", "Destination convoy"] spawn _mark;
+			["setColor", "ColorRed"] spawn _mark;
+			["setType", "mil_arrow"] spawn _mark;
+			["setSize", [1,1]] spawn _mark;
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

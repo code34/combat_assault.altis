@@ -32,7 +32,7 @@
 		};
 
 		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_text", "_weight", "_time", "_message"];
+			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_text", "_weight", "_time", "_message"];
 
 			disableSerialization;
 			cutrsc ['bottomhud','PLAIN'];
@@ -61,12 +61,12 @@
 				_globalratio = mystats select 1;
 				_number = mystats select 2;
 
-				_rank = MEMBER("getRankText", _ratio);
+				_rank = ["getRankText", _ratio] call scoreboard;
 				_img = [_rank,"texture"] call BIS_fnc_rankParams;
 				//_text = "<t color='#66FFFF'><img image='" + _img + "'/> " + format ["%1</t>", _rank];
 				_text = "<img image='" + _img + "'/> " + format ["%1", _rank];
 
-				_rank = MEMBER("getRankText", _globalratio);
+				_rank = ["getRankText", _globalratio] call scoreboard;
 				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Server Ranking: %1</t></t>", _rank];
 				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
 				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Match: %1</t></t>", _number];
@@ -111,6 +111,16 @@
 					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
 				};
 
+				_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
+				if(alive player) then {
+					_ctrl8 ctrlSetStructuredText parsetext "";
+					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
+				} else {
+					_text = "topByRatio" call scoreboard;
+					_ctrl8 ctrlSetStructuredText parsetext _text;
+					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
+				};
+
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
 				_ctrl3 ctrlcommit 0;
@@ -118,6 +128,8 @@
 				_ctrl5 ctrlcommit 0;
 				_ctrl6 ctrlcommit 0;
 				_ctrl7 ctrlcommit 0;
+				_ctrl8 ctrlcommit 0;
+
 				sleep 1;			
 			};
 		};
@@ -148,48 +160,6 @@
 			}foreach crew (vehicle player);
 			_text = _name + _text;
 			_text;
-		};
-
-
-		PUBLIC FUNCTION("scalar", "getRankText") {
-			private ["_ratio","_rank"];
-			
-			_ratio = _this;
-
-			switch (true) do {
-				case (_ratio < 0.99) : {
-					_rank = "PRIVATE";
-				};
-
-				case (_ratio > 1 and _ratio < 1.99) : {
-					_rank = "CORPORAL";
-				};
-
-				case (_ratio > 2 and _ratio < 2.99) : {
-					_rank = "SERGEANT";
-				};
-
-				case (_ratio > 3 and _ratio < 3.99) : {
-					_rank = "LIEUTENANT";
-				};
-
-				case (_ratio > 4 and _ratio < 4.99) : {
-					_rank = "CAPTAIN";
-				};
-
-				case (_ratio > 5 and _ratio < 5.99) : {
-					_rank = "MAJOR";
-				};				
-
-				case (_ratio > 6) : {
-					_rank = "COLONEL" ;
-				};		
-
-				default {
-					_rank = "PRIVATE";
-				};
-			};
-			_rank;
 		};
 
 		PUBLIC FUNCTION("", "drawPlayerTag") {

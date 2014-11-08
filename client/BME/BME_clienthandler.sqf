@@ -117,9 +117,13 @@
 	};
 
 	BME_netcode_playerstats = {
-		private ["_player", "_stats", "_done", "_value"];
+		private ["_newscore"];
+		_newscore = _this select 0;
 
-		mystats = (_this select 0);
+		if(_newscore select 0 == name player) then {
+			mystats = (_newscore select 1);
+		};
+		["addScore", _newscore] call scoreboard;
 	};
 
 	BME_netcode_end = {

@@ -26,9 +26,17 @@
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";	
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_tree.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
+	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
 	mystats = [0,0,0];
+	scoreboard = ["new", []] call OO_SCOREBOARD;
+
+	_newscore = [name player, [0,0,0]];
+	["addScore", _newscore] call scoreboard;
+
 	rollmessage = ["<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project<br/>", "on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>"];
 	rollprintmessage = "";
 
@@ -77,7 +85,6 @@
 	_vehicle = vehicle player;
 
 	_mark = ["new", position player] call OO_MARKER;
-	localplayerstats = [];
 
 	playertype = player getvariable "type";
 	if((playertype == "bomber") or (playertype == "fighter")) then {

@@ -137,7 +137,7 @@
 
 		PUBLIC FUNCTION("", "keySet") {
 			_node = MEMBER("root", nil);
-			"parseChildKeySet" call _node;
+			 ["parseChildKeySet", []] call _node;
 		};
 
 		PUBLIC FUNCTION("", "size") {

@@ -60,17 +60,27 @@
 			_return;
 		};
 
-		PUBLIC FUNCTION("", "parseChildKeySet") {
-			private ["_array", "_value"];
+		PUBLIC FUNCTION("array", "parseChildKeySet") {
+			private ["_array", "_key", "_localkey", "_string"];
+
+			_key = _this;
+			_localkey = MEMBER("getCurrent", nil);
+
+			if(_localkey > 0) then {
+				_key = _key + [_localkey];
+			};
+
 			_array = [];
 			{
-				_array = _array + ("parseChildKeySet" call (_x select 1));
-				_value = "getCurrent" call (_x select 1);
-				if(_value > 0) then {
-					_array = _array + [_value];
-				};
+				_array = _array + (["parseChildKeySet", _key] call (_x select 1));
 				sleep 0.0001;
 			}foreach MEMBER("childrens", nil);
+
+			_value = MEMBER("getValue", nil);
+			if(count _value > 0) then {
+				_string = tostring _key;
+				_array = _array + [_string];
+			};
 			_array;
 		};
 

@@ -110,8 +110,8 @@
 		_rank = ["getRank", _globalratio] call _score;
 		_player setrank _rank;
 
-		playerstats = [_ratio, _globalratio, _number];
-		["playerstats", "client", _netid] call BME_fnc_publicvariable;
+		playerstats = [_name, [_ratio, _globalratio, _number]];
+		["playerstats", "client"] call BME_fnc_publicvariable;
 	};		
 
 	BME_netcode_server_wcteleport = {

@@ -21,26 +21,26 @@
 	#include "oop.h"
 
 	CLASS("OO_SCOREBOARD")
-		PRIVATE VARIABLE("code","tree");
+		PRIVATE VARIABLE("code","map");
 
 		PUBLIC FUNCTION("array","constructor") {
-			_tree = ["new", []] call OO_TREE;
-			MEMBER("tree", _tree);
+			_map = ["new", []] call OO_HASHMAP;
+			MEMBER("map", _map);
 		};
 
 		PUBLIC FUNCTION("array", "addScore") {
-			["put", _this] call MEMBER("tree", nil);
+			["put", _this] call MEMBER("map", nil);
 		};
 
 		PUBLIC FUNCTION("", "getScore") {
-			private ["_tree", "_players", "_globalscore", "_scores"];
+			private ["_map", "_players", "_globalscore", "_scores"];
 
-			_tree = MEMBER("tree", nil);
-			_players = "keySet" call _tree;
+			_map = MEMBER("map", nil);
+			_players = "keySet" call _map;
 			_globalscore = [];
 
 			{
-				_scores = ["get", _x] call _tree;
+				_scores = ["get", _x] call _map;
 				_globalscore = _globalscore + [[_x, _scores]];
 				sleep 0.0001;
 			}foreach _players;
@@ -62,19 +62,44 @@
 		};
 
 		PUBLIC FUNCTION("array", "getText") {
-			private ["_text", "_scores", "_score"];
+			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match"];
 
 			_scores = _this;
+			
+			_top = "<t align='center'>Top<br/>";
+			_players = "Players<br/>";
+			_ranks = "<t align='center'>Game Ranking<br/>";
+			_serverranks = "<t align='center'>Server Ranking<br/>";
+			_matchs = "<t align='center'>Match<br/>";
 
-			_text = "Score Board<br/>";
-			_text = _text + "-----------------------------------------------------------------<br/>";
-			_text = _text + "<t size='0.7'>Top - Player" + "		" + " Game Ranking "+ "		" + "Server Ranking " + "		" + "Matchs</t><br/>";
-			_text = _text + "-----------------------------------------------------------------<br/>";
 			{
 				_score = _x select 1;
-				_text = _text + str _foreachindex + " - " + (_x select 0) + "		" +  MEMBER("getRankText", (_score select 0)) + "		" + MEMBER("getRankText", (_score select 1)) + "		" + str(_score select 2) + "<br/>";
+
+				_tmp  = str(_foreachindex + 1) + "<br/>";			
+				_top = _top + _tmp;
+
+				_tmp = (_x select 0) + "<br/>";
+				_players = _players + _tmp;
+
+				_tmp = MEMBER("getRankText", (_score select 0)) + "<br/>";
+				_ranks = _ranks + _tmp;
+				
+				_tmp = MEMBER("getRankText", (_score select 1)) + "<br/>";
+				_serverranks = _serverranks + _tmp;
+				
+				_match = _score select 2;
+				if(isnil "_match") then {_match = 0;};
+				_tmp = str(_match) + "<br/>";
+				_matchs = _matchs + _tmp;
 			}foreach _scores;
-			_text;
+
+			_top = _top + "</t>";
+			_players = _players + "</t>";
+			_ranks = _ranks + "</t>";
+			_serverranks = _serverranks + "</t>";
+			_matchs = _matchs + "</t>";
+
+			[_top, _players, _ranks, _serverranks, _matchs];
 		};
 
 		PUBLIC FUNCTION("scalar", "getRankText") {
@@ -148,7 +173,7 @@
 			_column = _this select 1;
 
 			_temp = [];
-
+			
 			while { count _array > 0} do {
 				_max = -10000;
 				{
@@ -165,7 +190,7 @@
 		};					
 
 		PUBLIC FUNCTION("","deconstructor") { 
-			["delete", MEMBER("tree", nil)] call OO_TREE;
-			DELETE_VARIABLE("tree", nil);
+			["delete", MEMBER("map", nil)] call OO_HASHMAP;
+			DELETE_VARIABLE("map", nil);
 		};
 	ENDCLASS;

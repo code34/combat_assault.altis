@@ -127,7 +127,7 @@
 			private ["_around", "_sectors", "_nextsector"];
 			_sectors = [];
 			{
-				_nextsector = ["Get", str(_x)] call global_zone_hashmap;
+				_nextsector = ["get", str(_x)] call global_zone_hashmap;
 				if!(isnil "_nextsector") then {
 					if("getAlert" call _nextsector) then {
 						_sectors = _sectors + [_nextsector];

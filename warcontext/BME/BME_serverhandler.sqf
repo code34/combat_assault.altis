@@ -98,7 +98,7 @@
 		_score = ["get", _uid] call global_scores;
 		if(isnil "_score") then {
 			_score = ["new", [_uid]] call OO_SCORE;
-			["Put", [_uid, _score]] call global_scores;
+			["put", [_uid, _score]] call global_scores;
 		};
 
 		"addDeath" call _score;

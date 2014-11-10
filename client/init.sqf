@@ -27,8 +27,7 @@
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_tree.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
 	mystats = [0,0,0];

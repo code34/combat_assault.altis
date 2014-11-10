@@ -22,95 +22,85 @@
 
 	CLASS("OO_HASHMAP")
 		PRIVATE VARIABLE("array","index");
-		PRIVATE VARIABLE("array","map");
+		PRIVATE STATIC_VARIABLE("scalar","instanceid");
 
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_array"];
 			_array = [];
 			MEMBER("index", _array);
-			MEMBER("map", _array);
+
+			_instanceid = MEMBER("instanceid",nil);
+			if (isNil "_instanceid") then {_instanceid = 0;};
+			_instanceid = _instanceid + 1;
+			MEMBER("instanceid",_instanceid);			
 		};
 
 		// Removes all of the mappings from this map.
-		PUBLIC FUNCTION("", "Clear") {
-			private ["_array"];
+		PUBLIC FUNCTION("", "clear") {
+			private ["_array", "_hash"];
+			
+			{
+				_hash = MEMBER("keyName", _x);
+				missionNamespace setVariable [_hash, nil];
+			}foreach MEMBER("index", nil);
 			_array = [];
 			MEMBER("index", _array);
-			MEMBER("map", _array);
 		};		
 
+		PUBLIC FUNCTION("string", "keyName") {
+			"HSHKEY"+ str(MEMBER("instanceid", nil)) + "_" + _this;
+		};
 
 		// Returns true if this map contains a mapping for the specified key.
-		PUBLIC FUNCTION("array", "containsKey") {
-			private ["_return", "_key"];
-
-			_key = _this select 0;
-			_return = false;
-
-			{
-				scopename "oo_hashmap_key";
-				if(format["%1", _key] == format["%1", _x]) then {
-					_return = true;
-					breakout "oo_hashmap_key";
-				};
-				sleep 0.000000001;
-			}foreach MEMBER("index", nil);
-			_return;
+		PUBLIC FUNCTION("string", "containsKey") {
+			private ["_hash", "_set"];
+			_hash = MEMBER("keyName", _this);
+			_set = missionNamespace getVariable _hash;
+			if(isnil "_set") then {false;} else {true;};
 		};
 
-		// Returns true if this map maps one or more keys to the specified value.
+		// Returns true if this map contains a mapping for the specified value
 		PUBLIC FUNCTION("array", "containsValue") {
-			private ["_return", "_value"];
+			private ["_search", "_value", "_return"];
 
-			_value = _this select 0;
+			_search = _this select 0;
+
 			_return = false;
-
 			{
-				scopename "oo_hashmap_value";
-				if(format["%1", _value] == format["%1", _x]) then {
+				_value = MEMBER("get", _x);
+				if(_value isequalto _search) then {
 					_return = true;
-					breakout "oo_hashmap_value";
 				};
-				sleep 0.000000001;
-			}foreach MEMBER("map", nil);
-
-			_return;
-			
+			}foreach MEMBER("index", nil);
+			_return;			
 		};
 
-		// Returns a Set view of the mappings contained in this map.
-		PUBLIC FUNCTION("","entrySet") FUNC_GETVAR("map");
-
-
+		// Returns a set view of the mappings contained in this map.
+		PUBLIC FUNCTION("","entrySet"){
+			private ["_array", "_value"];
+			_array = [];
+			{
+				_value = MEMBER("get", _x);
+				_array = _array + [_value];
+			}foreach MEMBER("index", nil);
+			_array;
+		};
 
 		// Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
-		PUBLIC FUNCTION("array", "Get") {
-			private ["_key", "_index", "_map", "_return"];
+		PUBLIC FUNCTION("string", "get") {
+			private ["_key", "_hash"];
 
 			_key = _this;
 
-			_index = MEMBER("SearchIndex", _key);
-			if(_index == -1) then {
-				_return = "null";
-			} else {
-				_return = MEMBER("map", nil) select _index;
-			};
-			_return;
-		};
+			if(isnil "_key") exitwith {false};
+			if!(typename _key == "STRING") exitwith {false};			
 
-		// Set the value to which the specified key is mapped, or null if this map contains no mapping for the key.
-		PUBLIC FUNCTION("array", "Set") {
-			private ["_key", "_index", "_value"];
-
-			_key = [_this select 0];
-			_value = _this select 1;
-
-			_index = MEMBER("SearchIndex", _key);				
-			MEMBER("map", nil) set [_index, _value];
+			_hash = MEMBER("keyName", _key);
+			missionNamespace getVariable _hash;
 		};
 
 		// Returns true if this map contains no key-value mappings.
-		PUBLIC FUNCTION("", "IsEmpty") {
+		PUBLIC FUNCTION("", "isEmpty") {
 			if(count MEMBER("index", nil) == 0) then { true; } else { false };
 		};
 
@@ -118,91 +108,44 @@
 		PUBLIC FUNCTION("","keySet") FUNC_GETVAR("index");
 
 		// Associates the specified value with the specified key in this map.
-		PUBLIC FUNCTION("array", "Put") {
-			private ["_index", "_key", "_map", "_value"];
+		PUBLIC FUNCTION("array", "put") {
+			private ["_array", "_key", "_index", "_value", "_set", "_hash"];
 
-			_key = [_this select 0];
-			_value = [_this select 1];
+			_key = _this select 0;
+			_value = _this select 1;
 
-			if(count _key == 0) exitwith {false};
-			_index = MEMBER("index", nil) + _key;
-			_map = MEMBER("map", nil) + _value;
+			if(isnil "_key") exitwith {false};
+			if!(typename _key == "STRING") exitwith {false};
 
-			MEMBER("index", _index);
-			MEMBER("map", _map);
-		};
-
-		// Copies all of the mappings from the specified map to this map.
-		PUBLIC FUNCTION("array", "PutAll") {	
-			private ["_return", "_extmap", "_index", "_map"];
-
-			_extmap = _this select 0;
+			_hash = MEMBER("keyName", _key);
+			_set = missionNamespace getVariable _hash;
 			
-			_return = true;
-			{
-				if(MEMBER("containsKey", _x)) then {
-					_return = false;
-				};
-				sleep 0.000000001;
-			}foreach ("keySet" call _extmap);
-
-			if(_return) then {
-				_index = MEMBER("index", nil) + ("keySet" call _extmap);
-				_map = MEMBER("map", nil) + ("entrySet" call _extmap);
-				MEMBER("index", _index);
-				MEMBER("index", _map);
-			};
-			_return;
+			if(isnil "_set") then {
+				_array = MEMBER("index", nil) + [_key];
+				MEMBER("index", _array);
+			} ;
+			missionNamespace setVariable [_hash, _value];
 		};
 
 		// Removes the mapping for the specified key from this map if present.
-		PUBLIC FUNCTION("array", "Remove") {
-			private ["_index", "_map"];
+		PUBLIC FUNCTION("string", "remove") {
+			private ["_key", "_index", "_value"];
 
-			if(isnil "_this") exitwith {false};
+			_key = _this;
 
-			_index = MEMBER("SearchIndex", _this);
-						
-			MEMBER("index", nil) set [_index, "hasmapdeletedobject"];
-			MEMBER("map", nil) set [_index, "hasmapdeletedobject"];
-
-			_index =  MEMBER("index", nil) - ["hasmapdeletedobject"];
-			_map =  MEMBER("map", nil) - ["hasmapdeletedobject"];
-
-			MEMBER("index", _index);
-			MEMBER("map", _map);			
+			if(isnil "_key") exitwith {false};
+			_hash = MEMBER("keyName", _key);
+			_array = MEMBER("index", nil) - [_key];
+			MEMBER("index", _array);
+			missionNamespace setVariable [_hash, nil];
 		};
 
 		// Returns the number of key-value mappings in this map
-		PUBLIC FUNCTION("", "Size") {
+		PUBLIC FUNCTION("", "size") {
 			count MEMBER("index", nil);
 		};
 
-
-		// search index of the array for a specific key
-		PUBLIC FUNCTION("array", "SearchIndex") {
-			private ["_i", "_index", "_key"];
-			
-			_key = _this select 0;
-
-			_index = -1;
-			_i = 0;
-
-			{
-				scopename "oo_hashmap_search";
-				if(format["%1", _key] == format["%1", _x]) then {
-					_index = _i;
-					breakout "oo_hashmap_search";
-				};
-				_i = _i + 1;
-				sleep 0.000000001;
-			}foreach MEMBER("index", nil);
-			_index;
-		};
-
-
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("index");
-			DELETE_VARIABLE("map");
 		};
 	ENDCLASS;

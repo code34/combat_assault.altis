@@ -288,7 +288,8 @@
 
 		PUBLIC FUNCTION("object", "getPlayerSaveSector") {
 			private ["_sector"];
-			_sector = ["Get", [name _this]] call MEMBER("player_hashmap",nil);
+			_sector = ["get", (name _this)] call MEMBER("player_hashmap",nil);
+			if(isnil "_sector") then {_sector = [];};
 			_sector;
 		};
 	
@@ -303,11 +304,7 @@
 			private ["_player", "_sector"];
 			_player = _this select 0;
 			_sector = _this select 1;
-			if(["containsKey", [name _player]] call MEMBER("player_hashmap",nil)) then {
-				["Set", [name _player, _sector]] call MEMBER("player_hashmap",nil);
-			} else {
-				["Put", [name _player, _sector]] call MEMBER("player_hashmap",nil);
-			};
+			["put", [(name _player), _sector]] call MEMBER("player_hashmap",nil);
 		};
 
 		PUBLIC FUNCTION("", "spawnSector") {

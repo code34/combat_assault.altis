@@ -189,16 +189,107 @@ class RscTitles {
 				idc = 1007; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
-				x = safeZoneX + 0.02 * 3 / 4; 
-				y = safeZoneY + 0.02 * 4/3;
+				x = 0.05 + safeZoneX + 0 * 3/4; 
+				y = 0.05 + safeZoneY + 0 * 4/3;
 				w = 1 * 3 / 4;
 				h = 1 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0.2};
+				colorText[] = {0,0.4,0.8,0.2}; 
+				text = ""; 
+				sizeEx = 0;
+			}; 
+
+			class scoreboard_title { 
+				idc = 1008; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT;  
+				x = 0.05 + safeZoneX + 0 * 3/4; 
+				y = 0.05 + safeZoneY + 0 * 4/3;
+				w = 1 * 3/4;
+				h = 0.03 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
 				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
-			}; 
+				text = "Score Board"; 
+			};
+
+			class scoreboard_subtitle1 { 
+				idc = 1009; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT;   
+				x = 0.05 +safeZoneX + 0 * 3/4; 
+				y = 0.05 +safeZoneY + 0.03 * 4/3;
+				w = 0.1 * 3/4;
+				h = 0.97 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = "Top"; 
+			};
+
+			class scoreboard_subtitle2 { 
+				idc = 1010; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = 0.05 +safeZoneX + 0.1 * 3/4; 
+				y = 0.05 +safeZoneY + 0.03 * 4/3;
+				w = 0.4 * 3/4;
+				h = 0.97 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = "Player Name"; 
+			};
+
+			class scoreboard_subtitle3 { 
+				idc = 1011; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = 0.05 +safeZoneX + 0.5 * 3/4; 
+				y = 0.05 +safeZoneY + 0.03 * 4/3;
+				w = 0.2 * 3/4;
+				h = 0.97 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = "Game Ranking"; 
+			};
+
+			class scoreboard_subtitle4 { 
+				idc = 1012; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = 0.05 +safeZoneX + 0.7 * 3/4; 
+				y = 0.05 +safeZoneY + 0.03 * 4/3;
+				w = 0.2 * 3/4;
+				h = 0.97 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = "Server Ranking"; 
+			};
+
+			class scoreboard_subtitle5 { 
+				idc = 1013; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = 0.05 +safeZoneX + 0.9 * 3/4; 
+				y = 0.05 +safeZoneY + 0.03 * 4/3;
+				w = 0.1 * 3/4;
+				h = 0.97 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = "Matchs"; 
+			};																	
 		};
 	}; 
 };

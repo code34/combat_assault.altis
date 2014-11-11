@@ -1,6 +1,6 @@
 #define CT_STATIC			0
 #define CT_BUTTON			1
-#define CT_EDIT				2
+#define CT_EDIT 			2
 #define CT_SLIDER			3
 #define CT_COMBO			4
 #define CT_LISTBOX			5

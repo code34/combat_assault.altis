@@ -30,19 +30,15 @@
 		PRIVATE VARIABLE("array", "target");
 		PRIVATE VARIABLE("code", "marker");
 			
-		PUBLIC FUNCTION("array","constructor") {		
-			private ["_airport"];
-
-			_airport = "countEast" call global_atc;
-			if(_airport > 0) then {
-				MEMBER("popMember", nil);
-				MEMBER("sector", _this select 0);
-				_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-				MEMBER("grid", _grid);
-				MEMBER("setMarker", nil);
-				MEMBER("getSectorAround", nil);
-				MEMBER("setCombatMode", nil);
-			};
+		PUBLIC FUNCTION("array","constructor") {			
+			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+			MEMBER("grid", _grid);
+			
+			MEMBER("popMember", nil);
+			MEMBER("sector", _this select 0);
+			MEMBER("setMarker", nil);
+			MEMBER("getSectorAround", nil);
+			MEMBER("setCombatMode", nil);
 		};
 
 		PUBLIC FUNCTION("", "popMember") {

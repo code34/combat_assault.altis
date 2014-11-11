@@ -199,11 +199,11 @@
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
 
-			_mark = ["new", _position] call OO_MARKER;
-			["setText", "Destination convoy"] spawn _mark;
-			["setColor", "ColorRed"] spawn _mark;
-			["setType", "mil_arrow"] spawn _mark;
-			["setSize", [1,1]] spawn _mark;
+			//_mark = ["new", _position] call OO_MARKER;
+			//["setText", "Destination convoy"] spawn _mark;
+			//["setColor", "ColorRed"] spawn _mark;
+			//["setType", "mil_arrow"] spawn _mark;
+			//["setSize", [1,1]] spawn _mark;
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

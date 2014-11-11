@@ -289,7 +289,7 @@ class RscTitles {
 				colorBackground[] = {0,0.4,0.8,0};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Matchs"; 
-			};																	
+			};
 		};
 	}; 
 };

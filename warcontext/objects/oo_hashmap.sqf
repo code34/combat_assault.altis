@@ -21,18 +21,20 @@
 	#include "oop.h"
 
 	CLASS("OO_HASHMAP")
-		PRIVATE VARIABLE("array","index");
 		PRIVATE STATIC_VARIABLE("scalar","instanceid");
+		PRIVATE VARIABLE("array","index");
+		PRIVATE VARIABLE("scalar","keyid");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_array"];
+			private ["_array", "_instanceid"];
 			_array = [];
 			MEMBER("index", _array);
 
 			_instanceid = MEMBER("instanceid",nil);
 			if (isNil "_instanceid") then {_instanceid = 0;};
 			_instanceid = _instanceid + 1;
-			MEMBER("instanceid",_instanceid);			
+			MEMBER("instanceid",_instanceid);
+			MEMBER("keyid", _instanceid);
 		};
 
 		// Removes all of the mappings from this map.
@@ -48,7 +50,7 @@
 		};		
 
 		PUBLIC FUNCTION("string", "keyName") {
-			"HSHKEY"+ str(MEMBER("instanceid", nil)) + "_" + _this;
+			"HSHKEY"+ str(MEMBER("keyid", nil)) + "_" + _this;
 		};
 
 		// Returns true if this map contains a mapping for the specified key.
@@ -147,5 +149,6 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("index");
+			DELETE_VARIABLE("keyid");
 		};
 	ENDCLASS;

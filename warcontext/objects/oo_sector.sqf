@@ -370,10 +370,12 @@
 		};
 
 		PRIVATE FUNCTION("", "popAir") {
-			private ["_patrol"];
-
-			_patrol = ["new", [MEMBER("getThis", nil)]] call OO_PATROLAIR;
-			"patrol" spawn _patrol;
+			private ["_patrol", "_airport"];
+			_airport = "countEast" call global_atc;
+			if(_airport > 0) then {
+				_patrol = ["new", [MEMBER("getThis", nil)]] call OO_PATROLAIR;
+				"patrol" spawn _patrol;
+			};
 		};
 
 

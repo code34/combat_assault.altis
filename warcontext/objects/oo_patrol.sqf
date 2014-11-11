@@ -121,7 +121,7 @@
 				MEMBER("moveAround", 50);
 			} else {
 				if(_isbuilding) then {
-					hint "movebuilding";
+					//hint "movebuilding";
 					if(_isvisible) then {
 						MEMBER("doFire", nil);
 					};
@@ -130,14 +130,13 @@
 					MEMBER("moveInto", nearestbuilding _target);
 				} else {
 					if(_isvisible) then {
-						hint format ["moveto %1", MEMBER("target", nil)];
+						//hint format ["moveto %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
 						MEMBER("doFire", nil);
 						MEMBER("moveToTarget", nil);
 					} else {
-						hint format ["movearound %1", MEMBER("target", nil)];
+						//hint format ["movearound %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
-						//MEMBER("setMoveMode", nil);
 						MEMBER("moveAround", 25);
 					};
 				};
@@ -302,11 +301,6 @@
 
 			_position = _this;
 			_group = MEMBER("group", nil);
-			//_wp = _group addWaypoint [_position, 5];
-			//_wp setWaypointPosition [_position, 5];
-			//_wp setWaypointType "HOLD";
-			//_wp setWaypointSpeed "FULL";
-			//_group setCurrentWaypoint _wp;
 
 			{
 				_x domove _position;
@@ -314,7 +308,6 @@
 			}foreach units _group;
 
 			sleep 30;
-			//deletewaypoint _wp;
 		};		
 
 		PUBLIC FUNCTION("", "isCompleteGroup") {

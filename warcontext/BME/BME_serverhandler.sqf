@@ -59,11 +59,11 @@
 				_type = "B_MBT_01_cannon_F";
 			};
 		};
-		
+
 		_vehicle = ["get", _name] call global_vehicles;
 		if(isnil "_vehicle") then {
 			_vehicle = ["new", [_type]] call OO_PLAYERVEHICLE;
-			["Put", [_name, _vehicle]] call global_vehicles;
+			["put", [_name, _vehicle]] call global_vehicles;
 		} else {
 			["setType", _type] call _vehicle;
 		};

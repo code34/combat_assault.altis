@@ -174,8 +174,8 @@ class RscTitles {
 				idc = 1005; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
-				x = safeZoneX + 0.02 * 3 / 4; 
-				y = safeZoneY + 0.02 * 4/3;
+				x = safeZoneX + safeZoneW - 0.65 * 3 / 4; 
+				y = safeZoneY + safeZoneH - 0.85 * 4/3;
 				w = 0.6 * 3 / 4;
 				h = 0.10 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 

@@ -23,101 +23,121 @@
 	_unit 	= _this select 0;
 	_type 	= _this select 1; 
 
-	switch (_type) do {
-		case "OIA_InfSquad_Weapons":{
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.6];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
-		};
-			
-		case "OIA_InfSquad": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
+	switch (wclevel) do {
+		case "novice": {
+			_unit setskill (random 0.2);
 		};
 
-		case "OIA_InfTeam": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
+		case "recruit": {
+			_unit setskill (0.2 + (random 0.2));
 		};
 
-		case "OIA_InfTeam_AA": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.7];
-			_unit setskill ["spotTime", 0.7];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.5];
-			_unit setskill ["commanding", 1];	
+		case "veteran":{
+			switch (_type) do {
+				case "OIA_InfSquad_Weapons":{
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.6];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
+					
+				case "OIA_InfSquad": {
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
+
+				case "OIA_InfTeam": {
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
+
+				case "OIA_InfTeam_AA": {
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.7];
+					_unit setskill ["spotTime", 0.7];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.5];
+					_unit setskill ["commanding", 1];	
+				};
+
+				case "OIA_InfTeam_AT": {
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.7];
+					_unit setskill ["spotTime", 0.6];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.5];
+					_unit setskill ["commanding", 1];
+				};
+
+				case "OI_SniperTeam": {
+					_unit setskill ["aimingAccuracy", 0.8];
+					_unit setskill ["aimingShake", 0.8];
+					_unit setskill ["aimingSpeed", 0.7];
+					_unit setskill ["endurance", 0.5];
+					_unit setskill ["spotDistance", 1];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.3];
+					_unit setskill ["commanding", 1];	
+				};
+
+				case "OI_ReconTeam": {
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.6];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.8];
+					_unit setskill ["commanding", 1];	
+				};
+
+				default {
+					_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
+					_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
+			};
 		};
 
-		case "OIA_InfTeam_AT": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.7];
-			_unit setskill ["spotTime", 0.6];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.5];
-			_unit setskill ["commanding", 1];
-		};
-
-		case "OI_SniperTeam": {
-			_unit setskill ["aimingAccuracy", 0.8];
-			_unit setskill ["aimingShake", 0.8];
-			_unit setskill ["aimingSpeed", 0.7];
-			_unit setskill ["endurance", 0.5];
-			_unit setskill ["spotDistance", 1];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.3];
-			_unit setskill ["commanding", 1];	
-		};
-
-		case "OI_ReconTeam": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.6];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.8];
-			_unit setskill ["commanding", 1];	
-		};
+		case "cheated": {
+			_unit setskill (0.8 + (random 0.2));
+		};		
 
 		default {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
+			_unit setskill 0;
 		};
 	};
 

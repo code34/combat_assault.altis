@@ -110,7 +110,30 @@
 				sleep 1;
 			};
 		};
-	};	
+	};
+
+	if!(playertype  in ["chopper", "bomber", "fighter", "tank", "tankaa"]) then {
+		[] spawn {
+			private ["_list"];
+			while { true } do {
+				if(player distance getmarkerpos "respawn_west" > 1300) then {
+					if(alive player) then {
+						_list = position player nearEntities [["Man", "Tank"], 1000];
+						sleep 1;
+						if( east countSide _list == 0) then {
+								openMap [false, false] ;
+								openMap [true, true];
+								mapAnimAdd [1, 0.01,  player]; 
+								mapAnimCommit;
+								[] call WC_fnc_teleport;
+								openMap [false, false];
+						};
+					};
+				};
+				sleep 30;
+			};
+		};
+	};
 
 	// MAIN LOOP
 	while {true} do {

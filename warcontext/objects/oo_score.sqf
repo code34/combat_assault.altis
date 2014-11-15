@@ -22,12 +22,12 @@
 
 	CLASS("OO_SCORE")
 		PRIVATE VARIABLE("string","uid");
-		PRIVATE VARIABLE("scalar","globalscore");
+		PRIVATE VARIABLE("scalar","globalkill");
 		PRIVATE VARIABLE("scalar","globaldeath");
 		PRIVATE VARIABLE("scalar","globalratio");
 		PRIVATE VARIABLE("scalar","globalnumber");
 		PRIVATE VARIABLE("scalar","gamedeath");
-		PRIVATE VARIABLE("scalar","gamescore");
+		PRIVATE VARIABLE("scalar","gamekill");
 	
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_key", "_array"];
@@ -38,16 +38,16 @@
 				MEMBER("initBDD", _key);
 				_array = profileNamespace getVariable _key;
 			};
-			MEMBER("globalscore", _array select 0);
+			MEMBER("globalkill", _array select 0);
 			MEMBER("globaldeath", _array select 1);
 			MEMBER("globalratio", _array select 2);
 			MEMBER("globalnumber", _array select 3);
-			MEMBER("gamescore", 0);
+			MEMBER("gamekill", 0);
 			MEMBER("gamedeath", 0);
 		};
 
 		PUBLIC FUNCTION("","getNumber") FUNC_GETVAR("globalnumber");
-		PUBLIC FUNCTION("","getGlobalScore") FUNC_GETVAR("globalscore");
+		PUBLIC FUNCTION("","getGlobalKill") FUNC_GETVAR("globalkill");
 		PUBLIC FUNCTION("","getGlobalDeath") FUNC_GETVAR("globaldeath");
 
 		PUBLIC FUNCTION("string", "initBDD") {
@@ -73,15 +73,15 @@
 			MEMBER("gamedeath", _death);
 		};
 
-		PUBLIC FUNCTION("scalar", "setScore") {
-			MEMBER("gamescore", _this);
+		PUBLIC FUNCTION("scalar", "setKill") {
+			MEMBER("gamekill", _this);
 		};
 
-		PUBLIC FUNCTION("", "getScore") {
-			private ["_score"];
-			_score = MEMBER("gamescore", nil);
-			if(_score < 1) then { _score = 1;	};
-			_score;
+		PUBLIC FUNCTION("", "getKill") {
+			private ["_kill"];
+			_kill = MEMBER("gamekill", nil);
+			if(_kill < 1) then { _kill = 1;	};
+			_kill;
 		};
 
 		PUBLIC FUNCTION("", "getDeath") {
@@ -96,14 +96,14 @@
 		};
 
 		PUBLIC FUNCTION("", "getRatio") {
-			private ["_death", "_ratio", "_score"];
+			private ["_death", "_ratio", "_kill"];
 
-			_score =  MEMBER("getScore", nil);
+			_kill =  MEMBER("getKill", nil);
 			_death = MEMBER("getDeath", nil);
 			if(_death < 5) then {
 				_ratio = 0;
 			} else {
-				_ratio = _score / _death;
+				_ratio = _kill / _death;
 			};
 			_ratio;
 		};
@@ -150,22 +150,22 @@
 		};
 
 		PUBLIC FUNCTION("", "compute") {
-			private ["_array", "_death", "_globalnumber", "_ratio", "_score"];
-			_score = MEMBER("globalscore", nil) + MEMBER("gamescore", nil);
+			private ["_array", "_death", "_globalnumber", "_ratio", "_kill"];
+			_kill = MEMBER("globalkill", nil) + MEMBER("gamekill", nil);
 			_death = MEMBER("globaldeath", nil) + MEMBER("gamedeath", nil);
 			_ratio = ((MEMBER("globalnumber", nil) * MEMBER("globalratio", nil)) + MEMBER("getRatio", nil)) / (MEMBER("globalnumber", nil) + 1);
 			_globalnumber = MEMBER("globalnumber", nil) + 1;
-			_array = [_score, _death, _ratio, _globalnumber];
+			_array = [_kill, _death, _ratio, _globalnumber];
 			_array;
 		};		
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("uid");
-			DELETE_VARIABLE("globalscore");
+			DELETE_VARIABLE("globalkill");
 			DELETE_VARIABLE("globaldeath");
 			DELETE_VARIABLE("globalratio");
 			DELETE_VARIABLE("globalnumber");
-			DELETE_VARIABLE("gamescore");
+			DELETE_VARIABLE("gamekill");
 			DELETE_VARIABLE("gamedeath");
 		};
 	ENDCLASS;

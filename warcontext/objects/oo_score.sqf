@@ -28,6 +28,7 @@
 		PRIVATE VARIABLE("scalar","globalnumber");
 		PRIVATE VARIABLE("scalar","gamedeath");
 		PRIVATE VARIABLE("scalar","gamekill");
+		PRIVATE VARIABLE("scalar","gamescore");
 	
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_key", "_array"];
@@ -44,6 +45,7 @@
 			MEMBER("globalnumber", _array select 3);
 			MEMBER("gamekill", 0);
 			MEMBER("gamedeath", 0);
+			MEMBER("gamescore", 0);
 		};
 
 		PUBLIC FUNCTION("","getNumber") FUNC_GETVAR("globalnumber");
@@ -54,7 +56,8 @@
 			private ["_key", "_array"];
 			_key = _this;
 			_array = [1,1,1,0];
-			profileNamespace setVariable [_key, _array];			
+			profileNamespace setVariable [_key, _array];
+			saveProfileNamespace;		
 		};
 
 		PUBLIC FUNCTION("", "flushBDD") {
@@ -72,6 +75,22 @@
 			_death = MEMBER("gamedeath", nil) + 1;
 			MEMBER("gamedeath", _death);
 		};
+
+		PUBLIC FUNCTION("scalar", "setScore") {
+			private ["_score", "_rate"];
+			_rate = _this;
+			_score = MEMBER("gamescore", nil);
+			if(_rate > 1000) then { _rate = 1000;};
+			_score = _score + ceil((1000 - _rate) / 10);
+			MEMBER("gamescore", _score);
+		};
+
+		PUBLIC FUNCTION("", "getScore") {
+			private ["_score"];
+			_score = MEMBER("gamescore", nil);
+			if(_score < 1) then { _score = 1;	};
+			_score;
+		};		
 
 		PUBLIC FUNCTION("scalar", "setKill") {
 			MEMBER("gamekill", _this);
@@ -167,5 +186,6 @@
 			DELETE_VARIABLE("globalnumber");
 			DELETE_VARIABLE("gamekill");
 			DELETE_VARIABLE("gamedeath");
+			DELETE_VARIABLE("gamescore");
 		};
 	ENDCLASS;

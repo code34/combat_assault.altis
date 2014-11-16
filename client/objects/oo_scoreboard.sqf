@@ -62,7 +62,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "getText") {
-			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match"];
+			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match", "_gamescore", "_gamescores"];
 
 			_scores = _this;
 			
@@ -71,6 +71,7 @@
 			_ranks = "<t align='center'>Game Ranking<br/>";
 			_serverranks = "<t align='center'>Server Ranking<br/>";
 			_matchs = "<t align='center'>Match<br/>";
+			_gamescores = "<t align='center'>Score<br/>";
 
 			{
 				_score = _x select 1;
@@ -91,6 +92,11 @@
 				if(isnil "_match") then {_match = 0;};
 				_tmp = str(_match) + "<br/>";
 				_matchs = _matchs + _tmp;
+
+				_gamescore = _score select 3;
+				if(isnil "_gamescore") then {_gamescore = 0;};
+				_tmp = str(_gamescore) + "<br/>";
+				_gamescores = _gamescores + _tmp;
 			}foreach _scores;
 
 			_top = _top + "</t>";
@@ -98,8 +104,9 @@
 			_ranks = _ranks + "</t>";
 			_serverranks = _serverranks + "</t>";
 			_matchs = _matchs + "</t>";
+			_gamescores = _gamescores + "</t>";
 
-			[_top, _players, _ranks, _serverranks, _matchs];
+			[_top, _players, _ranks, _serverranks, _matchs,  _gamescores];
 		};
 
 		PUBLIC FUNCTION("scalar", "getRankText") {

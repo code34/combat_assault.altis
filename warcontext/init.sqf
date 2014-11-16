@@ -48,6 +48,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_infected.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";

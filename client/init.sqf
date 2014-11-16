@@ -20,6 +20,7 @@
 
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
+	WC_fnc_keymapper = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapper.sqf";
 
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
@@ -30,13 +31,14 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
+	wcboard = false;
 	mystats = [0,0,0];
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 
-	_newscore = [name player, [0,0,0]];
+	_newscore = [name player, [0,0,0,0]];
 	["addScore", _newscore] call scoreboard;
 
-	rollmessage = ["<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project<br/>", "on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>"];
+	rollmessage = ["<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project<br/>", "on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>Code34<br/>"];
 	rollprintmessage = "";
 
 	hud = ["new", []] call OO_HUD;
@@ -120,7 +122,7 @@
 					if(alive player) then {
 						_list = position player nearEntities [["Man", "Tank"], 1000];
 						sleep 1;
-						if( east countSide _list == 0) then {
+						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
 								openMap [false, false] ;
 								openMap [true, true];
 								mapAnimAdd [1, 0.01,  player]; 
@@ -133,6 +135,11 @@
 				sleep 30;
 			};
 		};
+	};
+
+	[] spawn {
+		sleep 5;
+		findDisplay 46 displayAddEventHandler ["KeyDown", {_this call WC_fnc_keymapper;}];
 	};
 
 	// MAIN LOOP

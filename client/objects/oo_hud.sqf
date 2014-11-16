@@ -32,7 +32,7 @@
 		};
 
 		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_text", "_weight", "_time", "_message", "_scores"];
+			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_text", "_weight", "_time", "_message", "_scores"];
 
 			disableSerialization;
 			cutrsc ['bottomhud','PLAIN'];
@@ -111,7 +111,7 @@
 					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
 				};
 
-				if(!alive player) then {
+				if((!alive player) or wcboard) then {
 					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
 					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.4];
 
@@ -134,6 +134,9 @@
 
 					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
 					_ctrl14 ctrlSetStructuredText parsetext (_scores select 4);
+
+					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
+					_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);					
 				} else {
 					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
 					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
@@ -157,6 +160,9 @@
 
 					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
 					_ctrl14 ctrlSetStructuredText parsetext "";
+
+					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
+					_ctrl15 ctrlSetStructuredText parsetext "";					
 				};
 
 				_ctrl ctrlcommit 0;
@@ -173,6 +179,7 @@
 				_ctrl12 ctrlcommit 0;
 				_ctrl13 ctrlcommit 0;
 				_ctrl14 ctrlcommit 0;
+				_ctrl15 ctrlcommit 0;
 				sleep 1;			
 			};
 		};
@@ -205,17 +212,25 @@
 			_text;
 		};
 
-		PUBLIC FUNCTION("", "drawPlayerTag") {
-			private ["_code", "_vehicle"];
-			
+		PUBLIC FUNCTION("", "drawPlayerTag") {	
 			_code = "
+					private ['_code', '_vehicle', '_rank', '_img', '_color'];
 					if(vehicle player == player) then {
-						{	_vehicle = _x;
-							_distance = (player distance _vehicle) / 15;
-							_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
-							_color set [3, 1 - _distance];
-							 drawIcon3D ['', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
-						}foreach playableunits - [player];
+						{	
+							if(_x distance player < 16) then {
+								_vehicle = _x;
+								_rank = rank _vehicle;
+								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
+								_distance = (player distance _vehicle) / 15;
+								if(side _vehicle == west) then {
+									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
+								} else {
+									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorEnemy');
+								};
+								_color set [3, 1 - _distance];
+								 drawIcon3D [_img, _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
+							 };
+						}foreach playableUnits;
 					};
 			";
 			_code;

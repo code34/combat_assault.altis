@@ -30,6 +30,7 @@
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("array","unitstype");
 		PRIVATE VARIABLE("array","units");
+		PRIVATE VARIABLE("array","infecteds");
 		PRIVATE VARIABLE("bool","artilleryactive");
 		PRIVATE VARIABLE("code","artillery");
 
@@ -160,7 +161,7 @@
 		};
 
 		PUBLIC FUNCTION("", "unPopSector") {
-			private ["_group"];
+			private ["_group", "_units"];
 			_group = [];
 
 			{
@@ -201,7 +202,7 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors"];
+			private ["_array", "_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -234,10 +235,6 @@
 				if(MEMBER("alert", nil)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
 				};
-				//if(_mincost == 0) then {
-				//	MEMBER("marker", nil) setmarkercolor "ColorPink";
-				//	_run = true;
-				//};
 				{
 					if(alive _x) then { _units = _units + 1;};
 					sleep 0.01
@@ -245,7 +242,21 @@
 				if(_units == 0) then { _run = false; };
 				sleep 1;
 			};
-			
+
+			if(_units == 0) then {
+				if(random 1 > 0.97) then {
+					MEMBER("popInfected", nil);
+					_array = MEMBER("infecteds", nil);
+					while {count  _array >  0} do {
+						{
+							if(!alive _x) then { _array = _array - [_x];};
+							sleep 0.01;
+						}foreach _array;
+						sleep 10;
+					};
+				};
+			};
+
 			if(_units == 0) then {
 				MEMBER("setVictory", nil);
 			} else {
@@ -285,6 +296,25 @@
 			MEMBER("state", 0);
 		};
 
+		PRIVATE FUNCTION("", "popInfected") {
+			private ["_array", "_infected", "_infecteds", "_group", "_zombie"];
+			_array = [];
+			_infecteds = [];
+			{
+				_array =  _array + [[typeof _x, position _x]];
+			}foreach MEMBER("units", nil);
+			MEMBER("unPopSector", nil);
+			_group = creategroup resistance;
+			{
+				_infected = _group createUnit [_x select 0, _x select 1, [], 0, "FORM"];
+				[_infected] joinsilent _group;
+				_zombie = ["new", _infected] call OO_INFECTED;
+				"monitor" spawn _zombie;
+				_infecteds = _infecteds + [_infected];
+				sleep 0.01;
+			}foreach _array;
+			MEMBER("infecteds", _infecteds)
+		};
 
 		PRIVATE FUNCTION("", "popInfantry") {
 			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];

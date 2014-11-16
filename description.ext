@@ -191,7 +191,7 @@ class RscTitles {
 				style = ST_LEFT;  
 				x = 0.05 + safeZoneX + 0 * 3/4; 
 				y = 0.05 + safeZoneY + 0 * 4/3;
-				w = 1 * 3 / 4;
+				w = 1.1 * 3 / 4;
 				h = 1 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
@@ -207,7 +207,7 @@ class RscTitles {
 				style = ST_LEFT;  
 				x = 0.05 + safeZoneX + 0 * 3/4; 
 				y = 0.05 + safeZoneY + 0 * 4/3;
-				w = 1 * 3/4;
+				w = 1.1 * 3/4;
 				h = 0.03 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
@@ -290,6 +290,81 @@ class RscTitles {
 				colorText[] = {0.5,1,1,1}; 
 				text = "Matchs"; 
 			};
+
+			class scoreboard_subtitle6 { 
+				idc = 1014; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = 0.05 +safeZoneX + 1 * 3/4; 
+				y = 0.05 +safeZoneY + 0.03 * 4/3;
+				w = 0.1 * 3/4;
+				h = 0.97 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = "Score"; 
+			};
+
+			class author { 
+				idc = 1015; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				shadow = 1;
+				x = safeZoneX + safeZoneW - 0.3 * 3 / 4; 
+				y = safeZoneY + safeZoneH - 0.03 * 4/3;
+				w = 0.28 * 3 / 4;
+				h = 0.05 * 4/3;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.035;
+				colorBackground[] = {0,0,0,0.4};
+				colorText[] = {0.5,1,1,1}; 
+				text = "original author: code34"; 
+			}; 					
 		};
 	}; 
+};
+
+class CfgSounds {
+	sounds[] = {};
+	class zomb0{
+		name = "zomb0";
+		sound[] = {"client\sounds\zomb0.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb1{
+		name = "zomb1";
+		sound[] = {"client\sounds\zomb1.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb2{
+		name = "zomb2";
+		sound[] = {"client\sounds\zomb2.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb3{
+		name = "zomb3";
+		sound[] = {"client\sounds\zomb3.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb4{
+		name = "zomb4";
+		sound[] = {"client\sounds\zomb4.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb5{
+		name = "zomb5";
+		sound[] = {"client\sounds\zomb5.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb6{
+		name = "zomb6";
+		sound[] = {"client\sounds\zomb6.ogg", 1, 1};
+		titles[] = {};
+	};
+	class zomb7{
+		name = "zomb7";
+		sound[] = {"client\sounds\zomb7.ogg", 1, 1};
+		titles[] = {};
+	};
 };

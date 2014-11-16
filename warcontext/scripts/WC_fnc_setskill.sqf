@@ -173,10 +173,14 @@
 	}];
 
 	_unit addeventhandler ['Killed', {
-		private ["_unit", "_killer", "_name"];
+		private ["_unit", "_killer", "_name", "_score", "_distance"];
 
-		_unit = name (_this select 0);
+		_unit = _this select 0;
 		_killer = _this select 1;
+
+		_distance = _unit distance _killer;
+		_uid = getPlayerUID _killer;
+		
 		_name = "";
 		
 		if(_killer isKindOf "Man") then {
@@ -186,7 +190,18 @@
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
 		};
 
-		wcaideath = [ _unit, _name];
+		if(_name != "") then {
+			if!( _unit isequalto _killer) then {
+					_score = ["get", _uid] call global_scores;
+					if(isnil "_score") then {
+						_score = ["new", [_uid]] call OO_SCORE;
+						["put", [_uid, _score]] call global_scores;
+					};
+				["setScore", _distance] call _score;
+			};
+		};
+
+		wcaideath = [name  _unit, _name];
 		["wcaideath", "client"] call BME_fnc_publicvariable;
 	}];
 

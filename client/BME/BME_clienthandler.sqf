@@ -117,7 +117,13 @@
 	};
 
 	BME_netcode_playerstats = {
-		["addScore", (_this select 0)] call scoreboard;
+		private ["_score", "_rank"];
+		_score = _this select 0;
+		["addScore", _score] call scoreboard;
+		_rank = ["getRankText", ((_score select 1) select 0)] call scoreboard;
+		{
+			if((_score select 0) == name _x) then { _x setrank _rank; };
+		}foreach playableUnits;
 	};
 
 	BME_netcode_end = {

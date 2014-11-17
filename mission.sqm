@@ -93,7 +93,7 @@ class Mission
 					position[]={13560.036,16.164936,12085.06};
 					id=4;
 					side="WEST";
-					vehicle="B_soldier_exp_F";
+					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -152,7 +152,7 @@ class Mission
 					position[]={13568.196,15.934416,12109.242};
 					id=9;
 					side="WEST";
-					vehicle="B_soldier_exp_F";
+					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -221,7 +221,7 @@ class Mission
 					position[]={13589.369,12.774197,12095.77};
 					id=15;
 					side="WEST";
-					vehicle="B_soldier_exp_F";
+					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";
@@ -290,7 +290,7 @@ class Mission
 					position[]={13545.468,14.435697,12113.845};
 					id=21;
 					side="WEST";
-					vehicle="B_soldier_exp_F";
+					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""soldier""];";

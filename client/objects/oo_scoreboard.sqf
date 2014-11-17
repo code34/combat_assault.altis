@@ -32,6 +32,13 @@
 			["put", _this] call MEMBER("map", nil);
 		};
 
+		PUBLIC FUNCTION("string", "getPlayerScore") {
+			private ["_result"];
+			_result = ["get", _this] call MEMBER("map", nil);
+			if(isnil "_result") then {	_result = [0,0,0,0]; };
+			_result;
+		};
+
 		PUBLIC FUNCTION("", "getScore") {
 			private ["_map", "_players", "_globalscore", "_scores"];
 

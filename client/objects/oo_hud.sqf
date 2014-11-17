@@ -56,10 +56,11 @@
 				_ctrl3 ctrlSetStructuredText parseText _text;
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
-								
-				_ratio = mystats select 0;
-				_globalratio = mystats select 1;
-				_number = mystats select 2;
+				
+				_score = ["getPlayerScore", name player] call scoreboard;
+				_ratio = _score select 0;
+				_globalratio = _score select 1;
+				_number = _score select 2;
 
 				_rank = ["getRankText", _ratio] call scoreboard;
 				_img = [_rank,"texture"] call BIS_fnc_rankParams;

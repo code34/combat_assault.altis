@@ -124,9 +124,11 @@
 						_list = position player nearEntities [["Man", "Tank"], 1000];
 						sleep 1;
 						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
-							_title = "Redeployment";
-							_text = format ["No more enemies near your. You will be redeploy in %1", _counter];
-							["hint", [_title, _text]] call hud;	
+							if(_counter < 30) then {
+								_title = "Redeployment";
+								_text = format ["No enemies near your. You will be redeploy in %1", _counter];
+								["hint", [_title, _text]] call hud;
+							};
 							_counter = _counter - 1 ;
 						} else {
 							_counter = 30;

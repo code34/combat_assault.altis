@@ -30,7 +30,6 @@
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("array","unitstype");
 		PRIVATE VARIABLE("array","units");
-		PRIVATE VARIABLE("array","infecteds");
 		PRIVATE VARIABLE("bool","artilleryactive");
 		PRIVATE VARIABLE("code","artillery");
 
@@ -244,20 +243,6 @@
 			};
 
 			if(_units == 0) then {
-				if(random 1 > 0.97) then {
-					MEMBER("popInfected", nil);
-					_array = MEMBER("infecteds", nil);
-					while {count  _array >  0} do {
-						{
-							if(!alive _x) then { _array = _array - [_x];};
-							sleep 0.01;
-						}foreach _array;
-						sleep 10;
-					};
-				};
-			};
-
-			if(_units == 0) then {
 				MEMBER("setVictory", nil);
 			} else {
 				MEMBER("UnSpawn", nil);
@@ -294,26 +279,6 @@
 			};
 			//MEMBER("setAlert", false);
 			MEMBER("state", 0);
-		};
-
-		PRIVATE FUNCTION("", "popInfected") {
-			private ["_array", "_infected", "_infecteds", "_group", "_zombie"];
-			_array = [];
-			_infecteds = [];
-			{
-				_array =  _array + [[typeof _x, position _x]];
-			}foreach MEMBER("units", nil);
-			MEMBER("unPopSector", nil);
-			_group = creategroup resistance;
-			{
-				_infected = _group createUnit [_x select 0, _x select 1, [], 0, "FORM"];
-				[_infected] joinsilent _group;
-				_zombie = ["new", _infected] call OO_INFECTED;
-				"monitor" spawn _zombie;
-				_infecteds = _infecteds + [_infected];
-				sleep 0.01;
-			}foreach _array;
-			MEMBER("infecteds", _infecteds)
 		};
 
 		PRIVATE FUNCTION("", "popInfantry") {

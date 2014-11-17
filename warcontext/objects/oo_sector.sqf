@@ -256,7 +256,7 @@
 			["setTicket", "bluezone"] call global_ticket;
 			_position = MEMBER("getPosition", nil);
 			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
-			["new", [_position]] spawn OO_BONUSVEHICLE;
+			["new", _position] spawn OO_BONUSVEHICLE;
 			MEMBER("unPopSector", nil);
 			sleep 120;
 			["deleteSector", MEMBER("getSector", nil)] call global_controller;

@@ -116,23 +116,34 @@
 
 	if!(playertype  in ["chopper", "bomber", "fighter", "tank", "tankaa"]) then {
 		[] spawn {
-			private ["_list"];
+			private ["_list", "_counter"];
+			_counter = 30;
 			while { true } do {
 				if(player distance getmarkerpos "respawn_west" > 1300) then {
-					if(alive player) then {
+					if((alive player) and (vehicle player == player)) then {
 						_list = position player nearEntities [["Man", "Tank"], 1000];
 						sleep 1;
 						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
+							_title = "Redeployment";
+							_text = format ["No more enemies near your. You will be redeploy in %1", _counter];
+							["hint", [_title, _text]] call hud;	
+							_counter = _counter - 1 ;
+						} else {
+							_counter = 30;
+							sleep 30;
+						};
+						if(_counter < 1) then {
 								openMap [false, false] ;
 								openMap [true, true];
 								mapAnimAdd [1, 0.01,  player]; 
 								mapAnimCommit;
 								[] call WC_fnc_teleport;
 								openMap [false, false];
+								_counter = 30;
 						};
 					};
 				};
-				sleep 30;
+				sleep 1;
 			};
 		};
 	};

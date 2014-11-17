@@ -316,7 +316,7 @@ class RscTitles {
 				w = 0.28 * 3 / 4;
 				h = 0.05 * 4/3;
 				font = "EtelkaNarrowMediumPro"; 
-				size = 0.035;
+				size = 0.030;
 				colorBackground[] = {0,0,0,0.4};
 				colorText[] = {0.5,1,1,1}; 
 				text = "original author: code34"; 

@@ -119,11 +119,12 @@
 	BME_netcode_playerstats = {
 		private ["_score", "_rank"];
 		_score = _this select 0;
+		_score = [name player, [1000,1000,10,1110]];
 		["addScore", _score] call scoreboard;
 		_rank = ["getRankText", ((_score select 1) select 0)] call scoreboard;
 		{
 			if((_score select 0) == name _x) then { _x setrank _rank; };
-		}foreach playableUnits;
+		}foreach alldead;
 	};
 
 	BME_netcode_end = {

@@ -103,7 +103,8 @@
 
 		"addDeath" call _score;
 		["setKill", _points] call _score;
-		_ratio = "getRatio" call _score;
+		//_ratio = "getRatio" call _score;
+		_ratio = "getGameRatio" call _score;
 		_number = "getNumber" call _score;
 		_globalratio = "getGlobalRatio" call _score;
 		_gamescore = "getScore" call _score;

@@ -26,8 +26,8 @@
 		PRIVATE VARIABLE("scalar","globaldeath");
 		PRIVATE VARIABLE("scalar","globalratio");
 		PRIVATE VARIABLE("scalar","globalnumber");
-		PRIVATE VARIABLE("scalar","gamedeath");
 		PRIVATE VARIABLE("scalar","gamekill");
+		PRIVATE VARIABLE("scalar","gamedeath");
 		PRIVATE VARIABLE("scalar","gamescore");
 	
 		PUBLIC FUNCTION("array","constructor") {
@@ -77,11 +77,11 @@
 		};
 
 		PUBLIC FUNCTION("scalar", "setScore") {
-			private ["_score", "_rate"];
-			_rate = _this;
+			private ["_score", "_distance"];
+			_distance = _this;
+			if(_distance > 1000) then {_distance = 1000;};
 			_score = MEMBER("gamescore", nil);
-			if(_rate > 1000) then { _rate = 1000;};
-			_score = _score + ceil((1000 - _rate) / 10);
+			_score = _score + (100 - round(log(_distance / 100) * 100));
 			MEMBER("gamescore", _score);
 		};
 
@@ -113,6 +113,12 @@
 		PUBLIC FUNCTION("", "getGlobalRatio") {
 			MEMBER("globalratio", nil);
 		};
+
+		PUBLIC FUNCTION("", "getGameRatio") {
+			private ["_ratio"];
+			_ratio = ((MEMBER("globalnumber", nil) * MEMBER("globalratio", nil)) + MEMBER("getRatio", nil)) / (MEMBER("globalnumber", nil) + 1);
+			_ratio;
+		};		
 
 		PUBLIC FUNCTION("", "getRatio") {
 			private ["_death", "_ratio", "_kill"];

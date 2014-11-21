@@ -7,9 +7,9 @@
 				_continue = true;
 			};
 		};
-	}foreach ["viking","hurricane","crocodile", "coconuts"], 
+	}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 
-	if(!_continue) then {
+	if(!_continue) exitwith {
 		_title = "Vehicle Servicing";
 		_text = "Not enough near of Airport";
 		["hint", [_title, _text]] call hud;

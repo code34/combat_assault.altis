@@ -7,7 +7,7 @@
 				_continue = true;
 			};
 		};
-	}foreach ["viking","hurricane","crocodile", "coconuts"], 
+	}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 
 	if(!_continue) exitwith {
 		_title = "Vehicle Servicing";

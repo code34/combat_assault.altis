@@ -74,7 +74,7 @@
 			if(_rate > 99) then {
 				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
 				["expandSector", _sector] call global_controller;
-				["expandSectorAround", _sector] call global_controller;
+				["expandSectorAround", [_sector, 10]] call global_controller;
 				["setText", "Support - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
 				["setText", "Support - Expanding failed"] spawn MEMBER("marker", nil);

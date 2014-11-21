@@ -48,6 +48,14 @@ class Params
 		texts[] = {"NOVICE", "RECRUIT", "VETERAN", "CHEATED"};
 		default = 1;
 	};
+
+	class wcfatigue
+	{
+		title = "FATIGUE";
+		values[] = {1, 2};
+		texts[] = {"ON", "OFF"};
+		default = 2;
+	};	
 };
 
 #include "client\define.hpp"

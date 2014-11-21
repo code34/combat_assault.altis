@@ -32,8 +32,12 @@
 			if(MEMBER("setTarget", nil)) then {
 				MEMBER("destroy", nil);
 			} else {
-				if(random 1 > 0.97) then {
-					MEMBER("rescue", _position);
+				if(random 1 > 0.9) then {
+					if(random 1 > 0.5) then {
+						MEMBER("rescue", _position);
+					} else {
+						MEMBER("rob", _position);
+					};
 				};
 			};
 			MEMBER("deconstructor", nil);
@@ -109,6 +113,53 @@
 				wcmissioncompleted = [false, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
+		};
+
+		PUBLIC FUNCTION("array", "rob") {
+			private ["_type", "_position", "_run", "_counter", "_text", "_win"];
+
+			_position = _this;
+			_position = [_position, 0, 50, 1, 0, 1, 0 ] call BIS_fnc_findSafePos;
+			
+			_type = ["O_Truck_02_covered_F", "O_Truck_02_transport_F","O_Truck_03_transport_F","O_Truck_03_covered_F","O_Truck_03_repair_F","O_Truck_03_ammo_F","O_Truck_03_fuel_F"] call BIS_fnc_selectRandom;
+
+			_vehicle = createVehicle [_type, _position,[], 0, "NONE"];
+			MEMBER("target", _vehicle);
+
+			_counter = 3600;
+			_run = true;
+
+			_text= "Rob " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			MEMBER("setMarker", _text);	
+			_win = false;
+
+			while { _run } do {
+				if(getdammage _vehicle > 0.7) then {
+					_run = false;
+				};
+				if(_position distance _vehicle > 200) then {
+					_run = false;
+					_win = true;
+				};
+				if(_counter < 1) then {
+					_run = false;
+				};
+				_counter = _counter  - 1;
+				sleep 1;
+			};
+
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				while { count crew _vehicle > 0} do {
+					sleep 30;
+				};
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+			deletevehicle _vehicle;
 		};
 
 		PUBLIC FUNCTION("array", "rescue") {

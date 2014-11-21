@@ -86,7 +86,7 @@
 			_win = false;
 			
 			_counter = 3600;
-			_text = "getText" call _mark;
+			//_text = "getText" call _mark;
 
 			while { _run } do {
 				if(getdammage _target > 0.7) then {

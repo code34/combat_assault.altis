@@ -31,6 +31,75 @@
 			MEMBER("playertag", true);
 		};
 
+		PUBLIC FUNCTION("", "scoreboardHud") {
+			private ["_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15"];
+			disableSerialization;
+			
+			while { true} do {
+				if((!alive player) or wcboard) then {
+					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
+					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.4];
+
+					_scores = "topByRatio" call scoreboard;
+					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
+					_ctrl9 ctrlSetStructuredText parsetext "Score Board";
+					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
+
+					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
+					_ctrl10 ctrlSetStructuredText parsetext (_scores select 0);
+
+					_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
+					_ctrl11 ctrlSetStructuredText parsetext (_scores select 1);
+
+					_ctrl12 =(uiNamespace getVariable "wcdisplay") displayCtrl 1011;
+					_ctrl12 ctrlSetStructuredText parsetext (_scores select 2);
+
+					_ctrl13 =(uiNamespace getVariable "wcdisplay") displayCtrl 1012;
+					_ctrl13 ctrlSetStructuredText parsetext (_scores select 3);
+
+					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
+					_ctrl14 ctrlSetStructuredText parsetext (_scores select 4);
+
+					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
+					_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);					
+				} else {
+					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
+					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
+
+					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
+					_ctrl9 ctrlSetStructuredText parsetext "";
+					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0];
+
+					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
+					_ctrl10 ctrlSetStructuredText parsetext "";
+
+					_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
+					_ctrl11 ctrlSetStructuredText parsetext "";
+
+					_ctrl12 =(uiNamespace getVariable "wcdisplay") displayCtrl 1011;
+					_ctrl12 ctrlSetStructuredText parsetext "";
+
+					_ctrl13 =(uiNamespace getVariable "wcdisplay") displayCtrl 1012;
+					_ctrl13 ctrlSetStructuredText parsetext "";
+
+					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
+					_ctrl14 ctrlSetStructuredText parsetext "";
+
+					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
+					_ctrl15 ctrlSetStructuredText parsetext "";					
+				};
+				_ctrl8 ctrlcommit 0;
+				_ctrl9 ctrlcommit 0;
+				_ctrl10 ctrlcommit 0;
+				_ctrl11 ctrlcommit 0;
+				_ctrl12 ctrlcommit 0;
+				_ctrl13 ctrlcommit 0;
+				_ctrl14 ctrlcommit 0;
+				_ctrl15 ctrlcommit 0;
+				sleep 0.1;
+			};
+		};
+
 		PUBLIC FUNCTION("", "bottomHud") {
 			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_text", "_weight", "_time", "_message", "_scores"];
 
@@ -112,59 +181,6 @@
 					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
 				};
 
-				if((!alive player) or wcboard) then {
-					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
-					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.4];
-
-					_scores = "topByRatio" call scoreboard;
-					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
-					_ctrl9 ctrlSetStructuredText parsetext "Score Board";
-					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
-
-					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
-					_ctrl10 ctrlSetStructuredText parsetext (_scores select 0);
-
-					_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
-					_ctrl11 ctrlSetStructuredText parsetext (_scores select 1);
-
-					_ctrl12 =(uiNamespace getVariable "wcdisplay") displayCtrl 1011;
-					_ctrl12 ctrlSetStructuredText parsetext (_scores select 2);
-
-					_ctrl13 =(uiNamespace getVariable "wcdisplay") displayCtrl 1012;
-					_ctrl13 ctrlSetStructuredText parsetext (_scores select 3);
-
-					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
-					_ctrl14 ctrlSetStructuredText parsetext (_scores select 4);
-
-					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
-					_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);					
-				} else {
-					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
-					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
-
-					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
-					_ctrl9 ctrlSetStructuredText parsetext "";
-					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0];
-
-					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
-					_ctrl10 ctrlSetStructuredText parsetext "";
-
-					_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
-					_ctrl11 ctrlSetStructuredText parsetext "";
-
-					_ctrl12 =(uiNamespace getVariable "wcdisplay") displayCtrl 1011;
-					_ctrl12 ctrlSetStructuredText parsetext "";
-
-					_ctrl13 =(uiNamespace getVariable "wcdisplay") displayCtrl 1012;
-					_ctrl13 ctrlSetStructuredText parsetext "";
-
-					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
-					_ctrl14 ctrlSetStructuredText parsetext "";
-
-					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
-					_ctrl15 ctrlSetStructuredText parsetext "";					
-				};
-
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
 				_ctrl3 ctrlcommit 0;
@@ -172,14 +188,6 @@
 				_ctrl5 ctrlcommit 0;
 				_ctrl6 ctrlcommit 0;
 				_ctrl7 ctrlcommit 0;
-				_ctrl8 ctrlcommit 0;
-				_ctrl9 ctrlcommit 0;
-				_ctrl10 ctrlcommit 0;
-				_ctrl11 ctrlcommit 0;
-				_ctrl12 ctrlcommit 0;
-				_ctrl13 ctrlcommit 0;
-				_ctrl14 ctrlcommit 0;
-				_ctrl15 ctrlcommit 0;
 				sleep 1;			
 			};
 		};

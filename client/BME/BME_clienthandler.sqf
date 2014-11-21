@@ -53,7 +53,32 @@
 		_killer = _array select 2;
 
 		if!(_killer == "") then {
-			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t>";
+			if(_player == _killer) then {
+				_message = [
+					"was killed by a flying melon", 
+					"was killed like a jackass", 
+					"was killed like a crying girl", 
+					"was killed in total humiliation", 
+					"was killed like a moron", 
+					"was killed like a geek", 
+					"was killed by masturbation", 
+					"was killed jumping over his weapon", 
+					"was killed by internal explosion", 
+					"was killed by a dancing cow", 
+					"was killed by a zombie", 
+					"was killed by a brain dammage", 
+					"was killed. WTF ????", 
+					"was killed by a dubstep song", 
+					"was killed by Altis life outage", 
+					"was killed over feeding",  
+					"was killed. Good lesson", 
+					"was killed drinking again", 
+					"was killed by his weapon"
+				] call BIS_fnc_selectRandom;
+				_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> "+_message + "</t>";
+			} else {
+				_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t>";
+			};
 			_message2 = "<t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t><br/>";
 		} else {
 			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed</t>";

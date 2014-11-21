@@ -227,13 +227,16 @@
 					sleep 0.0001;
 				}foreach playableunits;
 
-				if(_mincost < 4) then {
-					MEMBER("marker", nil) setmarkercolor "ColorOrange";
-					_run = true;
-				};
-				if(MEMBER("alert", nil)) then {
+				if(MEMBER("alert", nil) and (_mincost < 4)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
+					_run = true;
+				} else {
+					if(_mincost < 4) then {
+						MEMBER("marker", nil) setmarkercolor "ColorOrange";
+						_run = true;
+					};
 				};
+
 				{
 					if(alive _x) then { _units = _units + 1;};
 					sleep 0.01

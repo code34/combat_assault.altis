@@ -32,6 +32,7 @@
 		PRIVATE VARIABLE("array","units");
 		PRIVATE VARIABLE("bool","artilleryactive");
 		PRIVATE VARIABLE("code","artillery");
+		PRIVATE VARIABLE("scalar","bucket");
 
 		PUBLIC FUNCTION("array","constructor") {
 			private["_air", "_index", "_sniper", "_type", "_vehicle"];
@@ -45,6 +46,7 @@
 			MEMBER("position", _this select 1);
 			MEMBER("grid", _this select 2);
 
+			MEMBER("bucket", 0);
 			MEMBER("state", 0);
 			MEMBER("alert", false);
 
@@ -201,7 +203,7 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_array", "_around", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors"];
+			private ["_array", "_around", "_bucket", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -215,6 +217,7 @@
 				_run = false;
 				_units = 0;
 				_mincost = 100;
+				_bucket = 0;
 
 				_sectors = MEMBER("occupedSector", nil);
 				{
@@ -222,10 +225,12 @@
 					{
 						_cost = ["GetEstimateCost", [_player_sector, _x]] call _grid;
 						if(_cost < _mincost) then { _mincost = _cost;};
+						if(_cost < 4) then {_bucket = _bucket + 1;};
 						sleep 0.0001;
 					}foreach _sectors;
 					sleep 0.0001;
 				}foreach playableunits;
+				if(MEMBER("bucket", nil) < _bucket) then { MEMBER("bucket", _bucket);};
 
 				if(MEMBER("alert", nil) and (_mincost < 4)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
@@ -278,7 +283,7 @@
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
 			if(MEMBER("getAlert", nil)) then { 
-				["expandSectorAround", MEMBER("getSector", nil)] call global_controller;
+				["expandSectorAround", [MEMBER("getSector", nil), MEMBER("bucket", nil)]] call global_controller;
 			};
 			//MEMBER("setAlert", false);
 			MEMBER("state", 0);
@@ -379,6 +384,7 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("alert");
+			DELETE_VARIABLE("bucket");
 			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("index");
 			deletemarker MEMBER("marker", nil);

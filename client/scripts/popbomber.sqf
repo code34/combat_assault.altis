@@ -13,8 +13,7 @@
 		_title = "Vehicle Servicing";
 		_text = "Not enough near of Airport";
 		["hint", [_title, _text]] call hud;
-	} else {
-		[] call WC_fnc_teleportplane;
 	};
+	[] call WC_fnc_teleportplane;
 	
 

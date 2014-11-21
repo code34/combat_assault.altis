@@ -16,11 +16,12 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
+	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group"];
 
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
-	WC_fnc_keymapper = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapper.sqf";
+	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
+	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
@@ -29,13 +30,15 @@
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";	
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
 	wcboard = false;
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 
-	//_newscore = [name player, [0,0,0,0]];
-	//["addScore", _newscore] call scoreboard;
+	if(wcfatigue == 2) then {
+		player enableFatigue false;
+	};
 
 	rollmessage = ["<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project<br/>", "on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>Code34<br/>"];
 	rollprintmessage = "";
@@ -44,6 +47,7 @@
 	"drawAll" spawn hud;
 	"rollMessage" spawn hud;
 	"bottomHud" spawn hud;
+	"scoreboardHud" spawn hud;
 
 	inventory = ["new", [player]] call OO_INVENTORY;
 	[] execVM "real_weather\real_weather.sqf";
@@ -87,12 +91,8 @@
 	_mark = ["new", position player] call OO_MARKER;
 
 	playertype = player getvariable "type";
-	if((playertype == "bomber") or (playertype == "fighter")) then {
-		setviewdistance 3000;
-		_reload = ["new", [playertype]] call OO_RELOADPLANE;
-	};
 
-	if((playertype == "chopper") or (playertype == "tank") or (playertype == "tankaa")) then {
+	if((playertype == "chopper") or (playertype == "tank") or (playertype == "tankaa") or (playertype == "bomber") or (playertype == "fighter")) then {
 		[] spawn {
 			private ["_action", "_script"];
 			while { true} do {
@@ -113,51 +113,51 @@
 		};
 	};
 
-	if!(playertype  in ["chopper", "bomber", "fighter", "tank", "tankaa"]) then {
-		[] spawn {
-			private ["_list", "_counter"];
-			_counter = 30;
-			while { true } do {
-				if(player distance getmarkerpos "respawn_west" > 1300) then {
-					if((alive player) and (vehicle player == player)) then {
-						_list = position player nearEntities [["Man", "Tank"], 1000];
-						sleep 1;
-						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
-							if(_counter < 30) then {
-								_title = "Redeployment";
-								_text = format ["No enemies near your. You will be redeploy in %1", _counter];
-								["hint", [_title, _text]] call hud;
-							};
-							_counter = _counter - 1 ;
-						} else {
+	[] spawn {
+		private ["_list", "_counter", "_text"];
+		_counter = 30;
+		while { true } do {
+			if(player distance getmarkerpos "respawn_west" > 1300) then {
+				if((alive player) and (vehicle player == player)) then {
+					_list = position player nearEntities [["Man", "Tank"], 1000];
+					sleep 1;
+					if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
+						if(_counter < 30) then {
+							_title = "Redeployment";
+							_text = format ["No enemies near your. You will be redeploy in %1", _counter];
+							["hint", [_title, _text]] call hud;
+						};
+						_counter = _counter - 1 ;
+					} else {
+						_counter = 30;
+						sleep 30;
+					};
+					if(_counter < 1) then {
+							openMap [false, false] ;
+							openMap [true, true];
+							mapAnimAdd [1, 0.01,  player]; 
+							mapAnimCommit;
+							[] call WC_fnc_teleport;
+							openMap [false, false];
 							_counter = 30;
-							sleep 30;
-						};
-						if(_counter < 1) then {
-								openMap [false, false] ;
-								openMap [true, true];
-								mapAnimAdd [1, 0.01,  player]; 
-								mapAnimCommit;
-								[] call WC_fnc_teleport;
-								openMap [false, false];
-								_counter = 30;
-						};
 					};
 				};
-				sleep 1;
 			};
+			sleep 1;
 		};
 	};
 
 	[] spawn {
 		sleep 5;
-		findDisplay 46 displayAddEventHandler ["KeyDown", {_this call WC_fnc_keymapper;}];
+		findDisplay 46 displayAddEventHandler ["KeyDown", {_this call WC_fnc_keymapperdown;}];
+		findDisplay 46 displayAddEventHandler ["KeyUp", {_this call WC_fnc_keymapperup;}];
 	};
 
 	// MAIN LOOP
 	while {true} do {
 		_index = player addEventHandler ["HandleDamage", {false}];
-
+		setviewdistance 1500;
+		
 		["load", player] call inventory;
 		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
 		_position = position player;
@@ -196,14 +196,12 @@
 			};
 	
 			case "fighter": {
-				[] call WC_fnc_teleportplane;
-				"start" spawn _reload;
+				[] call WC_fnc_teleport;
 				_icon = "b_plane";
 			};
 	
 			case "bomber": {
-				[] call WC_fnc_teleportplane;
-				"start" spawn _reload;
+				[] call WC_fnc_teleport;
 				_icon = "b_plane";
 			};
 	
@@ -255,11 +253,6 @@
 		["setPos", position _body] spawn _mark;
 		["setType", "mil_flag"] spawn _mark;
 		["draw", "ColorRed"] spawn _mark;
-
-
-		if((playertype == "bomber") or (playertype == "fighter")) then {
-			"stop" call _reload;
-		};
 
 		waituntil {alive player};
 

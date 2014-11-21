@@ -25,6 +25,7 @@
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("playertag", true);
+			cutrsc ['bottomhud','PLAIN'];
 		};
 
 		PUBLIC FUNCTION("", "setPlayerTag") {
@@ -101,13 +102,11 @@
 		};
 
 		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_text", "_weight", "_time", "_message", "_scores"];
-
-			disableSerialization;
-			cutrsc ['bottomhud','PLAIN'];
+			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_text", "_weight", "_time", "_message", "_scores"];
 
 			_time = 0;
 			killzone = [];
+			disableSerialization;
 
 			while { true} do {
 				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};

@@ -69,7 +69,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "getText") {
-			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match", "_gamescore", "_gamescores"];
+			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match", "_gamescore", "_gamescores", "_matchs"];
 
 			_scores = _this;
 			
@@ -77,7 +77,7 @@
 			_players = "Players<br/>";
 			_ranks = "<t align='center'>Game Ranking<br/>";
 			_serverranks = "<t align='center'>Server Ranking<br/>";
-			_matchs = "<t align='center'>Match<br/>";
+			_matchs = "<t align='center'>Game<br/>";
 			_gamescores = "<t align='center'>Score<br/>";
 
 			{

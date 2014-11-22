@@ -26,17 +26,33 @@
 		PRIVATE VARIABLE("array", "position");
 
 		PUBLIC FUNCTION("array","constructor") {
+			private ["_position", "_random"];
+
 			_position = (_this select 0);
+			_random = random 1;
+
 			MEMBER("position", _position);
 
 			if(MEMBER("setTarget", nil)) then {
 				MEMBER("destroy", nil);
 			} else {
 				if(random 1 > 0.9) then {
-					if(random 1 > 0.5) then {
-						MEMBER("rescue", _position);
-					} else {
-						MEMBER("rob", _position);
+					switch (true) do {
+						case ((_random > 0 ) and (_random < 0.33)) : {
+							MEMBER("rescue", _position);
+						};
+
+						case ((_random > 0.32 ) and (_random < 0.66)) : {
+							MEMBER("rob", _position);
+						};
+
+						case (_random > 0.65 ) : {
+							MEMBER("weaponCache",  _position);
+						};										
+
+						default {
+							MEMBER("rescue", _position);
+						};
 					};
 				};
 			};
@@ -115,8 +131,56 @@
 			};
 		};
 
+		PUBLIC FUNCTION("array", "weaponCache") {
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle"];
+
+			_position = _this;
+			_position = [_position, 0, 50, 1, 0, 1, 0 ] call BIS_fnc_findSafePos;
+			
+			_type = "Box_FIA_Wps_F";
+
+			_vehicle = createVehicle [_type, _position,[], 0, "NONE"];
+			MEMBER("target", _vehicle);
+
+			_counter = 3600;
+			_run = true;
+
+			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			MEMBER("setMarker", _text);	
+			_win = false;
+
+			while { _run } do {
+				if(getdammage _vehicle > 0.7) then {
+					_run = false;
+					_win = true;
+				};
+				if(_position distance _vehicle > 200) then {
+					_run = false;
+					_win = true;
+				};
+				if(_counter < 1) then {
+					_run = false;
+				};
+				_counter = _counter  - 1;
+				sleep 1;
+			};
+
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				while { count crew _vehicle > 0} do {
+					sleep 30;
+				};
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+			deletevehicle _vehicle;
+		};
+
 		PUBLIC FUNCTION("array", "rob") {
-			private ["_type", "_position", "_run", "_counter", "_text", "_win"];
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 1, 0 ] call BIS_fnc_findSafePos;

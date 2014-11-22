@@ -28,7 +28,7 @@
 	};
 
 	BME_netcode_server_playervehicle = {
-		private ["_array", "_vehicle", "_name", "_position", "_netid", "_type"];
+		private ["_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object"];
 		
 		_array = _this select 0;
 		_name = _array select 0;
@@ -55,6 +55,10 @@
 				_type = "B_APC_Tracked_01_AA_F";
 			};
 
+			case "ammobox" : {
+				_type = "B_supplyCrate_F";
+			};
+
 			default {
 				_type = "B_MBT_01_cannon_F";
 			};
@@ -67,7 +71,8 @@
 		} else {
 			["setType", _type] call _vehicle;
 		};
-		_vehicle = ["pop", [_position, _netid, _name]] spawn _vehicle;
+		_object = ["pop", [_position, _netid, _name]] call _vehicle;
+		"checkAlive" spawn _vehicle;
 	};		
 
 	BME_netcode_server_wcdeath = {

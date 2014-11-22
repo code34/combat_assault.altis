@@ -56,7 +56,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item1
 				{
@@ -66,7 +66,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item2
 				{
@@ -76,7 +76,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item3
 				{
@@ -86,7 +86,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item4
 				{
@@ -96,7 +96,7 @@ class Mission
 					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item5
 				{
@@ -106,7 +106,7 @@ class Mission
 					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 			};
 		};
@@ -125,7 +125,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item1
 				{
@@ -135,7 +135,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item2
 				{
@@ -145,7 +145,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item3
 				{
@@ -155,7 +155,7 @@ class Mission
 					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item4
 				{
@@ -165,7 +165,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item5
 				{
@@ -175,7 +175,7 @@ class Mission
 					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 			};
 		};
@@ -194,7 +194,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item1
 				{
@@ -204,7 +204,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item2
 				{
@@ -214,7 +214,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item3
 				{
@@ -224,7 +224,7 @@ class Mission
 					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item4
 				{
@@ -234,7 +234,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item5
 				{
@@ -244,7 +244,7 @@ class Mission
 					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 			};
 		};
@@ -263,7 +263,7 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item1
 				{
@@ -273,7 +273,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item2
 				{
@@ -283,7 +283,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item3
 				{
@@ -293,7 +293,7 @@ class Mission
 					vehicle="B_engineer_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item4
 				{
@@ -303,7 +303,7 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item5
 				{
@@ -313,7 +313,7 @@ class Mission
 					vehicle="B_medic_F";
 					player="PLAY CDG";
 					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
+					init="this setvariable [""type"", ""ammobox""];";
 				};
 			};
 		};

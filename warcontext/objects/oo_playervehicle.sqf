@@ -46,6 +46,11 @@
 			_counter = 0;
 			_vehicle = MEMBER("vehicle", nil);
 			MEMBER("alive", true);
+
+			while { position _vehicle select 2 > 2} do { sleep 1;};
+			sleep 10;
+		 	MEMBER("setHandler", _vehicle);
+
 			while { _counter < 60} do {
 				if(count (crew _vehicle) == 0) then { _counter = _counter + 1} else {_counter = 0;};
 				if(getDammage _vehicle > 0.9) then { _counter = 60; sleep 240;};
@@ -71,12 +76,57 @@
 				vehicleavalaible = false;
 				["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
 			};
-			_vehicle = createVehicle [_type, _position, [], 0, "NONE"];
-			
-			MEMBER("setHandler", _vehicle);
+
+			_vehicle = _type createVehicle [0,0,5000];
+			_vehicle setpos [_position select 0, _position select 1,  150];
+			_vehicle setdir (random 360); 
+			//["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
+			MEMBER("paraVehicle", _vehicle);
 			MEMBER("vehicle", _vehicle);
 			MEMBER("mark", nil);
-			MEMBER("checkAlive", nil);
+			_vehicle;
+		};
+
+		PUBLIC FUNCTION("object", "paraVehicle") {
+			// @KillzoneKid function
+			// fixed by code34
+		 	private ["_para","_paras","_p"]; 
+		 	
+		 	_para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+		 	_para setDir getDir _this; 
+		 	_para setPos getPos _this; 
+		 	_paras = [_para]; 
+		 	_this attachTo [_para, [0,0,0]]; 
+		 	_this addEventHandler ["HandleDamage", {false}];
+
+		 	{ 
+		 		_p = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+		 		_paras = _paras + [_p];
+		 		_p attachTo [_para, [0,0,0]]; 
+		 		_p setVectorUp _x; 
+		 	} count [ [0.5,0.4,0.6],[-0.5,0.4,0.6],[0.5,-0.4,0.6],[-0.5,-0.4,0.6] ]; 
+
+		 	[_this, _paras] spawn { 
+		 		private ["_vehicle", "_vel", "_paras"];
+		 		
+		 		_vehicle = _this select 0; 
+		 		_paras = _this select 1;
+		 		
+		 		while { !(getPos _vehicle select 2 < 4) } do {sleep 1;};
+
+		 		_vel = velocity _vehicle; 
+		 		detach _vehicle; 
+		 		_vehicle setVelocity _vel; 
+
+		 		{ 
+		 			detach _x; 
+		 			_x disableCollisionWith _vehicle; 
+		 		} count _paras; 
+		 		
+		 		sleep 5;
+		 		{ if (!isNull _x) then {deleteVehicle _x};} count _paras; 
+		 		_vehicle removeAllEventHandlers "HandleDamage";
+		 	};			
 		};
 
 		PUBLIC FUNCTION("", "unPop") {

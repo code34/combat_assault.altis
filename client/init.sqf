@@ -92,27 +92,25 @@
 
 	playertype = player getvariable "type";
 
-	if((playertype == "chopper") or (playertype == "tank") or (playertype == "tankaa") or (playertype == "bomber") or (playertype == "fighter")) then {
-		[] spawn {
-			private ["_action", "_script"];
-			while { true} do {
-				if(vehicle player == player) then {
-					if(isnil "_action") then {
-						_script = format ["client\scripts\pop%1.sqf", playertype];
-						_action = player addAction [format ["Get %1", playertype], _script];
-					};
-				} else {
-					if(!isnil "_action") then {
-						player removeAction _action;
-						_action = nil;
-					};
+	[] spawn {
+		private ["_action", "_script"];
+		while { true} do {
+			if(vehicle player == player) then {
+				if(isnil "_action") then {
+					_script = format ["client\scripts\pop%1.sqf", playertype];
+					_action = player addAction [format ["Get %1", playertype], _script];
 				};
-				if(!alive player) then {_action = nil;};
-				sleep 1;
+			} else {
+				if(!isnil "_action") then {
+					player removeAction _action;
+					_action = nil;
+				};
 			};
+			if(!alive player) then {_action = nil;};
+			sleep 1;
 		};
 	};
-
+	
 	[] spawn {
 		private ["_list", "_counter", "_text"];
 		_counter = 30;
@@ -185,16 +183,11 @@
 		
 
 		switch (playertype) do {
-			case "soldier": {
+			case "ammobox": {
 				[] call WC_fnc_teleport;
 				_icon =	"mil_arrow2";
 			};
 
-			case "medic": {
-				[] call WC_fnc_teleport;
-				_icon = "b_med";
-			};
-	
 			case "fighter": {
 				[] call WC_fnc_teleport;
 				_icon = "b_plane";

@@ -46,7 +46,7 @@ class Params
 		title = "AI ACCURENCY LEVEL";
 		values[] = {1, 2, 3, 4};
 		texts[] = {"NOVICE", "RECRUIT", "VETERAN", "CHEATED"};
-		default = 2;
+		default = 1;
 	};
 
 	class wcfatigue

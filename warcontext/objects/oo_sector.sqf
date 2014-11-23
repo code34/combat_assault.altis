@@ -287,6 +287,7 @@
 			};
 			//MEMBER("setAlert", false);
 			MEMBER("state", 0);
+			MEMBER("bucket", 0);
 		};
 
 		PRIVATE FUNCTION("", "popInfantry") {

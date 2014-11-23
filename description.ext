@@ -11,9 +11,9 @@ joinUnassigned = 0;
 
 class Header
 {
-	gameType=CTI;
+	gameType=COOP;
 	minPlayers=1;
-	maxPlayers=40;
+	maxPlayers=90;
 };
 
 class CfgDebriefing
@@ -54,7 +54,7 @@ class Params
 		title = "FATIGUE";
 		values[] = {1, 2};
 		texts[] = {"ON", "OFF"};
-		default = 2;
+		default = 1;
 	};	
 };
 

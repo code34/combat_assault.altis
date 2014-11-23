@@ -1,6 +1,6 @@
 	private ["_list", "_title"];
 
-	_list = (position player) nearEntities [["Man", "Tank"], 250];
+	_list = (position player) nearEntities [["Man", "Tank"], 50];
 	sleep 0.5;
 
 	if(east countSide _list > 0) then {

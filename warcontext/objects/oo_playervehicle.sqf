@@ -80,7 +80,9 @@
 			_vehicle = _type createVehicle [0,0,5000];
 			_vehicle setpos [_position select 0, _position select 1,  150];
 			_vehicle setdir (random 360); 
-			//["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
+			if(_type == "B_supplyCrate_F") then {
+				["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
+			};
 			MEMBER("paraVehicle", _vehicle);
 			MEMBER("vehicle", _vehicle);
 			MEMBER("mark", nil);

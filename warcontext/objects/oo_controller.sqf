@@ -326,7 +326,7 @@
 		PUBLIC FUNCTION("", "startConvoy") {
 			while { true } do {
 				MEMBER("spawnConvoy", nil);
-				sleep 1200;
+				sleep 1800;
 			};
 		};		
 

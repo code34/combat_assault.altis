@@ -51,9 +51,9 @@
 			sleep 10;
 		 	MEMBER("setHandler", _vehicle);
 
-			while { _counter < 120} do {
+			while { _counter < 240} do {
 				if(count (crew _vehicle) == 0) then { _counter = _counter + 1} else {_counter = 0;};
-				if(getDammage _vehicle > 0.9) then { _counter = 120; sleep 240;};
+				if(getDammage _vehicle > 0.9) then { _counter = 240; sleep 240;};
 				sleep 1;
 			}; 
 			MEMBER("alive", false);

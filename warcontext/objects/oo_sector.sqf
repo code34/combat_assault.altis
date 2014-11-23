@@ -299,6 +299,7 @@
 			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] call BIS_fnc_selectRandom;
 		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
+			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
 		
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
@@ -322,6 +323,8 @@
 
 			_type = "OI_SniperTeam";		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
+			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
 			{

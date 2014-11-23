@@ -194,16 +194,18 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
-			private ["_around", "_sector", "_rate"];
+			private ["_around", "_sector", "_iteration", "_rate"];
 
 			_sector = _this select 0;
+			_iteration = _this select 1;
 			_rate = (100 - (_this select 1)) / 100;
 
 			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
 
 			{
-				if(random 1 > _rate) then {
+				if((random 1 > _rate) and (_iteration > 0)) then {
 					MEMBER("expandSector", _x);
+					_iteration = _iteration - 1;
 				};
 				sleep 0.0000001;
 			}foreach _around;

@@ -29,6 +29,7 @@
 		PRIVATE VARIABLE("array","target");
 		PRIVATE VARIABLE("bool","patrol");
 		PRIVATE VARIABLE("scalar","squadronsize");
+		PRIVATE VARIABLE("scalar","counter");
 			
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_array"];
@@ -41,6 +42,7 @@
 			MEMBER("targets", _array);
 			MEMBER("target", _array);
 			MEMBER("squadronsize", 0);
+			MEMBER("counter", 5);
 		};
 
 		PUBLIC FUNCTION("","getSquadron") FUNC_GETVAR("squadron");
@@ -66,7 +68,7 @@
 			_ground = count MEMBER("groundtargets", nil);
 			_air = count MEMBER("airtargets", nil);
 
-			_size = _ground + (3 * _air);
+			_size = _ground + (2 * _air);
 			if(_size > 6) then { _size = 6;};
 			MEMBER("squadronsize", _size);		
 		};
@@ -150,7 +152,7 @@
 				_vehicle = _x select 0;
 				_fuel = fuel _vehicle;
 
-				_conso = (speed _vehicle * 0.0010) / 10;
+				_conso = (speed _vehicle * 0.0005) / 10;
 				_vehicle setfuel (_fuel - _conso);
 
 				sleep 0.0001;
@@ -189,24 +191,29 @@
 			_array = "getEast" call _atc;
 			_marker =  _array call BIS_fnc_selectRandom;
 			 _position = getmarkerpos _marker;
-			_position = [_position select 0, _position select 1, 100];
-			_array = [_position, 0, "O_Plane_CAS_02_F", east] call bis_fnc_spawnvehicle;
 
-			_vehicle = _array select 0;
-			_crew = (_array select 1) select 0;
-			_handle = [_crew, ""] spawn WC_fnc_setskill;
+			 _list = _position nearEntities [["Man", "Tank"], 300];
+			 sleep 0.5;
+			 if(west countSide _list == 0) then {
+				_position = [_position select 0, _position select 1, 100];
+				_array = [_position, 0, "O_Plane_CAS_02_F", east] call bis_fnc_spawnvehicle;
 
-			_mark = ["new", position _vehicle] call OO_MARKER;
+				_vehicle = _array select 0;
+				_crew = (_array select 1) select 0;
+				_handle = [_crew, ""] spawn WC_fnc_setskill;
 
-			["attachTo", _vehicle] spawn _mark;
-			["setText", "Mig"] spawn _mark;
-			["setColor", "ColorRed"] spawn _mark;
-			["setType", "o_plane"] spawn _mark;
-			["setSize", [0.5,0.5]] spawn _mark;
+				_mark = ["new", position _vehicle] call OO_MARKER;
 
-			_squad = MEMBER("squadron", nil);
-			_squad = _squad + [[_vehicle, _crew, _mark]];
-			MEMBER("squadron", _squad);
+				["attachTo", _vehicle] spawn _mark;
+				["setText", "Mig"] spawn _mark;
+				["setColor", "ColorRed"] spawn _mark;
+				["setType", "o_plane"] spawn _mark;
+				["setSize", [0.5,0.5]] spawn _mark;
+
+				_squad = MEMBER("squadron", nil);
+				_squad = _squad + [[_vehicle, _crew, _mark]];
+				MEMBER("squadron", _squad);
+			};
 		};
 
 		PUBLIC FUNCTION("object", "unpopMember") {
@@ -232,17 +239,23 @@
 		};
 
 		PUBLIC FUNCTION("", "popSquadron") {
-			private ["_atc", "_airport", "_size"];		
+			private ["_atc", "_counter", "_airport", "_size"];		
 			
 			_atc = MEMBER("atc", nil);
 			_airport = "countEast" call _atc;
-
+			_counter = MEMBER("counter", nil);
+			
 			if(_airport > 0) then {
 				_size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);			
 				if(_size > 0) then {
-					for "_i" from 1 to _size do {
-						MEMBER("popMember", nil);
-						sleep 10;
+					if(_counter >  4) then {
+						for "_i" from 1 to _size do {
+							MEMBER("popMember", nil);
+							sleep 10;
+						};
+					} else {
+						_counter = _counter + 1;
+						MEMBER("counter", _counter);
 					};
 				};
 			};
@@ -264,5 +277,6 @@
 			DELETE_VARIABLE("squadron");
 			DELETE_VARIABLE("targets");
 			DELETE_VARIABLE("squadronsize");
+			DELETE_VARIABLE("counter");
 		};
 	ENDCLASS;

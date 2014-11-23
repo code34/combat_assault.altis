@@ -93,7 +93,7 @@
 			_vehicle = MEMBER("vehicle", nil);
 			_fuel = fuel _vehicle;
 			
-			_conso = (speed _vehicle * 0.0010) / 100;
+			_conso = (speed _vehicle * 0.0005) / 100;
 			_vehicle setfuel (_fuel - _conso);
 		};
 

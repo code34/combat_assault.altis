@@ -86,6 +86,7 @@
 		wcdeathlistner = _array;
 		["wcdeathlistner", "client"] call BME_fnc_publicvariable;
 
+		if(_playertype == "ammobox") then {_playertype = "soldier";};
 		["setTicket", _playertype] call global_ticket;
 
 		_netid = -1;

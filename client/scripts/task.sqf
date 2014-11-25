@@ -1,4 +1,4 @@
-	player createDiaryRecord ["Diary", ["Unsponsor", "This game doesn't support ASUS constructor - DO not buy ASUS motherboard"]];
+	player createDiaryRecord ["Diary", ["Unsponsor", "This game doesn't support ASUS constructor - DO not buy ASUS ROG motherboard"]];
 
 	player createDiaryRecord ["Diary", ["External works", "Naught - oop.h, Killzonekid - paradrop."]];
 

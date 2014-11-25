@@ -203,13 +203,15 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_array", "_around", "_bucket", "_mincost", "_cost", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors"];
+			private ["_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
 			MEMBER("popSector", nil);
 
 			_grid = MEMBER("grid", nil);
+			_sector = MEMBER("sector", nil);
+
 			_time = 0;
 
 			_run = true;
@@ -225,9 +227,10 @@
 					{
 						_cost = ["GetEstimateCost", [_player_sector, _x]] call _grid;
 						if(_cost < _mincost) then { _mincost = _cost;};
-						if(_cost < 4) then {_bucket = _bucket + 1;};
 						sleep 0.0001;
 					}foreach _sectors;
+					_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call _grid;
+					if(_cost2 < 4) then {_bucket = _bucket + 1;};
 					sleep 0.0001;
 				}foreach playableunits;
 				if(MEMBER("bucket", nil) < _bucket) then { MEMBER("bucket", _bucket);};
@@ -280,10 +283,16 @@
 		};
 
 		PUBLIC FUNCTION("", "UnSpawn") {
+			private ["_critical"];
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
 			if(MEMBER("getAlert", nil)) then { 
-				["expandSectorAround", [MEMBER("getSector", nil), MEMBER("bucket", nil)]] call global_controller;
+				if(random 1> 0.97) then {
+					_critical = MEMBER("bucket", nil) * 2;
+				} else {
+					_critical = MEMBER("bucket", nil);
+				};
+				["expandSectorAround", [MEMBER("getSector", nil), _critical]] call global_controller;
 			};
 			//MEMBER("setAlert", false);
 			MEMBER("state", 0);

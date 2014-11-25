@@ -103,7 +103,7 @@
 
 		PUBLIC FUNCTION("", "popArtillery") {
 			private ["_position", "_artillery"];
-			_position = [MEMBER("position", nil), 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
+			_position = [MEMBER("position", nil), 3000,5000,10,0,3,0] call BIS_fnc_findSafePos;
 
 			_artillery = ["new", [_position]] call OO_ARTILLERY;
 			MEMBER("artillery", _artillery);
@@ -263,7 +263,7 @@
 			MEMBER("state", 2);
 			["setTicket", "bluezone"] call global_ticket;
 			_position = MEMBER("getPosition", nil);
-			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+			_position = [_position, 0,50,5,0,3,0] call BIS_fnc_findSafePos;
 			["new", _position] spawn OO_BONUSVEHICLE;
 			MEMBER("unPopSector", nil);
 			sleep 120;
@@ -300,7 +300,7 @@
 			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] call BIS_fnc_selectRandom;
 		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
-			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 		
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
@@ -324,7 +324,7 @@
 
 			_type = "OI_SniperTeam";		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
-			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
@@ -356,7 +356,7 @@
 			};
 		
 			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
-			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 		
 			_array = [_position, random 359, _vehicle, east] call bis_fnc_spawnvehicle;
 		

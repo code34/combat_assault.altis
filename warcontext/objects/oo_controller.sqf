@@ -194,21 +194,24 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
-			private ["_around", "_sector", "_iteration", "_rate"];
+			private ["_around", "_sector", "_iteration", "_rate", "_x"];
 
 			_sector = _this select 0;
 			_iteration = _this select 1;
-			_rate = (100 - (_this select 1)) / 100;
+			_rate = (90 - (_this select 1)) / 100;
+			if(_rate < 0) then {_rate = 0;};
 
 			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
 
-			{
+			while { count _around > 0 } do {
+				_x = _around call BIS_fnc_selectRandom;
+				_around = _around - [_x];
 				if((random 1 > _rate) and (_iteration > 0)) then {
 					MEMBER("expandSector", _x);
-					_iteration = _iteration - 1;
+					_iteration = _iteration - 1;					
 				};
-				sleep 0.0000001;
-			}foreach _around;
+				sleep 0.0001;
+			};
 		};
 
 		PUBLIC FUNCTION("array", "expandFriendlyAround"){
@@ -326,7 +329,7 @@
 		PUBLIC FUNCTION("", "startConvoy") {
 			while { true } do {
 				MEMBER("spawnConvoy", nil);
-				sleep 1800;
+				sleep 1200;
 			};
 		};		
 

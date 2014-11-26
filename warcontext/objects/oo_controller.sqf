@@ -206,6 +206,8 @@
 			while { count _around > 0 } do {
 				_x = _around call BIS_fnc_selectRandom;
 				_around = _around - [_x];
+				_rate = ["GetEstimateCost", [_x, _sector]] call MEMBER("grid", nil);
+				_rate = (_rate / 10) + 0.5;
 				if((random 1 > _rate) and (_iteration > 0)) then {
 					MEMBER("expandSector", _x);
 					_iteration = _iteration - 1;					

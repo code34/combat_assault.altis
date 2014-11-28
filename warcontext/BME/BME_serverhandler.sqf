@@ -122,7 +122,7 @@
 	};		
 
 	BME_netcode_server_wcteleport = {
-		private ["_name", "_playerid", "_position", "_grid", "_sector", "_result", "_around"];
+		private ["_name", "_playerid", "_position", "_sector", "_result", "_around"];
 
 		_wcteleport = _this select 0;
 		_name = _wcteleport select 0;
@@ -144,11 +144,10 @@
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
 
-		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-		_sector = ["getSectorFromPos", _position] call _grid;
+		_sector = ["getSectorFromPos", _position] call global_grid;
+		_pos = ["getPosFromSector", _sector] call global_grid;
 
-		_pos = ["getPosFromSector", _sector] call _grid;
-		_list = _pos nearEntities [["Man"], 50];
+		_list = _pos nearEntities [["Man"], 100];
 		if(east countSide _list > 0) exitwith {
 			wcteleportack = [0,0];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
@@ -156,7 +155,7 @@
 
 		_result = _position;
 
-		_around = ["getSectorAround", _sector] call _grid;
+		_around = ["getSectorAround", _sector] call global_grid;
 		{
 			_sector = ["Get", str(_x)] call global_zone_hashmap;
 			if(!isnil "_sector") then {

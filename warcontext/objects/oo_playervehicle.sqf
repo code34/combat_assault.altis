@@ -114,18 +114,18 @@
 		 		_vehicle = _this select 0; 
 		 		_paras = _this select 1;
 		 		
-		 		while { !(getPos _vehicle select 2 < 4) } do {sleep 1;};
+		 		while { !(getPos _vehicle select 2 < 3) } do {sleep 0.1;};
 
-		 		_vel = velocity _vehicle; 
+		 		//_vel = velocity _vehicle; 
 		 		detach _vehicle; 
-		 		_vehicle setVelocity _vel; 
+		 		//_vehicle setVelocity _vel; 
 
 		 		{ 
 		 			detach _x; 
 		 			_x disableCollisionWith _vehicle; 
 		 		} count _paras; 
 		 		
-		 		sleep 5;
+		 		sleep 2;
 		 		{ if (!isNull _x) then {deleteVehicle _x};} count _paras; 
 		 		_vehicle removeAllEventHandlers "HandleDamage";
 		 	};			

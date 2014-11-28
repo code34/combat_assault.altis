@@ -203,7 +203,7 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector"];
+			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -211,8 +211,10 @@
 
 			_grid = MEMBER("grid", nil);
 			_sector = MEMBER("sector", nil);
+			_position = MEMBER("position", nil);
 
 			_time = 0;
+			_deadcounter = 0;
 
 			_run = true;
 			while { _run } do {
@@ -246,10 +248,12 @@
 				};
 
 				{
-					if(alive _x) then { _units = _units + 1;};
+					if((alive _x) and (_position distance _x < 2000)) then { _units = _units + 1;};
 					sleep 0.01
 				}foreach MEMBER("units", nil);
 				if(_units == 0) then { _run = false; };
+				if(_units < 3)then { _deadcounter = _deadcounter + 1;};
+				if(_deadcounter > 500) then { _units = 0; _run = false;};
 				sleep 1;
 			};
 
@@ -300,7 +304,7 @@
 		};
 
 		PRIVATE FUNCTION("", "popInfantry") {
-			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];
+			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2"];
 
 			_marker	=  MEMBER("marker", nil);		
 			_markerpos 	= getmarkerpos _marker;
@@ -308,8 +312,10 @@
 		
 			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] call BIS_fnc_selectRandom;
 		
-			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
-			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			//_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
+			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+			if(_position isequalto _position2)  exitwith {[];};
 		
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
@@ -325,15 +331,17 @@
 		};
 
 		PRIVATE FUNCTION("", "popSniper") {
-			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group"];
+			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2"];
 
 			_marker 	=  MEMBER("marker", nil);		
 			_markerpos 	= getmarkerpos _marker;
 			_markersize 	= (getMarkerSize _marker) select 1;
 
 			_type = "OI_SniperTeam";		
-			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
-			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			//_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
+			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+			if(_position isequalto _position2)  exitwith {[];};			
 
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
 		
@@ -350,7 +358,7 @@
 
 
 		PRIVATE FUNCTION("", "popVehicle") {
-			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle"];
+			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle", "_position2"];
 		
 			_marker		=  MEMBER("marker", nil);
 			_markerpos 		= getmarkerpos _marker;
@@ -364,8 +372,10 @@
 				_vehicle = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"] call BIS_fnc_selectRandom;
 			};
 		
-			_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
-			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			//_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
+			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+			if(_position isequalto _position2)  exitwith {[];};						
 		
 			_array = [_position, random 359, _vehicle, east] call bis_fnc_spawnvehicle;
 		

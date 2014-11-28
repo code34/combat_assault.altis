@@ -8,4 +8,7 @@
 		case 4 : {wclevel = "cheated";};
 		default {wclevel = "novice";};
 	};
-	diag_log format ["COMBAT ASSAULT starts at: %1 %2 difficulty", wclevel, wcaccurencylevel];
+
+	wcskill = 0.2;
+
+	diag_log format ["COMBAT ASSAULT starts at: %1 %2 %3 difficulty", wclevel, wcaccurencylevel, wcskill];

@@ -34,6 +34,8 @@
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
 	wcboard = false;
+	wcticket = 0;
+	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 
 	if(wcfatigue == 2) then {

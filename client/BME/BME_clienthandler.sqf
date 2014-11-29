@@ -109,6 +109,7 @@
 		_ticket = _value select 0;
 		_type = _value select 1;
 		_credit = _value select 2;
+		wcticket = _ticket;
 
 		_index = round ((random 30) + 87);
 		_entry = configFile >> "CfgMusic";

@@ -43,7 +43,7 @@
 
 					_scores = "topByRatio" call scoreboard;
 					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
-					_ctrl9 ctrlSetStructuredText parsetext "Scoreboard - <t size='0.7'>Press [Tab] to hide</t>";
+					_ctrl9 ctrlSetStructuredText parsetext ("Scoreboard - Ticket: " + str(wcticket) + " <t size='0.7'>Press [Tab] to hide</t>");
 					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
 
 					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;

@@ -62,6 +62,14 @@
 			MEMBER("getText", _array);
 		};
 
+		PUBLIC FUNCTION("", "topByScore") {
+			private ["_array", "_score", "_sort"];
+			_score = MEMBER("getScore", nil);
+			_sort = [_score, 3];
+			_array = MEMBER("sortMaxByColumn", _sort);
+			MEMBER("getText", _array);
+		};		
+
 		PUBLIC FUNCTION("", "topByServerRatio") {
 			_score = MEMBER("getScore", nil);
 			_sort = [_score, 1];

@@ -38,10 +38,6 @@
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 
-	if(wcfatigue == 2) then {
-		player enableFatigue false;
-	};
-
 	rollmessage = ["<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project<br/>", "on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>Code34<br/>"];
 	rollprintmessage = "";
 
@@ -92,11 +88,18 @@
 
 	_mark = ["new", position player] call OO_MARKER;
 
-	playertype = player getvariable "type";
+	playertype = "ammobox";
 
 	[] spawn {
-		private ["_action", "_script"];
+		private ["_action", "_script", "_oldplayertype"];
+		_oldplayertype = playertype;
+
 		while { true} do {
+			if(_oldplayertype != playertype) then {
+				_oldplayertype = playertype;
+				player removeAction _action;
+				_action = nil;				
+			};
 			if(vehicle player == player) then {
 				if(isnil "_action") then {
 					_script = format ["client\scripts\pop%1.sqf", playertype];
@@ -157,21 +160,44 @@
 	while {true} do {
 		_index = player addEventHandler ["HandleDamage", {false}];
 		setviewdistance 1500;
+
+		if(wcfatigue == 2) then { player enableFatigue false; };
 		
 		["load", player] call inventory;
 		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
 		_position = position player;
-		
-		while { _position distance position player < 2 } do {
-			if(isnil "_action") then {
-				_action = player addAction ["Choose your equipment", "client\scripts\arsenal.sqf"];
-			};
-			sleep 0.1
-		};
-		player removeAction _action;
-		_action = nil;
 
-		["save", player] call inventory;
+		wcaction = "";
+		_cam = "camera" camCreate [(getpos player select 0), (getpos player select 1), (getpos player select 2) + 300];
+		_cam camCommit 1;
+		_cam cameraEffect ["INTERNAL", "BACK","toto"];
+		"toto" setPiPEffect [0, 1, 0.8, 1, 0.1, [0.3, 0.3, 0.3, -0.1], [1.0, 0.0, 1.0, 1.0], [0, 0, 0, 0]];
+		_ok = createDialog "spawndialog"; 
+
+		waituntil { !dialog } ;
+		
+		if(wcaction == "equipment") then {
+			_title = "Select your equipment";
+			_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
+			["hint", [_title, _text]] call hud;		
+			["Open",[true,nil,player]] call bis_fnc_arsenal;
+			_position = position player;
+			while { _position distance position player < 2 } do {
+				sleep 0.01;
+			};
+			["save", player] call inventory;
+		};
+		
+		//while { _position distance position player < 2 } do {
+		//	if(isnil "_action") then {
+		//		_action = player addAction ["Choose your equipment", "client\scripts\arsenal.sqf"];
+		//	};
+		//	sleep 0.1
+		//};
+
+		//player removeAction _action;
+		//_action = nil;
+		//["save", player] call inventory;
 
 		openMap [false, false] ;
 		openMap [true, true];

@@ -16,6 +16,274 @@ class Header
 	maxPlayers=90;
 };
 
+#include "client\define.hpp"
+
+class RscButton
+{
+	access = 0;
+	type = 1;
+	style = ST_CENTER;
+	text = "";
+	colorText[] = {1,1,1,1}; 
+	colorDisabled[] = {0.4,0.4,0.4,1};
+	colorBackground[] = {0,0.4,0.8,0};
+	colorBackgroundDisabled[] = {0.95,0.95,0.95,1};
+	colorBackgroundActive[] = {0,0.4,0.8,0.4};
+	colorFocused[] = {1,0.537,0,1};
+	colorShadow[] = {0,0,0,0};
+	colorBorder[] = {0,0,0,0};
+	soundEnter[] = {"\ca\ui\data\sound\onover",0.09,1};
+	soundPush[] = {"\ca\ui\data\sound\new1",0,0};
+	soundClick[] = {"\ca\ui\data\sound\onclick",0.07,1};
+	soundEscape[] = {"\ca\ui\data\sound\onescape",0.09,1};
+	x = 0;
+	y = 0;
+	w = 0.095589;
+	h = 0.039216;
+	shadow = 2;
+	sizeEx = 0.03;
+	size = 0.03;
+	offsetX = 0.003;
+	offsetY = 0.003;
+	offsetPressedX = 0.002;
+	offsetPressedY = 0.002;
+	borderSize = 0;
+	font = "EtelkaNarrowMediumPro"; 
+};
+
+class spawndialog { 
+	idd = -1; 
+	movingEnable = true; 
+	enableSimulation = false; 
+	controlsBackground[] = { }; 
+	objects[] = { }; 
+	controls[] = { backcam, backspawn, deploy, equipment, infantry2, infantry, tank2, tank, tankaa2, tankaa, bomber2, bomber, fighter2, fighter, chopper2, chopper}; 
+
+	class infantry : RscButton
+	{
+		idc = -1; 
+		x = -0.2; 
+		y = 0.01; 
+		w = 0.2; 
+		h = 0.2; 
+		text = "INFANTRY";
+		action = "playertype ='ammobox'; ";
+	};
+
+	class infantry2 { 
+		idc = -1; 
+		type = CT_STATIC;
+		style = ST_TILE_PICTURE; 
+		x = -0.15; 
+		y = 0.05; 
+		w = 0.1; 
+		h = 0.1; 
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.035;
+		colorBackground[] = {0,0.4,0.8,0.2};
+		colorText[] = {1,1,1,1}; 
+		text = "\A3\Ui_f\data\IGUI\RscIngameUI\RscUnitInfo\SI_stand_ca.paa"; 
+		sizeEx = 0;
+	}; 	
+
+	class tank : RscButton
+	{
+		idc = -1; 
+		x = 0; 
+		y = 0.01; 
+		w = 0.2; 
+		h = 0.2; 
+		text = "TANK";
+		action = "playertype ='tank'; ";
+	};
+
+	class tank2 { 
+		idc = -1; 
+		type = CT_STATIC;
+		style = ST_TILE_PICTURE; 
+		x = 0.05; 
+		y = 0.05; 
+		w = 0.1; 
+		h = 0.1; 
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.035;
+		colorBackground[] = {0,0.4,0.8,0.2};
+		colorText[] = {1,1,1,1}; 
+		text = "\A3\armor_f_gamma\MBT_01\Data\ui\map_slammer_mk4_ca.paa"; 
+		sizeEx = 0;
+	}; 	
+
+	class tankaa : RscButton
+	{
+		idc = -1; 
+		x = 0.20; 
+		y = 0.01; 
+		w = 0.2; 
+		h = 0.2; 
+		text = "TANK AA";
+		action = "playertype ='tankaa'; ";
+	};
+
+	class tankaa2 { 
+		idc = -1; 
+		type = CT_STATIC;
+		style = ST_TILE_PICTURE; 
+		x = 0.25; 
+		y = 0.05; 
+		w = 0.1; 
+		h = 0.1; 
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.035;
+		colorBackground[] = {0,0.4,0.8,0.2};
+		colorText[] = {1,1,1,1}; 
+		text = "\A3\armor_f_beta\APC_Tracked_01\Data\ui\map_APC_Tracked_01_aa_ca.paa"; 
+		sizeEx = 0;
+	}; 	
+
+	class bomber : RscButton
+	{
+		idc = -1; 
+		x = 0.40; 
+		y = 0.01; 
+		w = 0.2; 
+		h = 0.2; 
+		text = "BOMBER";
+		action = "playertype ='bomber'; ";
+	};
+
+	class bomber2 { 
+		idc = -1; 
+		type = CT_STATIC;
+		style = ST_TILE_PICTURE; 
+		x = 0.45; 
+		y = 0.05; 
+		w = 0.1; 
+		h = 0.1; 
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.035;
+		colorBackground[] = {0,0.4,0.8,0.2};
+		colorText[] = {1,1,1,1}; 
+		text = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Map_Plane_CAS_01_CA.paa"; 
+		sizeEx = 0;
+	}; 	
+
+	class fighter : RscButton
+	{
+		idc = -1; 
+		x = 0.60; 
+		y = 0.01; 
+		w = 0.2; 
+		h = 0.2; 
+		text = "FIGHTER";
+		action = "playertype ='fighter'; ";
+	};
+
+	class fighter2 { 
+		idc = -1; 
+		type = CT_STATIC;
+		style = ST_TILE_PICTURE; 
+		x = 0.65; 
+		y = 0.05; 
+		w = 0.1; 
+		h = 0.1; 
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.035;
+		colorBackground[] = {0,0.4,0.8,0.2};
+		colorText[] = {1,1,1,1}; 
+		text = "\A3\Air_F_Gamma\Plane_Fighter_03\Data\UI\Map_Plane_Fighter_03_CA.paa"; 
+		sizeEx = 0;
+	}; 
+
+	class chopper : RscButton
+	{
+		idc = -1; 
+		x = 0.8; 
+		y = 0.01; 
+		w = 0.2; 
+		h = 0.2; 
+		text = "CHOPPER";
+		action = "playertype ='chopper'; ";
+	};
+
+	class chopper2 { 
+		idc = -1; 
+		type = CT_STATIC;
+		style = ST_TILE_PICTURE; 
+		x = 0.85; 
+		y = 0.05; 
+		w = 0.1; 
+		h = 0.1; 
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.035;
+		colorBackground[] = {0,0.4,0.8,0.2};
+		colorText[] = {1,1,1,1}; 
+		text = "\A3\air_f_beta\Heli_Transport_01\Data\UI\Map_Heli_Transport_01_base_CA.paa"; 
+		sizeEx = 0;
+	}; 		
+
+	class equipment : RscButton
+	{
+		idc = -1; 
+		x = -0.19; 
+		y = 0.94; 
+		w = 0.2; 
+		h = 0.05; 
+		text = "EQUIPMENT";
+		action = "closeDialog 0; wcaction = 'equipment';";
+	};
+
+	class deploy : RscButton
+	{
+		idc = -1; 
+		x = 0.79; 
+		y = 0.94; 
+		w = 0.2; 
+		h = 0.05; 
+		text = "DEPLOY";
+		action = "closeDialog 0; wcaction = 'deploy';";
+	};
+
+	class backspawn { 
+		idc = -1; 
+		type = CT_STATIC; 
+		style = ST_HUD_BACKGROUND;  
+		shadow = 0;
+		moving = 0;
+		x = -0.2; 
+		y = 0;
+		w = 1.2;
+		h = 0.99;
+		font = "EtelkaNarrowMediumPro";
+		size = 0.03;
+		colorBackground[] = {0,0,0,0.6};
+		colorText[] = {0,0,0,0}; 
+		text = ""; 
+		sizeEx = 0;
+	}; 
+
+	class backcam { 
+		idc = -1; 
+		type = SL_TEXTURES; 
+		style = CT_ANIMATED_TEXTURE;  
+		shadow = 0;
+		moving = 0;
+		x = 0; 
+		y = 0.2;
+		w = 1;
+		h = 0.6;
+		font = "EtelkaNarrowMediumPro";
+		size = 0.03;
+		colorBackground[] = {0,0,0,0.6};
+		colorText[] = {0,0,0,0}; 
+		text = ""; 
+		sizeEx = 0;
+		texture = "#(argb,256,256,1)r2t('toto',1.0)";
+		texturenormal = "#(argb,256,256,1)r2t('toto',1.0)";
+		animtexturenormal = "#(argb,256,256,1)r2t('toto',1.0)";
+		animtexturedisabled ="";
+	}; 	
+};
+
 class CfgDebriefing
 {  
 	class End1
@@ -57,8 +325,6 @@ class Params
 		default = 1;
 	};	
 };
-
-#include "client\define.hpp"
 
 class RscTitles { 
 	class bottomhud { 

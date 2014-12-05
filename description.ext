@@ -57,30 +57,47 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { backcam, backspawn, deploy, equipment, infantry2, infantry, tank2, tank, tankaa2, tankaa, bomber2, bomber, fighter2, fighter, chopper2, chopper}; 
+	controls[] = { deploy, previous, next, equipment, background, infantry2, infantry, tank2, tank, tankaa2, tankaa, bomber2, bomber, fighter2, fighter, chopper2, chopper}; 
+
+	class background {
+		idc = -1; 
+		type = CT_STRUCTURED_TEXT; 
+		style = ST_VCENTER; 		
+		x = 0; 
+		y = 0; 
+		w = 0.9; 
+		h = 0.2; 
+		text = "";
+		action = "playertype ='ammobox'; ";
+		font = "EtelkaNarrowMediumPro"; 
+		size = 0.038; 
+		colorBackground[] = {0,0,0,0.6}; 
+		colorText[] = {0.5,1,1,1}; 		
+	};
 
 	class infantry : RscButton
 	{
 		idc = -1; 
-		x = -0.2; 
-		y = 0.01; 
-		w = 0.2; 
+		x = 0; 
+		y = 0; 
+		w = 0.15; 
 		h = 0.2; 
 		text = "INFANTRY";
 		action = "playertype ='ammobox'; ";
+		colorBackground[] = {0,0,0,0};
 	};
 
 	class infantry2 { 
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = -0.15; 
-		y = 0.05; 
-		w = 0.1; 
-		h = 0.1; 
+		x = 0; 
+		y = 0; 
+		w = 0.15; 
+		h = 0.2; 
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
+		colorBackground[] = {0,0.4,0.8,0.4};
 		colorText[] = {1,1,1,1}; 
 		text = "\A3\Ui_f\data\IGUI\RscIngameUI\RscUnitInfo\SI_stand_ca.paa"; 
 		sizeEx = 0;
@@ -89,22 +106,23 @@ class spawndialog {
 	class tank : RscButton
 	{
 		idc = -1; 
-		x = 0; 
-		y = 0.01; 
-		w = 0.2; 
+		x = 0.15; 
+		y = 0; 
+		w = 0.15; 
 		h = 0.2; 
 		text = "TANK";
 		action = "playertype ='tank'; ";
+		colorBackground[] = {0,0,0,0};
 	};
 
 	class tank2 { 
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.05; 
-		y = 0.05; 
-		w = 0.1; 
-		h = 0.1; 
+		x = 0.15; 
+		y = 0; 
+		w = 0.15; 
+		h = 0.2; 
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.035;
 		colorBackground[] = {0,0.4,0.8,0.2};
@@ -116,22 +134,23 @@ class spawndialog {
 	class tankaa : RscButton
 	{
 		idc = -1; 
-		x = 0.20; 
-		y = 0.01; 
-		w = 0.2; 
+		x = 0.3; 
+		y = 0; 
+		w = 0.15; 
 		h = 0.2; 
 		text = "TANK AA";
 		action = "playertype ='tankaa'; ";
+		colorBackground[] = {0,0,0,0};
 	};
 
 	class tankaa2 { 
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.25; 
-		y = 0.05; 
-		w = 0.1; 
-		h = 0.1; 
+		x = 0.3; 
+		y = 0; 
+		w = 0.15; 
+		h = 0.2; 
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.035;
 		colorBackground[] = {0,0.4,0.8,0.2};
@@ -143,12 +162,13 @@ class spawndialog {
 	class bomber : RscButton
 	{
 		idc = -1; 
-		x = 0.40; 
-		y = 0.01; 
-		w = 0.2; 
+		x = 0.45; 
+		y = 0; 
+		w = 0.15; 
 		h = 0.2; 
 		text = "BOMBER";
 		action = "playertype ='bomber'; ";
+		colorBackground[] = {0,0,0,0};
 	};
 
 	class bomber2 { 
@@ -156,9 +176,9 @@ class spawndialog {
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
 		x = 0.45; 
-		y = 0.05; 
-		w = 0.1; 
-		h = 0.1; 
+		y = 0; 
+		w = 0.15; 
+		h = 0.2; 
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.035;
 		colorBackground[] = {0,0.4,0.8,0.2};
@@ -170,22 +190,23 @@ class spawndialog {
 	class fighter : RscButton
 	{
 		idc = -1; 
-		x = 0.60; 
-		y = 0.01; 
-		w = 0.2; 
+		x = 0.6; 
+		y = 0; 
+		w = 0.15; 
 		h = 0.2; 
 		text = "FIGHTER";
 		action = "playertype ='fighter'; ";
+		colorBackground[] = {0,0,0,0};
 	};
 
 	class fighter2 { 
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.65; 
-		y = 0.05; 
-		w = 0.1; 
-		h = 0.1; 
+		x = 0.6; 
+		y = 0; 
+		w = 0.15; 
+		h = 0.2; 
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.035;
 		colorBackground[] = {0,0.4,0.8,0.2};
@@ -197,91 +218,78 @@ class spawndialog {
 	class chopper : RscButton
 	{
 		idc = -1; 
-		x = 0.8; 
-		y = 0.01; 
-		w = 0.2; 
+		x = 0.75; 
+		y = 0; 
+		w = 0.15; 
 		h = 0.2; 
 		text = "CHOPPER";
 		action = "playertype ='chopper'; ";
+		colorBackground[] = {0,0,0,0};
 	};
 
 	class chopper2 { 
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.85; 
-		y = 0.05; 
-		w = 0.1; 
-		h = 0.1; 
+		x = 0.75; 
+		y = 0; 
+		w = 0.15; 
+		h = 0.2; 
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.035;
 		colorBackground[] = {0,0.4,0.8,0.2};
 		colorText[] = {1,1,1,1}; 
 		text = "\A3\air_f_beta\Heli_Transport_01\Data\UI\Map_Heli_Transport_01_base_CA.paa"; 
 		sizeEx = 0;
-	}; 		
+	}; 
+
+	class previous : RscButton
+	{
+		idc = -1; 
+		x = 0.19; 
+		y = 0.90; 
+		w = 0.2; 
+		h = 0.05; 
+		text = "<< PREVIOUS";
+		action = "wcaction = 'prev';";
+		colorBackground[] = {0,0,0,0.8};
+	};
+
+	class next : RscButton
+	{
+		idc = -1; 
+		x = 0.40; 
+		y = 0.90; 
+		w = 0.2; 
+		h = 0.05; 
+		text = "NEXT >>";
+		action = "wcaction = 'next';";
+		colorBackground[] = {0,0,0,0.8};
+	};			
 
 	class equipment : RscButton
 	{
 		idc = -1; 
-		x = -0.19; 
-		y = 0.94; 
+		x = 0.80; 
+		y = 0.84; 
 		w = 0.2; 
 		h = 0.05; 
 		text = "EQUIPMENT";
 		action = "closeDialog 0; wcaction = 'equipment';";
+		colorBackground[] = {0,0,0,0.8};
 	};
 
 	class deploy : RscButton
 	{
 		idc = -1; 
-		x = 0.79; 
-		y = 0.94; 
+		x = 0.80; 
+		y = 0.90; 
 		w = 0.2; 
 		h = 0.05; 
 		text = "DEPLOY";
 		action = "closeDialog 0; wcaction = 'deploy';";
+		colorBackground[] = {0,0,0,0.8};
 	};
-
-	class backspawn { 
-		idc = -1; 
-		type = CT_STATIC; 
-		style = ST_HUD_BACKGROUND;  
-		shadow = 0;
-		moving = 0;
-		x = -0.2; 
-		y = 0;
-		w = 1.2;
-		h = 0.99;
-		font = "EtelkaNarrowMediumPro";
-		size = 0.03;
-		colorBackground[] = {0,0,0,0.6};
-		colorText[] = {0,0,0,0}; 
-		text = ""; 
-		sizeEx = 0;
-	}; 
-
-	class backcam { 
-		idc = -1; 
-		type = SL_TEXTURES; 
-		style = CT_ANIMATED_TEXTURE;  
-		shadow = 0;
-		moving = 0;
-		x = 0; 
-		y = 0.2;
-		w = 1;
-		h = 0.6;
-		font = "EtelkaNarrowMediumPro";
-		size = 0.03;
-		colorBackground[] = {0,0,0,0.6};
-		colorText[] = {0,0,0,0}; 
-		text = ""; 
-		sizeEx = 0;
-		texture = "#(argb,256,256,1)r2t('toto',1.0)";
-		texturenormal = "#(argb,256,256,1)r2t('toto',1.0)";
-		animtexturenormal = "#(argb,256,256,1)r2t('toto',1.0)";
-		animtexturedisabled ="";
-	}; 	
 };
 
 class CfgDebriefing
@@ -339,7 +347,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_CENTER; 
 				x = 0.3; 
-				y = 0.1;
+				y = 0;
 				w = 0.6;
 				h = 0.05;
 				font = "EtelkaNarrowMediumPro"; 
@@ -463,10 +471,10 @@ class RscTitles {
 				idc = 1007; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
-				x = 0.05 + safeZoneX + 0 * 3/4; 
-				y = 0.05 + safeZoneY + 0 * 4/3;
-				w = 1.1 * 3 / 4;
-				h = 1 * 4/3;
+				x = 0; 
+				y = 0.1;
+				w = 1.1;
+				h = 0.8;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0.2};
@@ -479,10 +487,10 @@ class RscTitles {
 				idc = 1008; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
-				x = 0.05 + safeZoneX + 0 * 3/4; 
-				y = 0.05 + safeZoneY + 0 * 4/3;
-				w = 1.1 * 3/4;
-				h = 0.03 * 4/3;
+				x =  0 ; 
+				y =  0.1;
+				w = 1.1;
+				h = 0.03;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -494,10 +502,10 @@ class RscTitles {
 				idc = 1009; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;   
-				x = 0.05 +safeZoneX + 0 * 3/4; 
-				y = 0.05 +safeZoneY + 0.03 * 4/3;
-				w = 0.1 * 3/4;
-				h = 0.97 * 4/3;
+				x = 0; 
+				y = 0.13;
+				w = 0.1;
+				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -509,10 +517,10 @@ class RscTitles {
 				idc = 1010; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
-				x = 0.05 +safeZoneX + 0.1 * 3/4; 
-				y = 0.05 +safeZoneY + 0.03 * 4/3;
-				w = 0.4 * 3/4;
-				h = 0.97 * 4/3;
+				x = 0.1 ; 
+				y = 0.13;
+				w = 0.4;
+				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -524,10 +532,10 @@ class RscTitles {
 				idc = 1011; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
-				x = 0.05 +safeZoneX + 0.5 * 3/4; 
-				y = 0.05 +safeZoneY + 0.03 * 4/3;
-				w = 0.2 * 3/4;
-				h = 0.97 * 4/3;
+				x = 0.5; 
+				y = 0.13;
+				w = 0.2;
+				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -539,10 +547,10 @@ class RscTitles {
 				idc = 1012; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
-				x = 0.05 +safeZoneX + 0.7 * 3/4; 
-				y = 0.05 +safeZoneY + 0.03 * 4/3;
-				w = 0.2 * 3/4;
-				h = 0.97 * 4/3;
+				x = 0.7 ; 
+				y = 0.13 ;
+				w = 0.2 ;
+				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -554,10 +562,10 @@ class RscTitles {
 				idc = 1013; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
-				x = 0.05 +safeZoneX + 0.9 * 3/4; 
-				y = 0.05 +safeZoneY + 0.03 * 4/3;
-				w = 0.1 * 3/4;
-				h = 0.97 * 4/3;
+				x = 0.9; 
+				y = 0.13;
+				w = 0.1;
+				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -569,10 +577,10 @@ class RscTitles {
 				idc = 1014; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
-				x = 0.05 +safeZoneX + 1 * 3/4; 
-				y = 0.05 +safeZoneY + 0.03 * 4/3;
-				w = 0.1 * 3/4;
-				h = 0.97 * 4/3;
+				x = 1; 
+				y = 0.13;
+				w = 0.1;
+				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0.4,0.8,0};
@@ -585,10 +593,10 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				shadow = 1;
-				x = safeZoneX + safeZoneW - 0.3 * 3 / 4; 
-				y = safeZoneY + safeZoneH - 0.03 * 4/3;
-				w = 0.28 * 3 / 4;
-				h = 0.05 * 4/3;
+				x = safeZoneX + safeZoneW - 0.26; 
+				y = safeZoneY + safeZoneH - 0.05;
+				w = 0.25;
+				h = 0.03;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.030;
 				colorBackground[] = {0,0,0,0.4};

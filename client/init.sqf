@@ -209,7 +209,8 @@
 				} else {
 					detach cam;
 					cam cameraEffect ["internal", "BACK"];
-					cam attachto [(_units select wcindex),[0.7,-1,5], "neck"];
+					cam camSetTarget (_units select wcindex);
+					cam attachto [(_units select wcindex),[0.7,-1.5,0], "neck"];
 					cam CamCommit 0;
 				};
 				wcchange  = false;
@@ -218,6 +219,7 @@
 		};
 		
 		if(wcaction == "equipment") then {
+			wcindex = -1;
 			_title = "Select your equipment";
 			_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
 			["hint", [_title, _text]] call hud;		
@@ -238,15 +240,27 @@
 			openMap [true, true];
 			mapAnimAdd [1, 0.04, _body]; 
 			mapAnimCommit;
-			deletevehicle _body;
 			_vehicle spawn {
 				while { count (crew _this) > 0 } do { sleep 1; };
 				deletevehicle _this;
 			};
 			[] call WC_fnc_teleport;
 		} else {
-			player setpos [_position select 0, _position select 1];
+			if(_position distance getmarkerpos "respawn_west" < 1300) then {
+				openMap [false, false] ;
+				openMap [true, true];
+				mapAnimAdd [1, 0.04, _body]; 
+				mapAnimCommit;
+				_vehicle spawn {
+					while { count (crew _this) > 0 } do { sleep 1; };
+					deletevehicle _this;
+				};
+				[] call WC_fnc_teleport;
+			} else {
+				player setpos [_position select 0, _position select 1];
+			};
 		};
+		deletevehicle _body;
 
 		switch (playertype) do {
 			case "ammobox": {

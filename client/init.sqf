@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group"];
+	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_units"];
 
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
@@ -162,19 +162,60 @@
 		setviewdistance 1500;
 
 		if(wcfatigue == 2) then { player enableFatigue false; };
+
+		cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
+		cam cameraEffect ["internal","top"];
+		cam camsettarget _body;
+		cam CamCommit 0;
 		
 		["load", player] call inventory;
 		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
-		_position = position player;
 
 		wcaction = "";
-		_cam = "camera" camCreate [(getpos player select 0), (getpos player select 1), (getpos player select 2) + 300];
-		_cam camCommit 1;
-		_cam cameraEffect ["INTERNAL", "BACK","toto"];
-		"toto" setPiPEffect [0, 1, 0.8, 1, 0.1, [0.3, 0.3, 0.3, -0.1], [1.0, 0.0, 1.0, 1.0], [0, 0, 0, 0]];
 		_ok = createDialog "spawndialog"; 
+		
+		_units = playableunits - [player];
+		wcindex = -1;
+		wcindexmax = count _units;
+		wcchange  = false;
 
-		waituntil { !dialog } ;
+		while { dialog } do {
+			if(wcaction == "next") then {
+				wcaction = "";
+				wcindex = wcindex + 1;
+				wcchange = true;
+			};
+			if(wcaction == "prev") then {
+				wcaction = "";
+				wcindex = wcindex - 1;
+				wcchange = true;
+			};
+			if(wcchange) then {
+				if(wcindex == wcindexmax) then {
+					_units = playableunits - [player];
+					wcindex = -1;
+					wcindexmax = count _units;
+				};
+				if(wcindex < -1) then {
+					_units = playableunits - [player];
+					wcindex = (count _units) - 1;
+				};
+				if(wcindex < 0) then {
+					detach cam;
+					cam cameraEffect ["internal","top"];
+					cam camsettarget _body;
+					cam camSetRelPos [0,0,300];
+					cam CamCommit 0;
+				} else {
+					detach cam;
+					cam cameraEffect ["internal", "BACK"];
+					cam attachto [(_units select wcindex),[0.7,-1,5], "neck"];
+					cam CamCommit 0;
+				};
+				wcchange  = false;
+			};
+			sleep 0.1;
+		};
 		
 		if(wcaction == "equipment") then {
 			_title = "Select your equipment";
@@ -187,57 +228,48 @@
 			};
 			["save", player] call inventory;
 		};
-		
-		//while { _position distance position player < 2 } do {
-		//	if(isnil "_action") then {
-		//		_action = player addAction ["Choose your equipment", "client\scripts\arsenal.sqf"];
-		//	};
-		//	sleep 0.1
-		//};
 
-		//player removeAction _action;
-		//_action = nil;
-		//["save", player] call inventory;
+		_position = position cam;
+		cam cameraEffect ["terminate","back"];
+		camDestroy cam;
 
-		openMap [false, false] ;
-		openMap [true, true];
-		mapAnimAdd [1, 0.01, _body]; 
-		mapAnimCommit;
-		deletevehicle _body;
-		_vehicle spawn {
-			while { count (crew _this) > 0 } do { sleep 1; };
-			deletevehicle _this;
+		if(wcindex == -1) then {
+			openMap [false, false] ;
+			openMap [true, true];
+			mapAnimAdd [1, 0.04, _body]; 
+			mapAnimCommit;
+			deletevehicle _body;
+			_vehicle spawn {
+				while { count (crew _this) > 0 } do { sleep 1; };
+				deletevehicle _this;
+			};
+			[] call WC_fnc_teleport;
+		} else {
+			player setpos [_position select 0, _position select 1];
 		};
-		
 
 		switch (playertype) do {
 			case "ammobox": {
-				[] call WC_fnc_teleport;
 				_icon =	"mil_arrow2";
 			};
 
 			case "fighter": {
-				[] call WC_fnc_teleport;
 				_icon = "b_plane";
 			};
 	
 			case "bomber": {
-				[] call WC_fnc_teleport;
 				_icon = "b_plane";
 			};
 	
 			case "tank": {
-				[] call WC_fnc_teleport;
 				_icon = "mil_arrow2";
 			};
 
 			case "tankaa": {
-				[] call WC_fnc_teleport;
 				_icon = "mil_arrow2";
 			};
 
 			case "chopper": {
-				[] call WC_fnc_teleport;
 				_icon = "mil_arrow2";
 			};
 		};

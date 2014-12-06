@@ -18,11 +18,13 @@
 
 	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_units"];
 
+	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 
+	
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
@@ -170,53 +172,7 @@
 		
 		["load", player] call inventory;
 		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
-
-		wcaction = "";
-		_ok = createDialog "spawndialog"; 
-		
-		_units = playableunits - [player];
-		wcindex = -1;
-		wcindexmax = count _units;
-		wcchange  = false;
-
-		while { dialog } do {
-			if(wcaction == "next") then {
-				wcaction = "";
-				wcindex = wcindex + 1;
-				wcchange = true;
-			};
-			if(wcaction == "prev") then {
-				wcaction = "";
-				wcindex = wcindex - 1;
-				wcchange = true;
-			};
-			if(wcchange) then {
-				if(wcindex == wcindexmax) then {
-					_units = playableunits - [player];
-					wcindex = -1;
-					wcindexmax = count _units;
-				};
-				if(wcindex < -1) then {
-					_units = playableunits - [player];
-					wcindex = (count _units) - 1;
-				};
-				if(wcindex < 0) then {
-					detach cam;
-					cam cameraEffect ["internal","top"];
-					cam camsettarget _body;
-					cam camSetRelPos [0,0,300];
-					cam CamCommit 0;
-				} else {
-					detach cam;
-					cam cameraEffect ["internal", "BACK"];
-					cam camSetTarget (_units select wcindex);
-					cam attachto [(_units select wcindex),[0.7,-1.5,0], "neck"];
-					cam CamCommit 0;
-				};
-				wcchange  = false;
-			};
-			sleep 0.1;
-		};
+		[] call WC_fnc_spawndialog;
 		
 		if(wcaction == "equipment") then {
 			wcindex = -1;
@@ -224,6 +180,7 @@
 			_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
 			["hint", [_title, _text]] call hud;		
 			["Open",[true,nil,player]] call bis_fnc_arsenal;
+
 			_position = position player;
 			while { _position distance position player < 2 } do {
 				sleep 0.01;

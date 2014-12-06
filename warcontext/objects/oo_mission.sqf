@@ -46,9 +46,13 @@
 							MEMBER("rob", _position);
 						};
 
-						case (_random > 0.65 ) : {
+						case ((_random > 0.65 ) and (_random < 0.81))  : {
 							MEMBER("weaponCache",  _position);
-						};										
+						};
+
+						case (_random > 0.8 ) : {
+							MEMBER("getMen",  _position);
+						};																	
 
 						default {
 							MEMBER("rescue", _position);
@@ -298,6 +302,79 @@
 			deletegroup _group;
 		};
 
+		PRIVATE FUNCTION("array", "getMen") {
+			private ["_alive", "_handle","_type","_position","_group", "_position2", "_run", "_win", "_counter", "_text", "_vehicle"];
+
+			_position = _this;
+	
+			_type = ["BUS_InfSquad_Weapons","BUS_InfSquad", "BUS_InfTeam", "BUS_InfTeam_AA", "BUS_InfTeam_AT", "BUS_ReconTeam"] call BIS_fnc_selectRandom;
+		
+			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+			if(_position isequalto _position2)  exitwith {[];};
+		
+			_group = [_position, west, (configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
+			MEMBER("target", leader _group);
+			 _group setBehaviour "STEALTH";
+			 _group setCombatMode "GREEN";
+
+			{
+				_x setskill wcskill;
+				sleep 0.1;
+			}foreach (units _group);			 
+
+			_text = "Support " + rank (leader _group) + " " +name (leader _group);
+			MEMBER("setMarker", _text);
+
+			_run = true;
+			_win = false;
+			
+			_counter = 3600;
+
+			while { _run } do {
+				_list = nearestObjects [position (leader _group), ["MAN"], 300];
+				_list2 = nearestObjects [position (leader _group), ["MAN"], 25];
+				sleep 0.5;
+				if(((east countSide _list) == 0) and ((west countSide _list2) > count (units _group))) then {
+					_run = false;
+					_win = true;
+				};
+
+				_alive = false;
+				{
+					if(alive _x) then {
+						_alive = true;
+					};
+				}foreach (units _group);
+				if(!_alive) then {
+					_run = false;
+					_win = false;
+				};
+				if(_counter < 1) then {
+					_run = false;
+					_win = false;
+				};
+				if((position (leader _group)) distance _position > 300) then {
+					_run = false;
+					_win = true;
+				};
+				_counter = _counter  - 1;
+				sleep 1;
+			};
+			
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+			sleep 60;
+			{deletevehicle _x;} foreach  (units _group);
+			deletegroup _group;					
+		};		
+
 
 		PUBLIC FUNCTION("string", "setMarker") {
 			private ["_mark", "_name", "_target", "_text"];
@@ -309,7 +386,7 @@
 			["setText", _text] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "hd_objective"] spawn _mark;
-			["setSize", [0.5,0.5]] spawn _mark;
+			["setSize", [1.5,1.5]] spawn _mark;
 			MEMBER("marker", _mark);
 		};		
 

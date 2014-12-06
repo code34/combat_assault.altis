@@ -98,7 +98,7 @@
 		 	_para setDir getDir _this; 
 		 	_para setPos getPos _this; 
 		 	_paras = [_para]; 
-		 	_this attachTo [_para, [0,0,0]]; 
+		 	_this attachTo [_para, [0,0,-1]]; 
 		 	_this addEventHandler ["HandleDamage", {false}];
 
 		 	{ 
@@ -171,8 +171,8 @@
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
-			["setType", "b_air"] spawn _mark;
-			["setSize", [0.8,0.8]] spawn _mark;
+			["setType", "b_support"] spawn _mark;
+			["setSize", [1.5,1.5]] spawn _mark;
 			MEMBER("marker", _mark);
 		};
 

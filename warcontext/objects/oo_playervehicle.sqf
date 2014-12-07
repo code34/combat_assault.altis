@@ -116,9 +116,7 @@
 		 		
 		 		while { !(getPos _vehicle select 2 < 3) } do {sleep 0.1;};
 
-		 		//_vel = velocity _vehicle; 
 		 		detach _vehicle; 
-		 		//_vehicle setVelocity _vel; 
 
 		 		{ 
 		 			detach _x; 
@@ -171,7 +169,7 @@
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
-			["setType", "b_support"] spawn _mark;
+			["setType", "b_armor"] spawn _mark;
 			["setSize", [1.5,1.5]] spawn _mark;
 			MEMBER("marker", _mark);
 		};
@@ -181,9 +179,9 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("type", nil);
-			DELETE_VARIABLE("vehicle", nil);
-			DELETE_VARIABLE("marker", nil);
-			DELETE_VARIABLE("alive", nil);
+			DELETE_VARIABLE("type");
+			DELETE_VARIABLE("vehicle");
+			DELETE_VARIABLE("marker");
+			DELETE_VARIABLE("alive");
 		};
 	ENDCLASS;

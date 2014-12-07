@@ -213,6 +213,6 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			["delete", MEMBER("map", nil)] call OO_HASHMAP;
-			DELETE_VARIABLE("map", nil);
+			DELETE_VARIABLE("map");
 		};
 	ENDCLASS;

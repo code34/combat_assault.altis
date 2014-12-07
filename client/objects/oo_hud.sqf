@@ -274,6 +274,6 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("playertag", nil);
+			DELETE_VARIABLE("playertag");
 		};
 	ENDCLASS;

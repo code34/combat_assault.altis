@@ -386,7 +386,7 @@
 			["setText", _text] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "hd_objective"] spawn _mark;
-			["setSize", [1.5,1.5]] spawn _mark;
+			["setSize", [1,1]] spawn _mark;
 			MEMBER("marker", _mark);
 		};		
 

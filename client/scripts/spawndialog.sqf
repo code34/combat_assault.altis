@@ -67,7 +67,7 @@
 					detach cam;
 					cam cameraEffect ["internal", "BACK"];
 					cam camSetTarget (_units select wcindex);
-					cam attachto [(_units select wcindex),[0.7,-1.5,0], "neck"];
+					cam attachto [(_units select wcindex),[0.7,-2,0], "neck"];
 					cam CamCommit 0;
 				};
 				wcchange  = false;

@@ -133,13 +133,9 @@
 
 			if(!MEMBER("suppression", nil)) then {			
 				if( _target iskindof "Man") then {
-					if( format["%1", (surfacetype position _target)] in ["#GdtGrassDry", "#GdtDirt", "#GdtGrassGreen"]) then {
-						_ammo = ["smoke", "cluster", "bomb", "mine"] call BIS_fnc_selectRandom;
-					} else {
-						_ammo = ["smoke", "cluster", "bomb"] call BIS_fnc_selectRandom;
-					};
+					_ammo = ["smoke", "cluster", "bomb", "mine", "bigbomb"] call BIS_fnc_selectRandom;
 				} else {
-					_ammo = ["cluster", "bomb", "mine"] call BIS_fnc_selectRandom;
+					_ammo = ["cluster", "bomb", "mine", "bigbomb"] call BIS_fnc_selectRandom;
 				};
 			} else {
 				_ammo = "smoke";

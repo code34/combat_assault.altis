@@ -201,6 +201,7 @@
 				_vehicle = _array select 0;
 				_crew = (_array select 1) select 0;
 				_handle = [_crew, ""] spawn WC_fnc_setskill;
+				_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
 
 				_mark = ["new", position _vehicle] call OO_MARKER;
 

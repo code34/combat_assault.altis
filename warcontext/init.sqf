@@ -84,7 +84,7 @@
 	"startZone" spawn global_controller;
 	[] call WC_fnc_computezone;
 	
-	"startPatrol" spawn global_dogfight;
+	"start" spawn global_dogfight;
 	"start" spawn global_atc;
 
 	// init for slow server

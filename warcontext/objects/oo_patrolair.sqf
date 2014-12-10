@@ -54,10 +54,12 @@
 		
 			_vehicle = _array select 0;
 			_group = _array select 2;
+			
 			{
 				_handle = [_x, ""] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
+			
 			_vehicle setVehicleLock "LOCKED";
 			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
 			

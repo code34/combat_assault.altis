@@ -174,20 +174,6 @@
 		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
 		[] call WC_fnc_spawndialog;
 		
-		if(wcaction == "equipment") then {
-			wcindex = -1;
-			_title = "Select your equipment";
-			_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
-			["hint", [_title, _text]] call hud;		
-			["Open",[true,nil,player]] call bis_fnc_arsenal;
-
-			_position = position player;
-			while { _position distance position player < 2 } do {
-				sleep 0.01;
-			};
-			["save", player] call inventory;
-		};
-
 		_position = position cam;
 		cam cameraEffect ["terminate","back"];
 		camDestroy cam;

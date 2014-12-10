@@ -1,6 +1,3 @@
-	wcairplayerstype = ["B_Pilot_F"];
-	wcgroundplayerstype = ["B_Soldier_F", "B_crew_F", "B_medic_F"];
-	
 	switch (wcaccurencylevel) do {
 		case 1 : {wclevel = "novice";};
 		case 2 : {wclevel = "recruit";};

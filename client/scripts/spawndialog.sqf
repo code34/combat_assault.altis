@@ -28,7 +28,23 @@
 	wcindexmax = count _units;
 	wcchange  = false;
 
-		while { dialog } do {
+		while { wcaction != "deploy" && dialog} do {
+			if(wcaction == "equipment") then {
+				closeDialog 0;
+				_title = "Select your equipment";
+				_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
+				["hint", [_title, _text]] call hud;	
+				["Open",[true,nil,player]] call bis_fnc_arsenal;
+				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
+					sleep 0.1;
+				};
+				["save", player] call inventory;
+				createDialog "spawndialog"; 
+				wcaction = "";
+				wcindex = -1;
+				wcchange = true;
+			};
+
 			if(wcaction == "next") then {
 				wcaction = "";
 				wcindex = wcindex + 1;

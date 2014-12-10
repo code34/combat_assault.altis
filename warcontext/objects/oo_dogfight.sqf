@@ -77,7 +77,7 @@
 			count MEMBER("squadron", nil);
 		};
 
-		PUBLIC FUNCTION("","startPatrol") {
+		PUBLIC FUNCTION("","start") {
 			MEMBER("patrol", true);
 			while { MEMBER("patrol", nil) } do {
 				MEMBER("setSquadronSize", nil);
@@ -91,7 +91,7 @@
 			};
 		};
 
-		PUBLIC FUNCTION("","stopPatrol") {
+		PUBLIC FUNCTION("","stop") {
 			MEMBER("patrol", false);
 		};
 
@@ -248,11 +248,12 @@
 			if(_airport > 0) then {
 				_size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);			
 				if(_size > 0) then {
-					if(_counter >  4) then {
+					if(_counter >  3) then {
 						for "_i" from 1 to _size do {
 							MEMBER("popMember", nil);
 							sleep 10;
 						};
+						MEMBER("counter", 0);
 					} else {
 						_counter = _counter + 1;
 						MEMBER("counter", _counter);

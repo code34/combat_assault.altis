@@ -29,10 +29,14 @@
 		};
 
 		case "recruit": {
-			_unit setskill (wcskill + (random wcskill));
+			_unit setskill (wcskill + (random 0.1));
 		};
 
-		case "veteran":{
+		case "veteran": {
+			_unit setskill (wcskill + (random 0.2));
+		};
+
+		case "cheated":{
 			switch (_type) do {
 				case "OIA_InfSquad_Weapons":{
 					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
@@ -130,14 +134,10 @@
 					_unit setskill ["commanding", 1];	
 				};
 			};
-		};
-
-		case "cheated": {
-			_unit setskill (0.8 + (random wcskill));
-		};		
+		};	
 
 		default {
-			_unit setskill 0;
+			_unit setskill (random wcskill);
 		};
 	};
 

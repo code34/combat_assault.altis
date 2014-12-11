@@ -366,7 +366,7 @@
 		
 			if(random 1 > 0.5) then {
 				//light vehicle
-				_vehicle = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F"] call BIS_fnc_selectRandom;
+				_vehicle = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F", "B_G_Offroad_01_armed_F"] call BIS_fnc_selectRandom;
 			} else {
 				//heavy vehicle
 				_vehicle = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"] call BIS_fnc_selectRandom;

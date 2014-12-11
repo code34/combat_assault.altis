@@ -173,10 +173,11 @@
 	}];
 
 	_unit addeventhandler ['Killed', {
-		private ["_unit", "_killer", "_name", "_score", "_distance"];
+		private ["_unit", "_killer", "_name", "_score", "_distance", "_weapon"];
 
 		_unit = _this select 0;
 		_killer = _this select 1;
+		_weapon = currentWeapon _killer;
 
 		_distance = _unit distance _killer;
 		_uid = getPlayerUID _killer;
@@ -201,7 +202,7 @@
 			};
 		};
 
-		wcaideath = [name  _unit, _name];
+		wcaideath = [name  _unit, _name, _weapon];
 		["wcaideath", "client"] call BME_fnc_publicvariable;
 	}];
 

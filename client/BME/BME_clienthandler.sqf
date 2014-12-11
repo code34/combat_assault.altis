@@ -32,14 +32,16 @@
 	};
 
 	BME_netcode_wcaideath = {
-		private ["_unit", "_killer", "_message"];
+		private ["_unit", "_killer", "_message", "_weapon", "_displayname"];
 		
 		_array = _this select 0;
 		_unit = _array select 0;
 		_killer = _array select 1;
+		_weapon = _array select 2;
+		_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
 
 		if!(_killer == "") then {
-			_message = "<t color='#FF9933'>"+_unit + "</t> was killed by <t color='#FF9933'>"+_killer+"</t><br/>";
+			_message = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";
 		} else {
 			_message = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
 		};
@@ -47,13 +49,14 @@
 	};
 
 	BME_netcode_wcdeathlistner = {
-		private ["_player", "_killer", "_message", "_message2"];
+		private ["_unit", "_killer", "_message", "_message2", "_displayname", "_weapon"];
 		_array = _this select 0;
-		_player = _array select 0;
+		_unit = _array select 0;
 		_killer = _array select 2;
+		_weapon = _array select 3;
 
 		if!(_killer == "") then {
-			if(_player == _killer) then {
+			if(_unit == _killer) then {
 				_message = [
 					"was killed by a flying melon", 
 					"was killed like a jackass", 
@@ -75,14 +78,15 @@
 					"was killed drinking again", 
 					"was killed by his weapon"
 				] call BIS_fnc_selectRandom;
-				_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> "+_message + "</t>";
+				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> "+_message + "</t>";
 			} else {
-				_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t>";
+				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t><br/>";
 			};
-			_message2 = "<t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t><br/>";
+			_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
+			_message2 = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";			
 		} else {
-			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed</t>";
-			_message2 = "<t color='#FF9933'>"+_player + "</t> was killed<br/>";
+			_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed</t>";
+			_message2 = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
 		};
 		killzone = killzone + [_message];
 		rollmessage = rollmessage + [_message2];

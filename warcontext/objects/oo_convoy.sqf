@@ -42,7 +42,7 @@
 			MEMBER("vehicle", _array);
 			MEMBER("escort", _array);
 			MEMBER("setTarget", _startposition);
-			MEMBER("popSupport", nil);
+			MEMBER("popConvoy", nil);
 			MEMBER("popEscort", nil);
 		};
 
@@ -59,14 +59,14 @@
 			while { ((damage _vehicle < 0.9) and (alive (driver _vehicle))) } do {
 				if(speed _vehicle < 1) then {
 					_rate = _rate + 1;
-					_text = format["Support - Expanding %1", _rate] +"%";
+					_text = format["Convoy - Expanding %1", _rate] +"%";
 					["setText", _text] spawn MEMBER("marker", nil);
 					if(_rate > 99) then {
 						_vehicle setdammage 1;
 					};
 				} else {
 					_rate = 0;
-					["setText", "Support"] spawn MEMBER("marker", nil);
+					["setText", "Convoy"] spawn MEMBER("marker", nil);
 				};
 				sleep 1;
 			};
@@ -75,9 +75,9 @@
 				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
 				["expandSector", _sector] call global_controller;
 				["expandSectorAround", [_sector, 10]] call global_controller;
-				["setText", "Support - Expanding done"] spawn MEMBER("marker", nil);
+				["setText", "Convoy - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
-				["setText", "Support - Expanding failed"] spawn MEMBER("marker", nil);
+				["setText", "Convoy - Expanding failed"] spawn MEMBER("marker", nil);
 				["setTicket", "convoy"] call global_ticket;
 			};
 			sleep 60;
@@ -106,7 +106,7 @@
 			MEMBER("endposition", _endposition);
 		};
 
-		PUBLIC FUNCTION("", "popSupport") {
+		PUBLIC FUNCTION("", "popConvoy") {
 			private ["_array", "_type", "_position", "_vehicle"];
 
 			_position = MEMBER("startposition", nil);
@@ -126,7 +126,7 @@
 
 			_mark = ["new", position _vehicle] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;
-			["setText", "Support"] spawn _mark;
+			["setText", "Convoy"] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "mil_arrow"] spawn _mark;
 			["setSize", [0.5,0.5]] spawn _mark;

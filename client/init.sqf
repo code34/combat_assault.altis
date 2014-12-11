@@ -56,10 +56,11 @@
 	enableEnvironment false;
 
 	player addEventHandler ['Killed', {
-		private ["_name"];
+		private ["_name", "_weapon"];
 		
 		killer = _this select 1;
 		_name = "";
+		_weapon = currentWeapon killer;
 
 		if(killer isKindOf "Man") then {
 			_name = name killer;
@@ -68,7 +69,7 @@
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf killer) >> "DisplayName");
 		};
 
-		wcdeath = [name player, playertype, _name];
+		wcdeath = [name player, playertype, _name, _weapon];
 		["wcdeath", "server"] call BME_fnc_publicvariable;
 	}];
 
@@ -229,7 +230,7 @@
 			case "chopper": {
 				_icon = "mil_arrow2";
 			};
-		};
+		};	
 
 		openMap [false, false];
 		// debug end	

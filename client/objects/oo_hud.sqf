@@ -198,7 +198,7 @@
 				_temp = "";
 				{
 					sleep 0.001;
-					_temp =  _temp  + _x;
+					_temp =  _temp  + "<t shadow='1' size='1.2' >" + _x + "</t>";
 				}foreach rollmessage;
 				rollprintmessage = _temp;
 				rollmessage deleteat 0;

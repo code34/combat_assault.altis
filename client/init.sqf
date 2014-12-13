@@ -40,7 +40,7 @@
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 
-	rollmessage = ["<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project<br/>", "on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>Code34<br/>"];
+	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>", "Code34<br/><br/>"];
 	rollprintmessage = "";
 
 	hud = ["new", []] call OO_HUD;

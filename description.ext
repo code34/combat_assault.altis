@@ -476,7 +476,7 @@ class RscTitles {
 				x = 1.01; 
 				y = 0;
 				w = safezoneX + SafezoneW - 1.02;
-				h = 0.10;
+				h = 0.3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
 				colorBackground[] = {0,0,0,0};

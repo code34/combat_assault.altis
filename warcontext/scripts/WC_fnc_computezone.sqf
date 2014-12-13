@@ -36,10 +36,10 @@
 		};
 	};
 
-	for "_x" from 0 to 10 step 1 do {
+	for "_x" from 0 to 5 step 1 do {
 		_key = _sectors call BIS_fnc_selectRandom;
 		["expandSector", _key] call global_controller;
-		["expandSectorAround", [_key, 5]] call global_controller;
+		["expandSectorAround", [_key, 10]] call global_controller;
 	};
 
 	{

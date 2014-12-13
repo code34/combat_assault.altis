@@ -108,48 +108,69 @@
 
 
 			{
-				_this addItemToUniform _x;
+				if(_x != "") then {
+					_this addItemToUniform _x;
+				};
 			}foreach _uniformitems;
 	
 			{
-				_this addItemToVest _x;
+				if(_x != "") then {
+					_this addItemToVest _x;
+				};
 			}foreach _vestitems;
 	
 			if(format["%1", _backpack] != "") then {
 				_this addbackpack _backpack;
 				{
-					_this addItemToBackpack _x;
+					if(_x != "") then {
+						_this addItemToBackpack _x;
+					};
 				} foreach _backpackitems;
 			};
 	
 			{
-				_this addMagazine _x;
+				if(_x != "") then {
+					_this addMagazine _x;
+				};
 			} foreach _primaryweaponmagazine;
+			
 	
 			{
-				_this addPrimaryWeaponItem _x;
+				if(_x != "") then {
+					_this addPrimaryWeaponItem _x;
+				};
 			} foreach _primaryweaponitems;
 	
 			{
-				_this addMagazine _x;
+				if(_x != "") then {
+					_this addMagazine _x;
+				};
 			} foreach _secondaryweaponmagazine;
 	
 			{
-				_this addSecondaryWeaponItem _x;
+				if(_x != "") then {
+					_this addSecondaryWeaponItem _x;
+				};
 			} foreach _secondaryweaponitems;
 	
 	
 			{
-				_this addMagazine _x;
+				if(_x != "") then {
+					_this addMagazine _x;
+				};
 			} foreach _handgunweaponmagazine;
 	
 			{
-				_this addHandgunItem _x;
+				if(_x != "") then {
+					_this addHandgunItem _x;
+				};
 			} foreach _handgunweaponitems;
 	
 			{
-				_this additem _x;
-				_this assignItem _x;
+				if(_x != "") then {
+					_this additem _x;
+					_this assignItem _x;
+				};
 			} foreach _assigneditems;
 			if (needReload player == 1) then {reload player};
 			true;

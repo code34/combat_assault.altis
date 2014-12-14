@@ -76,6 +76,7 @@
 			private ["_type", "_credit"];
 
 			_type = _this;
+
 			switch (_type) do { 
 				case "chopper": {
 					_credit = -3;

@@ -31,6 +31,12 @@
 		["hint", ["Vehicle servicing", "Vehicle is not yet avalaible"]] call hud;
 	};
 
+	BME_netcode_vehiclegetin = {
+		private ["_vehicle"];
+		_vehicle = _this select 0;
+		player moveindriver _vehicle;
+	};
+
 	BME_netcode_wcaideath = {
 		private ["_unit", "_killer", "_message", "_weapon", "_displayname"];
 		

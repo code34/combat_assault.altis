@@ -106,7 +106,7 @@
 		 		_paras = _paras + [_p];
 		 		_p attachTo [_para, [0,0,0]]; 
 		 		_p setVectorUp _x; 
-		 	} count [ [0.5,0.4,0.6],[-0.5,0.4,0.6],[0.5,-0.4,0.6],[-0.5,-0.4,0.6] ]; 
+		 	} count [ [0.5,0.4,0.6],[-0.5,0.4,0.6],[0.5,-0.4,0.6],[-0.5,-0.4,0.6] ]; 	 	
 
 		 	[_this, _paras] spawn { 
 		 		private ["_vehicle", "_vel", "_paras"];

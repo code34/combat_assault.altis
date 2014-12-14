@@ -64,7 +64,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STRUCTURED_TEXT; 
 		style = ST_VCENTER; 		
-		x = -0.1; 
+		x = -0.05; 
 		y = -0.045; 
 		w = 1.05; 
 		h = 0.04; 
@@ -80,7 +80,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STRUCTURED_TEXT; 
 		style = ST_VCENTER; 		
-		x = -0.1; 
+		x = -0.05; 
 		y = 0; 
 		w = 1.05; 
 		h = 0.2; 
@@ -95,7 +95,7 @@ class spawndialog {
 	class infantry : RscButton
 	{
 		idc = -1; 
-		x = -0.1; 
+		x = -0.05; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -108,7 +108,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = -0.1; 
+		x = -0.05; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -123,7 +123,7 @@ class spawndialog {
 	class tank : RscButton
 	{
 		idc = -1; 
-		x = 0.05; 
+		x = 0.10; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -136,7 +136,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.05; 
+		x = 0.10; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -151,7 +151,7 @@ class spawndialog {
 	class tankaa : RscButton
 	{
 		idc = -1; 
-		x = 0.2; 
+		x = 0.25; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -164,7 +164,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.2; 
+		x = 0.25; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -179,7 +179,7 @@ class spawndialog {
 	class bomber : RscButton
 	{
 		idc = -1; 
-		x = 0.35; 
+		x = 0.40; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -192,7 +192,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.35; 
+		x = 0.40; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -207,7 +207,7 @@ class spawndialog {
 	class fighter : RscButton
 	{
 		idc = -1; 
-		x = 0.5; 
+		x = 0.55; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -220,7 +220,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.5; 
+		x = 0.55; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -235,7 +235,7 @@ class spawndialog {
 	class chopper : RscButton
 	{
 		idc = -1; 
-		x = 0.65; 
+		x = 0.70; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -248,7 +248,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.65; 
+		x = 0.70; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -263,7 +263,7 @@ class spawndialog {
 	class achopper : RscButton
 	{
 		idc = -1; 
-		x = 0.8; 
+		x = 0.85; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 
@@ -276,7 +276,7 @@ class spawndialog {
 		idc = -1; 
 		type = CT_STATIC;
 		style = ST_TILE_PICTURE; 
-		x = 0.8; 
+		x = 0.85; 
 		y = 0; 
 		w = 0.15; 
 		h = 0.2; 

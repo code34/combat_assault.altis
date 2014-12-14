@@ -37,6 +37,9 @@
 			if(_counter < 8) exitwith {};
 			MEMBER("counter", 0);
 
+			// increase difficulty
+			wcskill = wcskill + 0.01;
+
 			_position = _this;
 			MEMBER("position", _position);
 			MEMBER("setType", nil);

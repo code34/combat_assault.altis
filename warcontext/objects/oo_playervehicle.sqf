@@ -25,11 +25,11 @@
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("code","marker");
 		PRIVATE VARIABLE("bool","alive");
+		PRIVATE VARIABLE("bool","para");
 		
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_type"];			
-			_type = _this select 0;
-			MEMBER("type", _type);
+			MEMBER("type", _this select 0);
+			MEMBER("para", _this select 1);
 			MEMBER("vehicle", objnull);
 			MEMBER("alive", false);
 		};
@@ -39,6 +39,10 @@
 		PUBLIC FUNCTION("string", "setType") {
 			MEMBER("type", _this);
 		};
+
+		PUBLIC FUNCTION("bool", "setPara") {
+			MEMBER("para", _this);
+		};		
 
 		PUBLIC FUNCTION("", "checkAlive") {
 			private ["_counter", "_vehicle"];
@@ -78,19 +82,29 @@
 			};
 
 			_vehicle = _type createVehicle [0,0,5000];
-			_vehicle setpos [_position select 0, _position select 1,  150];
 			_vehicle setdir (random 360); 
+			
+			if(MEMBER("para", nil)) then {
+				_vehicle setpos [_position select 0, _position select 1,  150];
+				MEMBER("paraVehicle", _vehicle);
+			} else {
+				_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+				_vehicle setpos _position;
+				_vehicle setdamage 0;
+				vehiclegetin = _vehicle;
+				["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+			};
+			
 			if(_type == "B_supplyCrate_F") then {
 				["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
 			};
-			MEMBER("paraVehicle", _vehicle);
+			
 			MEMBER("vehicle", _vehicle);
 			MEMBER("mark", nil);
 			_vehicle;
 		};
 
 		PUBLIC FUNCTION("object", "paraVehicle") {
-			// @KillzoneKid function
 			// fixed by code34
 		 	private ["_para","_paras","_p"]; 
 		 	
@@ -99,14 +113,7 @@
 		 	_para setPos getPos _this; 
 		 	_paras = [_para]; 
 		 	_this attachTo [_para, [0,0,-1]]; 
-		 	_this addEventHandler ["HandleDamage", {false}];
-
-		 	{ 
-		 		_p = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
-		 		_paras = _paras + [_p];
-		 		_p attachTo [_para, [0,0,0]]; 
-		 		_p setVectorUp _x; 
-		 	} count [ [0.5,0.4,0.6],[-0.5,0.4,0.6],[0.5,-0.4,0.6],[-0.5,-0.4,0.6] ]; 	 	
+		 	_this addEventHandler ["HandleDamage", {false}]; 	
 
 		 	[_this, _paras] spawn { 
 		 		private ["_vehicle", "_vel", "_paras"];
@@ -183,5 +190,6 @@
 			DELETE_VARIABLE("vehicle");
 			DELETE_VARIABLE("marker");
 			DELETE_VARIABLE("alive");
+			DELETE_VARIABLE("para");
 		};
 	ENDCLASS;

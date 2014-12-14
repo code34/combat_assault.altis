@@ -88,7 +88,7 @@
 	"start" spawn global_atc;
 
 	// init for slow server
-	sleep 120;
+	sleep 60;
 
 	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;

@@ -21,6 +21,7 @@
 	disableSerialization;
 
 	wcaction = "";
+
 	createDialog "spawndialog"; 
 		
 	_units = playableunits - [player];
@@ -35,6 +36,7 @@
 				_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
 				["hint", [_title, _text]] call hud;	
 				["Open",[true,nil,player]] call bis_fnc_arsenal;
+				sleep 5;
 				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
 					sleep 0.1;
 				};

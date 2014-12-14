@@ -252,6 +252,8 @@
 		};
 
 		PUBLIC FUNCTION("array", "hintScore") {
+			private ["_message", "_title", "_text"];
+
 			_ticket = _this select 0;
 			_type = _this select 1;
 			_credit = _this select 2;
@@ -259,9 +261,12 @@
 			_title = str(_ticket);
 			_text = format["%2 ticket(s) for %1", _type, _credit];
 
-			waituntil { alive player};
-			_title=  "<t size='2.2' color='#ff0000'>"+ _title + "</t><br />";
-			hintsilent parseText (_title + _text); 			
+			//waituntil { alive player};
+			//_title=  "<t size='2.2' color='#ff0000'>"+ _title + "</t><br />";
+			//hintsilent parseText (_title + _text); 
+
+			_message = "<t color='#ff0000'>"+ _title + "</t> "+_text+"<br />";
+			rollmessage = rollmessage + [_message];
 		};		
 
 		PUBLIC FUNCTION("", "drawAll") {

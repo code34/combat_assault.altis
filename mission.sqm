@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.21";
+		briefingName="COMBAT ASSAULT 1.22";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -40,7 +40,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=16;
+		items=15;
 		class Item0
 		{
 			side="WEST";
@@ -946,56 +946,62 @@ class Mission
 				items=6;
 				class Item0
 				{
-					position[]={13446.313,9.943532,12081.928};
+					position[]={13558.598,11.878735,12053.963};
 					id=78;
 					side="WEST";
 					vehicle="B_Soldier_F";
+					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item1
 				{
-					position[]={13452.453,10.463502,12086.694};
+					position[]={13564.737,11.422951,12058.729};
 					id=79;
 					side="WEST";
 					vehicle="B_Soldier_F";
+					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item2
 				{
-					position[]={13443.243,9.065115,12088.494};
+					position[]={13555.527,11.094069,12060.529};
 					id=80;
 					side="WEST";
 					vehicle="B_Soldier_F";
+					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item3
 				{
-					position[]={13452.135,12.378975,12078.648};
+					position[]={13564.419,11.454036,12050.684};
 					id=81;
 					side="WEST";
 					vehicle="B_engineer_F";
+					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item4
 				{
-					position[]={13438.69,8.972578,12081.295};
+					position[]={13550.975,12.160493,12053.33};
 					id=82;
 					side="WEST";
 					vehicle="B_Soldier_F";
+					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
 				};
 				class Item5
 				{
-					position[]={13444.725,10.387076,12075.896};
+					position[]={13557.009,11.705252,12047.932};
 					id=83;
 					side="WEST";
 					vehicle="B_medic_F";
+					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
 				};
@@ -1009,7 +1015,7 @@ class Mission
 				items=6;
 				class Item0
 				{
-					position[]={13558.598,11.878735,12053.963};
+					position[]={13572.915,14.597831,12073.864};
 					id=84;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -1020,7 +1026,7 @@ class Mission
 				};
 				class Item1
 				{
-					position[]={13564.737,11.422951,12058.729};
+					position[]={13579.055,15.432804,12078.631};
 					id=85;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -1030,7 +1036,7 @@ class Mission
 				};
 				class Item2
 				{
-					position[]={13555.527,11.094069,12060.529};
+					position[]={13569.845,15.639085,12080.431};
 					id=86;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -1040,7 +1046,7 @@ class Mission
 				};
 				class Item3
 				{
-					position[]={13564.419,11.454036,12050.684};
+					position[]={13578.736,14.868655,12070.585};
 					id=87;
 					side="WEST";
 					vehicle="B_engineer_F";
@@ -1050,7 +1056,7 @@ class Mission
 				};
 				class Item4
 				{
-					position[]={13550.975,12.160493,12053.33};
+					position[]={13565.292,14.324717,12073.231};
 					id=88;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -1060,77 +1066,8 @@ class Mission
 				};
 				class Item5
 				{
-					position[]={13557.009,11.705252,12047.932};
-					id=89;
-					side="WEST";
-					vehicle="B_medic_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""ammobox""];";
-				};
-			};
-		};
-		class Item15
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=6;
-				class Item0
-				{
-					position[]={13572.915,14.597831,12073.864};
-					id=90;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""ammobox""];";
-				};
-				class Item1
-				{
-					position[]={13579.055,15.432804,12078.631};
-					id=91;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""ammobox""];";
-				};
-				class Item2
-				{
-					position[]={13569.845,15.639085,12080.431};
-					id=92;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""ammobox""];";
-				};
-				class Item3
-				{
-					position[]={13578.736,14.868655,12070.585};
-					id=93;
-					side="WEST";
-					vehicle="B_engineer_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""ammobox""];";
-				};
-				class Item4
-				{
-					position[]={13565.292,14.324717,12073.231};
-					id=94;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""ammobox""];";
-				};
-				class Item5
-				{
 					position[]={13571.326,13.544444,12067.833};
-					id=95;
+					id=89;
 					side="WEST";
 					vehicle="B_medic_F";
 					player="PLAY CDG";

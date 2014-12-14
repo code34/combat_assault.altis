@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_action", "_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_units"];
+	private ["_action", "_body", "_dir", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_units"];
 
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
@@ -176,6 +176,8 @@
 		[] call WC_fnc_spawndialog;
 		
 		_position = position cam;
+		_dir = getDir cam;
+
 		cam cameraEffect ["terminate","back"];
 		camDestroy cam;
 
@@ -202,6 +204,7 @@
 				[] call WC_fnc_teleport;
 			} else {
 				player setpos [_position select 0, _position select 1];
+				player setdir _dir;
 			};
 		};
 		deletevehicle _body;
@@ -230,6 +233,10 @@
 			case "chopper": {
 				_icon = "mil_arrow2";
 			};
+
+			case "achopper": {
+				_icon = "mil_arrow2";
+			};			
 		};	
 
 		openMap [false, false];

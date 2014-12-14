@@ -517,9 +517,9 @@ class RscTitles {
 				idc = 1005; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
-				x = 1.01; 
+				x = safezoneX + SafezoneW - 0.01 - 0.44; 
 				y = 0;
-				w = safezoneX + SafezoneW - 1.02;
+				w = 0.44;
 				h = 0.3;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;

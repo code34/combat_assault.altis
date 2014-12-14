@@ -78,7 +78,7 @@
 					"was killed drinking again", 
 					"was killed by his weapon"
 				] call BIS_fnc_selectRandom;
-				_message2 = "<t color='#FF9933'>"+_unit + "</t> "+_message;
+				_message2 = "<t color='#FF9933'>"+_unit + "</t> "+_message+"<br/>";
 				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> "+_message + "</t>";
 			} else {
 				_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));

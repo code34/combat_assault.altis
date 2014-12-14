@@ -60,10 +60,10 @@
 				_message = [
 					"was killed by a flying melon", 
 					"was killed like a jackass", 
-					"was killed like a crying girl", 
 					"was killed in total humiliation", 
 					"was killed like a moron", 
 					"was killed like a geek", 
+					"was killed like an hero", 
 					"was killed by masturbation", 
 					"was killed jumping over his weapon", 
 					"was killed by internal explosion", 
@@ -78,12 +78,18 @@
 					"was killed drinking again", 
 					"was killed by his weapon"
 				] call BIS_fnc_selectRandom;
+				_message2 = "<t color='#FF9933'>"+_unit + "</t> "+_message;
 				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> "+_message + "</t>";
 			} else {
-				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t><br/>";
+				_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
+				if(_displayname == "") then {
+					_displayname = "was killed";
+				} else {
+					_displayname = "["+_displayname+"]";
+				};
+				_message = "<t align='center'><t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t></t><br/>";
+				_message2 = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";			
 			};
-			_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
-			_message2 = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";			
 		} else {
 			_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed</t>";
 			_message2 = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";

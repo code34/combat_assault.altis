@@ -80,6 +80,9 @@
 				case "chopper": {
 					_credit = -3;
 				};
+				case "achopper": {
+					_credit = -5;
+				};				
 				case "tank": {
 					_credit = -3;
 				};

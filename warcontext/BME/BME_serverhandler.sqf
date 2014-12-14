@@ -47,6 +47,10 @@
 				_type = "B_Heli_Transport_01_camo_F";
 			};
 
+			case "achopper" : {
+				_type = "B_Heli_Attack_01_F";
+			};			
+
 			case "tank" : {
 				_type = "B_MBT_01_cannon_F";
 			};

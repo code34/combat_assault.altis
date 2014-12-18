@@ -18,7 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_continue", "_position", "_array"];
+	private ["_continue", "_position", "_array", "_vehicle"];
 
 	_position = position player;
 
@@ -55,5 +55,11 @@
 	deletegroup (_array select 2);
 
 	player moveindriver (_array select 0);
+
+	_vehicle spawn {
+		while { damage _this < 0.9 } do { sleep 1; };
+		sleep 30;
+		deletevehicle _this;
+	};	
 
 	hintSilent "";

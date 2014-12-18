@@ -1,4 +1,4 @@
-	player createDiaryRecord ["Diary", ["External works", "Naught - oop.h, Killzonekid - paradrop."]];
+	player createDiaryRecord ["Diary", ["External works", "Naught - oop.h"]];
 
 	player createDiaryRecord ["Diary", ["Credits", "I thank my family for all the time they gave me. Thanks to Jp for all the time he spend helping me to test the mission. Thanks to Naught for the excellent oop.h. Thanks to all members of the steam group : Combat Assault."]];
 	

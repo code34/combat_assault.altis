@@ -239,15 +239,26 @@
 		};
 
 		PUBLIC FUNCTION("", "doFire") {
-			private ["_target"];
+			private ["_target", "_skill"];
 			
 			_target = MEMBER("target", nil);
 			{
+				_skill = MEMBER("getSkill", (_x distance _target));
+				_x setskill ["aimingAccuracy", _skill];
+				_x setskill ["aimingShake", _skill];
 				_x dotarget _target;
 				_x dofire _target;
 				_x setUnitPos "Middle";
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
+		};
+
+		PUBLIC FUNCTION("scalar", "getSkill") {
+			private ["_skill", "_distance"];
+			_distance = _this;
+			if(_distance > 300) then {_distance = 300};
+			_skill = wcskill * (1 - (_this / 300));
+			_skill;
 		};
 
 		// moveInto Buildings

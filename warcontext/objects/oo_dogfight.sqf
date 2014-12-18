@@ -209,7 +209,7 @@
 				["setText", "Mig"] spawn _mark;
 				["setColor", "ColorRed"] spawn _mark;
 				["setType", "o_plane"] spawn _mark;
-				["setSize", [0.5,0.5]] spawn _mark;
+				["setSize", [1,1]] spawn _mark;
 
 				_squad = MEMBER("squadron", nil);
 				_squad = _squad + [[_vehicle, _crew, _mark]];

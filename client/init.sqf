@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_action", "_body", "_dir", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_units"];
+	private ["_action", "_body", "_dir", "_icon", "_index", "_position", "_mark", "_group", "_units"];
 
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
@@ -87,8 +87,6 @@
 	["-- Birth of a New Empire --<br/><br/><t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>GOLD</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
 	_body = player;
-	_vehicle = vehicle player;
-
 	_mark = ["new", position player] call OO_MARKER;
 
 	playertype = "ammobox";
@@ -119,37 +117,41 @@
 		};
 	};
 	
-	[] spawn {
-		private ["_list", "_counter", "_text"];
-		_counter = 30;
-		while { true } do {
-			if(player distance getmarkerpos "respawn_west" > 1300) then {
-				if((alive player) and (vehicle player == player)) then {
-					_list = position player nearEntities [["Man", "Tank"], 1000];
-					sleep 1;
-					if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
-						if(_counter < 30) then {
-							_title = "Redeployment";
-							_text = format ["No enemies near your. You will be redeploy in %1", _counter];
-							["hint", [_title, _text]] call hud;
+	if(wcredeployement isEqualTo 1) then {
+		[] spawn {
+			private ["_list", "_counter", "_text"];
+			_counter = 30;
+			while { true } do {
+				if(player distance getmarkerpos "respawn_west" > 1300) then {
+					if((alive player) and (vehicle player == player)) then {
+						_list = position player nearEntities [["Man", "Tank"], 1000];
+						sleep 1;
+						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
+							if(_counter < 30) then {
+								_title = "Redeployment";
+								_text = format ["No enemies near your. You will be redeploy in %1", _counter];
+								["hint", [_title, _text]] call hud;
+							};
+							_counter = _counter - 1 ;
+						} else {
+							_counter = 30;
+							sleep 30;
 						};
-						_counter = _counter - 1 ;
+						if(_counter < 1) then {
+								openMap [false, false] ;
+								openMap [true, true];
+								mapAnimAdd [1, 0.01,  player]; 
+								mapAnimCommit;
+								[] call WC_fnc_teleport;
+								openMap [false, false];
+								_counter = 30;
+						};
 					} else {
 						_counter = 30;
-						sleep 30;
-					};
-					if(_counter < 1) then {
-							openMap [false, false] ;
-							openMap [true, true];
-							mapAnimAdd [1, 0.01,  player]; 
-							mapAnimCommit;
-							[] call WC_fnc_teleport;
-							openMap [false, false];
-							_counter = 30;
 					};
 				};
+				sleep 1;
 			};
-			sleep 1;
 		};
 	};
 
@@ -186,10 +188,6 @@
 			openMap [true, true];
 			mapAnimAdd [1, 0.04, _body]; 
 			mapAnimCommit;
-			_vehicle spawn {
-				while { count (crew _this) > 0 } do { sleep 1; };
-				deletevehicle _this;
-			};
 			[] call WC_fnc_teleport;
 		} else {
 			if(_position distance getmarkerpos "respawn_west" < 1300) then {
@@ -197,10 +195,6 @@
 				openMap [true, true];
 				mapAnimAdd [1, 0.04, _body]; 
 				mapAnimCommit;
-				_vehicle spawn {
-					while { count (crew _this) > 0 } do { sleep 1; };
-					deletevehicle _this;
-				};
 				[] call WC_fnc_teleport;
 			} else {
 				player setpos [_position select 0, _position select 1];
@@ -248,7 +242,6 @@
 		["setType", _icon] spawn _mark;
 		["setSize", [0.5,0.5]] spawn _mark;
 		_body = player;
-		_vehicle = vehicle player;
 		_group = group player;
 
 		waituntil {!alive player};

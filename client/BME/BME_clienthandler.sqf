@@ -35,6 +35,9 @@
 		private ["_vehicle"];
 		_vehicle = _this select 0;
 		player moveindriver _vehicle;
+		waituntil {speed _vehicle > 60};
+		_reload = ["new", _vehicle] call OO_RELOADPLANE;
+		"start" spawn _reload;
 	};
 
 	BME_netcode_wcaideath = {
@@ -94,7 +97,7 @@
 					_displayname = "["+_displayname+"]";
 				};
 				_message = "<t align='center'><t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t></t><br/>";
-				_message2 = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";			
+				_message2 = "<t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t><br/>";			
 			};
 		} else {
 			_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed</t>";

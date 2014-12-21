@@ -80,6 +80,7 @@
 			["put", [_name, _vehicle]] call global_vehicles;
 		} else {
 			["setType", _type] call _vehicle;
+			["setPara", _para] call _vehicle;
 		};
 		_object = ["pop", [_position, _netid, _name]] call _vehicle;
 		"checkAlive" spawn _vehicle;

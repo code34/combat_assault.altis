@@ -46,9 +46,16 @@
 		PUBLIC FUNCTION("","getGroundPlayers") FUNC_GETVAR("groundplayers");
 
 		PUBLIC FUNCTION("", "getPlayers") {
-			private ["_temp"];
-			_temp = MEMBER("groundplayers", nil) + MEMBER("airplayers", nil);
-			_temp;
+			private ["_array"];
+
+			_array = [];
+
+			{
+				if (isplayer _x) then {_array pushBack _x};
+				sleep 0.0000001;
+			} foreach (playableunits + alldead);
+
+			_array;			
 		};
 
 		PUBLIC FUNCTION("string", "getPlayersOfType") {
@@ -330,7 +337,9 @@
 
 		PUBLIC FUNCTION("", "startConvoy") {
 			while { true } do {
-				MEMBER("spawnConvoy", nil);
+				if(count MEMBER("getPlayers", nil) > 0) then {
+					MEMBER("spawnConvoy", nil);
+				};
 				sleep 1200;
 			};
 		};		

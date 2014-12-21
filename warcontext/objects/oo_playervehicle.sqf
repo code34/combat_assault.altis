@@ -81,6 +81,7 @@
 				["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
 			};
 
+			_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 			_vehicle = _type createVehicle [0,0,5000];
 			_vehicle setdir (random 360); 
 			
@@ -88,7 +89,6 @@
 				_vehicle setpos [_position select 0, _position select 1,  150];
 				MEMBER("paraVehicle", _vehicle);
 			} else {
-				_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 				_vehicle setpos _position;
 				_vehicle setdamage 0;
 				vehiclegetin = _vehicle;
@@ -105,7 +105,6 @@
 		};
 
 		PUBLIC FUNCTION("object", "paraVehicle") {
-			// fixed by code34
 		 	private ["_para","_paras","_p"]; 
 		 	
 		 	_para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
@@ -177,7 +176,7 @@
 			["setText", _name] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
 			["setType", "b_armor"] spawn _mark;
-			["setSize", [1.5,1.5]] spawn _mark;
+			["setSize", [1,1]] spawn _mark;
 			MEMBER("marker", _mark);
 		};
 

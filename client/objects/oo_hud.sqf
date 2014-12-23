@@ -172,7 +172,7 @@
 					_time = _time  + 1;
 				};
 
-				if(wcwithrollmessages == 1) then {
+				if(wcwithrollmessages) then {
 					_ctrl7 =(uiNamespace getVariable "wcdisplay") displayCtrl 1005;
 					_ctrl7 ctrlSetStructuredText parsetext rollprintmessage;
 					if(rollprintmessage == "") then {

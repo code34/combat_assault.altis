@@ -23,6 +23,12 @@
 	wcaction = "";
 
 	createDialog "spawndialog"; 
+	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4005;
+	if(wcwithrollmessages) then {
+		_ctrl ctrlSetText "ROLLMESSAGE ON";
+	} else {
+		_ctrl ctrlSetText "ROLLMESSAGE OFF";
+	};	
 		
 	_units = playableunits - [player];
 	wcindex = -1;
@@ -40,11 +46,23 @@
 				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
 					sleep 0.1;
 				};
-				["save", player] call inventory;
+				["save", player] spawn inventory;
 				createDialog "spawndialog"; 
 				wcaction = "";
 				wcindex = -1;
 				wcchange = true;
+			};
+
+			if(wcaction == "rollmessage") then {
+				wcaction = "";
+				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4005;
+				wcwithrollmessages = !wcwithrollmessages;
+				if(wcwithrollmessages) then {
+					_ctrl ctrlSetText "ROLLMESSAGE ON";
+				} else {
+					_ctrl ctrlSetText "ROLLMESSAGE OFF";
+				};
+				_ctrl ctrlcommit 0;				
 			};
 
 			if(wcaction == "next") then {

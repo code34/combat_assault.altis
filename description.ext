@@ -57,7 +57,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { deploy, playername, previous, next, equipment, infotext, background, infantry2, infantry, tank2, tank, tankaa2, tankaa, bomber2, bomber, fighter2, fighter, chopper2, chopper, achopper2, achopper}; 
+	controls[] = { deploy, playername, previous, next, rollmessage, equipment, infotext, background, infantry2, infantry, tank2, tank, tankaa2, tankaa, bomber2, bomber, fighter2, fighter, chopper2, chopper, achopper2, achopper}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class infotext {
@@ -326,7 +326,19 @@ class spawndialog {
 		text = "NEXT >>";
 		action = "wcaction = 'next';";
 		colorBackground[] = {0,0,0,0.8};
-	};			
+	};
+
+	class rollmessage : RscButton
+	{
+		idc = 4005; 
+		x = 0.80; 
+		y = 0.78; 
+		w = 0.2; 
+		h = 0.05; 
+		text = "ROLLMESSAGE ON";
+		action = "wcaction = 'rollmessage';";
+		colorBackground[] = {0,0,0,0.8};
+	};				
 
 	class equipment : RscButton
 	{
@@ -398,14 +410,7 @@ class Params
 		values[] = {1, 2};
 		texts[] = {"ON", "OFF"};
 		default = 1;
-	};
-	class wcwithrollmessages
-	{
-		title = "ROLL MESSAGES";
-		values[] = {1, 2};
-		texts[] = {"ON", "OFF"};
-		default = 1;
-	};			
+	};		
 };
 
 class RscTitles { 

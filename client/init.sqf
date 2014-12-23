@@ -36,6 +36,8 @@
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
 	wcboard = false;
+	wcwithrollmessages = true;
+	
 	wcticket = 0;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;

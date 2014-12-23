@@ -172,12 +172,14 @@
 					_time = _time  + 1;
 				};
 
-				_ctrl7 =(uiNamespace getVariable "wcdisplay") displayCtrl 1005;
-				_ctrl7 ctrlSetStructuredText parsetext rollprintmessage;
-				if(rollprintmessage == "") then {
-					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
-				} else {
-					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
+				if(wcwithrollmessages == 1) then {
+					_ctrl7 =(uiNamespace getVariable "wcdisplay") displayCtrl 1005;
+					_ctrl7 ctrlSetStructuredText parsetext rollprintmessage;
+					if(rollprintmessage == "") then {
+						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
+					} else {
+						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
+					};
 				};
 
 				_ctrl ctrlcommit 0;

@@ -398,7 +398,14 @@ class Params
 		values[] = {1, 2};
 		texts[] = {"ON", "OFF"};
 		default = 1;
-	};		
+	};
+	class wcwithrollmessages
+	{
+		title = "ROLL MESSAGES";
+		values[] = {1, 2};
+		texts[] = {"ON", "OFF"};
+		default = 1;
+	};			
 };
 
 class RscTitles { 

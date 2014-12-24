@@ -46,6 +46,7 @@
 				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
 					sleep 0.1;
 				};
+				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
 				createDialog "spawndialog"; 
 				wcaction = "";

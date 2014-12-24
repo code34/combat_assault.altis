@@ -133,7 +133,6 @@
 					_this addMagazine _x;
 				};
 			} foreach _primaryweaponmagazine;
-			
 	
 			{
 				if(_x != "") then {

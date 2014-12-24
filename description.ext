@@ -291,13 +291,15 @@ class spawndialog {
 	class previous : RscButton
 	{
 		idc = -1; 
-		x = 0; 
+		x = -0.005; 
 		y = 0.90; 
 		w = 0.2; 
 		h = 0.05; 
 		text = "<< PREVIOUS";
 		action = "wcaction = 'prev';";
 		colorBackground[] = {0,0,0,0.8};
+		font = "EtelkaNarrowMediumPro"; 
+		sizeex= 0.03; 		
 	};
 
 	class playername
@@ -313,19 +315,21 @@ class spawndialog {
 		action = "";
 		colorBackground[] = {0,0,0,0.8};
 		font = "EtelkaNarrowMediumPro"; 
-		size = 0.05;
+		size = 0.038; 
 	};	
 
 	class next : RscButton
 	{
 		idc = -1; 
-		x = 0.55; 
+		x = 0.555; 
 		y = 0.90; 
 		w = 0.2; 
 		h = 0.05; 
 		text = "NEXT >>";
 		action = "wcaction = 'next';";
 		colorBackground[] = {0,0,0,0.8};
+		font = "EtelkaNarrowMediumPro"; 
+		sizeex= 0.03; 
 	};
 
 	class rollmessage : RscButton

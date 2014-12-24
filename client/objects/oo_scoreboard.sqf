@@ -174,7 +174,7 @@
 			_temp = [];
 
 			while { count _array > 0} do {
-				_min = 10000;
+				_min = 1000000;
 				{
 					_score =  (_x select 1);
 					if(_score select _column < _min) then {
@@ -197,7 +197,7 @@
 			_temp = [];
 			
 			while { count _array > 0} do {
-				_max = -10000;
+				_max = -1000000;
 				{
 					_score =  (_x select 1);
 					if(_score select _column > _max) then {

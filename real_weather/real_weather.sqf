@@ -2,7 +2,7 @@
 	Author: code34 nicolas_boiteux@yahoo.fr
 	Copyright (C) 2013 Nicolas BOITEUX
 
-	Real weather for MP GAMES v 1.2 
+	Real weather for MP GAMES v 1.3 
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_lastrain", "_rain", "_fog", "_mintime", "_maxtime", "_overcast", "_realtime", "_random", "_skiptime", "_startingdate", "_startingweather", "_timeforecast", "_timeratio", "_timesync", "_wind"];
+	private ["_lastrain", "_rain", "_fog", "_mintime", "_maxtime", "_overcast", "_realtime", "_random","_startingdate", "_startingweather", "_timeforecast", "_timeratio", "_timesync", "_wind"];
 	
 	// Real time vs fast time
 	// true: Real time is more realistic weather conditions change slowly (ideal for persistent game)
@@ -38,16 +38,16 @@
 
 	// If Fastime is on
 	// Ratio 1 real time second for x game time seconds
-	// Default: 1 real second = 3.6 second in game
-	_timeratio = 3.6;
+	// Default: 1 real second = 6 second in game
+	_timeratio = 6;
 
 	// send sync data across the network each xxx seconds
-	// 60 seconds by default is a good value
+	// 60 real seconds by default is a good value
 	// shortest time do not improve weather sync
 	_timesync = 60;
 
-	// Mission starting date is 28/010/2014 at 06:45
-	_startingdate = [2014, 10, 28, 6, 45];
+	// Mission starting date is 25/09/2013 at 12:00
+	_startingdate = [2013, 09, 25, 12, 00];
 
 	// Mission starting weather "CLEAR|CLOUDY|RAIN";
 	_startingweather = "CLEAR";
@@ -58,9 +58,6 @@
 	
 	if(_mintime > _maxtime) exitwith {hint format["Real weather: Max time: %1 can no be higher than Min time: %2", _maxtime, _mintime];};
 	_timeforecast = _mintime;
-
-	// we check the skiptime for 10 seconds
-	_skiptime = _timeratio * 0.000278 * 10;
 
 	setdate _startingdate;
 	switch(toUpper(_startingweather)) do {
@@ -109,25 +106,10 @@
 		};
 	};
 
-	// accelerate time 
-	if!(_realtime) then {
-		[_skiptime] spawn {
-			private["_skiptime"];
-			_skiptime = _this select 0;
-
-			while {true} do {
-				if((date select 3 > 17) and (date select 3 <6)) then {
-					skiptime (_skiptime * 2);
-				} else {
-					skiptime _skiptime;
-				};
-				sleep 10;
-			};
-		};
-	};
-
 	// SERVER SIDE SCRIPT
 	if (!isServer) exitWith{};
+
+	if(!_realtime) then { setTimeMultiplier _timeratio; };
 
 	// apply weather
 	skipTime -24;

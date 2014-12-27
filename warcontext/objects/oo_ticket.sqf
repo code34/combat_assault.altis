@@ -24,8 +24,8 @@
 		PRIVATE VARIABLE("scalar","ticket");
 		PRIVATE VARIABLE("bool","active");
 
-		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("ticket", 1000);
+		PUBLIC FUNCTION("scalar","constructor") {
+			MEMBER("ticket", _this);
 			MEMBER("active", false);
 		};
 

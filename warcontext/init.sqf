@@ -76,7 +76,7 @@
 	global_controller = ["new", []] call OO_CONTROLLER;
 	global_scores = ["new", []] call OO_HASHMAP;
 	global_vehicles = ["new", []] call OO_HASHMAP;
-	global_ticket = ["new", []] call OO_TICKET;
+	global_ticket = ["new", 500] call OO_TICKET;
 	global_atc = ["new", []] call OO_ATC;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
 

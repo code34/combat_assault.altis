@@ -401,6 +401,13 @@ class Params
 		texts[] = {"NOVICE", "RECRUIT", "VETERAN", "CHEATED"};
 		default = 2;
 	};
+	class wcnumberofzone
+	{
+		title = "NUMBER OF ZONES AT BEGINING";
+		values[] = {1,2,3,4,5,6,7,8};
+		texts[] = {"1 - very short game", "2", "3", "4 - normal game","5","6","7","8 - very long game"};
+		default = 4;
+	};
 	class wcfatigue
 	{
 		title = "FATIGUE";

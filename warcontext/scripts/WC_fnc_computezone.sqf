@@ -36,7 +36,7 @@
 		};
 	};
 
-	for "_x" from 0 to 4 step 1 do {
+	for "_x" from 0 to wcnumberofzone step 1 do {
 		_key = _sectors call BIS_fnc_selectRandom;
 		["expandSector", _key] call global_controller;
 		["expandSectorAround", [_key, 10]] call global_controller;

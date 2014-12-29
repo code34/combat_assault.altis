@@ -106,7 +106,7 @@
 			if(vehicle player == player) then {
 				if(isnil "_action") then {
 					_script = format ["client\scripts\pop%1.sqf", playertype];
-					_action = player addAction [format ["Get %1", playertype], _script];
+					_action = player addAction [format ["Get %1", playertype], _script, nil, 1.5, false];
 				};
 			} else {
 				if(!isnil "_action") then {
@@ -170,6 +170,7 @@
 
 		if(wcfatigue == 2) then { player enableFatigue false; };
 
+		showCinemaBorder false;
 		cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
 		cam cameraEffect ["internal","top"];
 		cam camsettarget _body;

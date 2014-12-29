@@ -76,7 +76,7 @@
 	global_controller = ["new", []] call OO_CONTROLLER;
 	global_scores = ["new", []] call OO_HASHMAP;
 	global_vehicles = ["new", []] call OO_HASHMAP;
-	global_ticket = ["new", 500] call OO_TICKET;
+	global_ticket = ["new", wcnumberofticket] call OO_TICKET;
 	global_atc = ["new", []] call OO_ATC;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
 
@@ -106,5 +106,7 @@
 		"flushBDD" call _x;
 	} foreach ("entrySet" call global_scores);
 
-	end = "win";
-	["end", "all"] call BME_fnc_publicvariable;
+	//end = "win";
+	//["end", "all"] call BME_fnc_publicvariable;
+
+	"End1" call BIS_fnc_endMissionServer;

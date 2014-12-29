@@ -26,6 +26,7 @@
 
 	
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
@@ -172,39 +173,16 @@
 
 		showCinemaBorder false;
 		cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
+		
 		cam cameraEffect ["internal","top"];
 		cam camsettarget _body;
+		cam camSetRelPos [0,0,300];
 		cam CamCommit 0;
 		
 		["load", player] call inventory;
 		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
-		[] call WC_fnc_spawndialog;
 		
-		_position = position cam;
-		_dir = getDir cam;
-
-		cam cameraEffect ["terminate","back"];
-		camDestroy cam;
-
-		if(wcindex == -1) then {
-			openMap [false, false] ;
-			openMap [true, true];
-			mapAnimAdd [1, 0.04, _body]; 
-			mapAnimCommit;
-			[] call WC_fnc_teleport;
-		} else {
-			if(_position distance getmarkerpos "respawn_west" < 1300) then {
-				openMap [false, false] ;
-				openMap [true, true];
-				mapAnimAdd [1, 0.04, _body]; 
-				mapAnimCommit;
-				[] call WC_fnc_teleport;
-			} else {
-				player setpos [_position select 0, _position select 1];
-				player setdir _dir;
-			};
-		};
-		deletevehicle _body;
+		[_body] call WC_fnc_spawndialog;
 
 		switch (playertype) do {
 			case "ammobox": {
@@ -236,7 +214,6 @@
 			};			
 		};	
 
-		openMap [false, false];
 		// debug end	
 		player removeEventHandler ["HandleDamage", _index];
 		["attachTo", player] spawn _mark;

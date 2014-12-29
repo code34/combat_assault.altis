@@ -16,7 +16,9 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_units", "_ctrl"];
+	private ["_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir"];
+
+	_body = _this select 0;
 
 	disableSerialization;
 
@@ -30,9 +32,12 @@
 		_ctrl ctrlSetText "ROLLMESSAGE OFF";
 	};	
 		
-	_units = playableunits - [player];
-	wcindex = -1;
-	wcindexmax = count _units;
+	_units = playableunits;
+	_player = player;
+	
+	_list = ["new", _units] call OO_CIRCULARLIST;
+	_condition = { if(getDammage _this > 0.99) then { false; }else{ true; }; };
+
 	wcchange  = false;
 
 		while { wcaction != "deploy" && dialog} do {
@@ -50,7 +55,7 @@
 				["save", player] spawn inventory;
 				createDialog "spawndialog"; 
 				wcaction = "";
-				wcindex = -1;
+				_player = player;
 				wcchange = true;
 			};
 
@@ -68,25 +73,20 @@
 
 			if(wcaction == "next") then {
 				wcaction = "";
-				wcindex = wcindex + 1;
+				_player = ["getNext", [_condition, player]] call _list;
 				wcchange = true;
 			};
 			if(wcaction == "prev") then {
 				wcaction = "";
-				wcindex = wcindex - 1;
+				_player = ["getPrev", [_condition, player]] call _list;
 				wcchange = true;
 			};
+
 			if(wcchange) then {
-				if(wcindex == wcindexmax) then {
-					_units = playableunits - [player];
-					wcindex = -1;
-					wcindexmax = count _units;
-				};
-				if(wcindex < -1) then {
-					_units = playableunits - [player];
-					wcindex = (count _units) - 1;
-				};
-				if(wcindex < 0) then {
+				if(_player isequalto player) then {
+					_units = playableunits;
+					["set", _units] call _list;
+
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
 					_ctrl ctrlSetStructuredText parsetext "<t align='center'>MAP</t>";
 					_ctrl ctrlcommit 0;
@@ -98,16 +98,46 @@
 					cam CamCommit 0;
 				} else {
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
-					_ctrl ctrlSetStructuredText parsetext ("<t align='center' color='#FF9933'>" + name (_units select wcindex) + "</t>");
+					_ctrl ctrlSetStructuredText parsetext ("<t align='center' color='#FF9933'>" + name _player+ "</t>");
 					_ctrl ctrlcommit 0;
 
 					detach cam;
 					cam cameraEffect ["internal", "BACK"];
-					cam camSetTarget (_units select wcindex);
-					cam attachto [(_units select wcindex),[0.7,-2,0], "neck"];
+					cam camSetTarget _player;
+					cam attachto [_player,[0.7,-2,0], "neck"];
 					cam CamCommit 0;
 				};
 				wcchange  = false;
 			};
 			sleep 0.1;
 		};
+
+	["delete", _list] call OO_CIRCULARLIST;	
+
+	_position = position cam;
+	_dir = getDir cam;
+
+	cam cameraEffect ["terminate","back"];
+	camDestroy cam;
+
+	if(_player == player) then {
+		openMap [false, false] ;
+		openMap [true, true];
+		mapAnimAdd [1, 0.04, _body]; 
+		mapAnimCommit;
+		[] call WC_fnc_teleport;
+	} else {
+		if(_position distance getmarkerpos "respawn_west" < 1000) then {
+			openMap [false, false] ;
+			openMap [true, true];
+			mapAnimAdd [1, 0.04, _body]; 
+			mapAnimCommit;
+			[] call WC_fnc_teleport;
+		} else {
+			player setpos [_position select 0, _position select 1];
+			player setdir _dir;
+		};
+	};
+
+	openMap [false, false];
+	deletevehicle _body;

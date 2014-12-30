@@ -134,8 +134,12 @@
 			mapAnimCommit;
 			[] call WC_fnc_teleport;
 		} else {
-			player setpos [_position select 0, _position select 1];
-			player setdir _dir;
+			if(vehicle _player == _player) then {
+				player setpos [_position select 0, _position select 1];
+				player setdir _dir;
+			} else {
+				player moveInAny (vehicle _player);
+			};
 		};
 	};
 

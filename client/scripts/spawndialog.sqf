@@ -57,11 +57,11 @@
 				["Open",[true,nil,player]] call bis_fnc_arsenal;
 				sleep 5;
 				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
-					sleep 0.1;
+					sleep 0.01;
 				};
+				createDialog "spawndialog"; 
 				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
-				createDialog "spawndialog"; 
 				wcaction = "";
 				_player = player;
 				wcchange = true;
@@ -118,7 +118,7 @@
 				};
 				wcchange  = false;
 			};
-			sleep 0.1;
+			sleep 0.01;
 		};
 
 	["delete", _list] call OO_CIRCULARLIST;	

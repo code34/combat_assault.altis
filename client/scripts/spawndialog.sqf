@@ -16,12 +16,18 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir"];
+	private ["_cam", "_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir"];
 
 	_body = _this select 0;
 
-	disableSerialization;
+	showCinemaBorder false;
+	_cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
+	_cam cameraEffect ["internal","top"];
+	_cam camsettarget _body;
+	_cam camSetRelPos [0,100,300];
+	_cam CamCommit 0;
 
+	disableSerialization;
 	wcaction = "";
 
 	createDialog "spawndialog"; 
@@ -94,21 +100,21 @@
 					_ctrl ctrlSetStructuredText parsetext "<t align='center'>MAP</t>";
 					_ctrl ctrlcommit 0;
 					
-					detach cam;
-					cam cameraEffect ["internal","top"];
-					cam camsettarget _body;
-					cam camSetRelPos [0,0,300];
-					cam CamCommit 0;
+					detach _cam;
+					_cam cameraEffect ["internal","top"];
+					_cam camsettarget _body;
+					_cam camSetRelPos [0,100,300];
+					_cam CamCommit 0;
 				} else {
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
 					_ctrl ctrlSetStructuredText parsetext ("<t align='center' color='#FF9933'>" + name _player+ "</t>");
 					_ctrl ctrlcommit 0;
 
-					detach cam;
-					cam cameraEffect ["internal", "BACK"];
-					cam camSetTarget _player;
-					cam attachto [_player,[0.7,-2,0], "neck"];
-					cam CamCommit 0;
+					detach _cam;
+					_cam cameraEffect ["internal", "BACK"];
+					_cam camSetTarget _player;
+					_cam attachto [_player,[0.7,-2,0], "neck"];
+					_cam CamCommit 0;
 				};
 				wcchange  = false;
 			};
@@ -117,11 +123,11 @@
 
 	["delete", _list] call OO_CIRCULARLIST;	
 
-	_position = position cam;
-	_dir = getDir cam;
+	_position = position _cam;
+	_dir = getDir _cam;
 
-	cam cameraEffect ["terminate","back"];
-	camDestroy cam;
+	_cam cameraEffect ["terminate","back"];
+	camDestroy _cam;
 
 	if(_player == player) then {
 		openMap [false, false] ;

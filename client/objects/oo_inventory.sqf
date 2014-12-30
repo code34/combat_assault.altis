@@ -102,9 +102,6 @@
 			_this forceAddUniform _uniform;
 			_this addGoggles _goggles;
 			_this addVest _vest;
-			_this addweapon _primaryweapon;
-			_this addweapon _secondaryweapon;
-			_this addweapon _handgunweapon;
 
 
 			{
@@ -171,6 +168,13 @@
 					_this assignItem _x;
 				};
 			} foreach _assigneditems;
+
+			//must be after assign items to secure loading mags
+			_this addweapon _primaryweapon;
+			_this addweapon _secondaryweapon;
+			_this addweapon _handgunweapon;
+			_this addWeapon "ItemGPS";
+
 			if (needReload player == 1) then {reload player};
 			true;
 		};

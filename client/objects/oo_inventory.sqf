@@ -130,6 +130,9 @@
 					_this addMagazine _x;
 				};
 			} foreach _primaryweaponmagazine;
+
+			//must be after assign items to secure loading mags
+			_this addweapon _primaryweapon;
 	
 			{
 				if(_x != "") then {
@@ -142,6 +145,8 @@
 					_this addMagazine _x;
 				};
 			} foreach _secondaryweaponmagazine;
+
+			_this addweapon _secondaryweapon;
 	
 			{
 				if(_x != "") then {
@@ -155,6 +160,8 @@
 					_this addMagazine _x;
 				};
 			} foreach _handgunweaponmagazine;
+
+			_this addweapon _handgunweapon;
 	
 			{
 				if(_x != "") then {
@@ -169,10 +176,6 @@
 				};
 			} foreach _assigneditems;
 
-			//must be after assign items to secure loading mags
-			_this addweapon _primaryweapon;
-			_this addweapon _secondaryweapon;
-			_this addweapon _handgunweapon;
 			_this addWeapon "ItemGPS";
 
 			if (needReload player == 1) then {reload player};

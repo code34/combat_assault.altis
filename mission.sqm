@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.24D";
+		briefingName="COMBAT ASSAULT 1.24F";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -40,7 +40,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=8;
+		items=9;
 		class Item0
 		{
 			side="WEST";
@@ -510,6 +510,24 @@ class Mission
 					player="PLAY CDG";
 					skill=0.60000002;
 					init="this setvariable [""type"", ""ammobox""];";
+				};
+			};
+		};
+		class Item8
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={12951.906,21.366516,13444.407};
+					id=40;
+					side="WEST";
+					vehicle="B_soldier_SL_F";
+					leader=1;
+					rank="SERGEANT";
+					skill=0.5;
 				};
 			};
 		};

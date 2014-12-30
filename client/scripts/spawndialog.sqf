@@ -32,7 +32,9 @@
 		_ctrl ctrlSetText "ROLLMESSAGE OFF";
 	};	
 		
-	_units = playableunits;
+	// player must be the first elem of array
+	_units = playableunits - [player];
+	_units = [player] + _units;
 	_player = player;
 	
 	_list = ["new", _units] call OO_CIRCULARLIST;
@@ -84,7 +86,8 @@
 
 			if(wcchange) then {
 				if(_player isequalto player) then {
-					_units = playableunits;
+					_units = playableunits - [player];
+					_units = [player] + _units;
 					["set", _units] call _list;
 
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;

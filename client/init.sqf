@@ -170,18 +170,8 @@
 		setviewdistance 1500;
 
 		if(wcfatigue == 2) then { player enableFatigue false; };
-
-		showCinemaBorder false;
-		cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
-		
-		cam cameraEffect ["internal","top"];
-		cam camsettarget _body;
-		cam camSetRelPos [0,0,300];
-		cam CamCommit 0;
-		
-		["load", player] call inventory;
-		if !(player hasWeapon "ItemGPS") then {player addWeapon "ItemGPS";};
-		
+	
+		["load", player] spawn inventory;	
 		[_body] call WC_fnc_spawndialog;
 
 		switch (playertype) do {

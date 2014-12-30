@@ -132,15 +132,11 @@
 
 				_rank = ["getRankText", _ratio] call scoreboard;
 				_img = [_rank,"texture"] call BIS_fnc_rankParams;
-				//_text = "<t color='#66FFFF'><img image='" + _img + "'/> " + format ["%1</t>", _rank];
 				_text = "<img image='" + _img + "'/> " + format ["%1", _rank];
 
 				_rank = ["getRankText", _globalratio] call scoreboard;
-				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Server Ranking: %1</t></t>", _rank];
 				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
-				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Match: %1</t></t>", _number];
 				_text = _text + format ["<br/><t size='0.7'>Match: %1</t>", _number];
-				//_text = _text + format ["<br/><t color='#66FFFF'><t size='0.7'>Weight: %1 %2</t></t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				_text = _text + format ["<br/><t size='0.7'>Weight: %1 %2</t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 
@@ -229,11 +225,11 @@
 					private ['_code', '_vehicle', '_rank', '_img', '_color'];
 					if(vehicle player == player) then {
 						{	
-							if(_x distance player < 16) then {
+							if(_x distance player < 40) then {
 								_vehicle = _x;
 								_rank = rank _vehicle;
 								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
-								_distance = (player distance _vehicle) / 15;
+								_distance = (player distance _vehicle) / 40;
 								if(side _vehicle == west) then {
 									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
 								} else {
@@ -265,10 +261,6 @@
 
 			_title = str(_ticket);
 			_text = format["%2 ticket(s) for %1", _type, _credit];
-
-			//waituntil { alive player};
-			//_title=  "<t size='2.2' color='#ff0000'>"+ _title + "</t><br />";
-			//hintsilent parseText (_title + _text); 
 
 			_message = "<t color='#ff0000'>"+ _title + "</t> "+_text+"<br />";
 			rollmessage = rollmessage + [_message];

@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_action", "_body", "_dir", "_icon", "_index", "_position", "_mark", "_group", "_units"];
+	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units"];
 
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
@@ -141,13 +141,14 @@
 							sleep 30;
 						};
 						if(_counter < 1) then {
-								openMap [false, false] ;
-								openMap [true, true];
-								mapAnimAdd [1, 0.01,  player]; 
-								mapAnimCommit;
-								[] call WC_fnc_teleport;
-								openMap [false, false];
+								//openMap [false, false] ;
+								//openMap [true, true];
+								//mapAnimAdd [1, 0.01,  player]; 
+								//mapAnimCommit;
+								//[] call WC_fnc_teleport;
+								//openMap [false, false];
 								_counter = 30;
+								[player] call WC_fnc_spawndialog;
 						};
 					} else {
 						_counter = 30;
@@ -174,43 +175,14 @@
 		["load", player] spawn inventory;	
 		[_body] call WC_fnc_spawndialog;
 
-		switch (playertype) do {
-			case "ammobox": {
-				_icon =	"mil_arrow2";
-			};
-
-			case "fighter": {
-				_icon = "b_plane";
-			};
-	
-			case "bomber": {
-				_icon = "b_plane";
-			};
-	
-			case "tank": {
-				_icon = "mil_arrow2";
-			};
-
-			case "tankaa": {
-				_icon = "mil_arrow2";
-			};
-
-			case "chopper": {
-				_icon = "mil_arrow2";
-			};
-
-			case "achopper": {
-				_icon = "mil_arrow2";
-			};			
-		};	
-
 		// debug end	
 		player removeEventHandler ["HandleDamage", _index];
 		["attachTo", player] spawn _mark;
 		["setText", name player] spawn _mark;
 		["setColor", "ColorGreen"] spawn _mark;
-		["setType", _icon] spawn _mark;
+		["setType", "mil_arrow2"] spawn _mark;
 		["setSize", [0.5,0.5]] spawn _mark;
+		
 		_body = player;
 		_group = group player;
 

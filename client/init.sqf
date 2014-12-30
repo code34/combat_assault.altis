@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units"];
+	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
@@ -90,6 +90,7 @@
 	["-- Birth of a New Empire --<br/><br/><t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>GOLD</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
 	_body = player;
+	_view = cameraView;
 	_mark = ["new", position player] call OO_MARKER;
 
 	playertype = "ammobox";
@@ -175,6 +176,8 @@
 		["load", player] spawn inventory;	
 		[_body] call WC_fnc_spawndialog;
 
+		 player switchCamera _view;
+
 		// debug end	
 		player removeEventHandler ["HandleDamage", _index];
 		["attachTo", player] spawn _mark;
@@ -187,6 +190,7 @@
 		_group = group player;
 
 		waituntil {!alive player};
+		_view = cameraView;
 
 		if(isnil "killer") then { killer = _body;};
 		wccam = "camera" camCreate (position killer);

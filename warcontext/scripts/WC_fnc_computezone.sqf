@@ -50,3 +50,12 @@
 			["expandSectorAround", [_sector, 5]] call global_controller;
 		};
 	} foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+
+	{
+		if(random 1 > 0.90) then {
+			_position = getmarkerpos _x;
+			_sector = ["getSectorFromPos", _position] call global_grid;
+			["expandSector", _sector] call global_controller;
+			["expandSectorAround", [_sector, 5]] call global_controller;
+		};
+	} foreach ["RADIOCENTER", "RESEARCHCENTER", "MILITARYDEPOT"];	

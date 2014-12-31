@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.24F";
+		briefingName="COMBAT ASSAULT 1.24G";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -534,7 +534,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=11;
+		items=14;
 		class Item0
 		{
 			position[]={13558.62,16.108418,12100.498};
@@ -635,6 +635,33 @@ class Mission
 			name="VIKING AIRPORT";
 			text="VIKING AIRPORT";
 			type="mil_pickup";
+		};
+		class Item11
+		{
+			position[]={4564.4121,262.76007,15415.554};
+			name="RADIOCENTER";
+			text="RADIO CENTER";
+			type="mil_triangle";
+			a=0.5;
+			b=0.5;
+		};
+		class Item12
+		{
+			position[]={16083.002,15.85303,17002.754};
+			name="RESEARCHCENTER";
+			text="MKIII RESEARCH CENTER";
+			type="mil_triangle";
+			a=0.5;
+			b=0.5;
+		};
+		class Item13
+		{
+			position[]={20952.207,14.84971,19256.537};
+			name="MILITARYDEPOT";
+			text="AGIOS MILITARY DEPOT";
+			type="mil_triangle";
+			a=0.5;
+			b=0.5;
 		};
 	};
 };

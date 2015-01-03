@@ -61,9 +61,6 @@
 					"flushBDD" call _x;
 				} foreach ("entrySet" call global_scores);
 
-				//end = "loose";
-				//["end", "client"] call BME_fnc_publicvariable;
-				//["epicFail",false,2] call BIS_fnc_endMission;
 				"epicFail" call BIS_fnc_endMissionServer;
 			};
 		};

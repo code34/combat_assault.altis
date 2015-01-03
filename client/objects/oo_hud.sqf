@@ -33,7 +33,7 @@
 		};
 
 		PUBLIC FUNCTION("", "scoreboardHud") {
-			private ["_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15"];
+			private ["_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_ctrl16"];
 			disableSerialization;
 			
 			while { true} do {
@@ -42,9 +42,6 @@
 					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.4];
 
 					_scores = "topByScore" call scoreboard;
-					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
-					_ctrl9 ctrlSetStructuredText parsetext ("Scoreboard - Ticket: " + str(wcticket) + " <t size='0.7'>Press [Tab] to hide</t>");
-					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
 
 					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
 					_ctrl10 ctrlSetStructuredText parsetext (_scores select 0);
@@ -62,14 +59,14 @@
 					_ctrl14 ctrlSetStructuredText parsetext (_scores select 4);
 
 					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
-					_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);					
+					_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);
+
+					_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
+					_ctrl16 ctrlSetStructuredText parsetext ("<t align='center'>Tickets: "+ str(wcticket) + "</t>");
+					_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
 				} else {
 					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
 					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
-
-					_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1008;
-					_ctrl9 ctrlSetStructuredText parsetext "";
-					_ctrl9 ctrlSetBackgroundColor [0,0.4,0.8,0];
 
 					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
 					_ctrl10 ctrlSetStructuredText parsetext "";
@@ -87,16 +84,20 @@
 					_ctrl14 ctrlSetStructuredText parsetext "";
 
 					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
-					_ctrl15 ctrlSetStructuredText parsetext "";					
+					_ctrl15 ctrlSetStructuredText parsetext "";
+
+					_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
+					_ctrl16 ctrlSetStructuredText parsetext "";		
+					_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0];								
 				};
 				_ctrl8 ctrlcommit 0;
-				_ctrl9 ctrlcommit 0;
 				_ctrl10 ctrlcommit 0;
 				_ctrl11 ctrlcommit 0;
 				_ctrl12 ctrlcommit 0;
 				_ctrl13 ctrlcommit 0;
 				_ctrl14 ctrlcommit 0;
 				_ctrl15 ctrlcommit 0;
+				_ctrl16 ctrlcommit 0;
 				sleep 0.1;
 			};
 		};

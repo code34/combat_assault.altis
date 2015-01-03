@@ -31,6 +31,18 @@
 		["hint", ["Vehicle servicing", "Vehicle is not yet avalaible"]] call hud;
 	};
 
+	BME_netcode_wcconvoy = {
+		private ["_expand", "_message"];
+		
+		_expand = _this select 0;
+		if(_expand) then {
+			_message = "<t color='#FF9933'>Enemy convoy</t> - expanding done<br/>";
+		} else {
+			_message = "<t color='#FF9933'>Enemy Convoy</t> - expanding failed<br/>";
+		};
+		rollmessage = rollmessage + [_message];
+	};
+
 	BME_netcode_vehiclegetin = {
 		private ["_vehicle"];
 		_vehicle = _this select 0;

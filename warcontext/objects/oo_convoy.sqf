@@ -73,10 +73,14 @@
 
 			if(_rate > 99) then {
 				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
+				wcconvoy = true;
+				["wcconvoy", "client"] call BME_fnc_publicvariable;				
 				["expandSector", _sector] call global_controller;
 				["expandSectorAround", [_sector, 10]] call global_controller;
 				["setText", "Convoy - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
+				wcconvoy = false;
+				["wcconvoy", "client"] call BME_fnc_publicvariable;				
 				["setText", "Convoy - Expanding failed"] spawn MEMBER("marker", nil);
 				["setTicket", "convoy"] call global_ticket;
 			};

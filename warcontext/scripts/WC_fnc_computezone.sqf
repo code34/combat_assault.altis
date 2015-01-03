@@ -58,4 +58,4 @@
 			["expandSector", _sector] call global_controller;
 			["expandSectorAround", [_sector,  5]] call global_controller;
 		};
-	} foreach ["RADIOCENTER", "RESEARCHCENTER", "MILITARYDEPOT"];	
+	} foreach ["RADIOCENTER", "RESEARCHCENTER", "MILITARYDEPOT", "GAZFACTORY", "WEAPONSFACTORY"];	

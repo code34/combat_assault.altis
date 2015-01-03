@@ -580,27 +580,12 @@ class RscTitles {
 				sizeEx = 0;
 			}; 
 
-			class scoreboard_title { 
-				idc = 1008; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_LEFT;  
-				x =  0 ; 
-				y =  0.1;
-				w = 1;
-				h = 0.03;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
-				colorText[] = {0.5,1,1,1}; 
-				text = "Score Board"; 
-			};
-
 			class scoreboard_subtitle1 { 
 				idc = 1009; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;   
 				x = 0; 
-				y = 0.13;
+				y = 0.1;
 				w = 0.1;
 				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
@@ -615,7 +600,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				x = 0.1 ; 
-				y = 0.13;
+				y = 0.1;
 				w = 0.3;
 				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
@@ -630,7 +615,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				x = 0.4; 
-				y = 0.13;
+				y = 0.1;
 				w = 0.2;
 				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
@@ -645,7 +630,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				x = 0.6 ; 
-				y = 0.13 ;
+				y = 0.1 ;
 				w = 0.2 ;
 				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
@@ -660,7 +645,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				x = 0.8; 
-				y = 0.13;
+				y = 0.1;
 				w = 0.1;
 				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
@@ -675,7 +660,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				x = 0.9; 
-				y = 0.13;
+				y = 0.1;
 				w = 0.1;
 				h = 0.77;
 				font = "EtelkaNarrowMediumPro"; 
@@ -684,6 +669,21 @@ class RscTitles {
 				colorText[] = {0.5,1,1,1}; 
 				text = "Score"; 
 			};
+
+			class scoreboard_subtitle7 { 
+				idc = 1016; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_CENTER; 
+				x = 0; 
+				y = 0;
+				w = 1;
+				h = 0.095;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.1;
+				colorBackground[] = {0,0.4,0.8,0};
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			};						
 
 			class author { 
 				idc = 1015; 
@@ -698,7 +698,7 @@ class RscTitles {
 				size = 0.030;
 				colorBackground[] = {0,0,0,0.4};
 				colorText[] = {0.5,1,1,1}; 
-				text = "original author: code34"; 
+				text = "Mod: combat-assault.eu"; 
 			}; 					
 		};
 	}; 

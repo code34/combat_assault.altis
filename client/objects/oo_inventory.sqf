@@ -182,7 +182,7 @@
 			true;
 		};
 
-		PUBLIC FUNCTION("array","deconstructor") {
+		PUBLIC FUNCTION("","deconstructor") {
 			DELETE_VARIABLE("inventory");
 		 };
 	ENDCLASS;

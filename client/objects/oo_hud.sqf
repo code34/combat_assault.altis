@@ -102,6 +102,20 @@
 			};
 		};
 
+		PUBLIC FUNCTION("", "getCompass") {
+			private ["_ctrl"];
+			disableSerialization;
+
+			while { true} do {
+				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
+				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl 1003;
+				_text = "<t align='center'>"+format ["%1", round(getdir player)] + "</t>";
+				_ctrl ctrlSetStructuredText parseText _text;
+				_ctrl ctrlcommit 0;
+				sleep 0.1;
+			};
+		};
+
 		PUBLIC FUNCTION("", "bottomHud") {
 			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_text", "_weight", "_time", "_message", "_scores"];
 

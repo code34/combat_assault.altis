@@ -2,7 +2,7 @@
 	Author: code34 nicolas_boiteux@yahoo.fr
 	Copyright (C) 2013 Nicolas BOITEUX
 
-	CLASS OO_INVENTORY
+	CLASS OO_INVENTORY simple save/restory inventory class
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 		PRIVATE VARIABLE("array","inventory");
 
 		PUBLIC FUNCTION("array","constructor") { 
-			MEMBER("save", _this select 0);
+			MEMBER("inventory", _this);
 		};
 
 		PUBLIC FUNCTION("object","clear") {
@@ -35,6 +35,12 @@
 			removeUniform _this;
 			removeAllAssignedItems _this;
 			removeBackpack _this;
+		};
+
+		PUBLIC FUNCTION("","getInventory") FUNC_GETVAR("inventory");
+		
+		PUBLIC FUNCTION("array","setInventory") {
+			MEMBER("inventory", _this);
 		};
 
 		PUBLIC FUNCTION("object","save") {
@@ -58,10 +64,7 @@
 				(handgunWeapon _this),
 				(handgunItems _this),
 				(handgunMagazine _this),
-				(assignedItems _this),
-				(getposatl _this),
-				(damage _this),
-				(getdir _this)
+				(assignedItems _this)
 			];
 			MEMBER("inventory", _array);
 		};
@@ -69,9 +72,10 @@
 		PUBLIC FUNCTION("object","load") {
 			private ["_temp", "_array", "_headgear", "_goggles", "_uniform", "_uniformitems", "_vest", "_vestitems", "_backpack", "_backpackitems", "_primaryweapon", "_primaryweaponitems", "_primaryweaponmagazine", "_secondaryweapon", "_secondaryweaponitems", "_secondaryweaponmagazine", "_handgun", "_handgunweaponitems", "_handgunweaponmagazine", "_assigneditems", "_position", "_damage", "_dir"];
 
-
-			MEMBER("clear", _this);
 			_array = MEMBER("inventory", nil);
+			if(count _array == 0) exitwith {false;};
+			
+			MEMBER("clear", _this);
 
 			_headgear = _array select 0;
 			_goggles = _array select 1;
@@ -91,13 +95,7 @@
 			_handgunweaponitems = _array select 15;
 			_handgunweaponmagazine = _array select 16;
 			_assigneditems = _array select 17;
-			_position = _array select 18;
-			_damage = _array select 19;
-			_dir = _array select 20;
 
-			_this setposatl _position;
-			_this setdamage _damage;
-			_this setdir _dir;
 			_this addHeadgear _headgear;
 			_this forceAddUniform _uniform;
 			_this addGoggles _goggles;

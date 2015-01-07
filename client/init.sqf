@@ -52,7 +52,9 @@
 	"bottomHud" spawn hud;
 	"scoreboardHud" spawn hud;
 
-	inventory = ["new", [player]] call OO_INVENTORY;
+	inventory = ["new", []] call OO_INVENTORY;
+	["save", player] call inventory;
+
 	[] execVM "real_weather\real_weather.sqf";
 
 	sleep 1;
@@ -121,6 +123,15 @@
 		};
 	};
 	
+	[] spawn {
+		while { true } do {
+			if((getDammage player > 0) and (getDammage player < 0.75)) then {
+				player setdammage (getdammage player) - 0.01; 
+			};
+			sleep 10;
+		};
+	};
+
 	if(wcredeployement isEqualTo 1) then {
 		[] spawn {
 			private ["_list", "_counter", "_text"];

@@ -28,7 +28,9 @@
 	};
 	
 	BME_netcode_vehicleavalaible = {
-		["hint", ["Vehicle servicing", "Vehicle is not yet avalaible"]] call hud;
+		private ["_alive"];
+		_alive = _this select 0;
+		["hint", ["Vehicle servicing", format ["Vehicle will be avalaible in %1 seconds", _alive]]] call hud;
 	};
 
 	BME_netcode_wcconvoy = {

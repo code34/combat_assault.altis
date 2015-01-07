@@ -22,6 +22,7 @@
 
 	showCinemaBorder false;
 	_cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
+	detach _cam;
 	_cam cameraEffect ["internal","top"];
 	_cam camsettarget _body;
 	_cam camSetRelPos [0,100,300];

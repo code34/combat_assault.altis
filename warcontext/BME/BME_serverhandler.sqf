@@ -28,7 +28,7 @@
 	};
 
 	BME_netcode_server_playervehicle = {
-		private ["_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object", "_para"];
+		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object", "_para"];
 		
 		_array = _this select 0;
 		_name = _array select 0;
@@ -82,8 +82,16 @@
 			["setType", _type] call _vehicle;
 			["setPara", _para] call _vehicle;
 		};
-		_object = ["pop", [_position, _netid, _name]] call _vehicle;
-		"checkAlive" spawn _vehicle;
+
+		_alive = "getAlive" call _vehicle;
+		
+		if(_alive > 0) then {
+			vehicleavalaible = _alive;
+			["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
+		} else {
+			_object = ["pop", [_position, _netid, _name]] call _vehicle;
+			"checkAlive" spawn _vehicle;
+		};
 	};		
 
 	BME_netcode_server_wcdeath = {

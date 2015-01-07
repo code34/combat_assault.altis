@@ -24,17 +24,18 @@
 		PRIVATE VARIABLE("string","type");
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("code","marker");
-		PRIVATE VARIABLE("bool","alive");
+		PRIVATE VARIABLE("scalar","alive");
 		PRIVATE VARIABLE("bool","para");
 		
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("type", _this select 0);
 			MEMBER("para", _this select 1);
 			MEMBER("vehicle", objnull);
-			MEMBER("alive", false);
+			MEMBER("alive", 0);
 		};
 
 		PUBLIC FUNCTION("","getType") FUNC_GETVAR("type");
+		PUBLIC FUNCTION("","getAlive") FUNC_GETVAR("alive");
 
 		PUBLIC FUNCTION("string", "setType") {
 			MEMBER("type", _this);
@@ -47,20 +48,21 @@
 		PUBLIC FUNCTION("", "checkAlive") {
 			private ["_counter", "_vehicle"];
 
-			_counter = 0;
+			_counter = 240;
 			_vehicle = MEMBER("vehicle", nil);
-			MEMBER("alive", true);
 
 			while { position _vehicle select 2 > 2} do { sleep 1;};
 			sleep 10;
 		 	MEMBER("setHandler", _vehicle);
 
-			while { _counter < 240} do {
-				if(count (crew _vehicle) == 0) then { _counter = _counter + 1} else {_counter = 0;};
-				if(getDammage _vehicle > 0.9) then { _counter = 240; sleep 240;};
+			while { _counter > 1 } do {
+				if(count (crew _vehicle) == 0) then { _counter = _counter - 1;} else {_counter = 240;};
+				if(getDammage _vehicle > 0.9) then { _counter = _counter - 1;};
+				MEMBER("alive", _counter);
 				sleep 1;
 			}; 
-			MEMBER("alive", false);
+
+			MEMBER("alive",  0);
 			MEMBER("unPop", nil);
 		};
 
@@ -71,15 +73,7 @@
 			_netid = _this select 1;
 			_name = _this select 2;
 			_type = MEMBER("type", nil);
-
-			if(MEMBER("alive", nil)) exitwith {
-				vehicleavalaible = false;
-				["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
-			};
-			if(_position distance (getmarkerpos "respawn_west") < 300) exitwith {
-				vehicleavalaible = false;
-				["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
-			};
+			MEMBER("alive", 240);
 
 			_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 			_vehicle = _type createVehicle [0,0,5000];

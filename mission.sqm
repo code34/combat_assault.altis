@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.25";
+		briefingName="COMBAT ASSAULT 1.25D";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -534,7 +534,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=16;
+		items=20;
 		class Item0
 		{
 			position[]={13558.62,16.108418,12100.498};
@@ -642,6 +642,7 @@ class Mission
 			name="RADIOCENTER";
 			text="RADIO CENTER";
 			type="mil_triangle";
+			colorName="ColorUNKNOWN";
 			a=0.5;
 			b=0.5;
 		};
@@ -651,6 +652,7 @@ class Mission
 			name="RESEARCHCENTER";
 			text="MK1 RESEARCH CENTER";
 			type="mil_triangle";
+			colorName="ColorUNKNOWN";
 			a=0.5;
 			b=0.5;
 		};
@@ -660,6 +662,7 @@ class Mission
 			name="MILITARYDEPOT";
 			text="AGIOS MILITARY DEPOT";
 			type="mil_triangle";
+			colorName="ColorUNKNOWN";
 			a=0.5;
 			b=0.5;
 		};
@@ -669,6 +672,7 @@ class Mission
 			name="GAZFACTORY";
 			text="HB5 GAZ FACTORY";
 			type="mil_triangle";
+			colorName="ColorUNKNOWN";
 			a=0.5;
 			b=0.5;
 		};
@@ -678,6 +682,47 @@ class Mission
 			name="WEAPONSFACTORY";
 			text="WEAPONS FACTORY";
 			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item16
+		{
+			position[]={4010.6736,261.6918,19226.279};
+			name="POWERRELAY";
+			text="POWER RELAY";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item17
+		{
+			position[]={4832.3652,338.76004,21945.355};
+			name="BLACKCASTLE";
+			text="BLACK CASTLE";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item18
+		{
+			position[]={11228.774,55.796131,15667.471};
+			name="VEHICLEDEPOT";
+			text="VEHICLE DEPOT";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item19
+		{
+			position[]={9209.0674,272.22031,19274.689};
+			name="BUNKERSITE";
+			text="BUNKER SITE";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
 			a=0.5;
 			b=0.5;
 		};

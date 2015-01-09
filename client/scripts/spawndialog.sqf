@@ -100,6 +100,10 @@
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
 					_ctrl ctrlSetStructuredText parsetext "<t align='center'>MAP</t>";
 					_ctrl ctrlcommit 0;
+
+					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
+					_ctrl ctrlMapAnimAdd [0, 0, _player]; 
+					ctrlMapAnimCommit _ctrl;					
 					
 					detach _cam;
 					_cam cameraEffect ["internal","top"];
@@ -111,11 +115,15 @@
 					_ctrl ctrlSetStructuredText parsetext ("<t align='center' color='#FF9933'>" + name _player+ "</t>");
 					_ctrl ctrlcommit 0;
 
+					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
+					_ctrl ctrlMapAnimAdd [0, 0, _player]; 
+					ctrlMapAnimCommit _ctrl;					
+
 					detach _cam;
 					_cam cameraEffect ["internal", "BACK"];
 					_cam camSetTarget _player;
 					_cam attachto [_player,[0.7,-2,0], "neck"];
-					_cam CamCommit 0;
+					_cam CamCommit 0;			
 				};
 				wcchange  = false;
 			};

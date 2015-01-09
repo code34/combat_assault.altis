@@ -125,8 +125,8 @@
 	
 	[] spawn {
 		while { true } do {
-			if((getDammage player > 0) and (getDammage player < 0.75)) then {
-				player setdammage (getdammage player) - 0.01; 
+			if((damage player > 0.25) and (damage player  < 1.01)) then {
+				player setDamage (damage player + 0.01); 
 			};
 			sleep 10;
 		};

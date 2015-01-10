@@ -292,7 +292,7 @@ class spawndialog {
 	{
 		idc = -1; 
 		x = -0.005; 
-		y = 0.90; 
+		y = safezoneY + safezoneh - 0.03 - 0.05;
 		w = 0.2; 
 		h = 0.05; 
 		text = "<< PREVIOUS";
@@ -308,10 +308,10 @@ class spawndialog {
 		type = CT_STRUCTURED_TEXT; 
 		style = ST_LEFT;  		
 		x = 0.2; 
-		y = 0.90; 
+		y = safezoneY + safezoneh - 0.03 - 0.05;
 		w = 0.35; 
 		h = 0.05; 
-		text = "<t align='center'>MAP</t>";
+		text = "<t align='center' color='#FF9933'>MAP</t>";
 		action = "";
 		colorBackground[] = {0,0,0,0.8};
 		font = "EtelkaNarrowMediumPro"; 
@@ -322,7 +322,7 @@ class spawndialog {
 	{
 		idc = -1; 
 		x = 0.555; 
-		y = 0.90; 
+		y = safezoneY + safezoneh - 0.03 - 0.05; 
 		w = 0.2; 
 		h = 0.05; 
 		text = "NEXT >>";
@@ -336,7 +336,7 @@ class spawndialog {
 	{
 		idc = 4005; 
 		x = 0.80; 
-		y = 0.78; 
+		y = safezoneY + safezoneh - 0.03 - 0.17;
 		w = 0.2; 
 		h = 0.05; 
 		text = "ROLLMESSAGE ON";
@@ -348,7 +348,7 @@ class spawndialog {
 	{
 		idc = -1; 
 		x = 0.80; 
-		y = 0.84; 
+		y = safezoneY + safezoneh - 0.03 - 0.11;
 		w = 0.2; 
 		h = 0.05; 
 		text = "EQUIPMENT";
@@ -360,7 +360,7 @@ class spawndialog {
 	{
 		idc = -1; 
 		x = 0.80; 
-		y = 0.90; 
+		y = safezoneY + safezoneh - 0.03 - 0.05;
 		w = 0.2; 
 		h = 0.05; 
 		text = "DEPLOY";
@@ -375,10 +375,10 @@ class spawndialog {
 		style = 48;
 		sizeEx = 0.026;
 		moveOnEdges = 1;
-		x = safezoneX + 0.03;
-		y = safezoneY + safezoneh - 0.03 - 0.4;
-		w = 0.4;
-		h = 0.4 ;
+		x = safezoneX + 0.02;
+		y = safezoneY + safezoneh - 0.03 - 0.55;
+		w = 0.55 * 3/4;
+		h = 0.55;
 		font = "PuristaMedium";
 		shadow = "false";
 		ptsPerSquareSea = 5;
@@ -391,10 +391,10 @@ class spawndialog {
 		ptsPerSquareRoad = 6;
 		ptsPerSquareObj = 9;
 		showCountourInterval = 0;
-		scaleMin = 0.3;
-		scaleMax = 0.3;
-		scaleDefault = 0.3;
-		maxSatelliteAlpha = 0.6;
+		scaleMin = 0.1;
+		scaleMax = 0.1;
+		scaleDefault = 0.1;
+		maxSatelliteAlpha = 0.8;
 		alphaFadeStartScale = 0.35;
 		alphaFadeEndScale = 0.4;
 		colorBackground[] = {0,0.4,0.8,0.4};
@@ -1066,15 +1066,15 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				shadow = 1;
-				x = safeZoneX + safeZoneW - 0.26; 
+				x = safeZoneX + safeZoneW - 0.25; 
 				y = safeZoneY + safeZoneH - 0.05;
-				w = 0.25;
+				w = 0.24;
 				h = 0.03;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.030;
 				colorBackground[] = {0,0,0,0.4};
 				colorText[] = {0.5,1,1,1}; 
-				text = "Mod: combat-assault.eu"; 
+				text = "COMBAT-ASSAULT.EU"; 
 			}; 					
 		};
 	}; 

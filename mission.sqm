@@ -534,7 +534,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=20;
+		items=23;
 		class Item0
 		{
 			position[]={13558.62,16.108418,12100.498};
@@ -721,6 +721,36 @@ class Mission
 			position[]={9209.0674,272.22031,19274.689};
 			name="BUNKERSITE";
 			text="BUNKER SITE";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item20
+		{
+			position[]={8212.5713,14.939426,10873.022};
+			name="POWERPLANT1";
+			text="POWER PLANT";
+			type="mil_box";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item21
+		{
+			position[]={15478.339,12.636536,16274.306};
+			name="POWERPLANT2";
+			text="POWER PLANT";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item22
+		{
+			position[]={18350.652,48.474407,15512.137};
+			name="CARGODEPOT";
+			text="CARGO DEPOT";
 			type="mil_triangle";
 			colorName="ColorUNKNOWN";
 			a=0.5;

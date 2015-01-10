@@ -125,10 +125,11 @@
 	
 	[] spawn {
 		while { true } do {
-			if((damage player > 0.25) and (damage player  < 1.01)) then {
+			if((damage player > 0) and (damage player  < 1.01)) then {
 				player setDamage (damage player + 0.01); 
+				player setBleedingRemaining 30;
 			};
-			sleep 10;
+			sleep 30;
 		};
 	};
 
@@ -153,12 +154,6 @@
 							sleep 30;
 						};
 						if(_counter < 1) then {
-								//openMap [false, false] ;
-								//openMap [true, true];
-								//mapAnimAdd [1, 0.01,  player]; 
-								//mapAnimCommit;
-								//[] call WC_fnc_teleport;
-								//openMap [false, false];
 								_counter = 30;
 								[player] call WC_fnc_spawndialog;
 						};

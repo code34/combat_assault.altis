@@ -37,7 +37,11 @@
 		_ctrl ctrlSetText "ROLLMESSAGE ON";
 	} else {
 		_ctrl ctrlSetText "ROLLMESSAGE OFF";
-	};	
+	};
+
+	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
+	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
+	ctrlMapAnimCommit _ctrl;		
 		
 	// player must be the first elem of array
 	_units = playableunits - [player];
@@ -98,11 +102,11 @@
 					["set", _units] call _list;
 
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
-					_ctrl ctrlSetStructuredText parsetext "<t align='center'>MAP</t>";
+					_ctrl ctrlSetStructuredText parsetext "<t align='center' color='#FF9933'>MAP</t>";
 					_ctrl ctrlcommit 0;
 
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
-					_ctrl ctrlMapAnimAdd [0, 0, _player]; 
+					_ctrl ctrlMapAnimAdd [0, 0, _body]; 
 					ctrlMapAnimCommit _ctrl;					
 					
 					detach _cam;

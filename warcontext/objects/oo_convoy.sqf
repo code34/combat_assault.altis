@@ -55,6 +55,9 @@
 			MEMBER("moveTo", _array);
 			_vehicle = MEMBER("vehicle", nil);
 
+			wcconvoystart = true;
+			["wcconvoystart", "client"] call BME_fnc_publicvariable;	
+
 			_rate = 0;
 			while { ((damage _vehicle < 0.9) and (alive (driver _vehicle))) } do {
 				if(speed _vehicle < 1) then {

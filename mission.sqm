@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.25D";
+		briefingName="COMBAT ASSAULT 1.26";
 		overviewText="By Code34 - www.combat-assault.eu";
 		startWeather=0.099999994;
 		startWind=0.099999994;
@@ -40,7 +40,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=9;
+		items=8;
 		class Item0
 		{
 			side="WEST";
@@ -513,28 +513,10 @@ class Mission
 				};
 			};
 		};
-		class Item8
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={12951.906,21.366516,13444.407};
-					id=40;
-					side="WEST";
-					vehicle="B_soldier_SL_F";
-					leader=1;
-					rank="SERGEANT";
-					skill=0.5;
-				};
-			};
-		};
 	};
 	class Markers
 	{
-		items=23;
+		items=30;
 		class Item0
 		{
 			position[]={13558.62,16.108418,12100.498};
@@ -731,14 +713,14 @@ class Mission
 			position[]={8212.5713,14.939426,10873.022};
 			name="POWERPLANT1";
 			text="POWER PLANT";
-			type="mil_box";
+			type="mil_triangle";
 			colorName="ColorUNKNOWN";
 			a=0.5;
 			b=0.5;
 		};
 		class Item21
 		{
-			position[]={15478.339,12.636536,16274.306};
+			position[]={15495.146,12.670028,16282.959};
 			name="POWERPLANT2";
 			text="POWER PLANT";
 			type="mil_triangle";
@@ -748,9 +730,79 @@ class Mission
 		};
 		class Item22
 		{
-			position[]={18350.652,48.474407,15512.137};
+			position[]={18292.947,47.48,15537.555};
 			name="CARGODEPOT";
 			text="CARGO DEPOT";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item23
+		{
+			position[]={12599.958,34.077412,16347.322};
+			name="VEHICLEFACTORY";
+			text="VEHICLE FACTORY";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item24
+		{
+			position[]={16697.281,3.7995994,20512.262};
+			name="AGIAPORT";
+			text="AGIA PORT";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item25
+		{
+			position[]={20599.117,16.508596,15629.624};
+			name="POWERPLANT3";
+			text="POWER PLANT";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item26
+		{
+			position[]={20810.533,18.060072,15774.622};
+			name="POWERPLANT4";
+			text="POWER PLANT";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item27
+		{
+			position[]={18457.928,23.82299,14287.021};
+			name="URANIUMMINE";
+			text="URANIUM MINE";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item28
+		{
+			position[]={25411.262,9.8433437,20334.359};
+			name="FUELFACTORY";
+			text="FUEL FACTORY";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item29
+		{
+			position[]={20726.223,6.5098629,19447.047};
+			name="AGIOSHARBOR";
+			text="AGIOS HARBOR";
 			type="mil_triangle";
 			colorName="ColorUNKNOWN";
 			a=0.5;

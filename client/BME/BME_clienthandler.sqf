@@ -33,16 +33,28 @@
 		["hint", ["Vehicle servicing", format ["Vehicle will be avalaible in %1 seconds", _alive]]] call hud;
 	};
 
-	BME_netcode_wcconvoy = {
+	BME_netcode_wcconvoystart = {
 		private ["_expand", "_message"];
+		
+		_message = "<t color='#FF9933'>An Enemy convoy</t> has been discovered<br/>";
+		rollmessage = rollmessage + [_message];
+		_message = "<t align='center'><t color='#FF9933'>An Enemy convoy</t> has been discovered</t>";
+		killzone = killzone + [_message];
+	};	
+
+	BME_netcode_wcconvoy = {
+		private ["_expand", "_message", "_message2"];
 		
 		_expand = _this select 0;
 		if(_expand) then {
 			_message = "<t color='#FF9933'>Enemy convoy</t> - expanding done<br/>";
+			_message2 = "<t align='center'><t color='#FF9933'>Enemy convoy</t> - expanding done</t>";
 		} else {
 			_message = "<t color='#FF9933'>Enemy Convoy</t> - expanding failed<br/>";
+			_message2 = "<t align='center'><t color='#FF9933'>Enemy Convoy</t> - expanding failed</t>";
 		};
 		rollmessage = rollmessage + [_message];
+		killzone = killzone + [_message2];
 	};
 
 	BME_netcode_vehiclegetin = {

@@ -175,6 +175,30 @@
 			if(_count > 2) then {false;}else{true;};
 		};
 
+		PUBLIC FUNCTION("array", "isplayerAroundSector"){
+			private ["_sector", "_cost", "_costmin"];
+
+			_sector = _this;
+			_costmin = 4;
+			{
+				_sector = ["getSectorFromPos", position _x] call _grid;
+				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;
+				if(_cost < _costmin) then {_costmin = _cost;};
+				sleep 0.0000001;
+			}foreach MEMBER("groundplayers", nil);
+			if(_costmin < 4) then {false;}else{true;};
+		};
+
+		PUBLIC FUNCTION("", "getSectorFarOfPlayers"){
+			private ["_sector"];
+			_sector = ("entrySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
+			if( !MEMBER("isplayerAroundSector", _sector))  then {
+				sleep 10;
+				_sector = MEMBER("getSectorFarOfPlayers", nil);
+			};
+			_sector;
+		};
+
 		PUBLIC FUNCTION("array", "canExpandToSector"){
 			private ["_key", "_sector", "_cost", "_costmin", "_grid", "_neighbour", "_return"];
 
@@ -346,8 +370,8 @@
 
 		PUBLIC FUNCTION("", "spawnConvoy") {
 			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
-
-			_sector = ("entrySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
+			
+			_sector = MEMBER("getSectorFarOfPlayers", nil);
 			_startposition = ["getPosFromSector", "getSector" call _sector] call MEMBER("grid",nil);
 	
 			_convoy = ["new", _startposition] call OO_CONVOY;

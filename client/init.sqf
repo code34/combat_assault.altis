@@ -126,10 +126,11 @@
 	[] spawn {
 		while { true } do {
 			if((damage player > 0) and (damage player  < 1.01)) then {
+				sleep 10;
 				player setDamage (damage player + 0.01); 
 				player setBleedingRemaining 30;
 			};
-			sleep 30;
+			sleep 20;
 		};
 	};
 
@@ -155,6 +156,7 @@
 						};
 						if(_counter < 1) then {
 								_counter = 30;
+								hintsilent "";
 								[player] call WC_fnc_spawndialog;
 						};
 					} else {

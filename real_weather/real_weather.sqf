@@ -47,7 +47,7 @@
 	_timesync = 60;
 
 	// Mission starting date is 25/09/2013 at 12:00
-	_startingdate = [2015, 01, 01, 08, 00];
+	_startingdate = [2015, 07, 01, 17, 00];
 
 	// Mission starting weather "CLEAR|CLOUDY|RAIN";
 	_startingweather = ["CLEAR", "CLOUDY", "RAIN"] call BIS_fnc_selectRandom;
@@ -130,6 +130,11 @@
 			wcweather set [4, date];
 			publicvariable "wcweather";
 			sleep _timesync;
+			if((date select 3 > 17) and (date select 3 <6)) then {
+				setTimeMultiplier 18;
+			} else {
+				setTimeMultiplier 6;
+			};
 		};
 	};
 
@@ -139,7 +144,7 @@
 
 	while {true} do {
 		_overcast = random 1;
-		if(_overcast > 0.68) then {
+		if(_overcast > 0.70) then {
 			_rain = random 1;
 		} else {
 			_rain = 0;

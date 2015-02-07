@@ -109,20 +109,36 @@
 		PUBLIC FUNCTION("", "setTarget") {
 			private ["_target", "_score", "_newscore"];
 
-			if(count MEMBER("targets", nil) > 0) then {
-				_score = -1000;
-				{
-					_newscore = MEMBER("checkScoreByVehicle", _x);
-					if(_newscore > _score) then {
-						_score = _newscore;
-						_target = [_x];
-					};
-					sleep 0.0001;
-				} foreach MEMBER("targets", nil);
-			} else {
-				_target = [];
+			if(!MEMBER("isTargetAlive", nil)) then {
+				if(count MEMBER("targets", nil) > 0) then {
+					_score = -1000;
+					{
+						_newscore = MEMBER("checkScoreByVehicle", _x);
+						if(_newscore > _score) then {
+							_score = _newscore;
+							_target = [_x];
+						};
+						sleep 0.0001;
+					} foreach MEMBER("targets", nil);
+				} else {
+					_target = [];
+				};
+				MEMBER("target", _target);
 			};
-			MEMBER("target", _target);
+		};
+
+		PUBLIC FUNCTION("", "isTargetAlive") {
+			private ["_target", "_result"];
+			
+			_target = MEMBER("target", nil) select 0;
+			_result = false;
+
+			if(!isnil "_target") then {
+				if(getDammage _target < 1) then {
+					_result = true;
+				};
+			};
+			_result;
 		};
 
 		PUBLIC FUNCTION("", "intercept") {

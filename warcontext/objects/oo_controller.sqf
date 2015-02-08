@@ -176,10 +176,12 @@
 		};
 
 		PUBLIC FUNCTION("array", "isplayerAroundSector"){
-			private ["_sector", "_cost", "_costmin"];
+			private ["_sector", "_cost", "_costmin", "_grid"];
 
+			_grid = MEMBER("grid", nil);
 			_sector = _this;
 			_costmin = 4;
+			
 			{
 				_sector = ["getSectorFromPos", position _x] call _grid;
 				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;

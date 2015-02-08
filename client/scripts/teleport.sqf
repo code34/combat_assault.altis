@@ -26,17 +26,14 @@
 	_text = "Click on the map where you'd like to Insert!";
 	["hint", [_title, _text]] call hud;
 
-	while { _position distance position player < 50 } do {
-		wcteleport = [];
-		wcteleportposition = [];
-		onMapSingleClick {
-			wcteleport = [name player, _pos];
-			["wcteleport", "server"] call BME_fnc_publicvariable;
-		};
-		while {count wcteleportposition == 0} do { sleep 0.1;};
-		onMapSingleClick "";
-		
-		player setpos wcteleportposition;
+	wcteleport = [];
+	wcteleportposition = [];
+	onMapSingleClick {
+		wcteleport = [name player, _pos];
+		["wcteleport", "server"] call BME_fnc_publicvariable;
 	};
+	while {count wcteleportposition == 0} do { sleep 0.1;};
+	onMapSingleClick "";
+	player setpos wcteleportposition;
 
 	hintSilent "";

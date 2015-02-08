@@ -151,7 +151,7 @@
 
 				_rank = ["getRankText", _globalratio] call scoreboard;
 				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
-				_text = _text + format ["<br/><t size='0.7'>Match: %1</t>", _number];
+				_text = _text + format ["<br/><t size='0.7'>Games: %1</t>", _number];
 				_text = _text + format ["<br/><t size='0.7'>Weight: %1 %2</t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 

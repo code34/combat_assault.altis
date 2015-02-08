@@ -85,7 +85,7 @@
 			_players = "Players<br/>";
 			_ranks = "<t align='center'>Game Ranking<br/>";
 			_serverranks = "<t align='center'>Server Ranking<br/>";
-			_matchs = "<t align='center'>Game<br/>";
+			_matchs = "<t align='center'>Games<br/>";
 			_gamescores = "<t align='center'>Score<br/>";
 
 			{

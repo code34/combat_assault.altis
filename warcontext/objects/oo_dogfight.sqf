@@ -130,11 +130,11 @@
 		PUBLIC FUNCTION("", "isTargetAlive") {
 			private ["_target", "_result"];
 			
-			_target = MEMBER("target", nil) select 0;
+			_target = MEMBER("target", nil);
 			_result = false;
 
-			if(!isnil "_target") then {
-				if(getDammage _target < 1) then {
+			if (count _target > 0) then {
+				if(getDammage (_target select 0) < 0.9) then {
 					_result = true;
 				};
 			};
@@ -151,6 +151,9 @@
 					if(fuel _vehicle > 0.4) then {
 						_vehicle domove (position _target);
 						_vehicle dotarget _target;
+						if(count crew _target == 0) then {
+							_target engineOn true;
+						};
 					} else {
 						_vehicle domove [100,100];
 						if(_vehicle distance [100,100] < 2000) then {

@@ -51,6 +51,16 @@
 			case "achopper" : {
 				_type = "B_Heli_Attack_01_F";
 				_para = false;
+			};
+
+			case "bomber" : {
+				_type = "B_Plane_CAS_01_F";
+				_para = false;
+			};
+
+			case "fighter" : {
+				_type = "I_Plane_Fighter_03_AA_F";
+				_para = false;
 			};			
 
 			case "tank" : {

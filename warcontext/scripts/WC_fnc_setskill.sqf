@@ -189,6 +189,9 @@
 			if(_name == "Error: No unit") then { _name = "";} ;
 		} else {
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
+			if(_unit isKindOf "Man") then {
+				_distance = 1000;
+			};
 		};
 
 		if(_name != "") then {

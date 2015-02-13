@@ -1,4 +1,4 @@
-	private ["_continue", "_title"];
+	private ["_list", "_title"];
 
 	_continue = false;
 	{
@@ -14,6 +14,9 @@
 		_text = "Not enough near of Airport";
 		["hint", [_title, _text]] call hud;
 	};
-	[] call WC_fnc_teleportplane;
+
+	playervehicle = [name player, position player, "bomber"];
+	["playervehicle", "server"] call BME_fnc_publicvariable;
+
 	
 

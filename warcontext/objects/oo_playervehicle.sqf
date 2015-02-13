@@ -74,19 +74,90 @@
 			_name = _this select 2;
 			_type = MEMBER("type", nil);
 			MEMBER("alive", 240);
-
-			_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-			_vehicle = _type createVehicle [0,0,5000];
-			_vehicle setdir (random 360); 
 			
-			if(MEMBER("para", nil)) then {
-				_vehicle setpos [_position select 0, _position select 1,  150];
-				MEMBER("paraVehicle", _vehicle);
-			} else {
-				_vehicle setpos _position;
-				_vehicle setdamage 0;
-				vehiclegetin = _vehicle;
-				["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+			switch (_type) do {
+				case "B_Heli_Transport_01_camo_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos _position;
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "B_Heli_Attack_01_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos _position;
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "B_Plane_CAS_01_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_position = [_position select 0, _position select 1, 150];
+					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;
+					_vehicle = _array select 0;
+					{
+						_x setdammage 1;
+						deletevehicle _x;
+					}foreach units (_array select 2);
+					deletegroup (_array select 2);
+
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "I_Plane_Fighter_03_AA_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_position = [_position select 0, _position select 1, 150];
+					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;
+					_vehicle = _array select 0;
+					{
+						_x setdammage 1;
+						deletevehicle _x;
+					}foreach units (_array select 2);
+					deletegroup (_array select 2);
+
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "B_MBT_01_cannon_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
+				case "B_APC_Tracked_01_AA_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
+				case "B_supplyCrate_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
+				default {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
 			};
 			
 			if(_type == "B_supplyCrate_F") then {

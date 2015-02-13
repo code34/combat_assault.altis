@@ -149,6 +149,7 @@
 
 					_vehicle setpos [_position select 0, _position select 1,  150];
 					MEMBER("paraVehicle", _vehicle);
+					["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
 				};
 				default {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
@@ -158,11 +159,7 @@
 					_vehicle setpos [_position select 0, _position select 1,  150];
 					MEMBER("paraVehicle", _vehicle);
 				};
-			};
-			
-			if(_type == "B_supplyCrate_F") then {
-				["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
-			};
+			};	
 			
 			MEMBER("vehicle", _vehicle);
 			MEMBER("mark", nil);

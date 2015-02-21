@@ -112,13 +112,14 @@
 			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden"];
 
 			_target = MEMBER("target", nil);
-			_isvehicle = (_target  != vehicle _target);
+			_isvehicle = !(_target isKindOf "MAN") ;
 			_isbuilding = if((nearestbuilding _target) distance _target < 10) then { true; } else { false; };
 			_isvisible = MEMBER("seeTarget", nil);
 
 			if(_isvehicle) then {
 				MEMBER("setMoveMode", nil);
 				MEMBER("moveAround", 50);
+				MEMBER("putMine", nil);
 			} else {
 				if(_isbuilding) then {
 					//hint "movebuilding";
@@ -302,9 +303,21 @@
 			if(_dir > 359) then {_dir = _dir - 360};
 			if(_dir < 0) then {_dir = _dir + 360};
 
-			_position = [position _target, 25, _dir] call BIS_fnc_relPos;
+			_position = [position _target, _areasize, _dir] call BIS_fnc_relPos;
 			MEMBER("moveTo", _position);
 		};
+
+		// put mine
+		PUBLIC FUNCTION("", "putMine") {
+			private ["_leader", "_target"];
+			
+			_target = MEMBER("target", nil);
+			_leader = leader MEMBER("group", nil);
+
+			if((_target distance _leader < 10) and (damage _target < 0.9)) then {
+				createVehicle ["ATMine_Range_Ammo", position _target,[], 0, "can_collide"];
+			};
+		};		
 
 		// moveTo position
 		PUBLIC FUNCTION("array", "moveTo") {

@@ -180,7 +180,7 @@
 
 			_grid = MEMBER("grid", nil);
 			_sector = _this;
-			_costmin = 4;
+			_costmin = 10;
 			
 			{
 				_sector = ["getSectorFromPos", position _x] call _grid;
@@ -188,7 +188,7 @@
 				if(_cost < _costmin) then {_costmin = _cost;};
 				sleep 0.0000001;
 			}foreach MEMBER("groundplayers", nil);
-			if(_costmin < 4) then {false;}else{true;};
+			if(_costmin < 10) then {false;}else{true;};
 		};
 
 		PUBLIC FUNCTION("", "getSectorFarOfPlayers"){

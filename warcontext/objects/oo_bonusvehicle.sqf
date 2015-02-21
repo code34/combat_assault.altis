@@ -69,6 +69,10 @@
 				};
 			}];
 			MEMBER("vehicle", _vehicle);
+			if(random 1 > 0.9) then {
+				 _position = [_position, 3, random 360] call BIS_fnc_relPos;
+				createVehicle ["APERSBoundingMine_Range_Ammo", _position,[], 0, "can_collide"];
+			};
 		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {

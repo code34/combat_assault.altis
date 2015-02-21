@@ -78,27 +78,23 @@
 			switch (_type) do {
 				case "B_Heli_Transport_01_camo_F" : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-					_vehicle = _type createVehicle [0,0,5000];
-					_vehicle setdir (random 360); 
+					_vehicle = _type createVehicle _position;
 
-					_vehicle setpos _position;
 					_vehicle setdamage 0;
 					vehiclegetin = _vehicle;
 					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
 				};
 				case "B_Heli_Attack_01_F" : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-					_vehicle = _type createVehicle [0,0,5000];
-					_vehicle setdir (random 360); 
+					_vehicle = _type createVehicle _position;
 
-					_vehicle setpos _position;
 					_vehicle setdamage 0;
 					vehiclegetin = _vehicle;
 					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
 				};
 				case "B_Plane_CAS_01_F" : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-					_position = [_position select 0, _position select 1, 150];
+					_position = [_position select 0, _position select 1, 200];
 					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;
 					_vehicle = _array select 0;
 					{
@@ -113,7 +109,7 @@
 				};
 				case "I_Plane_Fighter_03_AA_F" : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-					_position = [_position select 0, _position select 1, 150];
+					_position = [_position select 0, _position select 1, 200];
 					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;
 					_vehicle = _array select 0;
 					{

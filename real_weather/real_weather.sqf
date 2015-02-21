@@ -130,7 +130,7 @@
 			wcweather set [4, date];
 			publicvariable "wcweather";
 			sleep _timesync;
-			if((date select 3 > 17) or (date select 3 <6)) then {
+			if((date select 3 > 16) or (date select 3 <6)) then {
 				setTimeMultiplier 24;
 			} else {
 				setTimeMultiplier 6;

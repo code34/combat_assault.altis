@@ -136,38 +136,40 @@
 	if(wcredeployement isEqualTo 1) then {
 		[] spawn {
 			private ["_list", "_counter", "_text"];
-			_counter = 15;
+			_counter = 10;
+
 			while { true } do {
 				if(player distance getmarkerpos "respawn_west" > 1300) then {
-					if((alive player) and (vehicle player == player)) then {
+					if((alive player) and (vehicle player == player)) then {		
+
 						_list = position player nearEntities [["Man", "Tank"], 1000];
-						sleep 1;
+						sleep 0.5;
+
 						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
 							if(stance player == "CROUCH") then {
-								if(_counter < 15) then {
+								if(_counter < 10) then {
 									_title = "Redeployment";
-									_text = format ["No enemies near your. You will be redeploy in %1", _counter];
+									_text = format ["No enemies near your. You will be redeploy in <br/><t size='3'>%1</t>", _counter];
 									["hint", [_title, _text]] call hud;
 								};
 								_counter = _counter - 1 ;
 							} else {
 								_title = "Redeployment";
 								_text = "No enemies near your. Kneel down to redeploy";
-								_counter = 15;
+								_counter = 10;
 								["hint", [_title, _text]] call hud;
 							};
 						} else {
 							hintsilent "";
-							_counter = 15;
-							sleep 1;
+							_counter = 10;
 						};
-						if(_counter < 1) then {
-							_counter = 15;
+						if(_counter < 0) then {
+							_counter = 10;
 							hintsilent "";
 							[player] call WC_fnc_spawndialog;
 						};
 					} else {
-						_counter = 15;
+						_counter = 10;
 					};
 				};
 				sleep 1;

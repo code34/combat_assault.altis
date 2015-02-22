@@ -106,15 +106,28 @@
 			}else{
 				MEMBER("city", false);
 			};
-		};		
+		};
+
+		PUBLIC FUNCTION("", "fireFlare") {
+			private ["_flare", "_target", "_leader"];
+
+			_leader = leader MEMBER("group", nil);
+			_target = MEMBER("target", nil);
+
+			if(_leader distance _target < 200) then {
+				_flare = "F_40mm_White" createvehicle ((_target) ModelToWorld [0,0,200]); 
+				_flare setVelocity [0,0,-10];
+			};
+		};
 
 		PUBLIC FUNCTION("", "engageTarget") {
-			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden"];
+			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden", "_needflare"];
 
 			_target = MEMBER("target", nil);
 			_isvehicle = !(_target isKindOf "MAN") ;
 			_isbuilding = if((nearestbuilding _target) distance _target < 10) then { true; } else { false; };
 			_isvisible = MEMBER("seeTarget", nil);
+			_needflare = if((date select 3 > 21) or (date select 3 <6)) then { true; } else {false;};
 
 			if(_isvehicle) then {
 				MEMBER("setMoveMode", nil);
@@ -130,6 +143,7 @@
 					//MEMBER("setMoveMode", nil);
 					MEMBER("moveInto", nearestbuilding _target);
 				} else {
+					if((_needflare) and (random 1 > 0.5)) then { MEMBER("fireFlare", nil);};
 					if(_isvisible) then {
 						//hint format ["moveto %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);

@@ -160,7 +160,13 @@
 				player setpos [_position select 0, _position select 1];
 				player setdir _dir;
 			} else {
-				player moveInAny (vehicle _player);
+				if((vehicle _player) emptyPositions "cargo" == 0) then {
+					_position = [position (vehicle _player), 5, random 359] call BIS_fnc_relPos;
+					player setpos _position;
+					player setdir (getdir (vehicle _player));
+				} else {
+					player moveInAny (vehicle _player);
+				};
 			};
 		};
 	};

@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2013-2015 Nicolas BOITEUX
 
 	Real weather for MP GAMES v 1.3 
 	
@@ -18,7 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_lastrain", "_rain", "_fog", "_mintime", "_maxtime", "_overcast", "_realtime", "_random","_startingdate", "_startingweather", "_timeforecast", "_timeratio", "_timesync", "_wind"];
+	private ["_lastrain", "_rain", "_fog", "_mintime", "_maxtime", "_overcast", "_realtime", "_random","_startingdate", "_startingweather", "_timeforecast", "_daytimeratio", "_nighttimeratio", "_timesync", "_wind"];
 	
 	// Real time vs fast time
 	// true: Real time is more realistic weather conditions change slowly (ideal for persistent game)
@@ -39,7 +39,8 @@
 	// If Fastime is on
 	// Ratio 1 real time second for x game time seconds
 	// Default: 1 real second = 6 second in game
-	_timeratio = 6;
+	_daytimeratio = 6;
+	_nighttimeratio = 24;
 
 	// send sync data across the network each xxx seconds
 	// 60 real seconds by default is a good value
@@ -109,8 +110,6 @@
 	// SERVER SIDE SCRIPT
 	if (!isServer) exitWith{};
 
-	if(!_realtime) then { setTimeMultiplier _timeratio; };
-
 	// apply weather
 	skipTime -24;
 	86400 setRain (wcweather select 0);
@@ -122,18 +121,24 @@
 	setdate (wcweather select 4);
 
 	// sync server & client weather & time
-	[_timesync] spawn {
-		private["_timesync"];
-		_timesync = _this select 0;
+	[_realtime, _timesync, _daytimeratio, nighttimeratio] spawn {
+		private["_realtime", "_timesync", "_daytimeratio", "_nighttimeratio"];
+		
+		_realtime = _this select 0;
+		_timesync = _this select 1;
+		_daytimeratio = _this select 2;
+		_nighttimeratio =  _this select 3;
 
 		while { true } do {
 			wcweather set [4, date];
 			publicvariable "wcweather";
 			sleep _timesync;
-			if((date select 3 > 16) or (date select 3 <6)) then {
-				setTimeMultiplier 24;
-			} else {
-				setTimeMultiplier 6;
+			if(!_realtime) then { 
+				if((date select 3 > 16) or (date select 3 <6)) then {
+					setTimeMultiplier _nighttimeratio;
+				} else {
+					setTimeMultiplier _daytimeratio;
+				};
 			};
 		};
 	};

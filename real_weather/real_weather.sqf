@@ -121,7 +121,7 @@
 	setdate (wcweather select 4);
 
 	// sync server & client weather & time
-	[_realtime, _timesync, _daytimeratio, nighttimeratio] spawn {
+	[_realtime, _timesync, _daytimeratio, _nighttimeratio] spawn {
 		private["_realtime", "_timesync", "_daytimeratio", "_nighttimeratio"];
 		
 		_realtime = _this select 0;
@@ -132,7 +132,6 @@
 		while { true } do {
 			wcweather set [4, date];
 			publicvariable "wcweather";
-			sleep _timesync;
 			if(!_realtime) then { 
 				if((date select 3 > 16) or (date select 3 <6)) then {
 					setTimeMultiplier _nighttimeratio;
@@ -140,6 +139,7 @@
 					setTimeMultiplier _daytimeratio;
 				};
 			};
+			sleep _timesync;
 		};
 	};
 

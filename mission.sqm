@@ -17,7 +17,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.27H";
+		briefingName="COMBAT ASSAULT 1.28";
 		overviewText="By Code34 - www.combat-assault.eu";
 		resistanceWest=0;
 		resistanceEast=1;
@@ -518,7 +518,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=30;
+		items=31;
 		class Item0
 		{
 			position[]={13558.62,16.108418,12100.498};
@@ -805,6 +805,16 @@ class Mission
 			position[]={20726.223,6.5098629,19447.047};
 			name="AGIOSHARBOR";
 			text="AGIOS HARBOR";
+			type="mil_triangle";
+			colorName="ColorUNKNOWN";
+			a=0.5;
+			b=0.5;
+		};
+		class Item30
+		{
+			position[]={17855.732,88.294067,11732.635};
+			name="GSMANTENNA";
+			text="GSM ANTENNA";
 			type="mil_triangle";
 			colorName="ColorUNKNOWN";
 			a=0.5;

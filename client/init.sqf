@@ -42,7 +42,7 @@
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 
-	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>Welcome on Combat Assault mission</t><br/>", "You can find more informations about this project on combat-assault.eu website<br/>","<br/>", "Train you in real fighting conditions<br/>", "Try to gain a better server ranking<br/>","Try to win this war<br/> ", "<br/>", "<br/>","Good luck ! Have a good game !<br/>", "Code34<br/><br/>"];
+	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>"+(localize "STR_INTRO_WELCOME")+"</t><br/>", (localize "STR_INTRO_WEBSITE")+"<br/>","<br/>", (localize "STR_INTRO_TRAIN")+"<br/>", (localize "STR_INTRO_RANK")+"<br/>", (localize "STR_INTRO_WINWAR")+"<br/> ", "<br/>", "<br/>", (localize "STR_INTRO_GOODLUCK")+"<br/>",  (localize "STR_INTRO_AUTHOR")+"<br/><br/>"];
 	rollprintmessage = "";
 
 	hud = ["new", []] call OO_HUD;
@@ -88,7 +88,7 @@
 
 	playMusic "BackgroundTrack02_F_EPC";
 
-	["-- Birth of a New Empire --<br/><br/><t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>GOLD</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
+	[(localize "STR_INTRO_CAMPAIGNNAME") + "<br/><br/><t size='3'>"+(localize "STR_INTRO_MISSIONNAME")+"</t><br/><br/><t size='2'><t color='#ff9900'>"+(localize "STR_INTRO_MISSIONVERSION")+"</t> Version<br/>Author: "+(localize "STR_INTRO_MISSIONAUTHOR")+"</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: "+(localize "STR_INTRO_MISSIONWEBSITE")+"<br/>Teamspeak: "+(localize "STR_INTRO_MISSIONTS3")+"<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
 	_body = player;
 	_view = cameraView;
@@ -148,14 +148,14 @@
 						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
 							if(stance player == "CROUCH") then {
 								if(_counter < 10) then {
-									_title = "Redeployment";
-									_text = format ["No enemies near your. You will be redeploy in <br/><t size='3'>%1</t>", _counter];
+									_title = localize "STR_REDEPLOY_TITLE";
+									_text = format ["%1<br/><t size='3'>%2</t>", localize "STR_REDEPLOY_COUNTER", _counter];
 									["hint", [_title, _text]] call hud;
 								};
 								_counter = _counter - 1 ;
 							} else {
-								_title = "Redeployment";
-								_text = "No enemies near your. Kneel down to redeploy";
+								_title = localize "STR_REDEPLOY_TITLE";
+								_text = localize "STR_REDEPLOY_STANCE";
 								_counter = 10;
 								["hint", [_title, _text]] call hud;
 							};

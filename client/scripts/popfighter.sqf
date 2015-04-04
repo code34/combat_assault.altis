@@ -10,8 +10,8 @@
 	}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 
 	if(!_continue) exitwith {
-		_title = "Vehicle Servicing";
-		_text = "Not enough near of Airport";
+		_title = localize "STR_SERVICING_TITLE";
+		_text = localize "STR_SERVICING_NEARAIRPORT";
 		["hint", [_title, _text]] call hud;
 	};
 

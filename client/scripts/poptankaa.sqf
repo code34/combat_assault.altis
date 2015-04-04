@@ -4,8 +4,8 @@
 	sleep 0.5;
 
 	if(east countSide _list > 0) then {
-		_title = "Vehicle Servicing";
-		_text = "Too near of enemy position";
+		_title = localize "STR_SERVICING_TITLE";
+		_text = localize "STR_SERVICING_TOOENEMY";
 		["hint", [_title, _text]] call hud;
 	} else {
 		playervehicle = [name player, position player, "tankaa"];

@@ -22,8 +22,8 @@
 
 	_position = position player;
 
-	_title = "Select your destination zone";
-	_text = "Click on the map where you'd like to Insert!";
+	_title = localize "STR_TELEPORT_TITLE";
+	_text = localize "STR_TELEPORT_TEXT";
 	["hint", [_title, _text]] call hud;
 
 	wcteleport = [];

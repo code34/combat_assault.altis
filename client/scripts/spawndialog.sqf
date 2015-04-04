@@ -56,8 +56,8 @@
 		while { wcaction != "deploy" && dialog} do {
 			if(wcaction == "equipment") then {
 				closeDialog 0;
-				_title = "Select your equipment";
-				_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
+				_title = localize "STR_EQUIPMENT_TITLE";
+				_text = localize "STR_EQUIPMENT_TEXT";
 				["hint", [_title, _text]] call hud;	
 				["Open",[true,nil,player]] call bis_fnc_arsenal;
 				sleep 5;

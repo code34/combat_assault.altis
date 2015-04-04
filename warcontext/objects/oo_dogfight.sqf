@@ -82,9 +82,7 @@
 			while { MEMBER("patrol", nil) } do {
 				MEMBER("setSquadronSize", nil);
 				MEMBER("popSquadron", nil);
-				MEMBER("detectTargets", nil);
-				MEMBER("setTarget", nil);	
-				MEMBER("intercept", nil);
+				MEMBER("checkTargets", nil);
 				MEMBER("setFuel", nil);
 				MEMBER("cleaner", nil);
 				sleep 30;
@@ -109,53 +107,42 @@
 		PUBLIC FUNCTION("", "setTarget") {
 			private ["_target", "_score", "_newscore"];
 
-			if(!MEMBER("isTargetAlive", nil)) then {
-				if(count MEMBER("targets", nil) > 0) then {
-					_score = -1000;
-					{
-						_newscore = MEMBER("checkScoreByVehicle", _x);
-						if(_newscore > _score) then {
-							_score = _newscore;
-							_target = [_x];
-						};
-						sleep 0.0001;
-					} foreach MEMBER("targets", nil);
-				} else {
-					_target = [];
-				};
-				MEMBER("target", _target);
+			if(count MEMBER("targets", nil) > 0) then {
+				_score = -1000;
+				{
+					_newscore = MEMBER("checkScoreByVehicle", _x);
+					if(_newscore > _score) then {
+						_score = _newscore;
+						_target = [_x];
+					};
+					sleep 0.0001;
+				} foreach MEMBER("targets", nil);
+			} else {
+				_target = [];
 			};
-		};
-
-		PUBLIC FUNCTION("", "isTargetAlive") {
-			private ["_target", "_result"];
-			
-			_target = MEMBER("target", nil);
-			_result = false;
-
-			if (count _target > 0) then {
-				if(getDammage (_target select 0) < 0.9) then {
-					_result = true;
-				};
-			};
-			_result;
+			MEMBER("target", _target);
 		};
 
 		PUBLIC FUNCTION("", "intercept") {
-			private ["_target", "_vehicle"];
+			private ["_target", "_vehicle", "_squadron"];
 
 			if(count MEMBER("target", nil) > 0) then {
 				_target = MEMBER("target", nil) select 0;
+				_squadron = MEMBER("squadron", nil);
+				diag_log format ["oo_dogfight squadron %1", _squadron];
+				
 				{
 					_vehicle = _x select 0;
 					if(fuel _vehicle > 0.4) then {
 						_vehicle domove (position _target);
 						_vehicle dotarget _target;
+						diag_log format ["oo_dogfight target %1 %2 %3", position _target, _target, _vehicle];
 						if(count crew _target == 0) then {
 							_target engineOn true;
 						};
 					} else {
 						_vehicle domove [100,100];
+						diag_log format ["oo_dogfight distance of init %1", (_vehicle distance [100,100])];
 						if(_vehicle distance [100,100] < 2000) then {
 							MEMBER("unpopMember", _vehicle);
 						};
@@ -173,9 +160,30 @@
 
 				_conso = (speed _vehicle * 0.0005) / 10;
 				_vehicle setfuel (_fuel - _conso);
-
+				_vehicle setVehicleAmmoDef 1;
 				sleep 0.0001;
 			}foreach MEMBER("squadron", nil);
+		};
+
+		PUBLIC FUNCTION("", "checkTargets") {
+			private ["_target"];
+			
+			_target = MEMBER("target", nil);
+			while { count _target == 0} do {
+				MEMBER("detectTargets", nil);
+				MEMBER("setTarget", nil);
+				_target = MEMBER("target", nil);
+				sleep 10;
+			};
+			
+			_target = MEMBER("target", nil) select 0;
+
+			if ((damage _target < 0.9) and (!isnil "_target")) then {
+				MEMBER("intercept", nil);
+			} else {
+				_array = [];
+				MEMBER("target", _array);
+			};
 		};
 
 		PUBLIC FUNCTION("", "detectTargets") {

@@ -59,6 +59,44 @@
 	[] execVM "real_weather\real_weather.sqf";
 	_temp = "Land_LampDecor_F" createVehicle (getMarkerPos "base_lamp");
 
+
+	// CONFIG VARIABLE 
+
+	// square distance enemi unpop/pop
+	// wcpopsquaredistance = 3;
+
+	// enemies light vehicles type
+	wclightvehicles = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F", "B_G_Offroad_01_armed_F"];
+
+	// enemies heavy vehicles type
+	wcheavyvehicles = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","O_APC_Wheeled_02_rcws_F"];
+
+	// enemies infantry squad
+	wcinfantrysquads = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] ;
+
+	//enemies infantry snipers
+	wcinfantrysnipers = ["OI_SniperTeam"];
+
+	//enemies chopper
+	wcairchoppers = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"];
+
+	// pop chopper probabilities by sector
+	switch (wcpopchopperprobparam) do {
+		case 1: {wcpopchopperprob = 0.8;};
+		case 2: {wcpopchopperprob = 0.93;};
+		case 3: {wcpopchopperprob = 0;};
+		default {wcpopchopperprob = 0.93;};
+	};
+	
+	// pop ground vehicles probabilities by sector
+	wcpopvehicleprob = 0.90;
+
+	// pop sniper probabilities by sector
+	wcpopsniperprob = 0.85;
+
+	// pop artillery probabilities by sector
+	wcpopartyprob = 0.90;
+
 	onPlayerDisconnected {
 		private ["_name"];
 		{

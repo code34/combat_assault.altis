@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2015 Nicolas BOITEUX
 
 	CLASS OO_SECTOR STRATEGIC GRID
 	
@@ -50,14 +50,14 @@
 			MEMBER("state", 0);
 			MEMBER("alert", false);
 
-			if(random 1 > 0.85) then { _sniper = 1; } else { _sniper = 0;};
-			if(random 1 > 0.93) then { _air = 1; } else { _air = 0; };
-			if(random 1 > 0.90) then { _vehicle = 1;} else { _vehicle = 0};
+			if(random 1 > wcpopsniperprob) then { _sniper = 1; } else { _sniper = 0;};
+			if(random 1 > wcpopchopperprob) then { _air = 1; } else { _air = 0; };
+			if(random 1 > wcpopvehicleprob) then { _vehicle = 1;} else { _vehicle = 0};
 
 			_type = [ 1, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
 			
-			if(random 1 > 0.90) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
+			if(random 1 > wcpopartyprob) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
 			MEMBER("setMission", nil);
 		};
 
@@ -203,7 +203,7 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector"];
+			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_popsquaredistance"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -215,6 +215,7 @@
 
 			_time = 0;
 			_deadcounter = 0;
+			_popsquaredistance = wcpopsquaredistance + 1;
 
 			_run = true;
 			while { _run } do {
@@ -232,16 +233,16 @@
 						sleep 0.0001;
 					}foreach _sectors;
 					_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call _grid;
-					if(_cost2 < 4) then {_bucket = _bucket + 1;};
+					if(_cost2 < _popsquaredistance) then {_bucket = _bucket + 1;};
 					sleep 0.0001;
 				}foreach playableunits;
 				if(MEMBER("bucket", nil) < _bucket) then { MEMBER("bucket", _bucket);};
 
-				if(MEMBER("alert", nil) and (_mincost < 4)) then {
+				if(MEMBER("alert", nil) and (_mincost < _popsquaredistance)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
 					_run = true;
 				} else {
-					if(_mincost < 4) then {
+					if(_mincost < _popsquaredistance) then {
 						MEMBER("marker", nil) setmarkercolor "ColorOrange";
 						_run = true;
 					};
@@ -310,9 +311,8 @@
 			_markerpos 	= getmarkerpos _marker;
 			_markersize	= (getMarkerSize _marker) select 1;
 		
-			_type = ["OIA_InfSquad_Weapons","OIA_InfSquad", "OIA_InfTeam", "OIA_InfTeam_AA", "OIA_InfTeam_AT", "OI_ReconTeam"] call BIS_fnc_selectRandom;
+			_type = wcinfantrysquads call BIS_fnc_selectRandom;
 		
-			//_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
 			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 			if(_position isequalto _position2)  exitwith {[];};
@@ -337,8 +337,8 @@
 			_markerpos 	= getmarkerpos _marker;
 			_markersize 	= (getMarkerSize _marker) select 1;
 
-			_type = "OI_SniperTeam";		
-			//_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
+			_type = wcinfantrysnipers call BIS_fnc_selectRandom;
+
 			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 			if(_position isequalto _position2)  exitwith {[];};			
@@ -365,11 +365,9 @@
 			_markersize		= (getMarkerSize _marker) select 1;
 		
 			if(random 1 > 0.5) then {
-				//light vehicle
-				_vehicle = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F", "B_G_Offroad_01_armed_F"] call BIS_fnc_selectRandom;
+				_vehicle = wclightvehicles call BIS_fnc_selectRandom;
 			} else {
-				//heavy vehicle
-				_vehicle = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","O_APC_Wheeled_02_rcws_F"] call BIS_fnc_selectRandom;
+				_vehicle = wcheavyvehicles call BIS_fnc_selectRandom;
 			};
 		
 			//_position = [_markerpos, random (_markersize -15), random 359] call BIS_fnc_relPos;
@@ -396,11 +394,20 @@
 		};
 
 		PRIVATE FUNCTION("", "popAir") {
-			private ["_patrol", "_airport"];
+			private ["_patrol", "_airport", "_array", "_marker", "_position", "_list"];
 			_airport = "countEast" call global_atc;
+			
 			if(_airport > 0) then {
-				_patrol = ["new", [MEMBER("getThis", nil)]] call OO_PATROLAIR;
-				"patrol" spawn _patrol;
+				_array = "getEast" call global_atc;
+				_marker =  _array call BIS_fnc_selectRandom;
+				_position = getmarkerpos _marker;
+				_position = [_position select 0, _position select 1, 100];		
+				_list = _position nearEntities [["Man", "Tank"], 600];
+				sleep 0.2;
+				if(west countside _list == 0) exitwith {
+					_patrol = ["new", [MEMBER("getThis", nil), _position]] call OO_PATROLAIR;
+					"patrol" spawn _patrol;	
+				};
 			};
 		};
 

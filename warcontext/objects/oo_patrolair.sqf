@@ -34,22 +34,20 @@
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
 			
-			MEMBER("popMember", nil);
+			MEMBER("popMember",  _this select 1);
 			MEMBER("sector", _this select 0);
 			MEMBER("setMarker", nil);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setCombatMode", nil);
 		};
 
-		PUBLIC FUNCTION("", "popMember") {
-			private ["_array", "_group", "_vehicle", "_marker"];
+		PUBLIC FUNCTION("array", "popMember") {
+			private ["_array", "_group", "_vehicle", "_marker", "_list"];
 
-			_array = "getEast" call global_atc;
-			_marker =  _array call BIS_fnc_selectRandom;
-			_position = getmarkerpos _marker;
-			_position = [_position select 0, _position select 1, 100];
+			_position = _this;
+
+			_vehicle = wcairchoppers call BIS_fnc_selectRandom;
 			
-			_vehicle = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
 			_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;

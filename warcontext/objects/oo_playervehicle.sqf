@@ -61,9 +61,8 @@
 				MEMBER("alive", _counter);
 				sleep 1;
 			}; 
-
-			MEMBER("alive",  0);
 			MEMBER("unPop", nil);
+			MEMBER("alive",  0);
 		};
 
 		PUBLIC FUNCTION("array", "pop") {

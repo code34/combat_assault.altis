@@ -109,7 +109,7 @@
 			_around = [];
 			_array = MEMBER("getNewSector", nil);		
 			{
-				_temp = ["getSectorAllAround", [_x, 3]] call MEMBER("grid", nil);
+				_temp = ["getSectorAllAround", [_x, wcpopsquaredistance]] call MEMBER("grid", nil);
 				_around = _around + _temp;
 				sleep 0.0000001;
 			}foreach _array; 

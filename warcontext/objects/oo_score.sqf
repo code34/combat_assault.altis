@@ -37,6 +37,9 @@
 			MEMBER("gamescore", 0);
 		};
 
+		PUBLIC FUNCTION("", "getKill") FUNC_GETVAR("gamekill");
+		PUBLIC FUNCTION("", "getDeath") FUNC_GETVAR("gamedeath");		
+
 		PUBLIC FUNCTION("", "getMatches") {
 			count MEMBER("serverranking", nil);
 		};
@@ -92,20 +95,6 @@
 			MEMBER("gamekill", _this);
 		};
 
-		PUBLIC FUNCTION("", "getKill") {
-			private ["_kill"];
-			_kill = MEMBER("gamekill", nil);
-			if(_kill < 1) then { _kill = 1; };
-			_kill;
-		};
-
-		PUBLIC FUNCTION("", "getDeath") {
-			private ["_death"];
-			_death = MEMBER("gamedeath", nil);
-			if(_death < 1) then { _death = 1; };
-			_death;
-		};
-
 		PUBLIC FUNCTION("", "getServerRanking") {
 			private ["_ranking"];
 
@@ -127,7 +116,11 @@
 			if(_death < 5) then {
 				_ranking = 0;
 			} else {
-				_ranking = _kill / _death;
+				if((_kill == 0) or (_death == 0)) then {
+					_ranking = 0
+				} else{
+					_ranking = _kill / _death;
+				};
 			};
 			_ranking;
 		};

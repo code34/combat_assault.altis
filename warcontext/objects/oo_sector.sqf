@@ -266,11 +266,15 @@
 		};
 
 		PUBLIC FUNCTION("", "setVictory") {
-			private ["_position"];
+			private ["_position", "_sector"];
 			MEMBER("marker", nil) setmarkercolor "ColorBlue";
 			MEMBER("state", 2);
 			["setTicket", "bluezone"] call global_ticket;
 			_position = MEMBER("getPosition", nil);
+
+			wcsectorcompleted = MEMBER("getSector", nil);
+			["wcsectorcompleted", "client"] call BME_fnc_publicvariable;
+
 			_position = [_position, 0,50,5,0,3,0] call BIS_fnc_findSafePos;
 			["new", _position] spawn OO_BONUSVEHICLE;
 			MEMBER("unPopSector", nil);

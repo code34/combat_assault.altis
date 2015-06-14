@@ -34,13 +34,17 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";	
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 
 	wcboard = false;
 	wcwithrollmessages = true;
 	
 	wcticket = 0;
+	playerkill = 0;
+	playerdeath = 0;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
+	client_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 
 	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>"+(localize "STR_INTRO_WELCOME")+"</t><br/>", (localize "STR_INTRO_WEBSITE")+"<br/>","<br/>", (localize "STR_INTRO_TRAIN")+"<br/>", (localize "STR_INTRO_RANK")+"<br/>", (localize "STR_INTRO_WINWAR")+"<br/> ", "<br/>", "<br/>", (localize "STR_INTRO_GOODLUCK")+"<br/>",  (localize "STR_INTRO_AUTHOR")+"<br/><br/>"];
 	rollprintmessage = "";
@@ -125,11 +129,10 @@
 	[] spawn {
 		while { true } do {
 			if((damage player > 0) and (damage player  < 1.01)) then {
-				sleep 10;
-				player setDamage (damage player + 0.01); 
+				player setDamage (damage player - 0.01); 
 				player setBleedingRemaining 30;
 			};
-			sleep 20;
+			sleep 1;
 		};
 	};
 
@@ -139,12 +142,10 @@
 			_counter = 10;
 
 			while { true } do {
+				_list = position player nearEntities [["Man", "Tank"], 1000];
+				sleep 1;
 				if(player distance getmarkerpos "respawn_west" > 1300) then {
 					if((alive player) and (vehicle player == player)) then {		
-
-						_list = position player nearEntities [["Man", "Tank"], 1000];
-						sleep 0.5;
-
 						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
 							if(stance player == "CROUCH") then {
 								if(_counter < 10) then {
@@ -160,6 +161,7 @@
 								["hint", [_title, _text]] call hud;
 							};
 						} else {
+							sleep 5;
 							hintsilent "";
 							_counter = 10;
 						};
@@ -172,7 +174,6 @@
 						_counter = 10;
 					};
 				};
-				sleep 1;
 			};
 		};
 	};

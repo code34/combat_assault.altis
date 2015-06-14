@@ -583,7 +583,7 @@ class RscTitles {
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
 				x = safezoneX + SafezoneW - 0.01 - 0.44; 
-				y = 0;
+				y = 0.4;
 				w = 0.44;
 				h = 0.3;
 				font = "EtelkaNarrowMediumPro"; 
@@ -728,7 +728,53 @@ class RscTitles {
 				colorBackground[] = {0,0,0,0.4};
 				colorText[] = {0.5,1,1,1}; 
 				text = "COMBAT-ASSAULT.EU"; 
-			}; 					
+			}; 
+
+			class sector { 
+				idc = 1017; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_LEFT; 
+				x = safeZoneX ; 
+				y = safeZoneY ;
+				w = 0.40;
+				h = 0.10;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.10;
+				valign = "middle";
+				colorBackground[] = {0.0,0,0.0,0.5};
+				colorText[] = {1,1,1,1}; 
+				text = ""; 
+			}; 
+
+			class killM { 
+				idc = 1018; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_CENTER; 
+				x = 0.36; 
+				y = safeZoneY ;
+				w = 0.14;
+				h = 0.10;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.10;
+				colorBackground[] = {0,0.4,0.8,0.6};
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			}; 
+
+			class deathM { 
+				idc = 1019; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_CENTER; 
+				x = 0.5; 
+				y = safeZoneY ;
+				w = 0.14;
+				h = 0.10;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.10;
+				colorBackground[] = {1,0,0,0.6}; 
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			}; 												
 		};
 	}; 
 };

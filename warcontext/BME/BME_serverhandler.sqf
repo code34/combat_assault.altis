@@ -96,6 +96,7 @@
 		_alive = "getAlive" call _vehicle;
 		
 		if(_alive > 0) then {
+			"sanity" call _vehicle;
 			vehicleavalaible = _alive;
 			["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
 		} else {
@@ -148,7 +149,10 @@
 		_rank = ["getRank", _gameranking] call _score;
 		_player setrank _rank;
 
-		playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore]];
+		_kill = "getKill" call _score;
+		_death = "getDeath" call _score;
+
+		playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]];
 		["playerstats", "client"] call BME_fnc_publicvariable;
 	};		
 

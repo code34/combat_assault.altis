@@ -45,6 +45,17 @@
 			MEMBER("para", _this);
 		};		
 
+		PUBLIC FUNCTION("", "sanity") {
+			private ["_vehicle"];
+
+			_vehicle = MEMBER("vehicle", nil);
+			if(count (crew _vehicle) == 0) then {
+				if(damage _vehicle < 0.9) then {
+					_vehicle setdamage 0.91;
+				};
+			};
+		};
+
 		PUBLIC FUNCTION("", "checkAlive") {
 			private ["_counter", "_vehicle"];
 

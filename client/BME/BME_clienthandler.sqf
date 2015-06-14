@@ -34,11 +34,21 @@
 	};
 
 	BME_netcode_wcconvoystart = {
-		private ["_expand", "_message"];
+		private ["_message"];
 		
 		_message = "<t color='#FF9933'>An Enemy convoy</t> has been discovered<br/>";
 		rollmessage = rollmessage + [_message];
 		_message = "<t align='center'><t color='#FF9933'>An Enemy convoy</t> has been discovered</t>";
+		killzone = killzone + [_message];
+	};
+
+	BME_netcode_wcsectorcompleted = {
+		private ["_sector", "_message"];
+		_sector = _this select 0;
+		
+		_message = format ["<t color='#FF9933'>Sector %1%2</t> has been completed<br/>", _sector select 0, _sector select 1];
+		rollmessage = rollmessage + [_message];
+		_message = format["<t align='center'><t color='#FF9933'>Sector %1%2</t> has been completed</t>",_sector select 0, _sector select 1];
 		killzone = killzone + [_message];
 	};	
 
@@ -67,16 +77,23 @@
 	};
 
 	BME_netcode_wcaideath = {
-		private ["_unit", "_killer", "_message", "_weapon", "_displayname"];
+		private ["_unit", "_killer", "_message", "_weapon", "_displayname", "_playerkill", "_playerdeath"];
 		
 		_array = _this select 0;
 		_unit = _array select 0;
 		_killer = _array select 1;
 		_weapon = _array select 2;
+		_playerkill =_array select 3;
+		_playerdeath = _array select 4;
 		_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
+		diag_log format ["%1", _array];
 
 		if!(_killer == "") then {
 			_message = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";
+			if(_killer == name player) then {
+				playerkill = _playerkill; 
+				playerdeath = _playerdeath;
+			};
 		} else {
 			_message = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
 		};
@@ -190,6 +207,11 @@
 	BME_netcode_playerstats = {
 		private ["_score", "_rank"];
 		_score = _this select 0;
+		if((_score select 0) == name player) then { 
+			playerkill = ((_score select 1) select 4);
+			playerdeath = ((_score select 1) select 5);
+		};
+
 		["addScore", _score] call scoreboard;
 		_rank = ["getRankText", ((_score select 1) select 0)] call scoreboard;
 		{

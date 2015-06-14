@@ -173,7 +173,7 @@
 	}];
 
 	_unit addeventhandler ['Killed', {
-		private ["_unit", "_killer", "_name", "_score", "_distance", "_weapon"];
+		private ["_unit", "_killer", "_name", "_score", "_distance", "_weapon", "_playerkill", "_playerdeath"];
 
 		_unit = _this select 0;
 		_killer = _this select 1;
@@ -202,10 +202,14 @@
 						["put", [_uid, _score]] call global_scores;
 					};
 				["setScore", _distance] call _score;
+				_points = score _killer;
+				["setKill", _points] call _score;
+				_playerkill = "getKill" call _score;
+				_playerdeath = "getDeath" call _score;
 			};
 		};
 
-		wcaideath = [name  _unit, _name, _weapon];
+		wcaideath = [name  _unit, _name, _weapon, _playerkill, _playerdeath];
 		["wcaideath", "client"] call BME_fnc_publicvariable;
 	}];
 

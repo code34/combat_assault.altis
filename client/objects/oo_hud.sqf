@@ -103,13 +103,24 @@
 		};
 
 		PUBLIC FUNCTION("", "getCompass") {
-			private ["_ctrl"];
+			private ["_ctrl", "_direction", "_dir"];
 			disableSerialization;
 
 			while { true} do {
 				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
 				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl 1003;
-				_text = "<t align='center'>"+format ["%1", round(getdir player)] + "</t>";
+
+				_dir = getdir player;
+				if((_dir > 340) or (_dir < 20)) then {_direction = "N"};
+				if((_dir > 19) or (_dir < 70)) then {_direction = "NE"};
+				if((_dir > 69) or (_dir < 110)) then {_direction = "E"};
+				if((_dir > 109) or (_dir < 160)) then {_direction = "SE"};
+				if((_dir > 159) or (_dir < 210)) then {_direction = "S"};
+				if((_dir > 209) or (_dir < 250)) then {_direction = "SW"};
+				if((_dir > 249) or (_dir < 290)) then {_direction = "W"};
+				if((_dir > 289) or (_dir < 340)) then {_direction = "NW"};
+
+				_text = "<t align='center'>"+format ["%1", _direction] + "</t>";
 				_ctrl ctrlSetStructuredText parseText _text;
 				_ctrl ctrlcommit 0;
 				sleep 0.1;
@@ -117,7 +128,7 @@
 		};
 
 		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_text", "_weight", "_time", "_message", "_scores"];
+			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8" ,"_text", "_weight", "_time", "_message", "_scores", "_sector", "_dir", "_direction"];
 
 			_time = 0;
 			killzone = [];
@@ -135,7 +146,17 @@
 				_ctrl2 ctrlSetStructuredText parseText _text;
 
 				_ctrl3 =(uiNamespace getVariable "wcdisplay") displayCtrl 1003;
-				_text = "<t align='center'>"+format ["%1", round(getdir player)] + "</t>";
+
+				_dir = getdir player;
+				if((_dir > 340) or (_dir < 20)) then {_direction = "N"};
+				if((_dir > 19) and (_dir < 70)) then {_direction = "NE"};
+				if((_dir > 69) and (_dir < 110)) then {_direction = "E"};
+				if((_dir > 109) and (_dir < 160)) then {_direction = "SE"};
+				if((_dir > 159) and (_dir < 210)) then {_direction = "S"};
+				if((_dir > 209) and (_dir < 250)) then {_direction = "SW"};
+				if((_dir > 249) and (_dir < 290)) then {_direction = "W"};
+				if((_dir > 289) and (_dir < 340)) then {_direction = "NW"};
+				_text = "<t align='center'>"+format ["%1", _direction] + "</t>";
 				_ctrl3 ctrlSetStructuredText parseText _text;
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
@@ -189,12 +210,22 @@
 					if(rollprintmessage == "") then {
 						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
 					} else {
-						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
+						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
 					};
 				} else {
 					_ctrl7 ctrlSetStructuredText parsetext "";
 					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
 				};
+
+				_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1017;
+				_sector = ["getSectorFromPos", position player] call client_grid;
+				_ctrl8 ctrlSetStructuredText parsetext format ["SECTOR %1%2", _sector select 0, _sector select 1];
+
+				_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1018;
+				_ctrl9 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerkill];
+
+				_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1019;
+				_ctrl10 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerdeath];
 
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
@@ -203,6 +234,10 @@
 				_ctrl5 ctrlcommit 0;
 				_ctrl6 ctrlcommit 0;
 				_ctrl7 ctrlcommit 0;
+				_ctrl8 ctrlcommit 0;
+				_ctrl9 ctrlcommit 0;
+				_ctrl10 ctrlcommit 0;
+
 				sleep 1;			
 			};
 		};
@@ -240,11 +275,11 @@
 					private ['_code', '_vehicle', '_rank', '_img', '_color'];
 					if(vehicle player == player) then {
 						{	
-							if(_x distance player < 40) then {
+							if(_x distance player < 50) then {
 								_vehicle = _x;
 								_rank = rank _vehicle;
 								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
-								_distance = (player distance _vehicle) / 40;
+								_distance = (player distance _vehicle) / 50;
 								if(side _vehicle == west) then {
 									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
 								} else {
@@ -253,7 +288,7 @@
 								_color set [3, 1 - _distance];
 								 drawIcon3D [_img, _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
 							 };
-						}foreach playableUnits;
+						}foreach allunits;
 					};
 			";
 			_code;

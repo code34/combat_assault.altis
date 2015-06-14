@@ -83,9 +83,9 @@
 	// pop chopper probabilities by sector
 	switch (wcpopchopperprobparam) do {
 		case 1: {wcpopchopperprob = 0.8;};
-		case 2: {wcpopchopperprob = 0.93;};
+		case 2: {wcpopchopperprob = 0.9;};
 		case 3: {wcpopchopperprob = 0;};
-		default {wcpopchopperprob = 0.93;};
+		default {wcpopchopperprob = 0.9;};
 	};
 	
 	// pop ground vehicles probabilities by sector

@@ -36,6 +36,9 @@
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 
+
+	// config variables
+	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
 	wcboard = false;
 	wcwithrollmessages = true;
 	

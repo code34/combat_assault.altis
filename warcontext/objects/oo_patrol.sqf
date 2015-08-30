@@ -22,18 +22,18 @@
 	#include "oop.h"
 
 	CLASS("OO_PATROL")
-		PRIVATE VARIABLE("scalar","areasize");
 		PRIVATE VARIABLE("bool","alert");
-		PRIVATE VARIABLE("object","target");
-		PRIVATE VARIABLE("array","targets");
+		PRIVATE VARIABLE("scalar","areasize");		
+		PRIVATE VARIABLE("array","around");		
+		PRIVATE VARIABLE("array","buildings");
+		PRIVATE VARIABLE("bool","city");
+		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("group","group");
 		PRIVATE VARIABLE("scalar","flank");
 		PRIVATE VARIABLE("code","sector");
 		PRIVATE VARIABLE("scalar","sizegroup");
-		PRIVATE VARIABLE("code","grid");
-		PRIVATE VARIABLE("array","buildings");
-		PRIVATE VARIABLE("bool","city");
-
+		PRIVATE VARIABLE("object","target");
+		PRIVATE VARIABLE("array","targets");
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("group", _this select 0);
@@ -403,10 +403,11 @@
 				};
 				["callFireOnTarget", _target] call _artillery;
 			};
-		};		
+		};
 
+		// soldiers walk around the sector
 		PUBLIC FUNCTION("", "walk") {
-			private ["_areasize", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp"];
+			private ["_around", "_areasize", "_basesector", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp", "_sector"];
 			
 			_group = MEMBER("group", nil);
 			_leader = leader _group;
@@ -417,9 +418,13 @@
 			_formationtype = ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"] call BIS_fnc_selectRandom;
 			_group setFormation _formationtype;
 
-			_position = "getPosition" call MEMBER("sector", nil);
-
-			while { (position _leader) distance _position < 20 } do {
+			_position = position _leader;
+			_basesector = "getSector" call MEMBER("sector", nil);
+			
+			while { (position _leader) distance _position < _areasize } do {
+				_around = ["getSectorAllAround", [_basesector, 2]] call MEMBER("grid", nil);
+				_sector = _around call BIS_fnc_selectRandom;
+				_position = ["getPosFromSector", _sector] call MEMBER("grid", nil);
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;
 				sleep 0.0001;
 			};
@@ -526,6 +531,7 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("alert");
+			DELETE_VARIABLE("around");
 			DELETE_VARIABLE("areasize");
 			DELETE_VARIABLE("sizegroup");
 			DELETE_VARIABLE("group");

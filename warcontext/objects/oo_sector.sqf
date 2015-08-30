@@ -35,7 +35,7 @@
 		PRIVATE VARIABLE("scalar","bucket");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private["_air", "_index", "_sniper", "_type", "_vehicle"];
+			private["_air", "_index", "_sniper", "_type", "_vehicle", "_infantry"];
 
 			_index = MEMBER("index",nil);
 			if (isNil "_index") then {_index = 0;};
@@ -52,9 +52,10 @@
 
 			if(random 1 > wcpopsniperprob) then { _sniper = 1; } else { _sniper = 0;};
 			if(random 1 > wcpopchopperprob) then { _air = 1; } else { _air = 0; };
-			if(random 1 > wcpopvehicleprob) then { _vehicle = 1;} else { _vehicle = 0};
+			if(random 1 > wcpopvehicleprob) then { _vehicle = 1;} else { _vehicle = 0;};
+			if(random 1 > wcpopinfantryprob) then { _infantry = 2;} else {_infantry = 1;};
 
-			_type = [ 1, _sniper, _vehicle, _air];
+			_type = [ _infantry, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
 			
 			if(random 1 > wcpopartyprob) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};

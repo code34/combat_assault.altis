@@ -362,11 +362,13 @@
 		};
 
 		PUBLIC FUNCTION("", "startConvoy") {
-			while { true } do {
-				if(count MEMBER("getPlayers", nil) > 0) then {
-					MEMBER("spawnConvoy", nil);
+			if(wcconvoytime > 0) then {
+				while { true } do {
+					if(count MEMBER("getPlayers", nil) > 0) then {
+						MEMBER("spawnConvoy", nil);
+					};
+					sleep wcconvoytime;
 				};
-				sleep 1200;
 			};
 		};		
 

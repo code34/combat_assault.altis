@@ -149,7 +149,7 @@
 
 	while {true} do {
 		_overcast = random 1;
-		if(_overcast > 0.70) then {
+		if(_overcast > 0.80) then {
 			_rain = random 1;
 		} else {
 			_rain = 0;

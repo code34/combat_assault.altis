@@ -82,10 +82,18 @@
 
 	// pop chopper probabilities by sector
 	switch (wcpopchopperprobparam) do {
-		case 1: {wcpopchopperprob = 0.8;};
-		case 2: {wcpopchopperprob = 0.9;};
-		case 3: {wcpopchopperprob = 0;};
-		default {wcpopchopperprob = 0.9;};
+		case 1: {wcpopchopperprob = 0.9;};
+		case 2: {wcpopchopperprob = 0.97;};
+		case 3: {wcpopchopperprob = 1;};
+		default {wcpopchopperprob = 0.97;};
+	};
+
+	// pop a convoy every x seconds
+	switch (wcpopconvoyprobparam) do {
+		case 1: {wcconvoytime = 1800;};
+		case 2: {wcconvoytime = 3600;};
+		case 3: {wcconvoytime = 0;};
+		default {wcconvoytime = 1800;};
 	};
 	
 	// pop ground vehicles probabilities by sector
@@ -96,6 +104,9 @@
 
 	// pop artillery probabilities by sector
 	wcpopartyprob = 0.90;
+
+	// pop additional infantry group probabilty
+	wcpopinfantryprob = 0.90;
 
 	onPlayerDisconnected {
 		private ["_name"];

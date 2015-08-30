@@ -90,6 +90,7 @@
 					_ctrl16 ctrlSetStructuredText parsetext "";		
 					_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0];								
 				};
+
 				_ctrl8 ctrlcommit 0;
 				_ctrl10 ctrlcommit 0;
 				_ctrl11 ctrlcommit 0;
@@ -128,7 +129,7 @@
 		};
 
 		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8" ,"_text", "_weight", "_time", "_message", "_scores", "_sector", "_dir", "_direction"];
+			private ["_ctrl", "_ctrl2", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10" , "_ctrl11", "_text", "_weight", "_time", "_message", "_scores", "_sector", "_dir", "_direction"];
 
 			_time = 0;
 			killzone = [];
@@ -145,20 +146,6 @@
 				_text = "<t align='center'>"+ format ["%1", (100 - round(getfatigue player * 100))] + "</t>";
 				_ctrl2 ctrlSetStructuredText parseText _text;
 
-				_ctrl3 =(uiNamespace getVariable "wcdisplay") displayCtrl 1003;
-
-				_dir = getdir player;
-				if((_dir > 340) or (_dir < 20)) then {_direction = "N"};
-				if((_dir > 19) and (_dir < 70)) then {_direction = "NE"};
-				if((_dir > 69) and (_dir < 110)) then {_direction = "E"};
-				if((_dir > 109) and (_dir < 160)) then {_direction = "SE"};
-				if((_dir > 159) and (_dir < 210)) then {_direction = "S"};
-				if((_dir > 209) and (_dir < 250)) then {_direction = "SW"};
-				if((_dir > 249) and (_dir < 290)) then {_direction = "W"};
-				if((_dir > 289) and (_dir < 340)) then {_direction = "NW"};
-				_text = "<t align='center'>"+format ["%1", _direction] + "</t>";
-				_ctrl3 ctrlSetStructuredText parseText _text;
-		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
 				
 				_score = ["getPlayerScore", name player] call scoreboard;
@@ -168,12 +155,14 @@
 
 				_rank = ["getRankText", _ratio] call scoreboard;
 				_img = [_rank,"texture"] call BIS_fnc_rankParams;
-				_text = "<img image='" + _img + "'/> " + format ["%1", _rank];
+				_text = "<t size='2'><img image='" + _img + "'/></t><t size='2.5'>" + format ["%1</t>", _rank];
 
 				_rank = ["getRankText", _globalratio] call scoreboard;
-				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
-				_text = _text + format ["<br/><t size='0.7'>Games: %1</t>", _number];
-				_text = _text + format ["<br/><t size='0.7'>Weight: %1 %2</t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
+				_text = _text + format ["<br/><t size='1'>Server Ranking: %1</t>", _rank];
+				_text = _text + format ["<br/><t size='1'>%1</t>", wcbannerserver];
+
+				//_text = _text + format ["<br/><t size='0.7'>Games: %1</t>", _number];
+				//_text = _text + format ["<br/><t size='0.7'>Weight: %1 %2</t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 
 				if(vehicle player != player) then {
@@ -217,9 +206,21 @@
 					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
 				};
 
-				_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1017;
-				_sector = ["getSectorFromPos", position player] call client_grid;
-				_ctrl8 ctrlSetStructuredText parsetext format ["SECTOR %1%2", _sector select 0, _sector select 1];
+
+				_direction = format["%1°", round(getdir player)];
+
+				if(vehicle player == player) then {
+					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1017;
+					_sector = ["getSectorFromPos", position player] call client_grid;
+					_ctrl8 ctrlSetStructuredText parsetext format ["<t shadow='1' size='0.9' >SECTOR %1%2 - %3", _sector select 0, _sector select 1, _direction];
+					_ctrl8 ctrlSetBackgroundColor [0,0,0,0.5];	
+				} else {
+					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1017;
+					_ctrl8 ctrlSetStructuredText parsetext "";		
+					_ctrl8 ctrlSetBackgroundColor [0,0,0,0];	
+				};
+
+
 
 				_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1018;
 				_ctrl9 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerkill];
@@ -227,9 +228,10 @@
 				_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1019;
 				_ctrl10 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerdeath];
 
+				_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1020;
+
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
-				_ctrl3 ctrlcommit 0;
 				_ctrl4 ctrlcommit 0;
 				_ctrl5 ctrlcommit 0;
 				_ctrl6 ctrlcommit 0;
@@ -237,6 +239,7 @@
 				_ctrl8 ctrlcommit 0;
 				_ctrl9 ctrlcommit 0;
 				_ctrl10 ctrlcommit 0;
+				_ctrl11 ctrlcommit 0;
 
 				sleep 1;			
 			};
@@ -275,11 +278,11 @@
 					private ['_code', '_vehicle', '_rank', '_img', '_color'];
 					if(vehicle player == player) then {
 						{	
-							if(_x distance player < 50) then {
+							if(_x distance player < 30) then {
 								_vehicle = _x;
 								_rank = rank _vehicle;
 								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
-								_distance = (player distance _vehicle) / 50;
+								_distance = (player distance _vehicle) / 30;
 								if(side _vehicle == west) then {
 									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
 								} else {

@@ -136,10 +136,11 @@
 
 		// movetoNext target position
 		PUBLIC FUNCTION("", "moveToNext") {
-			private ["_group", "_vehicle", "_wp"];
+			private ["_group", "_vehicle", "_wp", "_sector", "_move"];
 
 			_vehicle = MEMBER("vehicle", nil);
 			_group = MEMBER("group", nil);
+			_move = false;
 
 			_wp = _group addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
@@ -147,10 +148,15 @@
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
 
-			sleep 5;
-
-			while { (speed _vehicle > 70) } do {
-				sleep 1;
+			while { !_move } do {
+				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
+				sleep 10;
+				if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call MEMBER("grid", nil))) then {
+					_move = true;
+				};
+				if(speed _vehicle < 70) then {
+					_move = true;
+				};
 			};
 			deletewaypoint _wp;
 		};

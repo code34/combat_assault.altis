@@ -128,7 +128,14 @@
 					"was killed over feeding",  
 					"was killed. Good lesson", 
 					"was killed drinking again", 
-					"was killed by his weapon"
+					"was killed by his weapon",
+					"was killed by a payable DLC",
+					"was killed by a BIS jackass",
+					"was killed by Angela Merkel",
+					"was killed by Francois Hollande",
+					"was killed by Barack Obama",
+					"was killed by Vladimir Poutine",
+					"was killed by Jean Claude Juncker"
 				] call BIS_fnc_selectRandom;
 				_message2 = "<t color='#FF9933'>"+_unit + "</t> "+_message+"<br/>";
 				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> "+_message + "</t>";

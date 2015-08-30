@@ -35,7 +35,7 @@
 		PUBLIC FUNCTION("string", "getPlayerScore") {
 			private ["_result"];
 			_result = ["get", _this] call MEMBER("map", nil);
-			if(isnil "_result") then {	_result = [0,0,0,0]; };
+			if(isnil "_result") then {	_result = [0,0,0,0,0,0]; };
 			_result;
 		};
 
@@ -77,7 +77,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "getText") {
-			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match", "_gamescore", "_gamescores", "_matchs"];
+			private ["_text", "_scores", "_score", "_tmp", "_top", "_players", "_ranks", "_serverranks", "_ranks", "_match", "_gamescore", "_gamescores", "_matchs", "_playerkill", "_playerdeath"];
 
 			_scores = _this;
 			
@@ -109,8 +109,11 @@
 				_matchs = _matchs + _tmp;
 
 				_gamescore = _score select 3;
+				_playerkill = _score select  4;
+				_playerdeath = _score select 5; 
+
 				if(isnil "_gamescore") then {_gamescore = 0;};
-				_tmp = str(_gamescore) + "<br/>";
+				_tmp = str(_playerkill) + "/" + str(_playerdeath) + "/" + str(_gamescore) + "<br/>";
 				_gamescores = _gamescores + _tmp;
 			}foreach _scores;
 

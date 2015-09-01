@@ -18,6 +18,8 @@
 
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
+	waitUntil {time > 0};
+
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
@@ -63,8 +65,7 @@
 
 	[] execVM "real_weather\real_weather.sqf";
 
-	sleep 1;
-	enableEnvironment false;
+	if(wcambiant ==2) then {enableEnvironment false;};
 
 	player addEventHandler ['Killed', {
 		private ["_name", "_weapon"];

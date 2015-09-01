@@ -465,6 +465,13 @@ class Params
 		texts[] = {"30 Minutes ", "1 Hour", "NEVER"};
 		default = 1;
 	};
+	class wcambiant
+	{
+		title = "AMBIANT LIFES AND SOUNDS";
+		values[] = {1, 2};
+		texts[] = {"ON", "OFF"};
+		default = 2;
+	};
 };
 
 class RscTitles { 

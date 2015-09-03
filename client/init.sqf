@@ -19,12 +19,12 @@
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
 	waitUntil {time > 0};
+	waitUntil {getClientState == "BRIEFING READ"};
 
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
-
 	
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";

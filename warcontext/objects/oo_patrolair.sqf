@@ -150,11 +150,11 @@
 
 			while { !_move } do {
 				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
-				sleep 10;
+				sleep 7;
 				if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call MEMBER("grid", nil))) then {
 					_move = true;
 				};
-				if(speed _vehicle < 70) then {
+				if(speed _vehicle < 60) then {
 					_move = true;
 				};
 			};

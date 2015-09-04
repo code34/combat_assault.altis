@@ -20,9 +20,9 @@
 
 	waitUntil {time > 0};
 	waitUntil {getClientState == "BRIEFING READ"};
-
+	
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
-	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
+	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 	

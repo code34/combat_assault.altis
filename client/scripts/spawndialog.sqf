@@ -32,6 +32,8 @@
 	wcaction = "";
 
 	createDialog "spawndialog"; 
+	waituntil {diaglog};
+	
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4005;
 	if(wcwithrollmessages) then {
 		_ctrl ctrlSetText "ROLLMESSAGE ON";

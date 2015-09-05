@@ -18,6 +18,7 @@
 
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
+	waitUntil {BIS_fnc_init;};
 	waitUntil {time > 0};
 	waitUntil {getClientState == "BRIEFING READ"};
 	

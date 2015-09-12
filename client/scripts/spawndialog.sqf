@@ -134,7 +134,7 @@
 					} else {
 						_cam cameraEffect ["internal", "BACK"];
 						_cam camSetTarget (vehicle _player);
-						_cam attachto [(vehicle _player),[0,-10,0], "neck"];
+						_cam attachto [(vehicle _player),[0,-50,0], "neck"];
 						_cam CamCommit 0;
 					};
 				};

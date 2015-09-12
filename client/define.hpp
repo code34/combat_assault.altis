@@ -177,12 +177,12 @@
 		ptsPerSquareRoad = 6;
 		ptsPerSquareObj = 9;
 		showCountourInterval = 0;
-		scaleMin = 0.1;
-		scaleMax = 0.1;
-		scaleDefault = 0.1;
-		maxSatelliteAlpha = 0.8;
+		scaleMin = 0.03;
+		scaleMax = 0.4;
+		scaleDefault = 0.2;
+		maxSatelliteAlpha = 1;
 		alphaFadeStartScale = 0.35;
-		alphaFadeEndScale = 0.4;
+		alphaFadeEndScale = 1;
 		colorBackground[] = {0,0.4,0.8,0.4};
 		colorText[] = {0.0,0.0,0.0,1.0};
 		colorSea[] = {0.467,0.631,0.851,0.5};

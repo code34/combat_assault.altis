@@ -1,0 +1,1 @@
+	[player] call WC_fnc_spawndialog;

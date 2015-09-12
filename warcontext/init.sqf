@@ -57,7 +57,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
 
 	[] execVM "real_weather\real_weather.sqf";
-	_temp = "Land_LampDecor_F" createVehicle (getMarkerPos "base_lamp");
+	_temp = "Land_LampAirport_F" createVehicle (getMarkerPos "base_lamp");
 
 
 	// CONFIG VARIABLE 

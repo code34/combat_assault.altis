@@ -264,7 +264,7 @@
 				sleep 0.5;
 				if((count _list > 1) and (_count ==1)) then {
 					{
-						if(isPlayer _x) then {
+						if((isPlayer _x) and (side _x == west)) then {
 							[_civil] joinSilent group _x;
 						};
 					}foreach _list;

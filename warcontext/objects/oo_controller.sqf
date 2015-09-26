@@ -51,7 +51,7 @@
 			_array = [];
 
 			{
-				if (isplayer _x) then {_array pushBack _x};
+				if ((isplayer _x) and (side _x == west)) then {_array pushBack _x};
 				sleep 0.0000001;
 			} foreach (playableunits + alldead);
 
@@ -357,7 +357,7 @@
 						"Spawn" spawn _sector;
 					};
 				};
-				0.01;
+				sleep 0.01;
 			}foreach MEMBER("getNewSectorAround", nil);
 		};
 

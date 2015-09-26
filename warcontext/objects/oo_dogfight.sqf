@@ -22,14 +22,17 @@
 
 	CLASS("OO_DOGFIGHT")
 		PRIVATE VARIABLE("code","atc");
+		PRIVATE VARIABLE("scalar","age");
 		PRIVATE VARIABLE("array","squadron");
 		PRIVATE VARIABLE("array","airtargets");
 		PRIVATE VARIABLE("array","groundtargets");
+		PRIVATE VARIABLE("array","playertargets");
 		PRIVATE VARIABLE("array","targets");
 		PRIVATE VARIABLE("array","target");
 		PRIVATE VARIABLE("bool","patrol");
 		PRIVATE VARIABLE("scalar","squadronsize");
 		PRIVATE VARIABLE("scalar","counter");
+
 			
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_array"];
@@ -39,10 +42,12 @@
 			MEMBER("squadron", _array);
 			MEMBER("airtargets", _array);
 			MEMBER("groundtargets", _array);
+			MEMBER("playertargets", _array);
 			MEMBER("targets", _array);
 			MEMBER("target", _array);
 			MEMBER("squadronsize", 0);
 			MEMBER("counter", 5);
+			MEMBER("age", 10);
 		};
 
 		PUBLIC FUNCTION("","getSquadron") FUNC_GETVAR("squadron");
@@ -62,13 +67,22 @@
 			}foreach MEMBER("squadron", nil);
 		};
 
+		// Defini la taille de l'escadre
 		PUBLIC FUNCTION("", "setSquadronSize") {
-			private ["_array", "_ground", "_air", "_size"];
+			private ["_array", "_ground", "_air", "_size", "_player"];
 
+			// compte le nombre de vehicules au sol bluefor
 			_ground = count MEMBER("groundtargets", nil);
+
+			// compte le nombre d avions bluefor
 			_air = count MEMBER("airtargets", nil);
 
-			_size = _ground + (2 * _air);
+			// compte le nombre d infantery
+			_player = count MEMBER("playertargets", nil);
+
+			// la taille de l escadre ne peut pas etre superieur a 6
+			_size = _ground + (2 * _air) + round(_player / 5);
+
 			if(_size > 6) then { _size = 6;};
 			MEMBER("squadronsize", _size);		
 		};
@@ -80,9 +94,10 @@
 		PUBLIC FUNCTION("","start") {
 			MEMBER("patrol", true);
 			while { MEMBER("patrol", nil) } do {
+				MEMBER("checkTargets", nil);
 				MEMBER("setSquadronSize", nil);
 				MEMBER("popSquadron", nil);
-				MEMBER("checkTargets", nil);
+				MEMBER("intercept", nil);
 				MEMBER("setFuel", nil);
 				MEMBER("cleaner", nil);
 				sleep 30;
@@ -129,23 +144,14 @@
 			if(count MEMBER("target", nil) > 0) then {
 				_target = MEMBER("target", nil) select 0;
 				_squadron = MEMBER("squadron", nil);
-				diag_log format ["oo_dogfight squadron %1", _squadron];
 				
 				{
 					_vehicle = _x select 0;
-					if(fuel _vehicle > 0.4) then {
-						_vehicle domove (position _target);
-						_vehicle dotarget _target;
-						diag_log format ["oo_dogfight target %1 %2 %3", position _target, _target, _vehicle];
-						if(count crew _target == 0) then {
-							_target engineOn true;
-						};
-					} else {
-						_vehicle domove [100,100];
-						diag_log format ["oo_dogfight distance of init %1", (_vehicle distance [100,100])];
-						if(_vehicle distance [100,100] < 2000) then {
-							MEMBER("unpopMember", _vehicle);
-						};
+					_vehicle domove (position _target);
+					_vehicle dotarget _target;
+					diag_log format ["oo_dogfight target %1 %2 %3", position _target, _target, _vehicle];
+					if(count crew _target == 0) then {
+						_target engineOn true;
 					};
 					sleep 0.01;
 				}foreach MEMBER("squadron", nil);
@@ -156,59 +162,72 @@
 			private ["_conso", "_fuel", "_vehicle"];
 			{
 				_vehicle = _x select 0;
-				_fuel = fuel _vehicle;
-
-				_conso = (speed _vehicle * 0.0005) / 10;
-				_vehicle setfuel (_fuel - _conso);
+				_vehicle setFuel 1;
 				_vehicle setVehicleAmmoDef 1;
 				sleep 0.0001;
 			}foreach MEMBER("squadron", nil);
 		};
 
 		PUBLIC FUNCTION("", "checkTargets") {
-			private ["_target"];
+			private ["_target", "_age"];
 			
 			_target = MEMBER("target", nil);
+			_age = MEMBER("age", nil);
+
+			hint format ["age  %1", _age];
+
+			if( ((position (_target select 0)) isEqualTo [0,0,0]) or (_age < 1) ) then { 
+				_target = [];
+				_age = 10;
+				MEMBER("target", _target); 
+				MEMBER("age", _age);
+			} else {
+				_age = _age - 1;
+				MEMBER("age", _age);
+			};
+
 			while { count _target == 0} do {
 				MEMBER("detectTargets", nil);
 				MEMBER("setTarget", nil);
 				_target = MEMBER("target", nil);
-				sleep 10;
-			};
-			
-			_target = MEMBER("target", nil) select 0;
-
-			if ((damage _target < 0.9) and (!isnil "_target")) then {
-				MEMBER("intercept", nil);
-			} else {
-				_array = [];
-				MEMBER("target", _array);
 			};
 		};
 
 		PUBLIC FUNCTION("", "detectTargets") {
-			private ["_groundtargets", "_airtargets", "_vehicle"];
+			private ["_groundtargets", "_airtargets", "_vehicle", "_playertargets", "_targets"];
 
 			_groundtargets = [];
 			_airtargets = [];
+			_playertargets = [];
+			
 			{
-				_vehicle = vehicle _x;
-				if((_vehicle != _x) and (alive _x)) then {
-					if((getposatl _x) select 2 > 10) then {
-						if!(_vehicle in _airtargets) then {
-							_airtargets = _airtargets + [_vehicle];
+				if(side _x ==  west) then {
+					_vehicle = vehicle _x;
+					if(_vehicle == _x) then {
+						if!(_x in _playertargets) then {
+							_playertargets = _playertargets + [_x];
 						};
 					} else {
-						if!(_vehicle in _groundtargets) then {
-							_groundtargets = _groundtargets + [_vehicle];
+						if((getposatl _x) select 2 > 10) then {
+							if!(_vehicle in _airtargets) then {
+								_airtargets = _airtargets + [_vehicle];
+							};
+						} else {
+							if!(_vehicle in _groundtargets) then {
+								_groundtargets = _groundtargets + [_vehicle];
+							};
 						};
 					};
+					sleep 0.0001;
 				};
-				sleep 0.0001;
 			}foreach playableunits;
+			
 			MEMBER("airtargets", _airtargets);
 			MEMBER("groundtargets", _groundtargets);
-			MEMBER("targets", _airtargets + _groundtargets);
+			MEMBER("playertargets", _playertargets);
+
+			_targets = _airtargets + _groundtargets + _playertargets;
+			MEMBER("targets", _targets);
 		};
 
 		PUBLIC FUNCTION("", "popMember") {
@@ -282,6 +301,8 @@
 							sleep 10;
 						};
 						MEMBER("counter", 0);
+						wcaircraftstart = true;
+						["wcaircraftstart", "client"] call BME_fnc_publicvariable;	
 					} else {
 						_counter = _counter + 1;
 						MEMBER("counter", _counter);
@@ -302,10 +323,12 @@
 			DELETE_VARIABLE("atc");
 			DELETE_VARIABLE("airtargets");
 			DELETE_VARIABLE("groundtargets");
+			DELETE_VARIABLE("playertargets");
 			DELETE_VARIABLE("patrol");
 			DELETE_VARIABLE("squadron");
 			DELETE_VARIABLE("targets");
 			DELETE_VARIABLE("squadronsize");
 			DELETE_VARIABLE("counter");
+			DELETE_VARIABLE("age");
 		};
 	ENDCLASS;

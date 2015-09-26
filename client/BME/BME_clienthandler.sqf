@@ -42,6 +42,24 @@
 		killzone = killzone + [_message];
 	};
 
+	BME_netcode_wcaircraftstart = {
+		private ["_message"];
+	
+		_message = "<t color='#FF9933'>An Enemy Aircraft</t> has been discovered<br/>";
+		rollmessage = rollmessage + [_message];
+		_message = "<t align='center'><t color='#FF9933'>An Enemy Aircraft</t> has been discovered</t>";
+		killzone = killzone + [_message];
+	};
+
+	BME_netcode_wcartillerystart = {
+		private ["_message"];
+	
+		_message = "<t color='#FF9933'>An Enemy Artillery</t> has been discovered<br/>";
+		rollmessage = rollmessage + [_message];
+		_message = "<t align='center'><t color='#FF9933'>An Enemy Artillery</t> has been discovered</t>";
+		killzone = killzone + [_message];
+	};
+
 	BME_netcode_wcsectorcompleted = {
 		private ["_sector", "_message"];
 		_sector = _this select 0;

@@ -36,9 +36,10 @@
 		PRIVATE VARIABLE("string","ammo");
 		PRIVATE VARIABLE("scalar","round");
 		PRIVATE VARIABLE("bool","suppression");
+		PRIVATE VARIABLE("code","marker");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_position", "_vehicle"];
+			private ["_position", "_vehicle", "_mark"];
 
 			_position = _this select 0;
 			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
@@ -50,6 +51,18 @@
 			_group = _array select 2;
 			_group setBehaviour "COMBAT";
 			_group setCombatMode "RED";
+
+			wcartillerystart = true;
+			["wcartillerystart", "client"] call BME_fnc_publicvariable;	
+			
+			_mark = ["new", position _vehicle] call OO_MARKER;
+			["attachTo", _vehicle] spawn _mark;
+			["setText", "Artillery"] spawn _mark;
+			["setColor", "ColorRed"] spawn _mark;
+			["setType", "mil_arrow"] spawn _mark;
+			["setSize", [0.5,0.5]] spawn _mark;
+			MEMBER("marker", _mark);
+
 			MEMBER("group", _group);
 
 			_vehicle addeventhandler ['HandleDamage', {
@@ -196,6 +209,7 @@
 
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			["delete", MEMBER("marker", nil)] call OO_MARKER;
 			MEMBER("removeVehicle", nil);
 			DELETE_VARIABLE("vehicle");
 			deleteGroup MEMBER("group", nil);

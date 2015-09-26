@@ -13,7 +13,7 @@
 				_target = nil;
 				_enemys = nearestObjects[_unit,["Man"], 300];
 				{
-					if(isplayer _x) then {
+					if((isplayer _x) and (side _x == west)) then {
 						_target = _x;
 					};
 				}foreach _enemys;

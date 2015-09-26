@@ -21,7 +21,8 @@
 	waitUntil {BIS_fnc_init;};
 	waitUntil {time > 0};
 	waitUntil {getClientState == "BRIEFING READ"};
-	
+	waitUntil {alive player;};
+
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";

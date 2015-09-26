@@ -67,8 +67,11 @@
 		 	MEMBER("setHandler", _vehicle);
 
 			while { _counter > 1 } do {
-				if(count (crew _vehicle) == 0) then { _counter = _counter - 1;} else {_counter = 240;};
-				if(getDammage _vehicle > 0.9) then { _counter = _counter - 1;};
+				if ((count (crew _vehicle) == 0) or (getDammage _vehicle > 0.9)) then {
+					_counter = _counter - 1;
+				} else {
+					_counter = 240;
+				};
 				MEMBER("alive", _counter);
 				sleep 1;
 			}; 
@@ -206,7 +209,6 @@
 		PUBLIC FUNCTION("", "unPop") {
 			private ["_vehicle"];
 			_vehicle = MEMBER("vehicle", nil);
-			waituntil { count (crew _vehicle) == 0};
 			deletevehicle _vehicle;
 			MEMBER("unMark", nil);
 		};

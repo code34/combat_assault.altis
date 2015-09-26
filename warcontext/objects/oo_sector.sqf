@@ -227,16 +227,19 @@
 
 				_sectors = MEMBER("occupedSector", nil);
 				{
-					_player_sector = ["getSectorFromPos", position _x] call _grid;
-					{
-						_cost = ["GetEstimateCost", [_player_sector, _x]] call _grid;
-						if(_cost < _mincost) then { _mincost = _cost;};
-						sleep 0.0001;
-					}foreach _sectors;
-					_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call _grid;
-					if(_cost2 < _popsquaredistance) then {_bucket = _bucket + 1;};
+					if(side _x == west) then {
+						_player_sector = ["getSectorFromPos", position _x] call _grid;
+						{
+							_cost = ["GetEstimateCost", [_player_sector, _x]] call _grid;
+							if(_cost < _mincost) then { _mincost = _cost;};
+							sleep 0.0001;
+						}foreach _sectors;
+						_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call _grid;
+						if(_cost2 < _popsquaredistance) then {_bucket = _bucket + 1;};
+					};
 					sleep 0.0001;
 				}foreach playableunits;
+
 				if(MEMBER("bucket", nil) < _bucket) then { MEMBER("bucket", _bucket);};
 
 				if(MEMBER("alert", nil) and (_mincost < _popsquaredistance)) then {

@@ -100,7 +100,7 @@
 				MEMBER("intercept", nil);
 				MEMBER("setFuel", nil);
 				MEMBER("cleaner", nil);
-				sleep 30;
+				sleep 10;
 			};
 		};
 
@@ -173,8 +173,6 @@
 			
 			_target = MEMBER("target", nil);
 			_age = MEMBER("age", nil);
-
-			hint format ["age  %1", _age];
 
 			if( ((position (_target select 0)) isEqualTo [0,0,0]) or (_age < 1) ) then { 
 				_target = [];

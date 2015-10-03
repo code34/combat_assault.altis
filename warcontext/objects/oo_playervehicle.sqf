@@ -49,6 +49,14 @@
 			private ["_vehicle"];
 
 			_vehicle = MEMBER("vehicle", nil);
+
+			{
+				if!(alive _x) then {
+					deletevehicle _x;
+				};
+				sleep 0.0001;
+			}foreach (crew _vehicle);
+
 			if(count (crew _vehicle) == 0) then {
 				if(damage _vehicle < 0.9) then {
 					_vehicle setdamage 0.91;
@@ -67,12 +75,22 @@
 		 	MEMBER("setHandler", _vehicle);
 
 			while { _counter > 1 } do {
-				if ((count (crew _vehicle) == 0) or (getDammage _vehicle > 0.9)) then {
+
+				{
+					if!(alive _x) then {
+						_x action ["Eject", _vehicle];
+						deletevehicle _x;
+					};
+					sleep 0.0001;
+				}foreach (crew _vehicle);
+
+				if ( (count (crew _vehicle) == 0) or (damage _vehicle > 0.9) ) then {
 					_counter = _counter - 1;
 				} else {
 					_counter = 240;
 				};
 				MEMBER("alive", _counter);
+				diag_log format ["Player Vehicle : %1 %2 ", count (crew _vehicle), damage _vehicle];
 				sleep 1;
 			}; 
 			MEMBER("unPop", nil);

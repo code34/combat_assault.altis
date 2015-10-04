@@ -509,24 +509,28 @@
 			MEMBER("group", nil) setBehaviour "SAFE";
 			MEMBER("group", nil) setCombatMode "WHITE";
 			MEMBER("group", nil) setSpeedMode "FULL";
+			MEMBER("group", nil) allowFleeing 0.1;
 		};
 
 		PUBLIC FUNCTION("", "setMoveMode") {
 			MEMBER("group", nil) setBehaviour "AWARE";
 			MEMBER("group", nil) setCombatMode "RED";
 			MEMBER("group", nil) setSpeedMode "FULL";
+			MEMBER("group", nil) allowFleeing 0.1;
 		};		
 
 		PUBLIC FUNCTION("", "setSafeMode") {
 			MEMBER("group", nil) setBehaviour "SAFE";
 			MEMBER("group", nil) setCombatMode "GREEN";
 			MEMBER("group", nil) setSpeedMode "NORMAL";
+			MEMBER("group", nil) allowFleeing 0.1;
 		};
 
 		PUBLIC FUNCTION("", "setCombatMode") {
 			MEMBER("group", nil) setBehaviour "COMBAT";
 			MEMBER("group", nil) setCombatMode "RED";
 			MEMBER("group", nil) setSpeedMode "FULL";
+			MEMBER("group", nil) allowFleeing 0.1;
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

@@ -120,8 +120,10 @@
 		while { true} do {
 			if(_oldplayertype != playertype) then {
 				_oldplayertype = playertype;
-				player removeAction _action;
-				_action = nil;
+				if(!isnil "_action") then {
+					player removeAction _action;
+					_action = nil;
+				};
 			};
 			if(vehicle player == player) then {
 				if(isnil "_action") then {

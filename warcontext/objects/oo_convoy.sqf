@@ -96,7 +96,7 @@
 
 			_position = _this;
 
-			if("countWest" call global_atc >  0) then {
+			if(("countWest" call global_atc >  0) and (random 1> 0.25)) then {
 				_markers = "getWest" call global_atc;
 				_distance = 30000;
 				{
@@ -108,7 +108,9 @@
 				}foreach _markers;
 				_endposition = getmarkerpos _marker;				
 			} else {
-				_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
+				_marker = ["RADIOCENTER", "RESEARCHCENTER", "MILITARYDEPOT", "GAZFACTORY", "WEAPONSFACTORY", "POWERRELAY", "BLACKCASTLE", "VEHICLEDEPOT", "POWERPLANT1", "POWERPLANT2", "POWERPLANT3", "POWERPLANT4", "CARGODEPOT", "AGIAPORT", "VEHICLEFACTORY", "URANIUMMINE", "FUELFACTORY", "AGIOSHARBOR", "GSMANTENNA"] call BIS_fnc_selectRandom;
+				_endposition = getmarkerpos _marker;	
+				//_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
 			};
 			MEMBER("endposition", _endposition);
 		};

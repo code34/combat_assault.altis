@@ -69,7 +69,6 @@ class spawndialog {
 		w = 1.05; 
 		h = 0.04; 
 		text = "<t align='center'>SELECT YOUR ROLE</t>";
-		action = "playertype ='ammobox'; ";
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.038; 
 		colorBackground[] = {0,0,0,0.6}; 
@@ -85,7 +84,6 @@ class spawndialog {
 		w = 1.05; 
 		h = 0.2; 
 		text = "";
-		action = "playertype ='ammobox'; ";
 		font = "EtelkaNarrowMediumPro"; 
 		size = 0.038; 
 		colorBackground[] = {0,0,0,0.6}; 

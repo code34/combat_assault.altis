@@ -20,6 +20,8 @@
 
 	_body = _this select 0;
 
+	playertype ='ammobox';
+
 	showCinemaBorder false;
 	_cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
 	detach _cam;

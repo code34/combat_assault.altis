@@ -24,14 +24,11 @@
 		PRIVATE VARIABLE("array","groundplayers");
 		PRIVATE VARIABLE("array","airplayers");
 		PRIVATE VARIABLE("array","queuesector");
-		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("code","zone_hashmap");
 		PRIVATE VARIABLE("code","player_hashmap");
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("setPlayers", nil);
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-			MEMBER("grid", _grid);
 
 			MEMBER("zone_hashmap", global_zone_hashmap);
 
@@ -109,7 +106,7 @@
 			_around = [];
 			_array = MEMBER("getNewSector", nil);		
 			{
-				_temp = ["getSectorAllAround", [_x, wcpopsquaredistance]] call MEMBER("grid", nil);
+				_temp = ["getSectorAllAround", [_x, wcpopsquaredistance]] call global_grid;
 				_around = _around + _temp;
 				sleep 0.0000001;
 			}foreach _array; 
@@ -128,7 +125,7 @@
 
 			_key = _this;
 			
-			_cross = ["getSectorCrossAround", [_key]] call _grid;
+			_cross = ["getSectorCrossAround", [_key]] call global_grid;
 			_neighbour = 1;
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -149,7 +146,7 @@
 			_can = true;
 			_boundaries = MEMBER("getNumberNeighour", _key);
 			if(_boundaries < 4) then {
-				_cross = ["getSectorCrossAround", [_key]] call _grid;
+				_cross = ["getSectorCrossAround", [_key]] call global_grid;
 				{
 					_boundaries = MEMBER("getNumberNeighour", _x);
 					if(_boundaries > 3) then {_can = false;};
@@ -165,7 +162,7 @@
 			private ["_count", "_key", "_around", "_temp"];
 			_key = _this;
 			_count = 1;
-			_around = ["getSectorCrossAround", [_key]] call _grid;
+			_around = ["getSectorCrossAround", [_key]] call global_grid;
 			{
 				_temp = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
 				if!(isnil "_temp") then {
@@ -176,15 +173,14 @@
 		};
 
 		PUBLIC FUNCTION("array", "isplayerAroundSector"){
-			private ["_sector", "_cost", "_costmin", "_grid"];
+			private ["_sector", "_cost", "_costmin"];
 
-			_grid = MEMBER("grid", nil);
 			_sector = _this;
 			_costmin = 10;
 			
 			{
-				_sector = ["getSectorFromPos", position _x] call _grid;
-				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;
+				_sector = ["getSectorFromPos", position _x] call global_grid;
+				_cost = ["GetEstimateCost", [_sector, _key]] call global_grid;
 				if(_cost < _costmin) then {_costmin = _cost;};
 				sleep 0.0000001;
 			}foreach MEMBER("groundplayers", nil);
@@ -202,14 +198,13 @@
 		};
 
 		PUBLIC FUNCTION("array", "canExpandToSector"){
-			private ["_key", "_sector", "_cost", "_costmin", "_grid", "_neighbour", "_return"];
+			private ["_key", "_sector", "_cost", "_costmin", "_neighbour", "_return"];
 
 			_key = _this;
-			_grid = MEMBER("grid", nil);
 			_costmin = 4;
 			{
-				_sector = ["getSectorFromPos", position _x] call _grid;
-				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;
+				_sector = ["getSectorFromPos", position _x] call global_grid;
+				_cost = ["GetEstimateCost", [_sector, _key]] call global_grid;
 				if(_cost < _costmin) then {_costmin = _cost;};
 				sleep 0.0000001;
 			}foreach MEMBER("groundplayers", nil);
@@ -234,12 +229,12 @@
 			_rate = (90 - (_this select 1)) / 100;
 			if(_rate < 0) then {_rate = 0;};
 
-			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
+			_around = ["getSectorAllAround", [_sector,3]] call global_grid;
 
 			while { count _around > 0 } do {
 				_x = _around call BIS_fnc_selectRandom;
 				_around = _around - [_x];
-				_rate = ["GetEstimateCost", [_x, _sector]] call MEMBER("grid", nil);
+				_rate = ["GetEstimateCost", [_x, _sector]] call global_grid;
 				_rate = (_rate / 10) + 0.5;
 				if((random 1 > _rate) and (_iteration > 0)) then {
 					MEMBER("expandSector", _x);
@@ -252,15 +247,15 @@
 		PUBLIC FUNCTION("array", "expandFriendlyAround"){
 			private ["_sector", "_around", "_position"];
 			_position = _this;
-			_sector = ["getSectorFromPos", _position] call MEMBER("grid", nil);
-			_around = ["getSectorAllAround", [_sector,2]] call MEMBER("grid", nil);
+			_sector = ["getSectorFromPos", _position] call global_grid;
+			_around = ["getSectorAllAround", [_sector,2]] call global_grid;
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
 				if(isnil "_sector") then {
 					if(random 1 > 0.95) then {
-						_position = ["getPosFromSector", _x] call MEMBER("grid", nil);
-						_sector = ["new", [str(_x), _position, MEMBER("grid", nil)]] call OO_SECTOR;
+						_position = ["getPosFromSector", _x] call global_grid;
+						_sector = ["new", [str(_x), _position, global_grid]] call OO_SECTOR;
 						"draw" call _sector;
 						"setVictory" call _sector;
 						["put", [str(_x), _sector]] call MEMBER("zone_hashmap",nil);
@@ -273,7 +268,7 @@
 		PUBLIC FUNCTION("array", "expandAlertAround"){
 			private ["_sector", "_around"];
 			_sector = _this;
-			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
+			_around = ["getSectorAllAround", [_sector,3]] call global_grid;
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -302,11 +297,11 @@
 				_key = MEMBER("queuesector", nil) select 0;
 				_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
 				if(isnil "_sector") then {
-					_position = ["getPosFromSector", _key] call MEMBER("grid", nil);
+					_position = ["getPosFromSector", _key] call global_grid;
 					if((getmarkerpos "respawn_west" distance _position > 1300)) then {
 						if(!surfaceIsWater _position) then {
 							if(MEMBER("canExpandToSector", _key)) then {
-								_sector = ["new", [_key, _position, MEMBER("grid", nil)]] call OO_SECTOR;
+								_sector = ["new", [_key, _position, global_grid]] call OO_SECTOR;
 								"draw" call _sector;
 								["put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
 								["setTicket", "redzone"] call global_ticket;
@@ -323,7 +318,7 @@
 
 		PUBLIC FUNCTION("object", "getPlayerSector") {
 			private ["_sector"];
-			_sector = ["getSectorFromPos", position _this] call MEMBER("grid", nil);
+			_sector = ["getSectorFromPos", position _this] call global_grid;
 			_sector;
 		};
 
@@ -376,7 +371,7 @@
 			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
 			
 			_sector = MEMBER("getSectorFarOfPlayers", nil);
-			_startposition = ["getPosFromSector", "getSector" call _sector] call MEMBER("grid",nil);
+			_startposition = ["getPosFromSector", "getSector" call _sector] call global_grid;
 	
 			_convoy = ["new", _startposition] call OO_CONVOY;
 			"startConvoy" spawn _convoy;
@@ -409,7 +404,6 @@
 			DELETE_VARIABLE("queuesector");
 			DELETE_VARIABLE("groundplayers");
 			DELETE_VARIABLE("airplayers");
-			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("zone_hashmap");
 			DELETE_VARIABLE("player_hashmap");
 		};

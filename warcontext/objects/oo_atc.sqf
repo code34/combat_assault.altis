@@ -22,14 +22,11 @@
 
 	CLASS("OO_ATC")
 		PRIVATE VARIABLE("bool","run");
-		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("array","west");
 		PRIVATE VARIABLE("array","east");
 
 		PUBLIC FUNCTION("array","constructor") {
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			_array = [];
-			MEMBER("grid", _grid);
 			MEMBER("run", false);
 			MEMBER("west", _array);
 			MEMBER("east", _array);
@@ -45,8 +42,8 @@
 			_eairport = [];
 			{						
 				_enemies = false;
-				_sector = ["getSectorFromPos", getmarkerpos _x] call MEMBER("grid", nil);
-				_around = ["getSectorAround", _sector] call MEMBER("grid", nil);
+				_sector = ["getSectorFromPos", getmarkerpos _x] call global_grid;
+				_around = ["getSectorAround", _sector] call global_grid;
 				{
 					_sector = ["get", str(_x)] call global_zone_hashmap;
 					if(!isnil "_sector") then {
@@ -94,7 +91,6 @@
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("west");
 			DELETE_VARIABLE("east");
-			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("run");
 		};
 	ENDCLASS;

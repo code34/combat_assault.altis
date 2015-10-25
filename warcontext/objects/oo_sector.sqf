@@ -23,7 +23,6 @@
 	CLASS("OO_SECTOR")
 		PRIVATE STATIC_VARIABLE("scalar","index");
 		PRIVATE VARIABLE("bool","alert");
-		PRIVATE VARIABLE("code","grid");	
 		PRIVATE VARIABLE("string","marker");
 		PRIVATE VARIABLE("array","sector");
 		PRIVATE VARIABLE("scalar","state");
@@ -44,7 +43,6 @@
 
 			MEMBER("sector", _this select 0);
 			MEMBER("position", _this select 1);
-			MEMBER("grid", _this select 2);
 
 			MEMBER("bucket", 0);
 			MEMBER("state", 0);
@@ -189,11 +187,12 @@
 			MEMBER("units", _units);
 		};
 
+		// recupere tous les sectors dans lesquels patrouilles les unites AI
 		PUBLIC FUNCTION("", "occupedSector") {
 			private ["_sector", "_sectors"];
 			_sectors = [];
 			{
-				_sector = ["getSectorFromPos", position _x] call _grid;
+				_sector = ["getSectorFromPos", position _x] call global_grid;
 				if!(_sector in _sectors) then {
 					_sectors = _sectors + [_sector];
 				};
@@ -204,13 +203,12 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_grid", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_popsquaredistance"];
+			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_popsquaredistance"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
 			MEMBER("popSector", nil);
 
-			_grid = MEMBER("grid", nil);
 			_sector = MEMBER("sector", nil);
 			_position = MEMBER("position", nil);
 
@@ -226,22 +224,25 @@
 				_bucket = 0;
 
 				_sectors = MEMBER("occupedSector", nil);
+
 				{
 					if(side _x == west) then {
-						_player_sector = ["getSectorFromPos", position _x] call _grid;
+						_player_sector = ["getSectorFromPos", position _x] call global_grid;
 						{
-							_cost = ["GetEstimateCost", [_player_sector, _x]] call _grid;
+							_cost = ["GetEstimateCost", [_player_sector, _x]] call global_grid;
 							if(_cost < _mincost) then { _mincost = _cost;};
 							sleep 0.0001;
 						}foreach _sectors;
-						_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call _grid;
+						_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call global_grid;
 						if(_cost2 < _popsquaredistance) then {_bucket = _bucket + 1;};
 					};
 					sleep 0.0001;
 				}foreach playableunits;
 
+				//stocke le nombre max de joueurs dans la zone pour calcul du prochain expand
 				if(MEMBER("bucket", nil) < _bucket) then { MEMBER("bucket", _bucket);};
 
+				// change la couleur du marker en fonction de si la patrouille est en alerte ou pas
 				if(MEMBER("alert", nil) and (_mincost < _popsquaredistance)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
 					_run = true;
@@ -252,10 +253,13 @@
 					};
 				};
 
+				// verifie si les unites patrouillant sont à moins de 2000m du sector
+				// sinon les considère comme mortes
 				{
 					if((alive _x) and (_position distance _x < 2000)) then { _units = _units + 1;};
 					sleep 0.01
 				}foreach MEMBER("units", nil);
+
 				if(_units == 0) then { _run = false; };
 				if(_units < 3)then { _deadcounter = _deadcounter + 1;};
 				if(_deadcounter > 500) then { _units = 0; _run = false;};
@@ -423,7 +427,6 @@
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("alert");
 			DELETE_VARIABLE("bucket");
-			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("index");
 			deletemarker MEMBER("marker", nil);
 			DELETE_VARIABLE("marker");

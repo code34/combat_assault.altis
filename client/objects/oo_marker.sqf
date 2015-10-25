@@ -234,20 +234,16 @@
 		};
 
 		PUBLIC FUNCTION("object", "attachToSector") {
-			private ["_grid", "_position"];
-
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+			private ["_position"];
 
 			MEMBER("attached", true);
 			MEMBER("setDir", 0);
 			
 			while {MEMBER("attached", nil)} do {
-				_position = ["getCenterPos", position _this] call _grid;
+				_position = ["getCenterPos", position _this] call client_grid;
 				MEMBER("setPos", _position);
 				sleep 1;
 			};
-
-			["delete", _grid] call OO_GRID;
 		};
 
 		PUBLIC FUNCTION("", "detach") {

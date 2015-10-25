@@ -26,14 +26,10 @@
 		PRIVATE VARIABLE("code","sector");
 		PRIVATE VARIABLE("array","around");
 		PRIVATE VARIABLE("array","underalert");
-		PRIVATE VARIABLE("code", "grid");
 		PRIVATE VARIABLE("array", "target");
 		PRIVATE VARIABLE("code", "marker");
 			
-		PUBLIC FUNCTION("array","constructor") {			
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-			MEMBER("grid", _grid);
-			
+		PUBLIC FUNCTION("array","constructor") {				
 			MEMBER("popMember",  _this select 1);
 			MEMBER("sector", _this select 0);
 			MEMBER("setMarker", nil);
@@ -113,7 +109,7 @@
 		PUBLIC FUNCTION("", "getSectorAround") {
 			private ["_around", "_sector"];
 			_sector = "getSector" call MEMBER("sector", nil);
-			_around = ["getSectorAllAround", [_sector, 6]] call MEMBER("grid", nil);
+			_around = ["getSectorAllAround", [_sector, 6]] call global_grid;
 			MEMBER("around", _around);
 		};
 
@@ -149,9 +145,9 @@
 			_group setCurrentWaypoint _wp;
 
 			while { !_move } do {
-				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
+				_sector = ["getSectorFromPos", position _vehicle] call global_grid;
 				sleep 7;
-				if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call MEMBER("grid", nil))) then {
+				if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call global_grid)) then {
 					_move = true;
 				};
 				if(speed _vehicle < 60) then {
@@ -170,7 +166,7 @@
 			} else {
 				_nextsector = MEMBER("around", nil) call BIS_fnc_selectRandom;
 			};
-			_position = ["getPosFromSector", _nextsector] call MEMBER("grid", nil);
+			_position = ["getPosFromSector", _nextsector] call global_grid;
 			MEMBER("target", _position);
 		};
 
@@ -206,6 +202,5 @@
 			DELETE_VARIABLE("sector");
 			DELETE_VARIABLE("underalert");
 			DELETE_VARIABLE("target");
-			DELETE_VARIABLE("grid");		
 		};
 	ENDCLASS;

@@ -27,7 +27,6 @@
 		PRIVATE VARIABLE("array","around");		
 		PRIVATE VARIABLE("array","buildings");
 		PRIVATE VARIABLE("bool","city");
-		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("group","group");
 		PRIVATE VARIABLE("scalar","flank");
 		PRIVATE VARIABLE("code","sector");
@@ -41,14 +40,11 @@
 			MEMBER("areasize", _this select 2);
 
 			MEMBER("sizegroup", count units (_this select 0));
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-			MEMBER("grid", _grid);
 			MEMBER("getBuildings", nil);
 			MEMBER("alert", false);
 			MEMBER("setFlank", nil);
 		};
 
-		PUBLIC FUNCTION("","getGrid") FUNC_GETVAR("grid");
 		PUBLIC FUNCTION("","getGroup") FUNC_GETVAR("group");
 		PUBLIC FUNCTION("","getTarget") FUNC_GETVAR("target");
 		PUBLIC FUNCTION("","getSector") FUNC_GETVAR("sector");
@@ -99,7 +95,7 @@
 		PUBLIC FUNCTION("", "getBuildings") {
 			private ["_sector", "_positions"];
 			_sector = "getSector" call MEMBER("sector", nil);
-			_positions = ["getPositionsBuilding", _sector] call MEMBER("grid", nil);
+			_positions = ["getPositionsBuilding", _sector] call global_grid;
 			MEMBER("buildings", _positions);
 			if(count _positions > 10) then {
 				MEMBER("city", true);
@@ -394,7 +390,7 @@
 
 			if("isArtillery" call _sector) then { 
 				_artillery = "getArtillery" call _sector;
-				_key = ["getSectorFromPos", position _target] call MEMBER("grid", nil);
+				_key = ["getSectorFromPos", position _target] call global_grid;
 				_sector = ["get", str(_key)] call global_zone_hashmap;
 				if(!isnil "_sector") then {
 					["setSuppression", true] call _artillery;
@@ -422,9 +418,9 @@
 			_basesector = "getSector" call MEMBER("sector", nil);
 			
 			while { (position _leader) distance _position < _areasize } do {
-				_around = ["getSectorAllAround", [_basesector, 2]] call MEMBER("grid", nil);
+				_around = ["getSectorAllAround", [_basesector, 2]] call global_grid;
 				_sector = _around call BIS_fnc_selectRandom;
-				_position = ["getPosFromSector", _sector] call MEMBER("grid", nil);
+				_position = ["getPosFromSector", _sector] call global_grid;
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;
 				sleep 0.0001;
 			};
@@ -542,7 +538,6 @@
 			DELETE_VARIABLE("sector");
 			DELETE_VARIABLE("target");
 			DELETE_VARIABLE("targets");
-			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("buildings");
 			DELETE_VARIABLE("city");
 			DELETE_VARIABLE("flank");

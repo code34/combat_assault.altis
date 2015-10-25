@@ -11,7 +11,6 @@
 		"_counter",
 		"_formationtype",
 		"_group", 
-		"_grid",
 		"_key",
 		"_list",
 		"_move",

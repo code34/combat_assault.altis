@@ -115,7 +115,8 @@
 				_x setdammage 1;
 				deletevehicle _x;
 			};
-		}foreach playableUnits;
+			sleep 0.001;
+		}foreach playableUnits + allDead;
 		_name = format["%1_OO_MRK_%2", _name, 1];
 		deletemarker _name;
 	};

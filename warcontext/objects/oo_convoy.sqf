@@ -27,13 +27,9 @@
 		PRIVATE VARIABLE("array","escort");
 		PRIVATE VARIABLE("code","marker");
 		PRIVATE VARIABLE("group","group");
-		PRIVATE VARIABLE("code","grid");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_array", "_startposition", "_endposition", "_grid"];
-
-			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-			MEMBER("grid", _grid);
+			private ["_array", "_startposition", "_endposition"];
 
 			_startposition = _this;
 			MEMBER("startposition", _startposition);
@@ -75,7 +71,7 @@
 			};
 
 			if(_rate > 99) then {
-				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
+				_sector = ["getSectorFromPos", position _vehicle] call global_grid;
 				wcconvoy = true;
 				["wcconvoy", "client"] call BME_fnc_publicvariable;				
 				["expandSector", _sector] call global_controller;
@@ -225,7 +221,6 @@
 			DELETE_VARIABLE("startposition");
 			DELETE_VARIABLE("endposition");
 			DELETE_VARIABLE("group");
-			DELETE_VARIABLE("grid");
 			DELETE_VARIABLE("vehicle");
 		};
 	ENDCLASS;

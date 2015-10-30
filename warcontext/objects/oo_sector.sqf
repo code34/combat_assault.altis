@@ -203,7 +203,7 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_popsquaredistance"];
+			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_unpopsquaredistance"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -214,7 +214,7 @@
 
 			_time = 0;
 			_deadcounter = 0;
-			_popsquaredistance = wcpopsquaredistance + 1;
+			_unpopsquaredistance = wcpopsquaredistance + 2;
 
 			_run = true;
 			while { _run } do {
@@ -234,7 +234,7 @@
 							sleep 0.0001;
 						}foreach _sectors;
 						_cost2 = ["GetEstimateCost", [_player_sector, _sector]] call global_grid;
-						if(_cost2 < _popsquaredistance) then {_bucket = _bucket + 1;};
+						if(_cost2 < _unpopsquaredistance) then {_bucket = _bucket + 1;};
 					};
 					sleep 0.0001;
 				}foreach playableunits;
@@ -243,11 +243,12 @@
 				if(MEMBER("bucket", nil) < _bucket) then { MEMBER("bucket", _bucket);};
 
 				// change la couleur du marker en fonction de si la patrouille est en alerte ou pas
-				if(MEMBER("alert", nil) and (_mincost < _popsquaredistance)) then {
+				// conserve le sector comme actif
+				if(MEMBER("alert", nil) and (_mincost < _unpopsquaredistance)) then {
 					MEMBER("marker", nil) setmarkercolor "ColorYellow";
 					_run = true;
 				} else {
-					if(_mincost < _popsquaredistance) then {
+					if(_mincost < _unpopsquaredistance) then {
 						MEMBER("marker", nil) setmarkercolor "ColorOrange";
 						_run = true;
 					};

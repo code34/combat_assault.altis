@@ -425,8 +425,8 @@
 				sleep 0.0001;
 			};
 
-			_wp = _group addWaypoint [_position, 25];
-			_wp setWaypointPosition [_position, 25];
+			_wp = _group addWaypoint [_position, 10];
+			_wp setWaypointPosition [_position, 10];
 			_wp setWaypointType "GUARD";
 			_wp setWaypointVisible true;
 			_wp setWaypointSpeed "LIMITED";

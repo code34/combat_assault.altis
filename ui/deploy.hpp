@@ -4,235 +4,94 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { map, deploy, playername, previous, next, rollmessage, equipment, infotext, background, infantry2, infantry, tank2, tank, tankaa2, tankaa, bomber2, bomber, fighter2, fighter, chopper2, chopper, achopper2, achopper}; 
+	controls[] = { column, map, title, labelrole, role, labelplayer, player, deploy, mapbutton, playername, previous, next, rollmessage, equipment}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
-	class infotext {
-		idc = -1; 
-		type = CT_STRUCTURED_TEXT; 
-		style = ST_VCENTER; 		
-		x = -0.05; 
-		y = -0.045; 
-		w = 1.05; 
-		h = 0.04; 
-		text = "<t align='center'>SELECT YOUR ROLE</t>";
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.038; 
-		colorBackground[] = {0,0,0,0.6}; 
-		colorText[] = {0.5,1,1,1}; 		
+	class column : camo {
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX) - ( 2 * BORDERSIZE);
+		y = (0.12 * safezoneH + safezoneY) - (3 * BORDERSIZE);
+		w = (0.15 * safezoneW) + (4 * BORDERSIZE);
+		h = (0.75 * safezoneH) + (6 * BORDERSIZE);
 	};
 
-	class background {
-		idc = -1; 
-		type = CT_STRUCTURED_TEXT; 
-		style = ST_VCENTER; 		
-		x = -0.05; 
-		y = 0; 
-		w = 1.05; 
-		h = 0.2; 
-		text = "";
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.038; 
-		colorBackground[] = {0,0,0,0.6}; 
-		colorText[] = {0.5,1,1,1}; 		
+	class map : RscMapControl {
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX);
+		y = (0.57 * safezoneH + safezoneY);
+		w = (0.15 * safezoneW);
+		h = (0.25 * safezoneH) - ( 1.5 * BORDERSIZE);
+	};	
+	
+	class title : StdHeader{
+		idc=-1;
+		x = 0.15 * safezoneW + safezoneX - (BORDERSIZE);
+		y = 0.11 * safezoneH + safezoneY;
+		w = 0.15 * safezoneW + ( 2 * BORDERSIZE);
+		h = 0.05 * safezoneH - (BORDERSIZE);
+		text = $STR_REDEPLOY_TITLE;
 	};
 
-	class infantry : RscButton
-	{
-		idc = -1; 
-		x = -0.05; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "INFANTRY";
-		action = "playertype ='ammobox'; ";
-		colorBackground[] = {0,0,0,0};
+	class labelrole : StdText{
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX);
+		w = (0.15 * safezoneW);
+		h = (0.03 * safezoneH);
+		y = 0.16 * safezoneH + safezoneY;
+		sizeEx = 0.018 * safezoneH;
+		text = $STR_DEPLOY_SELECTROLE;
+	};
+	class role : StdCombo{
+		idc = 2001;
+		x = (0.15 * safezoneW + safezoneX);
+		w = 0.15 * safezoneW;
+		y = 0.19 * safezoneH + safezoneY;
+		h = 0.03 * safezoneH;
+		sizeEx = 0.018 * safezoneH;
+	  };	
+
+	class labelplayer : StdText{
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX);
+		w = (0.15 * safezoneW);
+		h = (0.03 * safezoneH);
+		y = 0.23 * safezoneH + safezoneY;
+		sizeEx = 0.018 * safezoneH;
+		text = $STR_DEPLOY_SELECTLOCATION;
 	};
 
-	class infantry2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = -0.05; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.4};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\Ui_f\data\IGUI\RscIngameUI\RscUnitInfo\SI_stand_ca.paa"; 
-		sizeEx = 0;
-	}; 	
-
-	class tank : RscButton
-	{
-		idc = -1; 
-		x = 0.10; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "TANK";
-		action = "playertype ='tank'; ";
-		colorBackground[] = {0,0,0,0};
+	class player : StdListBox {
+		idc = 2002;
+		x = 0.15 * safezoneW + safezoneX;
+		w = 0.15 * safezoneW;
+		y = 0.26 * safezoneH + safezoneY;
+		h = (0.31 * safezoneH) - (1.5 * BORDERSIZE);
+		shadow = 2;
+		onLBSelChanged="";
 	};
 
-	class tank2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = 0.10; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\armor_f_gamma\MBT_01\Data\ui\map_slammer_mk4_ca.paa"; 
-		sizeEx = 0;
-	}; 	
-
-	class tankaa : RscButton
-	{
-		idc = -1; 
-		x = 0.25; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "TANK AA";
-		action = "playertype ='tankaa'; ";
-		colorBackground[] = {0,0,0,0};
+	class deploy : StdButton{
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX);
+		y = (0.82 * safezoneH + safezoneY);
+		w = (0.15 * safezoneW);
+		h = (0.05 * safezoneH);
+		sizeEx = 0.05 * safezoneH;
+		text = $STR_DEPLOY_BUTTON;
+		action = "closeDialog 0; wcaction = 'deploy';";
 	};
 
-	class tankaa2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = 0.25; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\armor_f_beta\APC_Tracked_01\Data\ui\map_APC_Tracked_01_aa_ca.paa"; 
-		sizeEx = 0;
-	}; 	
-
-	class bomber : RscButton
-	{
-		idc = -1; 
-		x = 0.40; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "BOMBER";
-		action = "playertype ='bomber'; ";
-		colorBackground[] = {0,0,0,0};
-	};
-
-	class bomber2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = 0.40; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Map_Plane_CAS_01_CA.paa"; 
-		sizeEx = 0;
-	}; 	
-
-	class fighter : RscButton
-	{
-		idc = -1; 
-		x = 0.55; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "FIGHTER";
-		action = "playertype ='fighter'; ";
-		colorBackground[] = {0,0,0,0};
-	};
-
-	class fighter2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = 0.55; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\Air_F_Gamma\Plane_Fighter_03\Data\UI\Map_Plane_Fighter_03_CA.paa"; 
-		sizeEx = 0;
-	}; 
-
-	class chopper : RscButton
-	{
-		idc = -1; 
-		x = 0.70; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "CHOPPER";
-		action = "playertype ='chopper'; ";
-		colorBackground[] = {0,0,0,0};
-	};
-
-	class chopper2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = 0.70; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\air_f_beta\Heli_Transport_01\Data\UI\Map_Heli_Transport_01_base_CA.paa"; 
-		sizeEx = 0;
-	}; 
-
-	class achopper : RscButton
-	{
-		idc = -1; 
-		x = 0.85; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		text = "ACHOPPER";
-		action = "playertype ='achopper'; ";
-		colorBackground[] = {0,0,0,0};
-	};
-
-	class achopper2 { 
-		idc = -1; 
-		type = CT_STATIC;
-		style = ST_TILE_PICTURE; 
-		x = 0.85; 
-		y = 0; 
-		w = 0.15; 
-		h = 0.2; 
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.035;
-		colorBackground[] = {0,0.4,0.8,0.2};
-		colorText[] = {1,1,1,1}; 
-		text = "\A3\Air_F_Beta\Heli_Attack_01\Data\UI\Map_Heli_Attack_01_CA.paa"; 
-		sizeEx = 0;
-	}; 		
-
+	class mapbutton : StdButton{
+		idc=-1;
+		x = (0.285 * safezoneW + safezoneX);
+		y = (0.56 * safezoneH + safezoneY);
+		w = (0.015 * safezoneW);
+		h = (0.025 * safezoneH);
+		sizeEx = 0.018 * safezoneH;
+		text = "Extend";
+		action = "fullmap = fullmap + 1;";
+	};	
+	
 	class previous : RscButton
 	{
 		idc = -1; 
@@ -300,31 +159,4 @@ class spawndialog {
 		action = "wcaction = 'equipment';";
 		colorBackground[] = {0,0,0,0.8};
 	};
-
-	class deploy : RscButton
-	{
-		idc = -1; 
-		x = 0.80; 
-		y = safezoneY + safezoneh - 0.03 - 0.05;
-		w = 0.2; 
-		h = 0.05; 
-		text = "DEPLOY";
-		action = "closeDialog 0; wcaction = 'deploy';";
-		colorBackground[] = {0,0,0,0.8};
-	};
-
-	class map : RscMapControl
-	{
-		idc = 4006;
-		type = 101;
-		style = 48;
-		sizeEx = 0.026;
-		moveOnEdges = 1;
-		x = safezoneX + 0.02;
-		y = safezoneY + safezoneh - 0.03 - 0.55;
-		w = 0.55 * 3/4;
-		h = 0.55;
-		font = "PuristaMedium";
-		shadow = "false";
-	};	
 };

@@ -52,7 +52,7 @@
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
 	wcboard = false;
 	wcwithrollmessages = true;
-	
+
 	wcticket = 0;
 	playerkill = 0;
 	playerdeath = 0;

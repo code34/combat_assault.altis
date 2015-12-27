@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir"];
+	private ["_cam", "_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir", "_roles"];
 
 	_body = _this select 0;
 
@@ -42,6 +42,12 @@
 	} else {
 		_ctrl ctrlSetText "ROLLMESSAGE OFF";
 	};
+
+	_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
+	{
+		lbAdd [2001, _x];
+	}foreach _roles;
+	lbSetCurSel [ 2001, 0 ];
 
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
 	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
@@ -142,6 +148,7 @@
 				};
 				wcchange  = false;
 			};
+			playertype = _roles select (lbCurSel 2001);
 			sleep 0.01;
 		};
 

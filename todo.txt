@@ -1,0 +1,4 @@
+todo : 
+- fixer le re deploy quand un vehicule enemie est encore dans la zone
+- ajouter un add menu pour re deploy
+- sauvegarder l equipement quand on clique sur arsenal sur la caisse

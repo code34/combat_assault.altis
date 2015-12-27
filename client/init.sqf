@@ -74,7 +74,10 @@
 
 	[] execVM "real_weather\real_weather.sqf";
 
-	if(wcambiant ==2) then {enableEnvironment false;};
+	if(wcambiant ==2) then {
+		enableEnvironment false;
+		enableSentences false;
+	};
 
 	player addEventHandler ['Killed', {
 		private ["_name", "_weapon"];

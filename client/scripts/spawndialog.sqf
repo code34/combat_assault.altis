@@ -75,6 +75,11 @@
 					sleep 0.01;
 				};
 				createDialog "spawndialog"; 
+				_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
+				{
+					lbAdd [2001, _x];
+				}foreach _roles;
+				lbSetCurSel [ 2001, 0 ];				
 				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
 				wcaction = "";

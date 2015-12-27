@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
         <Project name="COMBAT ASSAULT">
                 <Package name="COMBAT ASSAULT">
+                <Key ID="STR_MISSION_TITLE">
+                        <Original>COMBAT ASSAULT</Original>
+                </Key>
+                <Key ID="STR_MISSION_AUTHOR">
+                        <Original>Code34</Original>
+                </Key>
                 <Key ID="STR_INTRO_WELCOME">
                         <Original>Welcome on Combat Assault mission</Original>
                         <French>Bienvenue sur Combat Assault</French>

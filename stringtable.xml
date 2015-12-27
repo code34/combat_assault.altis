@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <Project name="COMBAT ASSAULT">
+                <Package name="COMBAT ASSAULT">
+                <Key ID="STR_INTRO_WELCOME">
+                        <Original>Welcome on Combat Assault mission</Original>
+                        <French>Bienvenue sur Combat Assault</French>
+                </Key>
+                <Key ID="STR_INTRO_WEBSITE">
+                        <Original>You can find more informations about this project on combat-assault.eu website</Original>
+                        <French>Vous pouvez trouver plus d'informations sur le site combat-assault.eu</French>
+                </Key>
+                <Key ID="STR_INTRO_TRAIN">
+                        <Original>Train you in real fighting conditions</Original>
+                        <French>Entrainez-vous en condition réelle</French>
+                </Key>
+                <Key ID="STR_INTRO_TRAIN">
+                        <Original>Train you in real fighting conditions</Original>
+                        <French>Entrainez-vous en condition réelle</French>
+                </Key>
+                <Key ID="STR_INTRO_RANK">
+                        <Original>Try to gain a better server ranking</Original>
+                        <French>Essayez de monter en rang</French>
+                </Key>
+                <Key ID="STR_INTRO_WINWAR">
+                        <Original>Try to win this war</Original>
+                        <French>Essayez de gagner cette guerre</French>
+                </Key>
+                <Key ID="STR_INTRO_GOODLUCK">
+                        <Original>Good luck ! Have a good game !</Original>
+                        <French>Bonne chance!</French>
+                </Key>
+                <Key ID="STR_INTRO_AUTHOR">
+                        <Original>Code34</Original>
+                </Key>
+                <Key ID="STR_INTRO_MISSIONNAME">
+                        <Original>COMBAT ASSAULT</Original>
+                </Key>
+                <Key ID="STR_INTRO_MISSIONWEBSITE">
+                        <Original>combat-assault.eu</Original>
+                </Key>
+                <Key ID="STR_INTRO_MISSIONTS3">
+                        <Original>combat-assault.eu</Original>
+                </Key>
+                <Key ID="STR_REDEPLOY_TITLE">
+                        <Original>Redeployment</Original>
+                        <French>Redeploiement</French>
+                </Key>
+                <Key ID="STR_REDEPLOY_STANCE">
+                        <Original>No enemies near your. Use menu to redeploy</Original>
+                        <French>Pas d'ennemis près de vous. Utilisez le menu pour vous redéployer</French>
+                </Key>
+                <Key ID="STR_EQUIPMENT_TITLE">
+                        <Original>Select your equipment</Original>
+                        <French>Choisissez votre équipement</French>
+                </Key>
+                <Key ID="STR_EQUIPMENT_TEXT">
+                        <Original>Take magazines as items of your vest or bag and go ahead to deployement!</Original>
+                        <French>Prenez des munitions et placez les dans votre veste ou sac, et déployez vous!</French>
+                </Key>
+                <Key ID="STR_TELEPORT_TITLE">
+                        <Original>Select your deployement zone</Original>
+                        <French>Choissisez votre zone de déploiement</French>
+                </Key>
+                <Key ID="STR_TELEPORT_TEXT">
+                        <Original>Click once on the map near the red square where you'd like to be deploy!</Original>
+                        <French>Cliquez une fois sur la carte près des zones rouges ou vous voulez être déployé!</French>
+                </Key>
+                <Key ID="STR_SERVICING_TITLE">
+                        <Original>Vehicle Servicing</Original>
+                        <French>Service logistique</French>
+                </Key>
+                <Key ID="STR_SERVICING_NEARAIRPORT">
+                        <Original>You are not enough near of an allied Airport</Original>
+                        <French>Vous n'êtes pas assez prêt d'un aéroport allié</French>
+                </Key>
+                <Key ID="STR_SERVICING_TOOENEMY">
+                        <Original>Too much enemy near your position</Original>
+                        <French>Trop d'ennemis prêt de votre position</French>
+                </Key>
+                </Package>
+        </Project>

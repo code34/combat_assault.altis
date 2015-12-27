@@ -106,10 +106,6 @@
 		};
 	}];
 
-	playMusic "BackgroundTrack02_F_EPC";
-
-	[(localize "STR_INTRO_CAMPAIGNNAME") + "<br/><br/><t size='3'>"+(localize "STR_INTRO_MISSIONNAME")+"</t><br/><br/><t size='2'><t color='#ff9900'>"+(localize "STR_INTRO_MISSIONVERSION")+"</t> Version<br/>Author: "+(localize "STR_INTRO_MISSIONAUTHOR")+"</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: "+(localize "STR_INTRO_MISSIONWEBSITE")+"<br/>Teamspeak: "+(localize "STR_INTRO_MISSIONTS3")+"<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
-
 	_body = player;
 	_view = cameraView;
 	_mark = ["new", position player] call OO_MARKER;

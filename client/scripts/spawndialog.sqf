@@ -16,11 +16,13 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir", "_roles"];
+	private ["_cam", "_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir", "_roles", "_standard_map_pos", "_frame_pos", "_old_fullmap"];
 
 	_body = _this select 0;
 
 	playertype ='ammobox';
+	fullmap = 0;
+	_old_fullmap = 0;
 
 	showCinemaBorder false;
 	_cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
@@ -36,6 +38,9 @@
 	createDialog "spawndialog"; 
 	sleep 1;
 	
+	_standard_map_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003);
+	_frame_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2004);
+
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4005;
 	if(wcwithrollmessages) then {
 		_ctrl ctrlSetText "ROLLMESSAGE ON";
@@ -108,6 +113,16 @@
 				wcaction = "";
 				_player = ["getPrev", [_condition, player]] call _list;
 				wcchange = true;
+			};
+
+			if ( _old_fullmap != fullmap ) then {
+				_old_fullmap = fullmap;
+				if ( fullmap % 2 == 1 ) then {
+					 ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlSetPosition [ (_frame_pos select 0) + (_frame_pos select 2), (_frame_pos select 1), (0.6 * safezoneW), (_frame_pos select 3)];
+				} else {
+					((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlSetPosition _standard_map_pos;
+				};
+				((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlCommit 0.2;
 			};
 
 			if(wcchange) then {

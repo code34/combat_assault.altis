@@ -8,7 +8,7 @@ class spawndialog {
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
-		idc=-1;
+		idc=2004;
 		x = (0.15 * safezoneW + safezoneX) - ( 2 * BORDERSIZE);
 		y = (0.12 * safezoneH + safezoneY) - (3 * BORDERSIZE);
 		w = (0.15 * safezoneW) + (4 * BORDERSIZE);
@@ -16,12 +16,23 @@ class spawndialog {
 	};
 
 	class map : RscMapControl {
-		idc=-1;
+		idc= 2003;
 		x = (0.15 * safezoneW + safezoneX);
 		y = (0.57 * safezoneH + safezoneY);
 		w = (0.15 * safezoneW);
 		h = (0.25 * safezoneH) - ( 1.5 * BORDERSIZE);
 	};	
+
+	class mapbutton : StdButton{
+		idc=-1;
+		x = (0.285 * safezoneW + safezoneX);
+		y = (0.56 * safezoneH + safezoneY);
+		w = (0.015 * safezoneW);
+		h = (0.025 * safezoneH);
+		sizeEx = 0.018 * safezoneH;
+		text = "Extend";
+		action = "fullmap = fullmap + 1;";
+	};
 	
 	class title : StdHeader{
 		idc=-1;
@@ -79,17 +90,6 @@ class spawndialog {
 		sizeEx = 0.05 * safezoneH;
 		text = $STR_DEPLOY_BUTTON;
 		action = "closeDialog 0; wcaction = 'deploy';";
-	};
-
-	class mapbutton : StdButton{
-		idc=-1;
-		x = (0.285 * safezoneW + safezoneX);
-		y = (0.56 * safezoneH + safezoneY);
-		w = (0.015 * safezoneW);
-		h = (0.025 * safezoneH);
-		sizeEx = 0.018 * safezoneH;
-		text = "Extend";
-		action = "fullmap = fullmap + 1;";
 	};	
 	
 	class previous : RscButton

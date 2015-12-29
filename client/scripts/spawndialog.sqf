@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_body", "_units", "_ctrl", "_list", "_player", "_condition", "_position", "_dir", "_roles", "_standard_map_pos", "_frame_pos", "_old_fullmap"];
+	private ["_cam", "_body",  "_ctrl", "_player", "_position", "_dir", "_roles",  "_inforoles", "_standard_map_pos", "_frame_pos", "_old_fullmap", "_players", "_indexplayer"];
 
 	_body = _this select 0;
 
@@ -54,18 +54,23 @@
 	}foreach _roles;
 	lbSetCurSel [ 2001, 0 ];
 
-	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
+	sleep 5;
+
+	_players = allunits;
+	lbClear 2002;
+	{ 
+		if(alive _x) then {
+			lbAdd [2002, name _x];
+		};
+		sleep 0.001;
+	}foreach _players;
+	lbSetCurSel [ 2002, 0 ];
+	_indexplayer = 0;
+
+	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
 	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
 	ctrlMapAnimCommit _ctrl;		
-		
-	// player must be the first elem of array
-	_units = playableunits - [player];
-	_units = [player] + _units;
-	_player = player;
 	
-	_list = ["new", _units] call OO_CIRCULARLIST;
-	_condition = { if(getDammage _this > 0.99) then { false; }else{ true; }; };
-
 	wcchange  = false;
 
 		while { wcaction != "deploy" && dialog} do {
@@ -80,11 +85,13 @@
 					sleep 0.01;
 				};
 				createDialog "spawndialog"; 
+				
 				_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
 				{
 					lbAdd [2001, _x];
 				}foreach _roles;
-				lbSetCurSel [ 2001, 0 ];				
+				lbSetCurSel [ 2001, 0 ];
+
 				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
 				wcaction = "";
@@ -104,14 +111,9 @@
 				_ctrl ctrlcommit 0;				
 			};
 
-			if(wcaction == "next") then {
-				wcaction = "";
-				_player = ["getNext", [_condition, player]] call _list;
-				wcchange = true;
-			};
-			if(wcaction == "prev") then {
-				wcaction = "";
-				_player = ["getPrev", [_condition, player]] call _list;
+			if ((lbCurSel 2002) != _indexplayer) then {
+				_indexplayer = (lbCurSel 2002);
+				_player = _players select _indexplayer;
 				wcchange = true;
 			};
 
@@ -127,16 +129,8 @@
 
 			if(wcchange) then {
 				if(_player isequalto player) then {
-					_units = playableunits - [player];
-					_units = [player] + _units;
-					["set", _units] call _list;
-
-					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
-					_ctrl ctrlSetStructuredText parsetext "<t align='center' color='#FF9933'>MAP</t>";
-					_ctrl ctrlcommit 0;
-
-					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
-					_ctrl ctrlMapAnimAdd [0, 0, _body]; 
+					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
+					_ctrl ctrlMapAnimAdd [2, 0, _body]; 
 					ctrlMapAnimCommit _ctrl;					
 					
 					detach _cam;
@@ -145,12 +139,8 @@
 					_cam camSetRelPos [0,100,300];
 					_cam CamCommit 0;
 				} else {
-					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4004;
-					_ctrl ctrlSetStructuredText parsetext ("<t align='center' color='#FF9933'>" + name _player+ "</t>");
-					_ctrl ctrlcommit 0;
-
-					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4006;
-					_ctrl ctrlMapAnimAdd [0, 0, _player]; 
+					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
+					_ctrl ctrlMapAnimAdd [2, 0, _player]; 
 					ctrlMapAnimCommit _ctrl;					
 
 					detach _cam;
@@ -171,8 +161,6 @@
 			playertype = _roles select (lbCurSel 2001);
 			sleep 0.01;
 		};
-
-	["delete", _list] call OO_CIRCULARLIST;	
 
 	_position = position _cam;
 	_dir = getDir _cam;

@@ -4,7 +4,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { column, map, title, labelrole, role, labelplayer, player, deploy, mapbutton, playername, previous, next, rollmessage, equipment}; 
+	controls[] = { column, map, title, labelrole, role, labelplayer, player, deploy, mapbutton, rollmessage, equipment}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
@@ -90,50 +90,6 @@ class spawndialog {
 		sizeEx = 0.05 * safezoneH;
 		text = $STR_DEPLOY_BUTTON;
 		action = "closeDialog 0; wcaction = 'deploy';";
-	};	
-	
-	class previous : RscButton
-	{
-		idc = -1; 
-		x = -0.005; 
-		y = safezoneY + safezoneh - 0.03 - 0.05;
-		w = 0.2; 
-		h = 0.05; 
-		text = "<< PREVIOUS";
-		action = "wcaction = 'prev';";
-		colorBackground[] = {0,0,0,0.8};
-		font = "EtelkaNarrowMediumPro"; 
-		sizeex= 0.03; 		
-	};
-
-	class playername
-	{
-		idc = 4004; 
-		type = CT_STRUCTURED_TEXT; 
-		style = ST_LEFT;  		
-		x = 0.2; 
-		y = safezoneY + safezoneh - 0.03 - 0.05;
-		w = 0.35; 
-		h = 0.05; 
-		text = "<t align='center' color='#FF9933'>MAP</t>";
-		action = "";
-		colorBackground[] = {0,0,0,0.8};
-		font = "EtelkaNarrowMediumPro"; 
-		size = 0.038; 
-	};	
-
-	class next : RscButton
-	{
-		idc = -1; 
-		x = 0.555; 
-		y = safezoneY + safezoneh - 0.03 - 0.05; 
-		w = 0.2; 
-		h = 0.05; 
-		text = "NEXT >>";
-		action = "wcaction = 'next';";
-		colorBackground[] = {0,0,0,0.8};
-		font = "EtelkaNarrowMediumPro"; 
-		sizeex= 0.03; 
 	};
 
 	class rollmessage : RscButton

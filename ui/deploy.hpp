@@ -22,17 +22,6 @@ class spawndialog {
 		w = (0.15 * safezoneW);
 		h = (0.25 * safezoneH) - ( 1.5 * BORDERSIZE);
 	};	
-
-	class mapbutton : StdButton{
-		idc=-1;
-		x = (0.285 * safezoneW + safezoneX);
-		y = (0.56 * safezoneH + safezoneY);
-		w = (0.015 * safezoneW);
-		h = (0.025 * safezoneH);
-		sizeEx = 0.018 * safezoneH;
-		text = "Extend";
-		action = "fullmap = fullmap + 1;";
-	};
 	
 	class title : StdHeader{
 		idc=-1;
@@ -59,7 +48,7 @@ class spawndialog {
 		y = 0.19 * safezoneH + safezoneY;
 		h = 0.03 * safezoneH;
 		sizeEx = 0.018 * safezoneH;
-	  };	
+	  };
 
 	class labelplayer : StdText{
 		idc=-1;
@@ -76,10 +65,41 @@ class spawndialog {
 		x = 0.15 * safezoneW + safezoneX;
 		w = 0.15 * safezoneW;
 		y = 0.26 * safezoneH + safezoneY;
-		h = (0.31 * safezoneH) - (1.5 * BORDERSIZE);
+		h = (0.15 * safezoneH) - (1.5 * BORDERSIZE);
 		shadow = 2;
 		onLBSelChanged="";
 	};
+
+	class equipment : StdButton {
+		idc = -1; 
+		x = (0.15 * safezoneW + safezoneX);
+		w = (0.15 * safezoneW);
+		y = (0.48 * safezoneH + safezoneY);
+		h = (0.025 * safezoneH);
+		text = "Arsenal";
+		action = "wcaction = 'equipment';";
+	};	
+
+	class rollmessage : StdButton {
+		idc = 2005;
+		x = (0.15 * safezoneW + safezoneX);
+		w = (0.15 * safezoneW);
+		y = (0.51 * safezoneH + safezoneY);
+		h = (0.025 * safezoneH);
+		text = $STR_ROLLMESSAGEON_BUTTON;
+		action = "wcaction = 'rollmessage';";
+	};	
+
+	class mapbutton : StdButton{
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX);
+		w = (0.15 * safezoneW);
+		y = (0.54 * safezoneH + safezoneY);
+		h = (0.025 * safezoneH);
+		sizeEx = 0.018 * safezoneH;
+		text = $STR_EXTENDMAP_BUTTON;
+		action = "fullmap = fullmap + 1;";
+	};	
 
 	class deploy : StdButton{
 		idc=-1;
@@ -90,29 +110,5 @@ class spawndialog {
 		sizeEx = 0.05 * safezoneH;
 		text = $STR_DEPLOY_BUTTON;
 		action = "closeDialog 0; wcaction = 'deploy';";
-	};
-
-	class rollmessage : RscButton
-	{
-		idc = 4005; 
-		x = 0.80; 
-		y = safezoneY + safezoneh - 0.03 - 0.17;
-		w = 0.2; 
-		h = 0.05; 
-		text = "ROLLMESSAGE ON";
-		action = "wcaction = 'rollmessage';";
-		colorBackground[] = {0,0,0,0.8};
-	};				
-
-	class equipment : RscButton
-	{
-		idc = -1; 
-		x = 0.80; 
-		y = safezoneY + safezoneh - 0.03 - 0.11;
-		w = 0.2; 
-		h = 0.05; 
-		text = "EQUIPMENT";
-		action = "wcaction = 'equipment';";
-		colorBackground[] = {0,0,0,0.8};
 	};
 };

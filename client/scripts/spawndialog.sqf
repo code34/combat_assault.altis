@@ -21,6 +21,7 @@
 	_body = _this select 0;
 
 	playertype ='ammobox';
+
 	fullmap = 0;
 	_old_fullmap = 0;
 
@@ -41,11 +42,11 @@
 	_standard_map_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003);
 	_frame_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2004);
 
-	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4005;
+	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;
 	if(wcwithrollmessages) then {
-		_ctrl ctrlSetText "ROLLMESSAGE ON";
+		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEON_BUTTON");
 	} else {
-		_ctrl ctrlSetText "ROLLMESSAGE OFF";
+		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 	};
 
 	_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
@@ -54,9 +55,8 @@
 	}foreach _roles;
 	lbSetCurSel [ 2001, 0 ];
 
-	sleep 5;
-
 	_players = allunits;
+
 	lbClear 2002;
 	{ 
 		if(alive _x) then {
@@ -65,7 +65,7 @@
 		sleep 0.001;
 	}foreach _players;
 	lbSetCurSel [ 2002, 0 ];
-	_indexplayer = 0;
+	_indexplayer = -1;
 
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
 	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
@@ -80,7 +80,7 @@
 				_text = localize "STR_EQUIPMENT_TEXT";
 				["hint", [_title, _text]] call hud;	
 				["Open",[true,nil,player]] call bis_fnc_arsenal;
-				sleep 5;
+				sleep 1;
 				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
 					sleep 0.01;
 				};
@@ -91,6 +91,7 @@
 					lbAdd [2001, _x];
 				}foreach _roles;
 				lbSetCurSel [ 2001, 0 ];
+				_indexplayer = -1;
 
 				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
@@ -101,12 +102,12 @@
 
 			if(wcaction == "rollmessage") then {
 				wcaction = "";
-				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 4005;
+				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;
 				wcwithrollmessages = !wcwithrollmessages;
 				if(wcwithrollmessages) then {
-					_ctrl ctrlSetText "ROLLMESSAGE ON";
+					_ctrl ctrlSetText (localize "STR_ROLLMESSAGEON_BUTTON");
 				} else {
-					_ctrl ctrlSetText "ROLLMESSAGE OFF";
+					_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 				};
 				_ctrl ctrlcommit 0;				
 			};

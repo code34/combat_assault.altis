@@ -30,6 +30,7 @@
 	diag_log "Waiting player is alive ...";
 	waitUntil {alive player;};
 
+	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
@@ -47,6 +48,9 @@
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 
+	[] call WC_fnc_introcam;
+
+	sleep 100;
 
 	// config variables
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";

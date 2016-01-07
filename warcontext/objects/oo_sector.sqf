@@ -261,6 +261,9 @@
 					sleep 0.01
 				}foreach MEMBER("units", nil);
 
+				// other way to write it
+				//_units = {(alive _x) and (_position distance _x < 2000)} count MEMBER("units", nil);  // returns the number of alive units
+
 				if(_units == 0) then { _run = false; };
 				if(_units < 3)then { _deadcounter = _deadcounter + 1;};
 				if(_deadcounter > 500) then { _units = 0; _run = false;};

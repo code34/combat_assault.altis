@@ -20,6 +20,7 @@ class Header
 #include "ui\standard_controls.hpp"
 #include "ui\hud.hpp"
 #include "ui\deploy.hpp"
+#include "ui\intromenu.hpp"
 #include "ui\mission_params.hpp"
 
 class CfgDebriefing

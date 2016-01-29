@@ -18,6 +18,10 @@
 
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
+	[] spawn {
+		titleText ["Loading",  "BLACK IN", 1];
+	};
+
 	diag_log "Waiting BIS_fnc_init ...";
 	waitUntil {BIS_fnc_init;};
 
@@ -49,8 +53,6 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 
 	[] call WC_fnc_introcam;
-
-	sleep 100;
 
 	// config variables
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";

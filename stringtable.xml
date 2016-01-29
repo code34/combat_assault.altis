@@ -103,6 +103,14 @@
                 <Key ID="STR_EXTENDMAP_BUTTON">
                         <Original>Extend map</Original>
                         <French>Agrandir la carte</French>
-                </Key>            
+                </Key> 
+                <Key ID="STR_ENEMYCONVOY_TEXT">
+                        <Original>An Enemy convoy</Original>
+                        <French>Un convoi enemi</French>
+                </Key>        
+                <Key ID="STR_SPOTTED_TEXT">
+                        <Original>has been spotted</Original>
+                        <French>a été localisé<t/French>
+                </Key>     
                 </Package>
         </Project>

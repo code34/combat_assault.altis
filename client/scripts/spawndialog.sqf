@@ -55,17 +55,17 @@
 	}foreach _roles;
 	lbSetCurSel [ 2001, 0 ];
 
-	_players = allunits;
+	_players = playableUnits;
 
 	lbClear 2002;
 	{ 
 		if(alive _x) then {
 			lbAdd [2002, name _x];
+			if(_x == player) then { _indexplayer = _forEachIndex;};
 		};
 		sleep 0.001;
 	}foreach _players;
-	lbSetCurSel [ 2002, 0 ];
-	_indexplayer = -1;
+	lbSetCurSel [ 2002, _indexplayer];
 
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
 	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
@@ -86,12 +86,22 @@
 				};
 				createDialog "spawndialog"; 
 				
+				lbClear 2001;
 				_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
 				{
 					lbAdd [2001, _x];
 				}foreach _roles;
 				lbSetCurSel [ 2001, 0 ];
-				_indexplayer = -1;
+				
+				lbClear 2002;
+				{ 
+					if(alive _x) then {
+						lbAdd [2002, name _x];
+						if(_x == player) then { _indexplayer = _forEachIndex;};
+					};
+					sleep 0.001;
+				}foreach _players;
+				lbSetCurSel [ 2002, _indexplayer];
 
 				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
@@ -112,7 +122,7 @@
 				_ctrl ctrlcommit 0;				
 			};
 
-			if ((lbCurSel 2002) != _indexplayer) then {
+			if ((lbCurSel 2002) != -1) then {
 				_indexplayer = (lbCurSel 2002);
 				_player = _players select _indexplayer;
 				wcchange = true;
@@ -148,12 +158,13 @@
 					if(vehicle _player == _player) then {
 						_cam cameraEffect ["internal", "BACK"];
 						_cam camSetTarget _player;
-						_cam attachto [_player,[0.7,-2,0], "neck"];
+						_cam attachto [_player,[0.7,-3, + 0.5], "neck"];
 						_cam CamCommit 0;
 					} else {
 						_cam cameraEffect ["internal", "BACK"];
-						_cam camSetTarget (vehicle _player);
-						_cam attachto [(vehicle _player),[0,-50,0], "neck"];
+						_cam camSetTarget (vehicle _player);	
+						_variation = [-50, -30,-10, 10 ,30, 50];
+						_cam attachto [(vehicle _player),[_variation call BIS_fnc_selectRandom,-50,+15], "neck"];
 						_cam CamCommit 0;
 					};
 				};
@@ -172,14 +183,14 @@
 	if(_player == player) then {
 		openMap [false, false] ;
 		openMap [true, true];
-		mapAnimAdd [1, 0.04, _body]; 
+		mapAnimAdd [1, 0.30, _body]; 
 		mapAnimCommit;
 		[] call WC_fnc_teleport;
 	} else {
 		if(_position distance getmarkerpos "respawn_west" < 1000) then {
 			openMap [false, false] ;
 			openMap [true, true];
-			mapAnimAdd [1, 0.04, _body]; 
+			mapAnimAdd [1, 0.30, _body]; 
 			mapAnimCommit;
 			[] call WC_fnc_teleport;
 		} else {

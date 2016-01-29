@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_camera", "_target", "_locations", "_positions", "_newx", "_newy", "_startpos", "_endpos"];
+	private ["_camera", "_target", "_locations", "_positions", "_newx", "_newy", "_startpos", "_endpos", "_condition", "_loop", "_count"];
 
 	_locations = [];
 	_positions = [];
@@ -24,35 +24,48 @@
 	"_locations pushBack configName _x" configClasses (configFile >> "CfgWorlds" >> "Altis" >> "Names");
 	"_positions pushBack getarray (_x >> 'position')" configClasses (configFile >> "CfgWorlds" >> "Altis" >> "Names");
 
-	showCinemaBorder true;
-	_camera = "camera" camCreate [0,0,0];
-	_target = "Sign_Arrow_Blue_F" createVehicleLocal [0,0,0];
-	_target hideObject true;
-	_camera camSetTarget _target;
-	_camera cameraEffect ["internal","back"];
-	_camera camcommit 0;
+	_dialog = createDialog "intromenu";
+	_condition = true;
 
-	while { true } do {
+	while { _condition } do {
 		_index = random floor(count(_locations));
 		_position = _positions select _index;
 		_startpos = [ _position select 0, _position select 1, 30];
+		
 		_newx = [-150, -100,-50,0,50,100,150] call BIS_fnc_selectRandom;
 		_newy = [-150, -100,-50,0,50,100,150] call BIS_fnc_selectRandom;
 		_endpos = [(_startpos select 0) + _newx, (_startpos select 1) + _newy, (_startpos select 2)];
+
+		waitUntil {preloadCamera _startpos};
+
+		if(isnil "_camera") then {
+			_camera = "camera" camCreate _startpos;
+			_camera cameraEffect ["internal","back"];
+			_camera camcommit 0;
+			showCinemaBorder true;
+		};
 
 		_camera camSetPos _startpos;
 		_camera camCommit 0;
 
 		[ format [ "<t size='1' align='left'>%1<br/>%2</t>", "", _locations select _index ],1,0.8,6,1 ] spawn BIS_fnc_dynamictext;
 
-		_target setpos _endpos;
+		_camera camSetDir [360, 270,180,90, 0] call BIS_fnc_selectRandom;
 		_camera camSetPos _endpos;
-		_camera camSetTarget _target;
 		_camera camSetTarget objnull;
-		_camera camCommit 10;
+		_camera camCommit 12;
 
-		waitUntil { camCommitted _camera; };
+		_loop = true;
+		_count = 0;
+		while { _loop } do {
+			sleep 0.1;
+			_count = _count + 1;
+			if(_count > 60) then { _loop = false;};
+			if(!dialog) then {_condition = false; _loop = false;};
+		};
 	};
 
+	_camera cameraEffect ["Terminate", "BACK"];
+	camDestroy _camera;
 
 	

@@ -24,7 +24,6 @@
 		PRIVATE STATIC_VARIABLE("scalar","instanceid");
 		PRIVATE VARIABLE("string","name");
 		PRIVATE VARIABLE("string","marker");
-		PRIVATE VARIABLE("bool","blinked");
 		PRIVATE VARIABLE("bool","attached");
 		PRIVATE VARIABLE("bool","local");
 
@@ -42,8 +41,6 @@
 				_name = format["%1_OO_MRK_%2", name player, _instanceid];				
 			};
 
-			//hintc format ["resu %1", _this];
-
 			_position = param [0, [0,0,0], [[]]];
 			_locality = param [1, false, [true]];
 
@@ -52,7 +49,6 @@
 			MEMBER("draw", _position);
 		};
 
-		PUBLIC FUNCTION("","isBlinked") FUNC_GETVAR("blinked");
 		PUBLIC FUNCTION("","isAttached") FUNC_GETVAR("attached");
 		PUBLIC FUNCTION("","isLocal") FUNC_GETVAR("local");
 		PUBLIC FUNCTION("","getName") FUNC_GETVAR("name");
@@ -66,7 +62,7 @@
 				_mark setMarkerDir 0;
 				_mark setMarkerAlpha 1;
 				_mark setMarkerShape "ICON";
-				_mark setMarkerType "mil_dot";
+				_mark setMarkerType "Empty";
 				_mark setmarkerbrush "Solid";
 				_mark setmarkercolor "ColorBlack";
 				_mark setmarkersize [1,1];
@@ -76,7 +72,7 @@
 				_mark setMarkerDirlocal 0;
 				_mark setMarkerAlphalocal 1;
 				_mark setMarkerShapelocal "ICON";
-				_mark setMarkerTypelocal "mil_dot";
+				_mark setMarkerTypelocal "Empty";
 				_mark setmarkerbrushlocal "Solid";
 				_mark setmarkercolorlocal "ColorBlack";
 				_mark setmarkersizelocal [1,1];
@@ -262,7 +258,6 @@
 			_speed = _this select 1;
 			_count = floor(_duration / _speed);
 
-			MEMBER("blinked", true);
 			while {_count > 0} do {
 				MEMBER("setAlpha", 0);
 				sleep _speed/2;
@@ -270,10 +265,6 @@
 				sleep _speed/2;
 				_count = _count - 1;
 			};
-		};
-
-		PUBLIC FUNCTION("", "unblink") {
-			MEMBER("blinked", false);
 		};
 
 		PUBLIC FUNCTION("scalar", "fadeIn") {
@@ -299,7 +290,6 @@
 			MEMBER("undraw", nil);
 			DELETE_VARIABLE("name");
 			DELETE_VARIABLE("attached");
-			DELETE_VARIABLE("blinked");
 			DELETE_VARIABLE("marker");
 			DELETE_VARIABLE("local");
 		};

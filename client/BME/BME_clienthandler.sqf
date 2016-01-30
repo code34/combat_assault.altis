@@ -238,6 +238,9 @@
 				_text = "Choose a square far of base";
 				["hint", [_title, _text]] call hud;
 
+				_sector = ["getSectorFromPos", _position] call client_grid;
+				_position = ["getPosFromSector", _sector] call client_grid;
+
 				_mark = ["new", [_position, false]] call OO_MARKER;
 				["setText", "Too near base"] spawn _mark;
 				["setType", "hd_warning"] spawn _mark;
@@ -251,6 +254,9 @@
 				_title = "Too near of water";
 				_text = "Choose a square far of water";
 				["hint", [_title, _text]] call hud;
+
+				_sector = ["getSectorFromPos", _position] call client_grid;
+				_position = ["getPosFromSector", _sector] call client_grid;
 
 				_mark = ["new", [_position, false]] call OO_MARKER;
 				["setText", "Water"] spawn _mark;

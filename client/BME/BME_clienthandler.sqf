@@ -36,7 +36,7 @@
 	BME_netcode_wcconvoystart = {
 		private ["_message"];
 		
-		_message = "<t color='#FF9933'>"+ localize "STR_ENEMYCONVOY_TEXT" + "</t>" + localize "STR_SPOTTED_TEXT" + "<br/>";
+		_message = "<t color='#FF9933'>"+ localize "STR_ENEMYCONVOY_TEXT" + "</t> " + localize "STR_SPOTTED_TEXT" + "<br/>";
 		rollmessage = rollmessage + [_message];
 		_message = "<t align='center'><t color='#FF9933'>"+ localize "STR_ENEMYCONVOY_TEXT" + "</t> " + localize "STR_SPOTTED_TEXT" + "</t>";
 		killzone = killzone + [_message];

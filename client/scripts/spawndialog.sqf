@@ -59,9 +59,13 @@
 
 	lbClear 2002;
 	{ 
-		if(alive _x) then {
-			lbAdd [2002, name _x];
-			if(_x == player) then { _indexplayer = _forEachIndex;};
+		if(side _x == side player) then {
+			if(alive _x) then {
+				lbAdd [2002, name _x];
+				if(_x == player) then { _indexplayer = _forEachIndex;};
+			};
+		} else {
+			_players = players - [_x];
 		};
 		sleep 0.001;
 	}foreach _players;

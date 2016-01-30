@@ -129,7 +129,7 @@
 			MEMBER("vehicle", _vehicle);
 			MEMBER("group", (_array select 2));
 
-			_mark = ["new", position _vehicle] call OO_MARKER;
+			_mark = ["new", [position _vehicle, true]] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;
 			["setText", "Convoy"] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;

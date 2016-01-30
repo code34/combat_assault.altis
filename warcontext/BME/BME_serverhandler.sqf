@@ -157,25 +157,23 @@
 	};		
 
 	BME_netcode_server_wcteleport = {
-		private ["_name", "_playerid", "_position", "_sector", "_result", "_around"];
+		private ["_playername", "_playerid", "_position", "_sector", "_result", "_around"];
 
-		_wcteleport = _this select 0;
-		_name = _wcteleport select 0;
+		_playername = (_this select 0) select 0;
+		_position = (_this select 0) select 1;
 
 		{
-			if (name _x == _name) then {
-				_playerid = owner _x;
-			};
+			if (name _x == _playername) then { _playerid = owner _x; };
 			sleep 0.0001;
 		}foreach playableUnits;
 
-		_position = _wcteleport select 1;
 		if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
-			wcteleportack = [0,1];
+			wcteleportack = [2, _position];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
+
 		if(surfaceIsWater _position) exitwith {
-			wcteleportack = [0,2];
+			wcteleportack = [3, _position];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
 
@@ -184,19 +182,17 @@
 
 		_list = _pos nearEntities [["Man"], 100];
 		if(east countSide _list > 0) exitwith {
-			wcteleportack = [0,0];
+			wcteleportack = [1, _position];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
 
-		_result = _position;
-
+		_result = [0, _position];
 		_around = ["getSectorAllAround", [_sector, 3]] call global_grid;
-		//_around = ["getSectorAround", _sector] call global_grid;
 		{
 			_sector = ["Get", str(_x)] call global_zone_hashmap;
 			if(!isnil "_sector") then {
 				if("getState" call _sector < 2) then {
-					_result = [0,0];
+					_result = [1, _position];
 				};
 			};
 		}foreach _around;

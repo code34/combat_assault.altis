@@ -206,25 +206,63 @@
 	};
 
 	BME_netcode_wcteleportack = {
-		_position = _this select 0;
-		switch (format["%1", _position]) do {
-			case "[0,0]": {
-				_title = "Too near of enemy position";
-				_text = "Choose a square far of enemy positions";
-				["hint", [_title, _text]] call hud;
+		private ["_returncode", "_position"];
+
+		_returncode = (_this select 0) select 0;
+		_position = (_this select 0) select 1;
+
+		switch (_returncode) do {
+			case 0 : {
+				wcteleportposition = _position;
 			};
-			case "[0,1]": {
+
+			case 1 : {
+				_title = "Too near of enemy position";
+				_text = "Choose a sector far of enemies position";
+				["hint", [_title, _text]] call hud;
+						
+				_sector = ["getSectorFromPos", _position] call client_grid;
+				_position = ["getPosFromSector", _sector] call client_grid;
+
+				_mark = ["new", [_position, false]] call OO_MARKER;
+				["setText", "enemies"] spawn _mark;
+				["setType", "hd_warning"] spawn _mark;
+				["setSize", [1,1]] spawn _mark;
+				["setColor", "ColorRed"] spawn _mark;
+				["blink", [1,0.3]] call _mark;
+				["delete", _mark] call OO_MARKER;
+			};
+
+			case 2 : {
 				_title = "Too near of base";
 				_text = "Choose a square far of base";
 				["hint", [_title, _text]] call hud;
+
+				_mark = ["new", [_position, false]] call OO_MARKER;
+				["setText", "Too near base"] spawn _mark;
+				["setType", "hd_warning"] spawn _mark;
+				["setSize", [1,1]] spawn _mark;
+				["setColor", "ColorRed"] spawn _mark;
+				["blink", [1,0.3]] call _mark;
+				["delete", _mark] call OO_MARKER;
 			};
-			case "[0,2]": {
+
+			case 3 : {
 				_title = "Too near of water";
 				_text = "Choose a square far of water";
 				["hint", [_title, _text]] call hud;
-			};			
+
+				_mark = ["new", [_position, false]] call OO_MARKER;
+				["setText", "Water"] spawn _mark;
+				["setType", "hd_warning"] spawn _mark;
+				["setSize", [1,1]] spawn _mark;
+				["setColor", "ColorRed"] spawn _mark;
+				["blink", [1,0.3]] call _mark;
+				["delete", _mark] call OO_MARKER;
+			};
+
 			default {
-				wcteleportposition = _position;
+				wcteleportposition = position player;
 			};
 		};
 	};

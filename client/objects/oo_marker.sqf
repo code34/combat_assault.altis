@@ -29,7 +29,7 @@
 		PRIVATE VARIABLE("bool","local");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_instanceid", "_mark", "_name"];
+			private ["_instanceid", "_mark", "_name", "_position", "_locality"];
 
 			_instanceid = MEMBER("instanceid",nil);
 			if (isNil "_instanceid") then {_instanceid = 0;};
@@ -40,11 +40,16 @@
 				_name = format["SRV_OO_MRK_%1", _instanceid];
 			} else {
 				_name = format["%1_OO_MRK_%2", name player, _instanceid];				
-			};		
+			};
+
+			//hintc format ["resu %1", _this];
+
+			_position = param [0, [0,0,0], [[]]];
+			_locality = param [1, false, [true]];
 
 			MEMBER("name", _name);
-			MEMBER("local", false);
-			MEMBER("draw", _this);
+			MEMBER("local", _locality);
+			MEMBER("draw", _position);
 		};
 
 		PUBLIC FUNCTION("","isBlinked") FUNC_GETVAR("blinked");
@@ -250,15 +255,20 @@
 			MEMBER("attached", false);
 		};
 
-		PUBLIC FUNCTION("scalar", "blink") {
-			private ["_time"];
-			_time = _this;
+		PUBLIC FUNCTION("array", "blink") {
+			private ["_duration", "_speed"];
+			
+			_duration = _this select 0;
+			_speed = _this select 1;
+			_count = floor(_duration / _speed);
+
 			MEMBER("blinked", true);
-			while {MEMBER("blinked", nil)} do {
+			while {_count > 0} do {
 				MEMBER("setAlpha", 0);
-				sleep _time;
+				sleep _speed/2;
 				MEMBER("setAlpha", 1);
-				sleep _time;
+				sleep _speed/2;
+				_count = _count - 1;
 			};
 		};
 

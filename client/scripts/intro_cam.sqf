@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_camera", "_target", "_locations", "_positions", "_newx", "_newy", "_startpos", "_endpos", "_condition", "_loop", "_count"];
+	private ["_camera", "_target", "_locations", "_positions", "_newx", "_newy", "_startpos", "_endpos", "_condition", "_loop", "_count", "_preload"];
 
 	_locations = [];
 	_positions = [];
@@ -26,17 +26,21 @@
 
 	_dialog = createDialog "intromenu";
 	_condition = true;
+	_preload = false;
 
 	while { _condition } do {
 		_index = random floor(count(_locations));
 		_position = _positions select _index;
+		_oldh = [10, 20,30,40,50,60,70] call BIS_fnc_selectRandom;
 		_startpos = [ _position select 0, _position select 1, 30];
 		
 		_newx = [-150, -100,-50,0,50,100,150] call BIS_fnc_selectRandom;
 		_newy = [-150, -100,-50,0,50,100,150] call BIS_fnc_selectRandom;
-		_endpos = [(_startpos select 0) + _newx, (_startpos select 1) + _newy, (_startpos select 2)];
+		_newh = [10, 20,30,40,50,60,70] call BIS_fnc_selectRandom;
+		_endpos = [(_startpos select 0) + _newx, (_startpos select 1) + _newy, _newh];
 
-		waitUntil {preloadCamera _startpos};
+		if(_preload) then { waitUntil {preloadCamera _startpos}; };
+		_preload = true;
 
 		if(isnil "_camera") then {
 			_camera = "camera" camCreate _startpos;

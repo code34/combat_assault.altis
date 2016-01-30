@@ -55,7 +55,7 @@
 			wcartillerystart = true;
 			["wcartillerystart", "client"] call BME_fnc_publicvariable;	
 			
-			_mark = ["new", position _vehicle] call OO_MARKER;
+			_mark = ["new", [position _vehicle, true]] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;
 			["setText", "Artillery"] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;

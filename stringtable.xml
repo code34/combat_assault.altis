@@ -19,10 +19,6 @@
                         <Original>Train you in real fighting conditions</Original>
                         <French>Entrainez-vous en condition réelle</French>
                 </Key>
-                <Key ID="STR_INTRO_TRAIN">
-                        <Original>Train you in real fighting conditions</Original>
-                        <French>Entrainez-vous en condition réelle</French>
-                </Key>
                 <Key ID="STR_INTRO_RANK">
                         <Original>Try to gain a better server ranking</Original>
                         <French>Essayez de monter en rang</French>
@@ -110,7 +106,7 @@
                 </Key>        
                 <Key ID="STR_SPOTTED_TEXT">
                         <Original>has been spotted</Original>
-                        <French>a été localisé<t/French>
+                        <French>a été localisé</French>
                 </Key>     
                 </Package>
         </Project>

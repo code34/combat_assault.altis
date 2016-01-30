@@ -18,40 +18,40 @@
 
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
+		diag_log "Waiting BIS_fnc_init ...";
+		waitUntil {BIS_fnc_init;};
+
+		diag_log "Waiting Time over 0 ...";
+		waitUntil {time > 0};
+
+		diag_log "Waiting client read briefing ...";
+		waitUntil {getClientState == "BRIEFING READ"};
+
+		diag_log "Waiting player is alive ...";
+		waitUntil {alive player;};
+
 	[] spawn {
-		titleText ["Loading",  "BLACK IN", 1];
+
+		WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
+		WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
+		WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
+		WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
+		
+		call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+		call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
+		call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+		call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
+		call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
+		call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+		call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+		call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";	
+		call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
+		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	};
 
-	diag_log "Waiting BIS_fnc_init ...";
-	waitUntil {BIS_fnc_init;};
-
-	diag_log "Waiting Time over 0 ...";
-	waitUntil {time > 0};
-
-	diag_log "Waiting client read briefing ...";
-	waitUntil {getClientState == "BRIEFING READ"};
-
-	diag_log "Waiting player is alive ...";
-	waitUntil {alive player;};
 
 	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
-	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
-	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
-	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
-	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
-	
-	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";	
-	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-
 	[] call WC_fnc_introcam;
 
 	// config variables
@@ -114,7 +114,7 @@
 
 	_body = player;
 	_view = cameraView;
-	_mark = ["new", position player] call OO_MARKER;
+	_mark = ["new", [position player, true]] call OO_MARKER;
 
 	playertype = "ammobox";
 

@@ -36,7 +36,8 @@
 		WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 		WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 		WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
-		
+
+		call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
 		call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 		call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
 		call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
@@ -44,10 +45,9 @@
 		call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 		call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
 		call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-		call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";	
-		call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+		call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 	};
 
 
@@ -64,7 +64,7 @@
 	playerdeath = 0;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
-	client_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+	client_grid = ["new", [0,0,31000,31000,100,100]] call OO_GRID;
 
 	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>"+(localize "STR_INTRO_WELCOME")+"</t><br/>", (localize "STR_INTRO_WEBSITE")+"<br/>","<br/>", (localize "STR_INTRO_TRAIN")+"<br/>", (localize "STR_INTRO_RANK")+"<br/>", (localize "STR_INTRO_WINWAR")+"<br/> ", "<br/>", "<br/>", (localize "STR_INTRO_GOODLUCK")+"<br/>",  (localize "STR_INTRO_AUTHOR")+"<br/><br/>"];
 	rollprintmessage = "";

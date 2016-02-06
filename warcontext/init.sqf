@@ -122,7 +122,7 @@
 		deletemarker _name;
 	};
 
-	global_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+	global_grid = ["new", [0,0, 31000,31000,100,100]] call OO_GRID;
 	global_zone_hashmap  = ["new", []] call OO_HASHMAP;
 	global_controller = ["new", []] call OO_CONTROLLER;
 	global_scores = ["new", []] call OO_HASHMAP;

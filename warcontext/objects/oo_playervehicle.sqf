@@ -258,7 +258,7 @@
 			_vehicle = MEMBER("vehicle", nil);
 			_position = position _vehicle;
 
-			_mark = ["new", [_position, true]] call OO_MARKER;
+			_mark = ["new", [_position, false]] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;

@@ -42,8 +42,7 @@
 			{
 
 				_position = position _x;
-				_sector = ["getSectorFromPos", _position] call global_grid;
-				_position = ["getPosFromSector", _sector] call global_grid;
+				_position = ["getSectorCenterPos", _position] call global_grid;
 
 				_mark = ["new", [_position, false]] call OO_MARKER;
 				["setShape", "RECTANGLE"] spawn _mark;

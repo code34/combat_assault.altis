@@ -42,7 +42,7 @@
 			};
 
 			_position = param [0, [0,0,0], [[]]];
-			_locality = param [1, false, [true]];
+			_locality = param [1, true, [true]];
 
 			MEMBER("name", _name);
 			MEMBER("local", _locality);
@@ -197,7 +197,7 @@
 			if!(MEMBER("isLocal", nil)) then {
 				MEMBER("marker", nil) setMarkerPos _this;
 			} else {
-				MEMBER("marker", nil) setMarkerPos _this;
+				MEMBER("marker", nil) setMarkerPosLocal _this;
 			};
 		};
 
@@ -241,7 +241,7 @@
 			MEMBER("setDir", 0);
 			
 			while {MEMBER("attached", nil)} do {
-				_position = ["getCenterPos", position _this] call client_grid;
+				_position = ["getSectorCenterPos", _position] call client_grid;
 				MEMBER("setPos", _position);
 				sleep 1;
 			};

@@ -83,7 +83,7 @@
 		PUBLIC FUNCTION("", "setMarker") {
 			private ["_vehicle", "_mark"];
 			_vehicle = MEMBER("vehicle", nil);
-			_mark = ["new", [position _vehicle, true]] call OO_MARKER;
+			_mark = ["new", [position _vehicle, false]] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;
@@ -109,7 +109,7 @@
 		PUBLIC FUNCTION("", "getSectorAround") {
 			private ["_around", "_sector"];
 			_sector = "getSector" call MEMBER("sector", nil);
-			_around = ["getSectorAllAround", [_sector, 6]] call global_grid;
+			_around = ["getAllSectorsAroundSector", [_sector, 6]] call global_grid;
 			MEMBER("around", _around);
 		};
 

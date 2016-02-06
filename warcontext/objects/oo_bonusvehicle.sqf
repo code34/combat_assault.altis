@@ -82,7 +82,7 @@
 
 		PUBLIC FUNCTION("", "setMarker") {
 			private ["_mark", "_name"];
-			_mark = ["new", [position MEMBER("vehicle", nil), true]] call OO_MARKER;
+			_mark = ["new", [position MEMBER("vehicle", nil), false]] call OO_MARKER;
 			["attachTo", MEMBER("vehicle", nil)] spawn _mark;
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf MEMBER("vehicle", nil)) >> "DisplayName");
 			["setText", _name] spawn _mark;

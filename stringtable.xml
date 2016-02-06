@@ -79,10 +79,6 @@
                         <Original>Too much enemy near your position</Original>
                         <French>Trop d'ennemis prêt de votre position</French>
                 </Key>
-                <Key ID="STR_DEPLOY_SELECTROLE">
-                        <Original>Select your role</Original>
-                        <French>Choisissez votre rôle</French>
-                </Key>
                 <Key ID="STR_DEPLOY_SELECTLOCATION">
                         <Original>Select location</Original>
                         <French>Choisissez la zone</French>

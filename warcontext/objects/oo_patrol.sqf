@@ -418,7 +418,7 @@
 			_basesector = "getSector" call MEMBER("sector", nil);
 			
 			while { (position _leader) distance _position < _areasize } do {
-				_around = ["getSectorAllAround", [_basesector, 2]] call global_grid;
+				_around = ["getAllSectorsAroundSector", [_basesector, 2]] call global_grid;
 				_sector = _around call BIS_fnc_selectRandom;
 				_position = ["getPosFromSector", _sector] call global_grid;
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;

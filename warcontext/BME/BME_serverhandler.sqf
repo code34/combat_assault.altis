@@ -187,7 +187,7 @@
 		};
 
 		_result = [0, _position];
-		_around = ["getSectorAllAround", [_sector, 3]] call global_grid;
+		_around = ["getAllSectorsAroundSector", [_sector, 3]] call global_grid;
 		{
 			_sector = ["Get", str(_x)] call global_zone_hashmap;
 			if(!isnil "_sector") then {

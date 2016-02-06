@@ -30,29 +30,25 @@
 		diag_log "Waiting player is alive ...";
 		waitUntil {alive player;};
 
-	[] spawn {
-
 		WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 		WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 		WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 		WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 
-		call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
-		call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
-		call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
-		call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-		call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
-		call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
-		call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-		call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-		call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-		call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
-	};
+		[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
+		[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+		[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 
-
-	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
-	[] call WC_fnc_introcam;
+		WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
+		[] call WC_fnc_introcam;
 
 	// config variables
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
@@ -80,7 +76,7 @@
 
 	[] execVM "real_weather\real_weather.sqf";
 
-	if(wcambiant ==2) then {
+	if(wcambiant == 2) then {
 		enableEnvironment false;
 		enableSentences false;
 	};

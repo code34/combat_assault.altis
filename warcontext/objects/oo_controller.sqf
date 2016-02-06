@@ -106,7 +106,7 @@
 			_around = [];
 			_array = MEMBER("getNewSector", nil);		
 			{
-				_temp = ["getSectorAllAround", [_x, wcpopsquaredistance]] call global_grid;
+				_temp = ["getAllSectorsAroundSector", [_x, wcpopsquaredistance]] call global_grid;
 				_around = _around + _temp;
 				sleep 0.0000001;
 			}foreach _array; 
@@ -125,7 +125,7 @@
 
 			_key = _this;
 			
-			_cross = ["getSectorCrossAround", [_key]] call global_grid;
+			_cross = ["getSectorsCrossAroundSector", _key] call global_grid;
 			_neighbour = 1;
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -146,7 +146,7 @@
 			_can = true;
 			_boundaries = MEMBER("getNumberNeighour", _key);
 			if(_boundaries < 4) then {
-				_cross = ["getSectorCrossAround", [_key]] call global_grid;
+				_cross = ["getSectorsCrossAroundSector", _key] call global_grid;
 				{
 					_boundaries = MEMBER("getNumberNeighour", _x);
 					if(_boundaries > 3) then {_can = false;};
@@ -162,7 +162,7 @@
 			private ["_count", "_key", "_around", "_temp"];
 			_key = _this;
 			_count = 1;
-			_around = ["getSectorCrossAround", [_key]] call global_grid;
+			_around = ["getSectorsCrossAroundSector", _key] call global_grid;
 			{
 				_temp = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
 				if!(isnil "_temp") then {
@@ -229,7 +229,7 @@
 			_rate = (90 - (_this select 1)) / 100;
 			if(_rate < 0) then {_rate = 0;};
 
-			_around = ["getSectorAllAround", [_sector,3]] call global_grid;
+			_around = ["getAllSectorsAroundSector", [_sector,3]] call global_grid;
 
 			while { count _around > 0 } do {
 				_x = _around call BIS_fnc_selectRandom;
@@ -248,7 +248,8 @@
 			private ["_sector", "_around", "_position"];
 			_position = _this;
 			_sector = ["getSectorFromPos", _position] call global_grid;
-			_around = ["getSectorAllAround", [_sector,2]] call global_grid;
+
+			_around = ["getAllSectorsAroundSector", [_sector,2]] call global_grid;
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -268,7 +269,8 @@
 		PUBLIC FUNCTION("array", "expandAlertAround"){
 			private ["_sector", "_around"];
 			_sector = _this;
-			_around = ["getSectorAllAround", [_sector,3]] call global_grid;
+
+			_around = ["getAllSectorsAroundSector", [_sector,3]] call global_grid;
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);

@@ -4,7 +4,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { column, map, title, labelrole, role, labelplayer, player, deploy, mapbutton, rollmessage, equipment}; 
+	controls[] = { column, map, title, labelplayer, player, deploy, mapbutton, rollmessage, equipment}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
@@ -31,24 +31,6 @@ class spawndialog {
 		h = 0.05 * safezoneH - (BORDERSIZE);
 		text = $STR_REDEPLOY_TITLE;
 	};
-
-	class labelrole : StdText{
-		idc=-1;
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		h = (0.03 * safezoneH);
-		y = 0.16 * safezoneH + safezoneY;
-		sizeEx = 0.018 * safezoneH;
-		text = $STR_DEPLOY_SELECTROLE;
-	};
-	class role : StdCombo{
-		idc = 2001;
-		x = (0.15 * safezoneW + safezoneX);
-		w = 0.15 * safezoneW;
-		y = 0.19 * safezoneH + safezoneY;
-		h = 0.03 * safezoneH;
-		sizeEx = 0.018 * safezoneH;
-	  };
 
 	class labelplayer : StdText{
 		idc=-1;

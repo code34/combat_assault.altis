@@ -20,7 +20,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.35C";
+		briefingName="COMBAT ASSAULT 1.35F";
 		overviewText="By Code34 - www.combat-assault.eu";
 		resistanceWest=0;
 		resistanceEast=1;
@@ -473,7 +473,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=33;
+		items=34;
 		class Item0
 		{
 			position[]={13550.552,16.097698,12103.245};
@@ -786,6 +786,13 @@ class Mission
 		{
 			position[]={8421.2109,111.51302,25114.572};
 			name="respawn_east";
+			type="Empty";
+		};
+		class Item33
+		{
+			position[]={8418.5928,111.13241,25118.875};
+			name="base_lamp2";
+			text="base_lamp";
 			type="Empty";
 		};
 	};

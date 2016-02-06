@@ -43,7 +43,7 @@
 			{						
 				_enemies = false;
 				_sector = ["getSectorFromPos", getmarkerpos _x] call global_grid;
-				_around = ["getSectorAround", _sector] call global_grid;
+				_around = ["getSectorsAroundSector", _sector] call global_grid;
 				{
 					_sector = ["get", str(_x)] call global_zone_hashmap;
 					if(!isnil "_sector") then {

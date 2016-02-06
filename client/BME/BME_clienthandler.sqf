@@ -223,7 +223,7 @@
 				
 				_position = ["getSectorCenterPos", _position] call client_grid;
 
-				_mark = ["new", [_position, false]] call OO_MARKER;
+				_mark = ["new", [_position, true]] call OO_MARKER;
 				["setText", "enemies"] spawn _mark;
 				["setType", "hd_warning"] spawn _mark;
 				["setSize", [1,1]] spawn _mark;
@@ -239,7 +239,7 @@
 
 				_position = ["getSectorCenterPos", _position] call client_grid;
 
-				_mark = ["new", [_position, false]] call OO_MARKER;
+				_mark = ["new", [_position, true]] call OO_MARKER;
 				["setText", "Too near base"] spawn _mark;
 				["setType", "hd_warning"] spawn _mark;
 				["setSize", [1,1]] spawn _mark;
@@ -255,7 +255,7 @@
 
 				_position = ["getSectorCenterPos", _position] call client_grid;
 
-				_mark = ["new", [_position, false]] call OO_MARKER;
+				_mark = ["new", [_position, true]] call OO_MARKER;
 				["setText", "Water"] spawn _mark;
 				["setType", "hd_warning"] spawn _mark;
 				["setSize", [1,1]] spawn _mark;

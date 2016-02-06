@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_body",  "_ctrl", "_player", "_position", "_dir", "_roles",  "_inforoles", "_standard_map_pos", "_frame_pos", "_old_fullmap", "_players", "_indexplayer"];
+	private ["_cam", "_body",  "_ctrl", "_player", "_position", "_dir",  "_inforoles", "_standard_map_pos", "_frame_pos", "_old_fullmap", "_players", "_indexplayer"];
 
 	_body = _this select 0;
 
@@ -49,14 +49,7 @@
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 	};
 
-	_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
-	{
-		lbAdd [2001, _x];
-	}foreach _roles;
-	lbSetCurSel [ 2001, 0 ];
-
 	_players = playableUnits;
-
 	lbClear 2002;
 	{ 
 		if(side _x == side player) then {
@@ -65,11 +58,12 @@
 				if(_x == player) then { _indexplayer = _forEachIndex;};
 			};
 		} else {
-			_players = players - [_x];
+			_players = _players - [_x];
 		};
 		sleep 0.001;
 	}foreach _players;
 	lbSetCurSel [ 2002, _indexplayer];
+	_player = player;
 
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
 	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
@@ -90,22 +84,21 @@
 				};
 				createDialog "spawndialog"; 
 				
-				lbClear 2001;
-				_roles = ["ammobox", "tank", "tankaa", "bomber", "fighter", "chopper", "achopper"];
-				{
-					lbAdd [2001, _x];
-				}foreach _roles;
-				lbSetCurSel [ 2001, 0 ];
-				
+				_players = playableUnits;
 				lbClear 2002;
 				{ 
-					if(alive _x) then {
-						lbAdd [2002, name _x];
-						if(_x == player) then { _indexplayer = _forEachIndex;};
+					if(side _x == side player) then {
+						if(alive _x) then {
+							lbAdd [2002, name _x];
+							if(_x == player) then { _indexplayer = _forEachIndex;};
+						};
+					} else {
+						_players = _players - [_x];
 					};
 					sleep 0.001;
 				}foreach _players;
 				lbSetCurSel [ 2002, _indexplayer];
+				_player = player;
 
 				if (needReload player == 1) then {reload player};
 				["save", player] spawn inventory;
@@ -174,10 +167,12 @@
 				};
 				wcchange  = false;
 			};
-			playertype = _roles select (lbCurSel 2001);
+
 			sleep 0.01;
 		};
 
+
+	_playertype = "ammobox";
 	_position = position _cam;
 	_dir = getDir _cam;
 

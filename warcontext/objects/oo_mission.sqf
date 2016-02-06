@@ -381,7 +381,7 @@
 			_text = _this;
 
 			_target = MEMBER("target", nil);
-			_mark = ["new", [position _target, true]] call OO_MARKER;
+			_mark = ["new", [position _target, false]] call OO_MARKER;
 			["attachTo", _target] spawn _mark;
 			["setText", _text] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;

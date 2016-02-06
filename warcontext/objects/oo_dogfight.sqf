@@ -247,7 +247,7 @@
 				_handle = [_crew, ""] spawn WC_fnc_setskill;
 				_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
 
-				_mark = ["new", [position _vehicle, true]] call OO_MARKER;
+				_mark = ["new", [position _vehicle, false]] call OO_MARKER;
 
 				["attachTo", _vehicle] spawn _mark;
 				["setText", "Mig"] spawn _mark;

@@ -333,7 +333,7 @@
 			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 			if(_position isequalto _position2)  exitwith {[];};
 		
-			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
+			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call WC_fnc_spawngroup;
 		
 			{
 				_handle = [_x, _type] spawn WC_fnc_setskill;

@@ -157,13 +157,14 @@
 	};		
 
 	BME_netcode_server_wcteleport = {
-		private ["_playername", "_playerid", "_position", "_sector", "_result", "_around"];
+		private ["_playername", "_playerid", "_position", "_sector", "_result", "_around", "_side", "_list", "_pos"];
 
 		_playername = (_this select 0) select 0;
 		_position = (_this select 0) select 1;
+		_side = west;
 
 		{
-			if (name _x == _playername) then { _playerid = owner _x; };
+			if (name _x == _playername) then { _playerid = owner _x; _side = side _x;};
 			sleep 0.0001;
 		}foreach playableUnits;
 
@@ -181,10 +182,20 @@
 		_pos = ["getPosFromSector", _sector] call global_grid;
 
 		_list = _pos nearEntities [["Man"], 100];
-		if(east countSide _list > 0) exitwith {
-			wcteleportack = [1, _position];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
+		switch (_side) do {
+			case east : {
+				if(west countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
+			};
+
+			case west : {
+				if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
+			};
+
+			default {
+				if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
+			};
 		};
+
 
 		_result = [0, _position];
 		_around = ["getAllSectorsAroundSector", [_sector, 3]] call global_grid;

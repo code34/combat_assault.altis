@@ -37,7 +37,7 @@
 	wcaction = "";
 
 	createDialog "spawndialog"; 
-	sleep 1;
+	sleep 0.01;
 	
 	_standard_map_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003);
 	_frame_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2004);

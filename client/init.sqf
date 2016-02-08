@@ -28,7 +28,7 @@
 		waitUntil {getClientState == "BRIEFING READ"};
 
 		diag_log "Waiting player is alive ...";
-		waitUntil {alive player;};
+		waitUntil {alive player && !(isNull player);};
 
 		WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 		WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";

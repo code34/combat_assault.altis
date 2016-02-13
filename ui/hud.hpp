@@ -268,5 +268,5 @@ class RscTitles {
 				text = ""; 
 			}; 												
 		};
-	}; 
+	}; 	
 };

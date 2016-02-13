@@ -15,13 +15,13 @@ class playergroup {
 		h = 1;
 	}; 
 
-	class labelgroup : StdText{
+	class labelgroup : StdHeader{
 		idc = -1;
 		x = 0.01;
 		w = 0.8;
 		y = 0.02;
 		h = 0.16;
-		sizeEx = 0.12;
+		sizeEx = 0.05;
 		text = "Buddy List";
 	};
 

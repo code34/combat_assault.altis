@@ -18,37 +18,39 @@
 
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
-		diag_log "Waiting BIS_fnc_init ...";
-		waitUntil {BIS_fnc_init;};
+	diag_log "Waiting BIS_fnc_init ...";
+	waitUntil {BIS_fnc_init;};
 
-		diag_log "Waiting Time over 0 ...";
-		waitUntil {time > 0};
+	diag_log "Waiting Time over 0 ...";
+	waitUntil {time > 0};
 
-		diag_log "Waiting client read briefing ...";
-		waitUntil {getClientState == "BRIEFING READ"};
+	diag_log "Waiting client read briefing ...";
+	waitUntil {getClientState == "BRIEFING READ"};
 
-		diag_log "Waiting player is alive ...";
-		waitUntil {alive player && !(isNull player);};
+	diag_log "Waiting player is alive ...";
+	waitUntil {alive player && !(isNull player);};
 
-		WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
-		WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
-		WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
-		WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
+	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
+	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
+	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
+	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 
-		[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
-		[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-		[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
+	[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
 
-		WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
-		[] call WC_fnc_introcam;
+	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+
+	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
+	[] call WC_fnc_introcam;
 
 	// config variables
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
@@ -61,6 +63,9 @@
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 	client_grid = ["new", [0,0,31000,31000,100,100]] call OO_GRID;
+	
+	playersmarkers = ["new", []] call OO_PLAYERSMARKER;
+	"start" spawn playersmarkers;
 
 	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>"+(localize "STR_INTRO_WELCOME")+"</t><br/>", (localize "STR_INTRO_WEBSITE")+"<br/>","<br/>", (localize "STR_INTRO_TRAIN")+"<br/>", (localize "STR_INTRO_RANK")+"<br/>", (localize "STR_INTRO_WINWAR")+"<br/> ", "<br/>", "<br/>", (localize "STR_INTRO_GOODLUCK")+"<br/>",  (localize "STR_INTRO_AUTHOR")+"<br/><br/>"];
 	rollprintmessage = "";

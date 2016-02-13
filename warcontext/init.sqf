@@ -52,7 +52,6 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_playersmarker.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_playervehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
@@ -131,7 +130,6 @@
 	global_ticket = ["new", wcnumberofticket] call OO_TICKET;
 	global_atc = ["new", []] call OO_ATC;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
-	global_markers = ["new", ""] call OO_PLAYERSMARKER;
 
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;
@@ -139,7 +137,6 @@
 	
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;
-	"start" spawn global_markers;
 
 	// init for slow server
 	sleep 60;

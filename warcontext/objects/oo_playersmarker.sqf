@@ -22,17 +22,27 @@
 
 	CLASS("OO_PLAYERSMARKER")
 		PRIVATE VARIABLE("array","markers");
+		PRIVATE VARIABLE("code","grid");
+		PRIVATE VARIABLE("code","hashmap");
+
 		
 		PUBLIC FUNCTION("string","constructor") {
+			private ["_array", "_grid", "_hashmap"];
+			
 			_array = [];
 			MEMBER("markers", _array);
+			
+			_grid = ["new", [0,0, 31000,31000,1000,1000]] call OO_GRID;
+			MEMBER("grid", _grid);
+			
+			_hashmap  = ["new", []] call OO_HASHMAP;
+			MEMBER("hashmap", _hashmap);
 		};
 
 		PUBLIC FUNCTION("","start") {
 			while { true } do {
 				MEMBER("draw", nil);
 				sleep 15;
-				MEMBER("unDraw", nil);
 			};
 		};
 
@@ -42,15 +52,21 @@
 			{
 
 				_position = position _x;
-				_position = ["getSectorCenterPos", _position] call global_grid;
+				_position = ["getSectorCenterPos", _position] call MEMBER("grid", nil);
 
-				_mark = ["new", [_position, false]] call OO_MARKER;
-				["setShape", "RECTANGLE"] spawn _mark;
-				["setSize", [50,50]] spawn _mark;
-				if(side _x == west) then {
-					["setColor", "ColorBlue"] spawn _mark;
+				_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
+				if(isnil "_mark") then {
+					_mark = ["new", [_position, false]] call OO_MARKER;
+					["setShape", "RECTANGLE"] spawn _mark;
+					["setSize", [500,500]] spawn _mark;
+					if(side _x == west) then {
+						["setColor", "ColorBlue"] spawn _mark;
+					} else {
+						["setColor", "ColorRed"] spawn _mark;
+					};
+					["put", [str(_x), _mark]] call MEMBER("hashmap", nil);
 				} else {
-					["setColor", "ColorRed"] spawn _mark;
+					["setPos", _position] spawn _mark;
 				};
 				_array = _array + [_mark];
 			}foreach playableUnits;

@@ -132,8 +132,6 @@
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
 			private ["_xpos", "_ypos"];
 
-			diag_log format ["getSectorFromPos %1", _this];
-
 			_xpos = param [0, 0, [0]];
 			_ypos = param [1, 0, [0]];
 
@@ -150,8 +148,6 @@
 		*/
 		PUBLIC FUNCTION("array", "getPosFromSector") {		
 			private ["_xpos", "_ypos"];
-
-			diag_log format ["getPosFromSector %1", _this];
 
 			_xpos = param [0, 0, [0]];
 			_ypos = param [1, 0, [0]];			
@@ -179,7 +175,6 @@
 		PUBLIC FUNCTION("array", "getSectorsAroundSector") {
 			private ["_grid", "_xpos", "_ypos"];
 
-			diag_log format ["getSectorsAroundSector %1", _this];
 			_xpos = param [0, 0, [0]];
 			_ypos = param [1, 0, [0]];
 
@@ -215,7 +210,6 @@
 		PUBLIC FUNCTION("array", "getSectorsCrossAroundSector") {
 			private ["_grid", "_xpos", "_ypos"];
 
-			diag_log format ["getSectorsCrossAroundSector %1", _this];
 			_xpos = param [0, 0, [0]];
 			_ypos = param [1, 0, [0]];
 
@@ -248,8 +242,6 @@
 		PUBLIC FUNCTION("array", "getAllSectorsAroundSector") {
 			private ["_grid", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
 
-			diag_log format ["getAllSectorsAroundSector %1", _this];
-
 			_botx = ((_this select 0) select 0) - (_this select 1);
 			_boty = ((_this select 0) select 1) - (_this select 1);
 			_topx = ((_this select 0) select 0) + (_this select 1);
@@ -277,7 +269,6 @@
 			private ["_array"];
 			_array = [MEMBER("getSectorFromPos", _this select 0), _this select 1];
 
-			diag_log format ["getAllSectorsAroundPos %1", _array];
 			MEMBER("getAllSectorsAroundSector", _array);
 		};
 

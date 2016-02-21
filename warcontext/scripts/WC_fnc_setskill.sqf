@@ -173,44 +173,8 @@
 	}];
 
 	_unit addeventhandler ['Killed', {
-		private ["_unit", "_killer", "_name", "_score", "_distance", "_weapon", "_playerkill", "_playerdeath"];
-
-		_unit = _this select 0;
-		_killer = _this select 1;
-		_weapon = currentWeapon _killer;
-
-		_distance = _unit distance _killer;
-		_uid = getPlayerUID _killer;
-		
-		_name = "";
-		
-		if(_killer isKindOf "Man") then {
-			_name = name _killer;
-			if(_name == "Error: No unit") then { _name = "";} ;
-		} else {
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
-			if(_unit isKindOf "Man") then {
-				_distance = 1000;
-			};
-		};
-
-		if(_name != "") then {
-			if!( _unit isequalto _killer) then {
-					_score = ["get", _uid] call global_scores;
-					if(isnil "_score") then {
-						_score = ["new", [_uid]] call OO_SCORE;
-						["put", [_uid, _score]] call global_scores;
-					};
-				["setScore", _distance] call _score;
-				_points = score _killer;
-				["setKill", _points] call _score;
-				_playerkill = "getKill" call _score;
-				_playerdeath = "getDeath" call _score;
-			};
-		};
-
-		wcaideath = [name  _unit, _name, _weapon, _playerkill, _playerdeath];
-		["wcaideath", "client"] call BME_fnc_publicvariable;
+		wcdeath = [(_this select 0), (_this select 1)];
+		["wcdeath", "all"] call BME_fnc_publicvariable;
 	}];
 
 	true;

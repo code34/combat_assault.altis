@@ -75,12 +75,24 @@
 			MEMBER("gamedeath", _death);
 		};
 
+		PUBLIC FUNCTION("", "addKill") {
+			private ["_kill"];
+			_kill = MEMBER("gamekill", nil) + 1;
+			MEMBER("gamekill", _kill);
+		};		
+
 		PUBLIC FUNCTION("scalar", "setScore") {
 			private ["_score", "_distance"];
 			_distance = _this;
 			if(_distance > 1000) then {_distance = 1000;};
 			_score = MEMBER("gamescore", nil);
 			_score = _score + (100 - round(log(_distance / 100) * 100));
+			MEMBER("gamescore", _score);
+		};
+
+		PUBLIC FUNCTION("", "killPlayer") {
+			private ["_score"];
+			_score = MEMBER("gamescore", nil) + 500;
 			MEMBER("gamescore", _score);
 		};
 
@@ -165,6 +177,29 @@
 			};
 			_rank;
 		};	
+
+		PUBLIC FUNCTION("object", "publicScore") {
+			private ["_name", "_gameranking", "_serverranking", "_matches", "_gamescore", "_rank", "_player", "_kill", "_death"];
+
+			_player = _this;
+			_name = name _this;
+			
+			_gameranking = MEMBER("getGameRanking", nil);
+			_serverranking = MEMBER("getServerRanking", nil);
+			
+			_matches = MEMBER("getMatches", nil);
+			_gamescore = MEMBER("getScore", nil);
+
+			_rank = MEMBER("getRank", _gameranking);
+			_player setrank _rank;
+
+			_kill = MEMBER("getKill", nil);
+			_death = MEMBER("getDeath", nil);
+
+			playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]];
+			["playerstats", "client"] call BME_fnc_publicvariable;
+		};
+
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("uid");

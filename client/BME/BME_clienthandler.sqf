@@ -104,7 +104,6 @@
 		_playerkill =_array select 3;
 		_playerdeath = _array select 4;
 		_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
-		diag_log format ["%1", _array];
 
 		if!(_killer == "") then {
 			_message = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";
@@ -118,15 +117,24 @@
 		rollmessage = rollmessage + [_message];		
 	};
 
-	BME_netcode_wcdeathlistner = {
-		private ["_unit", "_killer", "_message", "_message2", "_displayname", "_weapon"];
-		_array = _this select 0;
-		_unit = _array select 0;
-		_killer = _array select 2;
-		_weapon = _array select 3;
+	BME_netcode_wcdeath = {
+		private ["_victim", "_killer", "_message", "_message2", "_displayname", "_weapon", "_name"];
+		
+		_victim = (_this select 0) select 0;
+		_killer = (_this select 0) select 1;
+		_weapon = currentWeapon _killer;
 
-		if!(_killer == "") then {
-			if(_unit == _killer) then {
+		if(_killer isKindOf "Man") then {
+			_name = name _killer;
+			if( toUpper(_name) isEqualTo "ERROR: NO UNIT") then { 
+				_name = ["Francois Hollande", "Angela Merkel", "Barak Obama", "Vladimir Poutine", "Donald Trump"] call BIS_fnc_selectRandom;
+			};
+		} else {
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
+		};
+
+		if!(_name isEqualTo "") then {
+			if(_victim isEqualTo _killer) then {
 				_message = [
 					"was killed by a flying melon", 
 					"was killed like a jackass", 
@@ -155,8 +163,8 @@
 					"was killed by Vladimir Poutine",
 					"was killed by Jean Claude Juncker"
 				] call BIS_fnc_selectRandom;
-				_message2 = "<t color='#FF9933'>"+_unit + "</t> "+_message+"<br/>";
-				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> "+_message + "</t>";
+				_message2 = "<t color='#FF9933'>"+name _victim + "</t> "+_message+"<br/>";
+				_message = "<t align='center'><t color='#FF9933'>"+name _victim + "</t> "+_message + "</t>";
 			} else {
 				_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
 				if(_displayname == "") then {
@@ -164,13 +172,14 @@
 				} else {
 					_displayname = "["+_displayname+"]";
 				};
-				_message = "<t align='center'><t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t></t><br/>";
-				_message2 = "<t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t><br/>";			
+				_message = "<t align='center'><t color='#FF9933'>"+_name + "</t>  "+_displayname+" <t color='#FF9933'>"+ name _victim +"</t></t><br/>";
+				_message2 = "<t color='#FF9933'>"+_name + "</t>  "+_displayname+" <t color='#FF9933'>"+ name _victim +"</t><br/>";			
 			};
 		} else {
-			_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed</t>";
-			_message2 = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
+			_message = "<t align='center'><t color='#FF9933'>"+ name _victim + "</t> was killed</t>";
+			_message2 = "<t color='#FF9933'>"+ name _victim + "</t> was killed<br/>";
 		};
+
 		killzone = killzone + [_message];
 		rollmessage = rollmessage + [_message2];
 	};

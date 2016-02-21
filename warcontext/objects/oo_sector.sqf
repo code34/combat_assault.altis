@@ -57,6 +57,8 @@
 			MEMBER("unitstype", _type);
 			
 			if(random 1 > wcpopartyprob) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
+
+			MEMBER("setSupply", nil);
 			MEMBER("setMission", nil);
 		};
 
@@ -86,6 +88,12 @@
 			private ["_position"];
 			_position = MEMBER("getPosition", nil);
 			_mission = ["new", [_position]] spawn OO_MISSION;
+		};
+
+		PUBLIC FUNCTION("", "setSupply") {
+			private ["_position"];
+			_position = MEMBER("getPosition", nil);
+			_area = ["new", _position] spawn OO_SUPPLY;
 		};
 
 		PUBLIC FUNCTION("", "isArtillery") {

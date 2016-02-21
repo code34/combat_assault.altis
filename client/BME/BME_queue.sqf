@@ -21,7 +21,7 @@
 	private ["_code", "_destination", "_garbage", "_message", "_variable", "_variablename"];
 
 	while { true } do {
-		while { count bme_queue == 0 } do { sleep 0.1; };
+		while { count bme_queue == 0 } do { sleep 0.01; };
 		_message = bme_queue select 0;
 		_variablename = _message select 0;
 		_variable = _message select 1;
@@ -30,14 +30,20 @@
 
 		if(isserver and ((_destination == "server") or (_destination == "all"))) then {
 			_code = (missionNamespace getVariable (format ["BME_netcode_server_%1", _variablename]));
+			if!(isnil "_code") then {
+				_garbage = [_variable] spawn _code;
+			} else {
+				hintc format["BME: server handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
+			};
 		};
+
 		if(local player and ((_destination == "client") or (_destination == "all"))) then {
 			_code = (missionNamespace getVariable (format ["BME_netcode_%1", _variablename]));
-		};
-		if!(isnil "_code") then {
-			_garbage = [_variable] spawn _code;
-		} else {
-			format["BME: handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
+			if!(isnil "_code") then {
+				_garbage = [_variable] spawn _code;
+			} else {
+				hintc format["BME: client handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
+			};
 		};
 
 		bme_queue set [0, objnull]; 

@@ -87,21 +87,9 @@
 	};
 
 	player addEventHandler ['Killed', {
-		private ["_name", "_weapon"];
-		
 		killer = _this select 1;
-		_name = "";
-		_weapon = currentWeapon killer;
-
-		if(killer isKindOf "Man") then {
-			_name = name killer;
-			if(_name == "Error: No unit") then { _name = "";} ;
-		} else {
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf killer) >> "DisplayName");
-		};
-
-		wcdeath = [name player, playertype, _name, _weapon];
-		["wcdeath", "server"] call BME_fnc_publicvariable;
+		wcdeath = [(_this select 0), (_this select 1)];
+		["wcdeath", "all"] call BME_fnc_publicvariable;
 	}];
 
 	player addEventHandler ['HandleDamage', {

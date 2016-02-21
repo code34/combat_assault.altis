@@ -33,7 +33,7 @@
 		if!(_destination in ["client", "server", "all"]) exitwith {"BME: wrong destination parameter should be client|server|all" call BME_fnc_log;};
 
 		bme_addqueue = [_variablename, _variablevalue, _destination];
-		
+
 		switch (_destination) do {
 			case "server": {
 				publicvariableserver "bme_addqueue";
@@ -60,18 +60,20 @@
 	};
 
 	BME_fnc_addqueue = {
-		private ["_destination"];
+		private ["_destination", "_array"];
 
 		_destination = _this select 2;
 
 		// insert message in the queue if its for server or everybody
 		if((isserver) and ((_destination == "server") or (_destination == "all"))) then {
-			bme_queue pushBack _this;
+			_array = [_this select 0, _this select 1, "server"];
+			bme_queue pushBack _array;
 		};
 		
 		// insert message in the queue if its for client or everybody
 		if((local player) and ((_destination == "client") or (_destination == "all"))) then {	
-			bme_queue pushBack _this;
+			_array = [_this select 0, _this select 1, "client"];
+			bme_queue pushBack _array;
 		};
 	};
 

@@ -32,9 +32,9 @@
 
 			MEMBER("position", _position);
 
-			if(MEMBER("setTarget", nil)) then {
-				MEMBER("destroy", nil);
-			} else {
+			//if(MEMBER("setTarget", nil)) then {
+			//	MEMBER("destroy", nil);
+			//} else {
 				if(random 1 > 0.9) then {
 					_random = random 1;
 					switch (true) do {
@@ -59,7 +59,7 @@
 						};
 					};
 				};
-			};
+			//};
 			MEMBER("deconstructor", nil);
 		};
 

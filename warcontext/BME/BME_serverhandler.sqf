@@ -106,54 +106,35 @@
 	};		
 
 	BME_netcode_server_wcdeath = {
-		private ["_array", "_name", "_player", "_gameranking", "_serverranking","_score", "_death", "_playertype", "_uid", "_killer", "_points", "_netid", "_rank", "_gamescore", "_matches"];
+		private ["_score", "_uid", "_killer", "_victim"];
 
-		_array = _this select 0;
-		_name = _array select 0;
-		_playertype = _array select 1;
-		_killer = _array select 2;
-	
-		wcdeathlistner = _array;
-		["wcdeathlistner", "client"] call BME_fnc_publicvariable;
+		_victim = (_this select 0) select 0;
+		_killer = (_this select 0) select 1;
 
-		if(_playertype == "ammobox") then {_playertype = "soldier";};
-		["setTicket", _playertype] call global_ticket;
+		if((isplayer _killer) && !(_victim isEqualTo _killer)) then {
+			_uid = getPlayerUID _killer;
 
-		_netid = -1;
-		{	
-			if(_name == name _x) then {
-				_uid = getPlayerUID _x;
-				_points = score _x;
-				_netid = owner _x;	
-				_player = _x;
+			_score = ["get", _uid] call global_scores;
+			if(isnil "_score") then {
+				_score = ["new", [_uid]] call OO_SCORE;
+				["put", [_uid, _score]] call global_scores;
 			};
-			sleep 0.0001;
-		}forEach (allDead + playableUnits);
-		if(_netid == -1) exitwith {};
-
-		_score = ["get", _uid] call global_scores;
-		if(isnil "_score") then {
-			_score = ["new", [_uid]] call OO_SCORE;
-			["put", [_uid, _score]] call global_scores;
+			"killPlayer" call _score;
+			"addKill" call _score;
+			["publicScore", _killer] call _score;
 		};
 
-		"addDeath" call _score;
-		["setKill", _points] call _score;
+		if (isplayer _victim) then {
+			_uid = getPlayerUID _victim;
+			_score = ["get", _uid] call global_scores;
 
-		_gameranking = "getGameRanking" call _score;
-		_serverranking = "getServerRanking" call _score;
-		
-		_matches = "getMatches" call _score;
-		_gamescore = "getScore" call _score;
-
-		_rank = ["getRank", _gameranking] call _score;
-		_player setrank _rank;
-
-		_kill = "getKill" call _score;
-		_death = "getDeath" call _score;
-
-		playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]];
-		["playerstats", "client"] call BME_fnc_publicvariable;
+			if(isnil "_score") then {
+				_score = ["new", [_uid]] call OO_SCORE;
+				["put", [_uid, _score]] call global_scores;
+			};
+			"addDeath" call _score;
+			["publicScore", _victim] call _score;
+		};
 	};		
 
 	BME_netcode_server_wcteleport = {

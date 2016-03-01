@@ -44,15 +44,22 @@
 					_playerid publicvariableclient "bme_addqueue";
 				} else {
 					if((local player) and (isserver)) then {
-						(owner player) publicvariableclient "bme_addqueue";
+						//(owner player) publicvariableclient "bme_addqueue";
+						bme_addqueue call BME_fnc_addqueue;
 					};
 					publicvariable "bme_addqueue";
 				};
 			};
 
 			default {
-				if((local player) and (isserver)) then {
-					(owner player) publicvariableclient "bme_addqueue";
+				if(isserver) then {
+					if!(local player) then {
+						publicvariableserver "bme_addqueue";
+					};
+				} ;
+				if(local player) then {
+					//(owner player) publicvariableclient "bme_addqueue";
+					bme_addqueue call BME_fnc_addqueue;
 				};
 				publicvariable "bme_addqueue";
 			};

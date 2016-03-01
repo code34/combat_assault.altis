@@ -94,7 +94,7 @@
 
 	class StdListBox {
 		idc = -1;
-		type = 5;
+		type = CT_LISTBOX;
 		style = 0 + 0x10;
 		font = FontM;
 		sizeEx = 0.018 * safezoneH;
@@ -115,6 +115,45 @@
 		autoScrollSpeed = -1;
 		autoScrollDelay = 5;
 		autoScrollRewind = 0;
+		soundSelect[] = {"\a3\Ui_f\data\Sound\CfgIngameUI\hintExpand", 0.09, 1};
+
+		class ListScrollBar {
+			color[] = {1, 1, 1, 0.6};
+			colorActive[] = {1, 1, 1, 1};
+			colorDisabled[] = {1, 1, 1, 0.3};
+			thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa";
+			arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa";
+			arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa";
+			border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa";
+		};
+	};
+
+	class StdListBox2 {
+		idc = -1;
+		type = CT_LISTNBOX ;
+		style = 0 + 0x10;
+		font = FontM;
+		sizeEx = 0.018 * safezoneH;
+	    	rowHeight = 0.018 * safezoneH * 1.25;
+		color[] = COLOR_LIGHTGRAY;
+		colorText[] = COLOR_WHITE;
+		colorScrollbar[] = COLOR_BRIGHTGREEN;
+		colorSelect[] = COLOR_BRIGHTGREEN;
+		colorSelect2[] = COLOR_BRIGHTGREEN;
+		colorSelectBackground[] = COLOR_LIGHTGRAY;
+		colorSelectBackground2[] = COLOR_LIGHTGRAY;
+		colorActive[] = COLOR_BRIGHTGREEN;
+		colorDisabled[] = COLOR_GREEN;
+		columns[] = {0.1, 0.9};
+		period = 0.3;
+		colorBackground[] = COLOR_GREEN;
+		maxHistoryDelay = 1.0;
+		autoScrollSpeed = -1;
+		autoScrollDelay = 5;
+		autoScrollRewind = 0;
+		drawSideArrows = 0;
+                	idcLeft = -1;
+                 	idcRight = -1;
 		soundSelect[] = {"\a3\Ui_f\data\Sound\CfgIngameUI\hintExpand", 0.09, 1};
 
 		class ListScrollBar {

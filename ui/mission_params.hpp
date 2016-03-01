@@ -5,7 +5,7 @@ class Params
 		title = "POP SQUARE DISTANCE";
 		values[] = {3, 5, 10};
 		texts[] = {"NEAR", "MEDIUM", "FAR"};
-		default = 3;
+		default = 5;
 	};
 	class wcaccurencylevel
 	{
@@ -17,9 +17,9 @@ class Params
 	class wcnumberofzone
 	{
 		title = "NUMBER OF ZONES AT BEGINING";
-		values[] = {1,2,3,4,5,6,7,8};
-		texts[] = {"1 - very easy game", "2", "3", "4 - normal game","5","6","7","8 - very difficult game"};
-		default = 4;
+		values[] = {5,10,15,20,25,30};
+		texts[] = {"5 - easy game", "10","15","20", "25","30 - hard game"};
+		default = 15;
 	};
 	class wcnumberofticket
 	{

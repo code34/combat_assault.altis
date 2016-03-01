@@ -39,7 +39,7 @@
 	for "_x" from 0 to wcnumberofzone step 1 do {
 		_key = _sectors call BIS_fnc_selectRandom;
 		["expandSector", _key] call global_controller;
-		["expandSectorAround", [_key, 10]] call global_controller;
+		["expandSectorAround", [_key, 15]] call global_controller;
 	};
 
 	{
@@ -47,15 +47,6 @@
 			_position = getmarkerpos _x;
 			_sector = ["getSectorFromPos", _position] call global_grid;
 			["expandSector", _sector] call global_controller;
-			["expandSectorAround", [_sector, 5]] call global_controller;
+			["expandSectorAround", [_sector, 15]] call global_controller;
 		};
 	} foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
-
-	{
-		if(random 1 > 0.90) then {
-			_position = getmarkerpos _x;
-			_sector = ["getSectorFromPos", _position] call global_grid;
-			["expandSector", _sector] call global_controller;
-			["expandSectorAround", [_sector,  3]] call global_controller;
-		};
-	} foreach ["RADIOCENTER", "RESEARCHCENTER", "MILITARYDEPOT", "GAZFACTORY", "WEAPONSFACTORY", "POWERRELAY", "BLACKCASTLE", "VEHICLEDEPOT", "POWERPLANT1", "POWERPLANT2", "POWERPLANT3", "POWERPLANT4", "CARGODEPOT", "AGIAPORT", "VEHICLEFACTORY", "URANIUMMINE", "FUELFACTORY", "AGIOSHARBOR", "GSMANTENNA"];	

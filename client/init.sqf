@@ -31,6 +31,7 @@
 	waitUntil {alive player && !(isNull player);};
 
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
+	WC_fnc_spawnvehicle = compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
 	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
@@ -44,15 +45,19 @@
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
+	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
 
 	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 
 	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
+	WC_fnc_spawncam = compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
+
 	[] call WC_fnc_introcam;
 
 	// config variables
+	wcblacklist = [];
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
 	wcboard = false;
 	wcwithrollmessages = true;
@@ -108,7 +113,7 @@
 	playertype = "ammobox";
 
 	[] spawn {
-		private ["_action", "_script", "_oldplayertype"];
+		private ["_action", "_script", "_oldplayertype", "_hug"];
 		_oldplayertype = playertype;
 
 		while { true} do {
@@ -121,16 +126,22 @@
 			};
 			if(vehicle player == player) then {
 				if(isnil "_action") then {
-					_script = format ["client\scripts\pop%1.sqf", playertype];
-					_action = player addAction [format ["Get %1", playertype], _script, nil, 1.5, false];
+					_action = player addAction ["Deploy Vehicle", "client\scripts\popvehicle.sqf", nil, 1.5, false];
+				};
+				if(isnil "_hug") then {
+					_hug = player addAction ["Give a big hug", "client\scripts\givehug.sqf", nil, 1.5, false];
 				};
 			} else {
 				if(!isnil "_action") then {
 					player removeAction _action;
 					_action = nil;
 				};
+				if(!isnil "_hug") then {
+					player removeAction _hug;
+					_hug = nil;
+				};
 			};
-			if(!alive player) then {_action = nil;};
+			if(!alive player) then {_action = nil; _hug = nil;};
 			sleep 1;
 		};
 	};

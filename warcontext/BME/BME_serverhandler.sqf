@@ -28,7 +28,7 @@
 	};
 
 	BME_netcode_server_playervehicle = {
-		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object", "_para"];
+		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object"];
 		
 		_array = _this select 0;
 		_name = _array select 0;
@@ -42,55 +42,12 @@
 			sleep 0.0001;
 		}forEach playableunits;
 
-		switch (_type) do {
-			case "chopper" : {
-				_type = "B_Heli_Transport_01_camo_F";
-				_para = false;
-			};
-
-			case "achopper" : {
-				_type = "B_Heli_Attack_01_F";
-				_para = false;
-			};
-
-			case "bomber" : {
-				_type = "B_Plane_CAS_01_F";
-				_para = false;
-			};
-
-			case "fighter" : {
-				_type = "I_Plane_Fighter_03_AA_F";
-				_para = false;
-			};			
-
-			case "tank" : {
-				_type = "B_MBT_01_cannon_F";
-				_para = true;
-			};
-
-			case "tankaa" : {
-				_type = "B_APC_Tracked_01_AA_F";
-				_para = true;
-			};
-
-			case "ammobox" : {
-				_type = "B_supplyCrate_F";
-				_para = true;
-			};
-
-			default {
-				_type = "B_MBT_01_cannon_F";
-				_para = true;
-			};
-		};
-
 		_vehicle = ["get", _name] call global_vehicles;
 		if(isnil "_vehicle") then {
-			_vehicle = ["new", [_type, _para]] call OO_PLAYERVEHICLE;
+			_vehicle = ["new", _type] call OO_PLAYERVEHICLE;
 			["put", [_name, _vehicle]] call global_vehicles;
 		} else {
 			["setType", _type] call _vehicle;
-			["setPara", _para] call _vehicle;
 		};
 
 		_alive = "getAlive" call _vehicle;
@@ -179,7 +136,7 @@
 
 
 		_result = [0, _position];
-		_around = ["getAllSectorsAroundSector", [_sector, 3]] call global_grid;
+		_around = ["getAllSectorsAroundSector", [_sector, 1]] call global_grid;
 		{
 			_sector = ["Get", str(_x)] call global_zone_hashmap;
 			if(!isnil "_sector") then {

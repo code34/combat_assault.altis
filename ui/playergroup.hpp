@@ -18,41 +18,40 @@ class playergroup {
 	class labelgroup : StdHeader{
 		idc = -1;
 		x = 0.01;
-		w = 0.8;
+		w = 0.98;
 		y = 0.02;
 		h = 0.16;
 		sizeEx = 0.05;
-		text = "Buddy List";
+		text = "Vehicle Deployment";
 	};
 
 	class playerlist : StdListBox {
-		idc = -1;
+		idc = 1255;
 		x = 0.01;
-		w = 0.3;
+		w = 0.98;
 		y = 0.2;
-		h = 0.78;
+		h = 0.68;
 		shadow = 2;
 		onLBSelChanged="";
 	};
 
 	class ejectbutton : StdButton {
 		idc = -1; 
-		x = 0.5;
+		x = 0.30;
 		w = 0.15;
 		y = 0.90;
 		h = 0.05;
-		text = "Eject";
-		action = "wcaction = 'equipment';";
+		text = "Cancel";
+		action = "wcaction='cancel';closeDialog 0;";
 	};		
 
 	class closebutton : StdButton {
 		idc = -1; 
-		x = 0.7;
+		x = 0.6;
 		w = 0.15;
 		y = 0.90;
 		h = 0.05;
-		text = "Close";
-		action = "closeDialog 0;";
-	};			
-
+		text = "Deploy";
+		action = "wcaction = 'deploy';";
+	};
 };	

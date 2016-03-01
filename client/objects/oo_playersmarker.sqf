@@ -28,19 +28,27 @@
 		PUBLIC FUNCTION("array","constructor") {
 			private ["_array", "_hashmap"];
 			
-			MEMBER("setList", _this);
-
 			_array = [];
+			MEMBER("list", _array);
 			MEMBER("markers", _array);
 					
 			_hashmap  = ["new", []] call OO_HASHMAP;
 			MEMBER("hashmap", _hashmap);
 		};
 
+		PUBLIC FUNCTION("string","addPlayer") {
+			private ["_array", "_result"];
+			
+			_array = MEMBER("list", _nil);
+			_result = false;
 
-		PUBLIC FUNCTION("array","setList") {
-			MEMBER("list", _this);
-		};
+			if!(_this in _array) then {
+				_array = _array +  [_this];
+				MEMBER("list", _array);
+				_result = true;
+			};
+			_result;
+		};		
 
 		PUBLIC FUNCTION("","start") {
 			while { true } do {
@@ -72,7 +80,7 @@
 			_list = MEMBER("list", nil);
 
 			{
-				if((name _x) in _list) then {
+				if(((name _x) in _list) and !(name _x in wcblacklist)) then {
 					_position = position _x;
 					_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
 					if(isnil "_mark") then {

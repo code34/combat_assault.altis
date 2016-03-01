@@ -52,7 +52,7 @@
 	_players = playableUnits;
 	lbClear 2002;
 	{ 
-		if(side _x == side player) then {
+		if((side _x == side player) and !(name _x in wcblacklist)) then {
 			if(alive _x) then {
 				lbAdd [2002, name _x];
 				if(_x == player) then { _indexplayer = _forEachIndex;};
@@ -82,12 +82,13 @@
 				while { !isnull (uinamespace getvariable "BIS_fnc_arsenal_cam") } do {
 					sleep 0.01;
 				};
+				player addWeapon "ItemMap";
 				createDialog "spawndialog"; 
 				
 				_players = playableUnits;
 				lbClear 2002;
 				{ 
-					if(side _x == side player) then {
+					if((side _x == side player) and !(name _x in wcblacklist)) then {
 						if(alive _x) then {
 							lbAdd [2002, name _x];
 							if(_x == player) then { _indexplayer = _forEachIndex;};
@@ -210,3 +211,4 @@
 
 	openMap [false, false];
 	deletevehicle _body;
+	[] call WC_fnc_spawncam;

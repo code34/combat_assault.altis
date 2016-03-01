@@ -30,7 +30,13 @@
 	BME_netcode_vehicleavalaible = {
 		private ["_alive"];
 		_alive = _this select 0;
-		["hint", ["Vehicle servicing", format ["Vehicle will be avalaible in %1 seconds", _alive]]] call hud;
+		"Vehicle servicing" hintC format ["Vehicle will be avalaible in %1 seconds", _alive];
+	};
+
+	BME_netcode_wcunblacklist = {
+		private  ["_player"];
+		_player = _this select 0;
+		wcblacklist = wcblacklist - [name _player];
 	};
 
 	BME_netcode_wcconvoystart = {
@@ -127,10 +133,24 @@
 		if(_killer isKindOf "Man") then {
 			_name = name _killer;
 			if( toUpper(_name) isEqualTo "ERROR: NO UNIT") then { 
-				_name = ["Francois Hollande", "Angela Merkel", "Barak Obama", "Vladimir Poutine", "Donald Trump"] call BIS_fnc_selectRandom;
+				_name = ["Francois Hollande", "Angela Merkel", "Barak Obama", "Vladimir Poutine", "Donald Trump", "Netarion", "Jp", "Snow Queen", "Ben Laden"] call BIS_fnc_selectRandom;
 			};
 		} else {
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
+		};
+
+		if((isplayer _victim) and (isplayer _killer)) then {
+			if((name player == name _victim) and !(name _victim in wcblacklist)) then {
+				if((name _killer) != (name player)) then {
+					wcblacklist = wcblacklist + [name _killer];
+				};
+			};
+
+			if((name player == name _killer) and !(name _killer in wcblacklist)) then {
+				if((name _victim) != (name player)) then {
+					wcblacklist = wcblacklist + [name _victim];
+				};
+			};
 		};
 
 		if!(_name isEqualTo "") then {

@@ -354,7 +354,7 @@
 						"Spawn" spawn _sector;
 					};
 				};
-				sleep 0.01;
+				sleep 0.0000001;
 			}foreach MEMBER("getNewSectorAround", nil);
 		};
 

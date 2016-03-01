@@ -34,6 +34,6 @@
 	};
 	while {count wcteleportposition == 0} do { sleep 0.1;};
 	onMapSingleClick "";
-	player setpos wcteleportposition;
 
+	player setpos wcteleportposition;
 	hintSilent "";

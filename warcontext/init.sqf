@@ -59,8 +59,9 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
 
 	[] execVM "real_weather\real_weather.sqf";
-	_temp = "Land_LampAirport_F" createVehicle (getMarkerPos "base_lamp");
 
+	{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [getMarkerPos "base_lamp",[], 100]);
+	_temp = "Land_LampAirport_F" createVehicle (getMarkerPos "base_lamp");
 
 	// CONFIG VARIABLE 
 
@@ -80,7 +81,7 @@
 	wcinfantrysnipers = ["OI_SniperTeam"];
 
 	//enemies chopper
-	wcairchoppers = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"];
+	wcairchoppers = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F", "O_Heli_Light_02_F", "O_Heli_Light_02_v2_F"];
 
 	// pop chopper probabilities by sector
 	switch (wcpopchopperprobparam) do {

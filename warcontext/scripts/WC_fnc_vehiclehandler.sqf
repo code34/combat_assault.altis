@@ -18,8 +18,10 @@
 			};
 		}];
 
-		_vehicle addeventhandler ['Hit', {
-			if(_this select 2 > 0.30) then {
-				(_this select 0) setdamage (getdammage (_this select 0) + random (1));
-			};
-		}];
+		if!(_vehicle isKindOf "Air") then {
+			_vehicle addeventhandler ['Hit', {
+				if(_this select 2 > 0.30) then {
+					(_this select 0) setdamage (getdammage (_this select 0) + random (1));
+				};
+			}];
+		};

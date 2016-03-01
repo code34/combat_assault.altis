@@ -283,7 +283,7 @@
 								_rank = rank _vehicle;
 								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
 								_distance = (player distance _vehicle) / 30;
-								if(side _vehicle == west) then {
+								if((side _vehicle == west) and !(_vehicle in wcblacklist)) then {
 									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
 								} else {
 									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorEnemy');

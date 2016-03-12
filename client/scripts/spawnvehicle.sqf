@@ -32,9 +32,9 @@
 	}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 
 	if(_air) then {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 1 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air']  } } )" configClasses (configFile >> "CfgVehicles");
 	} else {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 1 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car']  } } )" configClasses (configFile >> "CfgVehicles");
 	};
 
 	lbClear 1255;

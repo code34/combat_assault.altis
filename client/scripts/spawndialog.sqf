@@ -161,8 +161,9 @@
 					} else {
 						_cam cameraEffect ["internal", "BACK"];
 						_cam camSetTarget (vehicle _player);	
-						_variation = [-50, -30,-10, 10 ,30, 50];
-						_cam attachto [(vehicle _player),[_variation call BIS_fnc_selectRandom,-50,+15], "neck"];
+						//_variation = [-50, -30,-10, 10 ,30, 50];
+						//_cam attachto [(vehicle _player),[_variation call BIS_fnc_selectRandom,-50,+15], "neck"];
+						_cam attachto [(vehicle _player),[-50,-50,+15], "neck"];
 						_cam CamCommit 0;
 					};
 				};
@@ -195,7 +196,7 @@
 			[] call WC_fnc_teleport;
 		} else {
 			if(vehicle _player == _player) then {
-				player setpos [_position select 0, _position select 1];
+				player setpos _position;
 				player setdir _dir;
 			} else {
 				if((vehicle _player) emptyPositions "cargo" == 0) then {

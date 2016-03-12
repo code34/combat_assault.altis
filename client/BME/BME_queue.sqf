@@ -18,31 +18,31 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_code", "_destination", "_garbage", "_message", "_variable", "_variablename"];
+	private ["_code", "_destination", "_garbage", "_message", "_variable", "_handlername"];
 
 	while { true } do {
 		while { count bme_queue == 0 } do { sleep 0.01; };
 		_message = bme_queue select 0;
-		_variablename = _message select 0;
+		_handlername = _message select 0;
 		_variable = _message select 1;
 		_destination = _message select 2;
 		_code = nil;
 
 		if(isserver and ((_destination == "server") or (_destination == "all"))) then {
-			_code = (missionNamespace getVariable (format ["BME_netcode_server_%1", _variablename]));
+			_code = (missionNamespace getVariable (format ["BME_netcode_server_%1", _handlername]));
 			if!(isnil "_code") then {
 				_garbage = [_variable] spawn _code;
 			} else {
-				hintc format["BME: server handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
+				hintc format["BME: server handler function for %1 doesnt exist", _handlername] call BME_fnc_log;
 			};
 		};
 
 		if(local player and ((_destination == "client") or (_destination == "all"))) then {
-			_code = (missionNamespace getVariable (format ["BME_netcode_%1", _variablename]));
+			_code = (missionNamespace getVariable (format ["BME_netcode_%1", _handlername]));
 			if!(isnil "_code") then {
 				_garbage = [_variable] spawn _code;
 			} else {
-				hintc format["BME: client handler function for %1 doesnt exist", _variablename] call BME_fnc_log;
+				hintc format["BME: client handler function for %1 doesnt exist", _handlername] call BME_fnc_log;
 			};
 		};
 

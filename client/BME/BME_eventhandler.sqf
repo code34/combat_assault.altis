@@ -19,20 +19,19 @@
 	*/
 
 	BME_fnc_publicvariable = {
-		private ["_variablename", "_variablevalue", "_destination", "_playerid"];
+		private ["_handlername", "_variable", "_destination", "_playerid"];
 
-		_variablename 	= _this select 0;
-		_variablevalue 	= missionNamespace getVariable _variablename;
+		_handlername 	= _this select 0;
+		_variable 	= missionNamespace getVariable _handlername;
 		_destination	= tolower(_this select 1);
 		_playerid 	= _this select 2;
 		
-		if(isnil "_destination") exitwith {"BME: missing destination parameter" call BME_fnc_log;};
-		if(isnil "_variablevalue") exitwith {format["BME: variable %1 is nil", _variablename] call BME_fnc_log;};
-		if!(typename _variablename == "STRING") exitwith {"BME: wrong type variablename parameter, should be STRING" call BME_fnc_log;};
+		if!(typename _handlername == "STRING") exitwith {"BME: wrong type variablename parameter, should be STRING" call BME_fnc_log;};
 		if!(typename _destination == "STRING") exitwith {"BME: wrong type destination parameter, should be STRING" call BME_fnc_log;};
 		if!(_destination in ["client", "server", "all"]) exitwith {"BME: wrong destination parameter should be client|server|all" call BME_fnc_log;};
+		if(isnil "_variable") exitwith {format["BME:  Variable data for %1 handler is nil", _handlername] call BME_fnc_log;};
 
-		bme_addqueue = [_variablename, _variablevalue, _destination];
+		bme_addqueue = [_handlername, _variable, _destination];
 
 		switch (_destination) do {
 			case "server": {

@@ -101,7 +101,8 @@
 			MEMBER("alive", 240);
 
 			switch (true) do {
-				case (_type in ["B_Heli_Light_01_F","B_Heli_Light_01_armed_F","C_Heli_Light_01_civil_F","B_Heli_Attack_01_F","B_Heli_Transport_01_F","B_Heli_Transport_01_camo_F","I_Heli_Transport_02_F","I_Heli_light_03_F","I_Heli_light_03_unarmed_F","B_Heli_Transport_03_F","B_Heli_Transport_03_unarmed_F"]) :  {
+				//case (_type in ["B_Heli_Light_01_F","B_Heli_Light_01_armed_F","C_Heli_Light_01_civil_F","B_Heli_Attack_01_F","B_Heli_Transport_01_F","B_Heli_Transport_01_camo_F","I_Heli_Transport_02_F","I_Heli_light_03_F","I_Heli_light_03_unarmed_F","B_Heli_Transport_03_F","B_Heli_Transport_03_unarmed_F"]) :  {
+				case (_type isKindOf "Helicopter") : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_vehicle = _type createVehicle _position;
 
@@ -110,7 +111,8 @@
 					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
 				};
 
-				case (_type in ["B_Plane_CAS_01_F","I_Plane_Fighter_03_CAS_F","I_Plane_Fighter_03_AA_F"]) :	{
+				//case (_type in ["B_Plane_CAS_01_F","I_Plane_Fighter_03_CAS_F","I_Plane_Fighter_03_AA_F"]) : {
+				case (_type isKindOf "Plane") : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_position = [_position select 0, _position select 1, 200];
 					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;

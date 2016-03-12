@@ -104,9 +104,7 @@
 				}foreach _markers;
 				_endposition = getmarkerpos _marker;				
 			} else {
-				_marker = ["RADIOCENTER", "RESEARCHCENTER", "MILITARYDEPOT", "GAZFACTORY", "WEAPONSFACTORY", "POWERRELAY", "BLACKCASTLE", "VEHICLEDEPOT", "POWERPLANT1", "POWERPLANT2", "POWERPLANT3", "POWERPLANT4", "CARGODEPOT", "AGIAPORT", "VEHICLEFACTORY", "URANIUMMINE", "FUELFACTORY", "AGIOSHARBOR", "GSMANTENNA"] call BIS_fnc_selectRandom;
-				_endposition = getmarkerpos _marker;	
-				//_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
+				_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
 			};
 			MEMBER("endposition", _endposition);
 		};
@@ -148,7 +146,6 @@
 			 _vehicles = [];
 
 			_armor = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"];
-
 			for "_i" from 1 to 2 step 1 do {
 				_type = _armor call BIS_fnc_selectRandom;
 				_position = [_position, 25 + random 25, random 360] call BIS_fnc_relPos;
@@ -158,7 +155,7 @@
 				_leader = leader _newgroup;
 				(_array select 1) joinsilent _group;
 				deletegroup _newgroup;
-				sleep 1;
+				sleep 0.5;
 			};
 			_group selectLeader _leader;
 

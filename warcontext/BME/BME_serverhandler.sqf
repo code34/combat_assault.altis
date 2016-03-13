@@ -120,6 +120,7 @@
 		_pos = ["getPosFromSector", _sector] call global_grid;
 
 		_list = _pos nearEntities [["Man"], 100];
+		sleep 0.1;
 		switch (_side) do {
 			case east : {
 				if(west countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };

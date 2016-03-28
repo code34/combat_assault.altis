@@ -1,5 +1,5 @@
 	WC_fnc_spawnvehicle = compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
-	createDialog "playergroup";
+	createDialog "deployvehicle";
 	[] call WC_fnc_spawnvehicle;
 
 	

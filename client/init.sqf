@@ -58,6 +58,7 @@
 
 	// config variables
 	wcblacklist = [];
+	wcfriendlist = [];
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
 	wcboard = false;
 	wcwithrollmessages = true;
@@ -129,7 +130,7 @@
 					_action = player addAction ["Deploy Vehicle", "client\scripts\popvehicle.sqf", nil, 1.5, false];
 				};
 				if(isnil "_hug") then {
-					_hug = player addAction ["Give a big hug", "client\scripts\givehug.sqf", nil, 1.5, false];
+					_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
 				};
 			} else {
 				if(!isnil "_action") then {

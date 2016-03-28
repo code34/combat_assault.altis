@@ -1,18 +1,56 @@
-		private ["_player"];
+		private ["_players", "_player", "_friends", "_index"];
 
-		_player = cursorObject;
+		createDialog "huglist";
+		
+		_players = [];
+		_friends = wcfriendlist;
+		
+		{
+			if((_x != player) and !((name _x) in _friends)) then {
+				_players = _players + [name _x];
+				lbAdd [1500, name _x];
+			};
+		}foreach allplayers;
 
-		if(isnull _player) exitWith {};
-		if(isnil "_player") exitWith {};
-		if!(_player isKindOf "Man") exitWith {};	
-		if!(isplayer _object) exitWith {};
-		if(player distance _player > 5) exitWith {};
+		{
+			lbAdd [1501, _x];
+		}foreach wcfriendlist;
 
-		if(["addPlayer", name _player] call playersmarkers) then {
-			hint format ["You give a BIG HUG to %1", name _player];
+		while { dialog} do {
+			if(wcaction isEqualTo "add") then {
+				_index = (lbCurSel 1500);
+				if!(_index == -1) then {
+					_player = (_players select _index);				
+					_players = _players - [_player];
+					_friends = _friends + [_player];
+					lbDelete [1500, _index];
+					lbAdd [1501, _player];
+				};
+
+				wcaction = "";
+			};
+
+			if(wcaction isEqualTo "remove") then {
+				_index = (lbCurSel 1501);
+				if!(_index == -1) then {
+					_player = (_friends select _index);
+					_players = _players + [_player];
+					_friends = _friends - [_player];
+					lbDelete [1501, _index];
+					lbAdd [1500, _player];
+				};
+				wcaction = "";
+			};
+			sleep 0.01;
 		};
-		diag_log format ["You give a BIG HUG to %1 %2", name _player, _player];
 
-		wcunblacklist = player;
-		["wcunblacklist", "client", owner _player] call BME_fnc_publicvariable;
 
+		{
+			["addPlayer",  _x] call playersmarkers;
+		}foreach _friends;
+
+		{
+			["removePlayer",  _x] call playersmarkers;
+		}foreach _players;
+
+		wcfriendlist = _friends;

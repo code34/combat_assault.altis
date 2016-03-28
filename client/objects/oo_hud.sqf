@@ -176,7 +176,7 @@
 
 				_ctrl6 =(uiNamespace getVariable "wcdisplay") displayCtrl 999;
 				if(count killzone > 0) then {
-					if(_time > 5) then {
+					if(_time > 2) then {
 						_time = 0;
 						killzone set [0, -1];
 						killzone = killzone - [-1];

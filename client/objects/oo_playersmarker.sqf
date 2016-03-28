@@ -48,7 +48,24 @@
 				_result = true;
 			};
 			_result;
-		};		
+		};
+
+		PUBLIC FUNCTION("string","removePlayer") {
+			private ["_array", "_result"];
+			
+			_array = MEMBER("list", _nil);
+			_result = false;
+
+			if(_this in _array) then {
+				_array = _array - [_this];
+				MEMBER("list", _array);
+				_result = true;
+				_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
+				if!(isnil "_mark") then { ["delete", _mark] call OO_MARKER; };
+				["put", [str(_x), nil]] call MEMBER("hashmap", nil);
+			};
+			_result;
+		};	
 
 		PUBLIC FUNCTION("","start") {
 			while { true } do {
@@ -95,7 +112,7 @@
 						MEMBER("markers", _temp);
 					};
 				};
-			}foreach allunits;
+			}foreach allplayers;
 		};
 
 

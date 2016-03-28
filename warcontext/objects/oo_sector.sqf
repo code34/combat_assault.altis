@@ -31,6 +31,8 @@
 		PRIVATE VARIABLE("array","units");
 		PRIVATE VARIABLE("bool","artilleryactive");
 		PRIVATE VARIABLE("code","artillery");
+		PRIVATE VARIABLE("bool","antiairactive");
+		PRIVATE VARIABLE("code","antiair");
 		PRIVATE VARIABLE("scalar","bucket");
 
 		PUBLIC FUNCTION("array","constructor") {
@@ -57,6 +59,7 @@
 			MEMBER("unitstype", _type);
 			
 			if(random 1 > wcpopartyprob) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
+			if(random 1 > wcpopantiairprob) then { MEMBER("antiairactive", true);} else {MEMBER("antiairactive", false);};
 
 			MEMBER("setSupply", nil);
 			MEMBER("setMission", nil);
@@ -67,6 +70,7 @@
 		PUBLIC FUNCTION("","getMarker") FUNC_GETVAR("marker");
 		PUBLIC FUNCTION("","getAlert") FUNC_GETVAR("alert");
 		PUBLIC FUNCTION("","getArtillery") FUNC_GETVAR("artillery");
+		PUBLIC FUNCTION("","getAntiAir") FUNC_GETVAR("antiair");
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
 		PUBLIC FUNCTION("","getState") FUNC_GETVAR("state");
 
@@ -108,12 +112,32 @@
 			_result;
 		};
 
+		PUBLIC FUNCTION("", "isAntiAir") {
+			private ["_antiair", "_result"];
+			_result = false;
+			if(MEMBER("antiairactive", nil)) then {
+				_antiair = "getVehicle" call MEMBER("antiair", nil);
+				if!(isnil "_antiair") then {
+					if(getdammage _antiair < 0.9) then { _result = true; } else { _result = false; };
+				};
+			};
+			_result;
+		};		
+
 		PUBLIC FUNCTION("", "popArtillery") {
 			private ["_position", "_artillery"];
 			_position = [MEMBER("position", nil), 3000,5000,10,0,3,0] call BIS_fnc_findSafePos;
 
 			_artillery = ["new", [_position]] call OO_ARTILLERY;
 			MEMBER("artillery", _artillery);
+		};
+
+		PUBLIC FUNCTION("", "popAntiAir") {
+			private ["_position", "_antiair"];
+			_position = [MEMBER("position", nil), 3000,5000,10,0,3,0] call BIS_fnc_findSafePos;
+
+			_antiair = ["new", [_position]] call OO_ANTIAIR;
+			MEMBER("antiair", _antiair);
 		};
 
 		PUBLIC FUNCTION("", "draw") {
@@ -139,6 +163,10 @@
 
 			if(MEMBER("artilleryactive", nil)) then {
 				MEMBER("popArtillery", nil);
+			};
+
+			if(MEMBER("antiairactive", nil)) then {
+				MEMBER("popAntiAir", nil);
 			};
 
 			for "_i" from 1 to (_unitstype select 0) step 1 do {
@@ -189,6 +217,10 @@
 
 			if(MEMBER("artilleryactive", nil)) then {
 				["delete", MEMBER("artillery", nil)] call OO_ARTILLERY;
+			};
+
+			if(MEMBER("antiairactive", nil)) then {
+				["delete", MEMBER("antiair", nil)] call OO_ANTIAIR;
 			};
 
 			_units = [];
@@ -450,5 +482,8 @@
 			DELETE_VARIABLE("artilleryactive");
 			["delete", MEMBER("artillery", nil)] call OO_ARTILLERY;
 			DELETE_VARIABLE("artillery");
+			DELETE_VARIABLE("antiairactive");
+			["delete", MEMBER("antiair", nil)] call OO_ANTIAIR;
+			DELETE_VARIABLE("antiair");			
 		};
 	ENDCLASS;

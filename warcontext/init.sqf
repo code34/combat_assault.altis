@@ -41,6 +41,7 @@
 	WC_fnc_spawngroup	= compile preprocessFile "warcontext\scripts\WC_fnc_spawngroup.sqf";
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
@@ -106,7 +107,10 @@
 	wcpopsniperprob = 0.85;
 
 	// pop artillery probabilities by sector
-	wcpopartyprob = 0.90;
+	wcpopartyprob = 0.7;
+
+	// pop artillery probabilities by sector
+	wcpopantiairprob = 0.7;
 
 	// pop additional infantry group probabilty
 	wcpopinfantryprob = 0.90;
@@ -141,7 +145,7 @@
 	"start" spawn global_atc;
 
 	// init for slow server
-	sleep 60;
+	sleep 120;
 
 	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;

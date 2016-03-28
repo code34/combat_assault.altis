@@ -37,6 +37,7 @@
 		private  ["_player"];
 		_player = _this select 0;
 		wcblacklist = wcblacklist - [name _player];
+		diag_log format ["You unblacklist by a BIG HUG : %1 %2", name _player, _player];
 	};
 
 	BME_netcode_wcconvoystart = {

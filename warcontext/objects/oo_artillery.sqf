@@ -59,30 +59,13 @@
 			["attachTo", _vehicle] spawn _mark;
 			["setText", "Artillery"] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
-			["setType", "mil_arrow"] spawn _mark;
+			["setType", "hd_destroy"] spawn _mark;
 			["setSize", [0.5,0.5]] spawn _mark;
 			MEMBER("marker", _mark);
 
 			MEMBER("group", _group);
 
-			_vehicle addeventhandler ['HandleDamage', {
-				if(side(_this select 3) in [west, civilian]) then {
-					if ((_this select 2) > 0.4) then {
-						(_this select 0) setHit [(_this select 1), (_this select 2)];
-						(_this select 0) setdamage (damage (_this select 0) + (_this select 2));
-						if(damage (_this select 0) > 0.9) then {
-							(_this select 0) setdamage 1;
-							(_this select 0) removeAllEventHandlers "HandleDamage";
-						};
-					};
-				};
-			}];
-
-			_vehicle addeventhandler ['Hit', {
-				if(_this select 2 > 0.30) then {
-					(_this select 0) setdamage (getdammage (_this select 0) + random (1));
-				};
-			}];
+			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
 
 			MEMBER("target", _vehicle);
 			MEMBER("vehicle", _vehicle);

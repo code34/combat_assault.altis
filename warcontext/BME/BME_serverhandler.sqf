@@ -106,11 +106,13 @@
 			sleep 0.0001;
 		}foreach playableUnits;
 
+		// si trop pret de la base - teleport impossible
 		if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
 			wcteleportack = [2, _position];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
 
+		// si dans l'eau - teleport impossible
 		if(surfaceIsWater _position) exitwith {
 			wcteleportack = [3, _position];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
@@ -120,21 +122,8 @@
 		_pos = ["getPosFromSector", _sector] call global_grid;
 
 		_list = _pos nearEntities [["Man"], 100];
-		sleep 0.1;
-		switch (_side) do {
-			case east : {
-				if(west countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
-			};
-
-			case west : {
-				if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
-			};
-
-			default {
-				if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
-			};
-		};
-
+		sleep 0.5;
+		if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
 
 		_result = [0, _position];
 		_around = ["getAllSectorsAroundSector", [_sector, 1]] call global_grid;

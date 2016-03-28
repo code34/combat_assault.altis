@@ -49,10 +49,13 @@
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 	};
 
-	_players = playableUnits;
+
+	_indexplayer = -1;
+	_players = allplayers;
+
 	lbClear 2002;
 	{ 
-		if((side _x == side player) and !(name _x in wcblacklist)) then {
+		if((side _x == side player) and ((name _x in wcfriendlist) or (_x == player))) then {
 			if(alive _x) then {
 				lbAdd [2002, name _x];
 				if(_x == player) then { _indexplayer = _forEachIndex;};
@@ -85,10 +88,10 @@
 				player addWeapon "ItemMap";
 				createDialog "spawndialog"; 
 				
-				_players = playableUnits;
+				_players = allplayers;
 				lbClear 2002;
 				{ 
-					if((side _x == side player) and !(name _x in wcblacklist)) then {
+					if((side _x == side player) and ((name _x in wcfriendlist) or (_x == player))) then {
 						if(alive _x) then {
 							lbAdd [2002, name _x];
 							if(_x == player) then { _indexplayer = _forEachIndex;};

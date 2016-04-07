@@ -21,8 +21,9 @@ class Header
 #include "ui\hud.hpp"
 #include "ui\deploy.hpp"
 #include "ui\intromenu.hpp"
-#include "ui\playergroup.hpp"
 #include "ui\mission_params.hpp"
+#include "ui\deployvehicle.hpp"
+#include "ui\huglist.hpp"
 
 class CfgDebriefing
 {  

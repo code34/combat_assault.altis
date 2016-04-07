@@ -54,6 +54,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_supply.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_playervehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
@@ -101,16 +102,16 @@
 	};
 	
 	// pop ground vehicles probabilities by sector
-	wcpopvehicleprob = 0.90;
+	wcpopvehicleprob = 0.85;
 
 	// pop sniper probabilities by sector
 	wcpopsniperprob = 0.85;
 
 	// pop artillery probabilities by sector
-	wcpopartyprob = 0.7;
+	wcpopartyprob = 0.93;
 
 	// pop artillery probabilities by sector
-	wcpopantiairprob = 0.7;
+	wcpopantiairprob = 0.85;
 
 	// pop additional infantry group probabilty
 	wcpopinfantryprob = 0.90;
@@ -123,9 +124,13 @@
 				deletevehicle _x;
 			};
 			sleep 0.001;
-		}foreach playableUnits + allDead;
+		}foreach allPlayers;
 		_name = format["%1_OO_MRK_%2", _name, 1];
 		deletemarker _name;
+	};
+
+	onPlayerConnected {
+		["wcticket", "client"] call BME_fnc_publicvariable;
 	};
 
 	global_grid = ["new", [0,0, 31000,31000,100,100]] call OO_GRID;

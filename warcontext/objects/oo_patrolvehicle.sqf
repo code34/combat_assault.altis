@@ -49,10 +49,14 @@
 			private ["_group"];
 			_group = MEMBER("group", nil);
 
+			diag_log format ["start patrol %1", _group];
 			while { count (units _group) > 0 } do {
+				diag_log format ["patrolling %1", _group];
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
+				diag_log format ["Go to target %1", _group];
 				MEMBER("moveToNext", nil);
+				diag_log format ["change target %1", _group];
 				sleep 0.1;
 			};
 			MEMBER("deconstructor", nil);
@@ -103,21 +107,28 @@
 			_vehicle = MEMBER("vehicle", nil);
 			_group = MEMBER("group", nil);
 			_move = false;
-
+			
 			_wp = _group addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
 			_wp setWaypointType "MOVE";
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
 
+			diag_log format ["move to target %1 %2 %3",  _vehicle, _group, MEMBER("target", nil)];
+
+			sleep 10;
+
 			while { !_move } do {
 				//_sector = ["getSectorFromPos", position _vehicle] call global_grid;
-				sleep 30;
 				//if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call global_grid)) then {
 				//	_move = true;
 				//};
-				if(speed _vehicle < 20) then {
+
+				if(speed _vehicle < 10) then {
 					_move = true;
+					sleep 5;
+				} else {
+					sleep 1;
 				};
 			};
 			deletewaypoint _wp;
@@ -159,7 +170,7 @@
 				if(MEMBER("estimateTarget", _array) < 2) then {
 				 	_leader reveal [_x, 4];
 				 };
-				sleep 0.01;
+				sleep 0.0001;
 			}foreach _list;
 		};
 

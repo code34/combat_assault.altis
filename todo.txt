@@ -1,4 +1,12 @@
 todo : 
-- fixer le re deploy quand un vehicule enemie est encore dans la zone
-- ajouter un add menu pour re deploy
 - sauvegarder l equipement quand on clique sur arsenal sur la caisse
+- ajouter les marqueurs 3d sur les points de presence
+- ajouter les marqueurs 3d sur les unités qui tirent à côté des joueurs
+- ajouter les sequences camera sur vehicules / joueurs
+
+done 
+- ajouter la camera qui plongent quand on pop
+- fixer les vehicles aeriens qui sont tues qu avec une balle
+- retirer les marqueurs amis
+- fixer le score quand on tue un joueur et ajouter des points
+- ajouter le gros calin pour voir les marqueurs amis

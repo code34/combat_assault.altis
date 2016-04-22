@@ -49,14 +49,10 @@
 			private ["_group"];
 			_group = MEMBER("group", nil);
 
-			diag_log format ["start patrol %1", _group];
 			while { count (units _group) > 0 } do {
-				diag_log format ["patrolling %1", _group];
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
-				diag_log format ["Go to target %1", _group];
 				MEMBER("moveToNext", nil);
-				diag_log format ["change target %1", _group];
 				sleep 0.1;
 			};
 			MEMBER("deconstructor", nil);
@@ -86,16 +82,21 @@
 		// retrieve all sectors around under Alert state
 		// if none return empty array
 		PUBLIC FUNCTION("", "getSectorUnderAlert") {
-			private ["_around", "_sectors", "_nextsector"];
+			private ["_sectors", "_position", "_list"];
 			_sectors = [];
 			{
-				_nextsector = ["get", str(_x)] call global_zone_hashmap;
-				if!(isnil "_nextsector") then {
-					if("getAlert" call _nextsector) then {
-						_sectors = _sectors + [_nextsector];
-					};
+				//_nextsector = ["get", str(_x)] call global_zone_hashmap;
+				//if!(isnil "_nextsector") then {
+				//	if("getAlert" call _nextsector) then {
+				_position = ["getPosFromSector", _x] call global_grid;
+				_list = _position nearEntities [["Man", "Tank"], 50];
+				sleep 0.2;
+				if(west countSide _list > 0) then {
+					_sectors = _sectors + [_x];
 				};
-				sleep 0.0001;
+				//};
+				//};
+				//sleep 0.0001;
 			} foreach MEMBER("around", nil);
 			MEMBER("underalert", _sectors);
 		};
@@ -110,13 +111,11 @@
 			
 			_wp = _group addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
-			_wp setWaypointType "MOVE";
+			_wp setWaypointType "SAD";
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
 
-			diag_log format ["move to target %1 %2 %3",  _vehicle, _group, MEMBER("target", nil)];
-
-			sleep 10;
+			sleep 5;
 
 			while { !_move } do {
 				//_sector = ["getSectorFromPos", position _vehicle] call global_grid;
@@ -138,7 +137,7 @@
 			private ["_nextsector", "_position"];
 
 			if(count MEMBER("underalert", nil) > 0) then {
-				_nextsector = "getSector" call (MEMBER("underalert", nil) call BIS_fnc_selectRandom);
+				_nextsector = MEMBER("underalert", nil) call BIS_fnc_selectRandom;
 				MEMBER("setCombatMode", nil);
 				MEMBER("revealTarget", nil);
 			} else {

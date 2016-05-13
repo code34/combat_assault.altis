@@ -4,7 +4,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { column, map, title, labelplayer, player, deploy, mapbutton, rollmessage, equipment}; 
+	controls[] = { column, map, title, labelplayer, player, deploy, mapbutton, rollmessage, equipment, friendsmanagement}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
@@ -50,6 +50,16 @@ class spawndialog {
 		h = (0.15 * safezoneH) - (1.5 * BORDERSIZE);
 		shadow = 2;
 		onLBSelChanged="";
+	};
+
+	class friendsmanagement : StdButton {
+		idc = -1; 
+		x = (0.15 * safezoneW + safezoneX);
+		w = (0.15 * safezoneW);
+		y = (0.45 * safezoneH + safezoneY);
+		h = (0.025 * safezoneH);
+		text = "Friends Management";
+		action = "wcaction = 'friendsmanagement';";
 	};
 
 	class equipment : StdButton {

@@ -149,7 +149,8 @@
 			if!(MEMBER("isLocal", nil)) then {
 				MEMBER("marker", nil) setmarkerbrush _this;
 			} else {
-				MEMBER("marker", nil) setmarkerbrushlocal _this;
+				MEMBER("marker", nil) setMarkerBrushLocal _this;
+				
 			};
 		};
 
@@ -161,7 +162,7 @@
 			if!(MEMBER("isLocal", nil)) then {
 				MEMBER("marker", nil) setmarkercolor _this;
 			} else {
-				MEMBER("marker", nil) setmarkercolorlocal _this;
+				MEMBER("marker", nil) setMarkerColorLocal _this;
 			};
 		};
 

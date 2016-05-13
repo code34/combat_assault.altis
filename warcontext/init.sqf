@@ -59,12 +59,28 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_queue.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_pathfinding.sqf";
+
+	global_grid = ["new", [0,0, 31000,31000,100,100]] call OO_GRID;
 
 	[] execVM "real_weather\real_weather.sqf";
 
-	{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [getMarkerPos "base_lamp",[], 100]);
-	_temp = "Land_LampAirport_F" createVehicle (getMarkerPos "base_lamp");
+	_flag = false;
+	while { !_flag } do {
+		_sector = [ceil (random 300), ceil (random 300)];
+		_position = ["getPosFromSector", _sector] call global_grid;
+		if!(surfaceIsWater _position) then {
+			_flag = true;
+		};
+		sleep 0.01;
+	};
 
+	"respawn_west" setmarkerpos _position;
+	{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [getMarkerPos "respawn_west",[], 100]);
+	_temp = "Land_LampAirport_F" createVehicle ((getMarkerPos "respawn_west") findEmptyPosition [0,100]);
+	_temp = "Land_Cargo_HQ_V2_F" createVehicle ((getMarkerPos "respawn_west") findEmptyPosition [0,100]);
+  	
 	// CONFIG VARIABLE 
 
 	// square distance enemi unpop/pop
@@ -84,6 +100,15 @@
 
 	//enemies chopper
 	wcairchoppers = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F", "O_Heli_Light_02_F", "O_Heli_Light_02_v2_F"];
+
+	// antiair vehicles
+	wcantiairvehicles = ["O_APC_Tracked_02_AA_F"];
+
+	// artillery vehicles
+	wcartilleryvehicles = ["O_MBT_02_arty_F"];
+
+	// plane dogfight
+	wcplanevehicles = ["O_Plane_CAS_02_F"];
 
 	// pop chopper probabilities by sector
 	switch (wcpopchopperprobparam) do {
@@ -133,7 +158,7 @@
 		["wcticket", "client"] call BME_fnc_publicvariable;
 	};
 
-	global_grid = ["new", [0,0, 31000,31000,100,100]] call OO_GRID;
+
 	global_zone_hashmap  = ["new", []] call OO_HASHMAP;
 	global_controller = ["new", []] call OO_CONTROLLER;
 	global_scores = ["new", []] call OO_HASHMAP;
@@ -167,8 +192,5 @@
 	{
 		"flushBDD" call _x;
 	} foreach ("entrySet" call global_scores);
-
-	//end = "win";
-	//["end", "all"] call BME_fnc_publicvariable;
 
 	"End1" call BIS_fnc_endMissionServer;

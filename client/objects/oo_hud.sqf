@@ -132,7 +132,6 @@
 			private ["_ctrl", "_ctrl2", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10" , "_ctrl11", "_text", "_weight", "_time", "_message", "_scores", "_sector", "_dir", "_direction"];
 
 			_time = 0;
-			killzone = [];
 			disableSerialization;
 
 			while { true} do {

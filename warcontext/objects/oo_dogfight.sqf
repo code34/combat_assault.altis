@@ -240,7 +240,9 @@
 			 sleep 0.5;
 			 if(west countSide _list == 0) then {
 				_position = [_position select 0, _position select 1, 100];
-				_array = [_position, 0, "O_Plane_CAS_02_F", east] call bis_fnc_spawnvehicle;
+
+				_vehicle = wcplanevehicles call BIS_fnc_selectRandom;
+				_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
 
 				_vehicle = _array select 0;
 				_crew = (_array select 1) select 0;

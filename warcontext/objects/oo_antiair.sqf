@@ -34,7 +34,9 @@
 			//_position = [_position, 0,50,10,0, 1000,0] call BIS_fnc_findSafePos;
 			MEMBER("position", _position);
 
-			_array = [_position, 180, "O_APC_Tracked_02_AA_F", EAST] call bis_fnc_spawnvehicle;
+			_vehicle = wcantiairvehicles call BIS_fnc_selectRandom;
+
+			_array = [_position, 180, _vehicle, EAST] call bis_fnc_spawnvehicle;
 			_vehicle = _array select 0;
 			_group = _array select 2;
 			_group setBehaviour "COMBAT";

@@ -20,6 +20,7 @@
 		"_object",
 		"_enemyside",
 		"_sector",
+		"_vehicle",
 		"_wp",
 		"_wptype"
 	];
@@ -28,9 +29,18 @@
 	_position = _this select 1;
 	_areasize = _this select 2;
 	_sector = _this select 3;
+	_vehicle = vehicle (leader _group);
 
 	_newposition = [];
 	(leader _group) setvariable ['support', []];
+
+	_mark = ["new", [position _vehicle, false]] call OO_MARKER;
+	["attachTo", _vehicle] spawn _mark;
+	_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+	["setText", _name] spawn _mark;
+	["setColor", "ColorRed"] spawn _mark;
+	["setType", "o_plane"] spawn _mark;
+	["setSize", [0.8,0.8]] spawn _mark;
 
 	_enemyside = [west];
 	_alert = false;
@@ -122,3 +132,8 @@
 		};
 		sleep 0.1;
 	};
+
+	["delete", _mark] call OO_MARKER;
+	sleep 30;
+	_vehicle setDamage 1;
+	deleteVehicle _vehicle;

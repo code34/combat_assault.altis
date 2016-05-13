@@ -111,6 +111,12 @@
 				wcchange = true;
 			};
 
+			if(wcaction == "friendsmanagement") then {
+				[] execVM "client\scripts\givehug.sqf";
+				wcaction = "";
+			};
+
+
 			if(wcaction == "rollmessage") then {
 				wcaction = "";
 				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;

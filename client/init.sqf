@@ -54,6 +54,10 @@
 	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
 	WC_fnc_spawncam = compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
 
+	rollmessage = [];
+	killzone = [];
+	rollprintmessage = "";
+
 	[] call WC_fnc_introcam;
 
 	// config variables

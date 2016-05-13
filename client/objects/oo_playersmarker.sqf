@@ -101,7 +101,7 @@
 					_position = position _x;
 					_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
 					if(isnil "_mark") then {
-						_mark = ["new", [_position, false]] call OO_MARKER;
+						_mark = ["new", [_position, true]] call OO_MARKER;
 						["attachTo", _x] spawn _mark;
 						["setText", name _x] spawn _mark;
 						["setColor", "ColorGreen"] spawn _mark;

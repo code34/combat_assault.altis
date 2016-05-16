@@ -30,11 +30,22 @@
 	diag_log "Waiting player is alive ...";
 	waitUntil {alive player && !(isNull player);};
 
+	while { (getMarkerPos "globalbase") isEqualTo [0,0,0] } do { 
+		startLoadingScreen ["Loading Mission"];
+		sleep 1; 
+	};
+	player setpos ((getMarkerPos "globalbase") findEmptyPosition [30,100]);
+	progressLoadingScreen 0.35;
+
 	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_spawnvehicle = compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
 	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
 	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
+	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
+	WC_fnc_spawncam = compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
+
+	progressLoadingScreen 0.50;
 
 	[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
 	[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
@@ -43,20 +54,24 @@
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+
+	progressLoadingScreen 0.75;
+
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
 	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
-
 	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 
-	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
-	WC_fnc_spawncam = compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
-
 	rollmessage = [];
 	killzone = [];
 	rollprintmessage = "";
+
+	progressLoadingScreen 1;
+	endLoadingScreen;
+
+	sleep 1;
 
 	[] call WC_fnc_introcam;
 
@@ -72,7 +87,8 @@
 	playerdeath = 0;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
-	client_grid = ["new", [0,0,31000,31000,100,100]] call OO_GRID;
+	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
+	client_grid = ["new", [0,0, _size, _size,100,100]] call OO_GRID;
 	
 	playersmarkers = ["new", []] call OO_PLAYERSMARKER;
 	"start" spawn playersmarkers;

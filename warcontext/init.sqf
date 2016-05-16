@@ -61,14 +61,20 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_queue.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_pathfinding.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_basegenerator.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_namegenerator.sqf";
 
-	global_grid = ["new", [0,0, 31000,31000,100,100]] call OO_GRID;
+
+	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
+	_sectorsize = 100;
+	global_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
 
 	[] execVM "real_weather\real_weather.sqf";
 
+	// generate random position for base
 	_flag = false;
 	while { !_flag } do {
-		_sector = [ceil (random 300), ceil (random 300)];
+		_sector = [ceil (random (_size/_sectorsize)), ceil (random (_size/_sectorsize))];
 		_position = ["getPosFromSector", _sector] call global_grid;
 		if!(surfaceIsWater _position) then {
 			_flag = true;
@@ -77,10 +83,15 @@
 	};
 
 	"respawn_west" setmarkerpos _position;
-	{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [getMarkerPos "respawn_west",[], 100]);
-	_temp = "Land_LampAirport_F" createVehicle ((getMarkerPos "respawn_west") findEmptyPosition [0,100]);
-	_temp = "Land_Cargo_HQ_V2_F" createVehicle ((getMarkerPos "respawn_west") findEmptyPosition [0,100]);
-  	
+	_base1  = ["new", _position] call OO_BASEGENERATOR;
+	"generate" call _base1;
+
+	global_namegenerator = "new" call OO_NAMEGENERATOR;
+	
+	_temp = createMarker ["globalbase", _position];
+	_temp setMarkerText (toUpper ((["generateName", (ceil (random 4) + 1)] call global_namegenerator)  + " Base"));
+	_temp setMarkerType "b_hq";
+
 	// CONFIG VARIABLE 
 
 	// square distance enemi unpop/pop
@@ -141,6 +152,53 @@
 	// pop additional infantry group probabilty
 	wcpopinfantryprob = 0.90;
 
+	//////////////////////
+	// Do not edit below :)
+	//////////////////////
+
+	_vehicleslist = "((getNumber (_x >> 'scope') >= 2) && (getNumber (_x >> 'side') in [0,2]) && (getText (_x >> 'vehicleClass') in ['rhs_vehclass_apc'] ))" configClasses (configFile >> "CfgVehicles");
+	if(count _vehicleslist > 0) then {
+		wclightvehicles = [];
+		{ wclightvehicles = wclightvehicles + [ configName _x]; } foreach _vehicleslist;			
+	};
+
+
+	_vehicleslist = "((getNumber (_x >> 'scope') >= 2) && (getNumber (_x >> 'side') in [0,2]) && (getText (_x >> 'vehicleClass') in ['rhs_vehclass_tank'] ))" configClasses (configFile >> "CfgVehicles");
+	if(count _vehicleslist > 0) then {
+		wcheavyvehicles = [];
+		{ wcheavyvehicles = wcheavyvehicles + [ configName _x]; } foreach _vehicleslist;
+	};
+
+	_vehicleslist = "((getNumber (_x >> 'scope') >= 2) && (getNumber (_x >> 'side') in [0,2]) && (getText (_x >> 'vehicleClass') in ['rhs_vehclass_helicopter'] ))" configClasses (configFile >> "CfgVehicles");
+	if(count _vehicleslist > 0) then {
+		wcairchoppers = [];
+		{ wcairchoppers = wcairchoppers + [ configName _x]; } foreach _vehicleslist;
+	};
+
+	_vehicleslist = "((getNumber (_x >> 'scope') >= 2) && (getNumber (_x >> 'side') in [0,2]) && (getText (_x >> 'vehicleClass') in ['rhs_vehclass_aircraft'] ))" configClasses (configFile >> "CfgVehicles");
+	if(count _vehicleslist > 0) then {
+		wcplanevehicles = [];
+		{ wcplanevehicles = wcplanevehicles + [ configName _x]; } foreach _vehicleslist;
+	};
+
+	/*
+	configfile >> "CfgGroups" >> "East" >> "rhs_faction_msv" >> "rhs_group_rus_msv_infantry"
+	configfile >> "CfgGroups" >> "East" >> "rhs_faction_msv" >> "rhs_group_rus_msv_infantry_emr"
+	configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry"
+	configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry_flora"
+	configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry_mflora"
+	configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry_recon"
+	*/
+	
+	wcrhsinfantrysquads = [];
+
+	"wcrhsinfantrysquads pushBack _x" configClasses (configfile >> "CfgGroups" >> "East" >> "rhs_faction_msv" >> "rhs_group_rus_msv_infantry");
+	"wcrhsinfantrysquads pushBack _x" configClasses (configfile >> "CfgGroups" >> "East" >> "rhs_faction_msv" >> "rhs_group_rus_msv_infantry_emr");
+	"wcrhsinfantrysquads pushBack _x" configClasses (configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry");
+	"wcrhsinfantrysquads pushBack _x" configClasses (configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry_flora");
+	"wcrhsinfantrysquads pushBack _x" configClasses (configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry_mflora");
+	"wcrhsinfantrysquads pushBack _x" configClasses (configfile >> "CfgGroups" >> "East" >> "rhs_faction_vdv" >> "rhs_group_rus_vdv_infantry_recon");
+
 	onPlayerDisconnected {
 		private ["_name"];
 		{
@@ -164,12 +222,12 @@
 	global_scores = ["new", []] call OO_HASHMAP;
 	global_vehicles = ["new", []] call OO_HASHMAP;
 	global_ticket = ["new", wcnumberofticket] call OO_TICKET;
-	global_atc = ["new", []] call OO_ATC;
+	global_atc = ["new", _size] call OO_ATC;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
 
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;
-	[] call WC_fnc_computezone;
+	(_size/_sectorsize) call WC_fnc_computezone;
 	
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;
@@ -194,3 +252,10 @@
 	} foreach ("entrySet" call global_scores);
 
 	"End1" call BIS_fnc_endMissionServer;
+
+	sleep 30;
+
+	// Kick player before missions restart
+	{
+		serverCommand format ["#kick %1",_x];
+	} foreach allPlayers;

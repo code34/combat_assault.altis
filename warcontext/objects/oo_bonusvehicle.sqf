@@ -102,7 +102,7 @@
 				if(_position distance getmarkerpos _x < 1000) then {
 					_airport = true;
 				};
-			}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+			}foreach ("getAirports" call global_atc);
 			
 			if(_airport) then {
 				_type = ["B_Heli_Light_01_F", "B_Heli_Light_01_armed_F", "O_Heli_Light_02_F", "O_Heli_Light_02_unarmed_F", "I_Heli_light_03_F", "I_Heli_light_03_unarmed_F"]  call BIS_fnc_selectRandom;

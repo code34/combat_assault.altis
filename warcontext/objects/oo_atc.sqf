@@ -24,16 +24,44 @@
 		PRIVATE VARIABLE("bool","run");
 		PRIVATE VARIABLE("array","west");
 		PRIVATE VARIABLE("array","east");
+		PRIVATE VARIABLE("array", "airports");
 
-		PUBLIC FUNCTION("array","constructor") {
+		PUBLIC FUNCTION("scalar","constructor") {
 			_array = [];
 			MEMBER("run", false);
 			MEMBER("west", _array);
 			MEMBER("east", _array);
+			MEMBER("discover", _this);
 		};
 
 		PUBLIC FUNCTION("","getWest") FUNC_GETVAR("west");
 		PUBLIC FUNCTION("","getEast") FUNC_GETVAR("east");
+		PUBLIC FUNCTION("","getAirports") FUNC_GETVAR("airports");
+
+		PUBLIC FUNCTION("scalar", "discover") {
+			private ["_positions", "_airports"];
+
+			_airports = [];
+			_positions = [getarray (configfile >> "CfgWorlds" >> worldName >> "ilsPosition")];
+			"_positions pushBack (getArray (_x >> 'ilsPosition'))" configClasses (configFile >> "CfgWorlds" >> worldName >> "secondaryAirports");
+
+			{
+				_name = toUpper (["generateName", (ceil (random 4) + 1)] call global_namegenerator);
+				
+				_temp = createMarker [_name+"_AIRPORT", _x];
+				_temp setMarkerType "mil_pickup";
+				_temp setMarkerText (_name + " AIRPORT");
+
+				_temp = createMarker [_name, _x];
+				_temp setMarkerShape "ELLIPSE";
+				_temp setMarkerSize [300,300];
+				_temp setMarkerColor "COLORBLUE";
+				_temp setMarkerBrush "FDiagonal";
+
+				_airports = _airports + [_name];
+			}foreach _positions;
+			MEMBER("airports", _airports);
+		};
 
 		PUBLIC FUNCTION("", "isFriendly") {
 			private ["_enemies", "_sector", "_around", "_wairport", "_eairport"];
@@ -62,7 +90,7 @@
 					_wairport = _wairport + [_x];
 				};
 				sleep 1;
-			}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+			}foreach MEMBER("airports", nil);
 			MEMBER("west", _wairport);
 			MEMBER("east", _eairport);
 		};

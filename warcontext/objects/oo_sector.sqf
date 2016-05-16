@@ -356,6 +356,7 @@
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
 			if(MEMBER("getAlert", nil)) then { 
+				["setTicket", "redzone"] call global_ticket;
 				if(random 1> 0.97) then {
 					_critical = MEMBER("bucket", nil) * 2;
 				} else {
@@ -376,13 +377,24 @@
 			_markerpos 	= getmarkerpos _marker;
 			_markersize	= (getMarkerSize _marker) select 1;
 		
-			_type = wcinfantrysquads call BIS_fnc_selectRandom;
+			if(count wcrhsinfantrysquads == 0) then {
+				_type = wcinfantrysquads call BIS_fnc_selectRandom;	
+			} else {
+				_type = wcrhsinfantrysquads call BIS_fnc_selectRandom;
+			};
 		
-			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-			if(_position isequalto _position2)  exitwith {[];};
+			//_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			//_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+			//if(_position isequalto _position2)  exitwith {[];};
+
+			_position = _markerpos findEmptyPosition [0,30];
+			if(_position isEqualTo []) exitWith {[];};
 		
-			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call WC_fnc_spawngroup;
+			if(count wcrhsinfantrysquads == 0) then {
+				_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call WC_fnc_spawngroup;
+			} else {
+				_group = [_position, east, _type] call WC_fnc_spawngroup;
+			};
 		
 			{
 				_handle = [_x, _type] spawn WC_fnc_setskill;

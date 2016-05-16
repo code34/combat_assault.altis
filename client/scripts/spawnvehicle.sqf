@@ -16,25 +16,31 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_vehicleslist", "_index", "_type", "_air", "_name", "_picture"];
+	private ["_vehicleslist", "_index", "_type", "_air", "_name", "_picture", "_positions", "_list"];
 
 
 	_vehicles = [];
 	_positions = [];
 	
+	// Retrieve airports
+	_positions = [getarray (configfile >> "CfgWorlds" >> worldName >> "ilsPosition")];
+	"_positions pushBack (getArray (_x >> 'ilsPosition'))" configClasses (configFile >> "CfgWorlds" >> worldName >> "secondaryAirports");
+
 	_air = false;
 	{
-		if(player distance getmarkerpos _x < 300) then {
-			if(getmarkercolor _x == "ColorBlue") then {
+		if(player distance _x < 300) then {
+			_list = (position player) nearEntities [["Man", "Tank"], 300];
+			sleep 0.2;
+			if(east countside _list == 0) then {
 				_air = true;
 			};
 		};
-	}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+	} foreach _positions;
 
 	if(_air) then {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'rhs_vehclass_tank','rhs_vehclass_aircraft', 'rhs_vehclass_helicopter']  } } )" configClasses (configFile >> "CfgVehicles");
 	} else {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'rhs_vehclass_tank']  } } )" configClasses (configFile >> "CfgVehicles");
 	};
 
 	lbClear 1255;

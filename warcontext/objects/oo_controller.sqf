@@ -306,7 +306,6 @@
 								_sector = ["new", [_key, _position, global_grid]] call OO_SECTOR;
 								"draw" call _sector;
 								["put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
-								["setTicket", "redzone"] call global_ticket;
 								_counter = _counter + 1;
 							};
 						};

@@ -141,9 +141,9 @@
 				default {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_vehicle = _type createVehicle [_position select 0, _position select 1,  5000];
+					_vehicle setpos [_position select 0, _position select 1,  150];
 					_vehicle setdir (random 360); 
 					_vehicle setVelocity [0, 0, 0];
-					_vehicle setpos [_position select 0, _position select 1,  150];
 					MEMBER("paraVehicle", _vehicle);
 				};
 			};	

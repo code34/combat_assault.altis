@@ -39,7 +39,7 @@
 	// If Fastime is on
 	// Ratio 1 real time second for x game time seconds
 	// Default: 1 real second = 6 second in game
-	_daytimeratio = 6;
+	_daytimeratio = 2;
 	_nighttimeratio = 24;
 
 	// send sync data across the network each xxx seconds
@@ -48,7 +48,7 @@
 	_timesync = 60;
 
 	// Mission starting date is 25/09/2013 at 12:00
-	_startingdate = [2015, 07, 01, 07, 00];
+	_startingdate = [2015, 07, 01, 10, 00];
 
 	// Mission starting weather "CLEAR|CLOUDY|RAIN";
 	_startingweather = ["CLEAR", "CLOUDY", "RAIN"] call BIS_fnc_selectRandom;

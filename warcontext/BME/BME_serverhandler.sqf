@@ -99,6 +99,9 @@
 
 		_playername = (_this select 0) select 0;
 		_position = (_this select 0) select 1;
+		_position =  _position findEmptyPosition [0,20];
+		if(_position isEqualTo []) then {(_this select 0) select 1;};
+
 		_side = west;
 
 		{

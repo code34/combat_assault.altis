@@ -22,12 +22,15 @@
 		"_key",
 		"_position",
 		"_sector",
-		"_sectors"
+		"_sectors",
+		"_size"
 	];
+
+	_size = _this;
 	
 	_sectors = [];
 	while { count _sectors < 30 } do {
-		_sector = [ceil (random 300), ceil (random 300)];
+		_sector = [ceil (random _size), ceil (random _size)];
 		_position = ["getPosFromSector", _sector] call global_grid;
 		if(getmarkerpos "respawn_west" distance _position > 1300) then {
 			if!(surfaceIsWater _position) then {
@@ -49,4 +52,4 @@
 			["expandSector", _sector] call global_controller;
 			["expandSectorAround", [_sector, 15]] call global_controller;
 		};
-	} foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+	} foreach ("getAirports" call global_atc);

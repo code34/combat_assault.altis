@@ -24,13 +24,14 @@
 
 	fullmap = 0;
 	_old_fullmap = 0;
+	_position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
 
 	showCinemaBorder false;
-	_cam = "camera" camCreate [position _body select 0, position _body select 1, 300];
+	_cam = "camera" camCreate _position;
 	detach _cam;
 	_cam cameraEffect ["internal","top"];
-	_cam camsettarget _body;
-	_cam camSetRelPos [0,100,300];
+	_cam camsettarget player;
+	_cam camSetRelPos [0,100,50];
 	_cam CamCommit 0;
 
 	disableSerialization;
@@ -51,7 +52,7 @@
 
 
 	_indexplayer = -1;
-	_players = allplayers;
+	_players = allunits;
 
 	lbClear 2002;
 	{ 
@@ -69,7 +70,7 @@
 	_player = player;
 
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-	_ctrl ctrlMapAnimAdd [0, 0, _body]; 
+	_ctrl ctrlMapAnimAdd [0, 0, _body];
 	ctrlMapAnimCommit _ctrl;		
 	
 	wcchange  = false;
@@ -148,18 +149,18 @@
 			if(wcchange) then {
 				if(_player isequalto player) then {
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-					_ctrl ctrlMapAnimAdd [2, 0, _body]; 
-					ctrlMapAnimCommit _ctrl;					
+					_ctrl ctrlMapAnimAdd [0, 0, _body]; 
+					ctrlMapAnimCommit _ctrl;
 					
 					detach _cam;
 					_cam cameraEffect ["internal","top"];
-					_cam camsettarget _body;
-					_cam camSetRelPos [0,100,300];
+					_cam camsettarget player;
+					_cam camSetRelPos [0,100,50];
 					_cam CamCommit 0;
 				} else {
 					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-					_ctrl ctrlMapAnimAdd [2, 0, _player]; 
-					ctrlMapAnimCommit _ctrl;					
+					_ctrl ctrlMapAnimAdd [0, 0, _player]; 
+					ctrlMapAnimCommit _ctrl;
 
 					detach _cam;
 					if(vehicle _player == _player) then {

@@ -129,22 +129,32 @@
 				};
 
 				case (_type isEqualTo "B_supplyCrate_F") : {
-					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-					_vehicle = _type createVehicle [0,0,5000];
-					_vehicle setdir (random 360); 
-
-					_vehicle setpos [_position select 0, _position select 1,  150];
-					MEMBER("paraVehicle", _vehicle);
-					["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
-				}:
+					if(_position distance (getMarkerPos "respawn_west") > 300) then {
+						_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+						_vehicle = _type createVehicle [0,0,5000];
+						_vehicle setdir (random 360); 
+						_vehicle setpos [_position select 0, _position select 1,  150];
+						MEMBER("paraVehicle", _vehicle);
+						["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
+					} else {
+						_position = ((getMarkerPos "respawn_west") findEmptyPosition [10,60]);
+						_vehicle = _type createVehicle _position;
+						["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
+					};
+				};
 
 				default {
-					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-					_vehicle = _type createVehicle [_position select 0, _position select 1,  5000];
-					_vehicle setpos [_position select 0, _position select 1,  150];
-					_vehicle setdir (random 360); 
-					_vehicle setVelocity [0, 0, 0];
-					MEMBER("paraVehicle", _vehicle);
+					if(_position distance (getMarkerPos "respawn_west") > 300) then {
+						_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+						_vehicle = _type createVehicle [_position select 0, _position select 1,  5000];
+						_vehicle setpos [_position select 0, _position select 1,  150];
+						_vehicle setdir (random 360); 
+						_vehicle setVelocity [0, 0, 0];
+						MEMBER("paraVehicle", _vehicle);
+					} else {
+						_position = ((getMarkerPos "respawn_west") findEmptyPosition [10,60]);
+						_vehicle = _type createVehicle _position;
+					};
 				};
 			};	
 			

@@ -110,10 +110,10 @@
 		}foreach playableUnits;
 
 		// si trop pret de la base - teleport impossible
-		if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
-			wcteleportack = [2, _position];
-			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
-		};
+		//if(_position distance (getmarkerpos "respawn_west") < 600) exitwith {
+		//	wcteleportack = [2, _position];
+		//	["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
+		//};
 
 		// si dans l'eau - teleport impossible
 		if(surfaceIsWater _position) exitwith {

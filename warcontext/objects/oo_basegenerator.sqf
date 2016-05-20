@@ -45,6 +45,8 @@
 			_temp = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [40,100]);
 			_temp setdir (random 360);
 			_structures = _structures + [_temp];
+			wccommanderoff = true;
+			_temp addEventHandler ['Killed', { ["wccommanderoff", "client"] call BME_fnc_publicvariable;}];
 			
 			_temp = "Land_Cargo_House_V1_F" createVehicle (_position findEmptyPosition [30,100]);
 			_temp setdir (random 360);

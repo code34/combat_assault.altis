@@ -285,7 +285,7 @@
 									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorEnemy');
 								};
 								_color set [3, 1 - _distance];
-								 drawIcon3D [_img, _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
+								 drawIcon3D [_img, _color, [ getPosATLVisual _vehicle select 0, getPosATLVisual _vehicle select 1, (getPosATLVisual _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaSemiBold' ];
 							 };
 						}foreach allunits;
 					};

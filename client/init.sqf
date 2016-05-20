@@ -85,6 +85,7 @@
 	wcticket = 0;
 	playerkill = 0;
 	playerdeath = 0;
+	wccandeploy = true;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
@@ -169,11 +170,43 @@
 	
 	[] spawn {
 		while { true } do {
-			if((damage player > 0) and (damage player  < 1.01)) then {
-				player setDamage (damage player - 0.01); 
-				player setBleedingRemaining 30;
+			//if((damage player > 0) and (damage player  < 1.01)) then {
+			//	player setDamage (damage player - 0.01); 
+			//	player setBleedingRemaining 30;
+			//};
+
+			switch (true) do {
+				case (damage player < 0.40) : {
+					player setDamage (damage player - 0.01); 
+					player setBleedingRemaining 30;
+					sleep 0.5;
+				};
+
+				case (damage player < 0.60) : {
+					player setDamage (damage player - 0.01); 
+					player setBleedingRemaining 30;
+					sleep 0.6;
+				};
+
+				case (damage player < 0.70) : {
+					player setDamage (damage player - 0.01); 
+					player setBleedingRemaining 30;
+					sleep 0.7;
+				};
+
+				case (damage player < 0.80) : {
+					player setDamage (damage player - 0.01); 
+					player setBleedingRemaining 30;
+					sleep 0.8;
+				};			
+
+				case (damage player < 1.01) : {
+					player setDamage (damage player - 0.01); 
+					player setBleedingRemaining 30;
+					sleep 0.9;
+				};			
 			};
-			sleep 1;
+
 		};
 	};
 
@@ -194,27 +227,29 @@
 				}foreach _list2;
 
 				_candeploy = false;
-				if(player distance getmarkerpos "respawn_west" > 1300) then {
+				//if(player distance getmarkerpos "respawn_west" > 1300) then {
 					if((alive player) and (vehicle player == player)) then {		
 						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
-							_title = localize "STR_REDEPLOY_TITLE";
-							_text = localize "STR_REDEPLOY_STANCE";
-							["hint", [_title, _text]] call hud;
+							//_title = localize "STR_REDEPLOY_TITLE";
+							//_text = localize "STR_REDEPLOY_STANCE";
+							//["hint", [_title, _text]] call hud;
 							_candeploy = true;
 						} else {
 							hint "";
 						};
 					};
-				};
+				//};
 
 				if(_candeploy) then {
 					if(isnil "_teleport") then {
 						_teleport = player addAction ["Deployement", "client\scripts\deployment.sqf", nil, 1.5, false];
+						wccandeploy = true;
 					};
 				} else {
 					if(!isnil "_teleport") then {
 						player removeAction _teleport;
 						_teleport = nil;
+						wccandeploy = false;
 					};
 				};
 			};

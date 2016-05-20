@@ -88,11 +88,12 @@
 		};
 
 		PUBLIC FUNCTION("array", "setTarget") {
-			private ["_distance", "_endposition", "_markers", "_marker", "_position", "_bool"];
+			private ["_distance", "_endposition", "_markers", "_marker", "_position", "_bool", "_positions"];
 
 			_position = _this;
+			_positions = [];
 
-			if(("countWest" call global_atc >  0) and (random 1> 0.25)) then {
+			if(("countWest" call global_atc >  0) and (random 1> 1)) then {
 				_markers = "getWest" call global_atc;
 				_distance = 30000;
 				{
@@ -104,14 +105,14 @@
 				}foreach _markers;
 				_endposition = getmarkerpos _marker;				
 			} else {
-				//_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
-				_bool = false;
-				while { !_bool } do {
-					_endposition = [ceil (random 30000), ceil (random 30000)];
-					if(getmarkerpos "respawn_west" distance _endposition > 1300) then {
-						if!(surfaceIsWater _endposition) then { _bool = true; };
+				"(getText (_x >> 'type') in ['NameVillage', 'NameCity', 'NameCityCapital', 'CityCenter']) && {(_positions pushBack getArray (_x >> 'position')) > -1}" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");
+				_distance = 30000;
+				{
+					if(_x distance _position < _distance) then {
+						_distance = _x distance _position;
+						_endposition = _x;
 					};
-				};
+				} foreach _positions;
 			};
 			MEMBER("endposition", _endposition);
 		};

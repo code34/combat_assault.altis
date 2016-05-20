@@ -253,9 +253,5 @@
 
 	"End1" call BIS_fnc_endMissionServer;
 
-	sleep 30;
-
 	// Kick player before missions restart
-	{
-		serverCommand format ["#kick %1",_x];
-	} foreach allPlayers;
+	serverCommand "#reboot";

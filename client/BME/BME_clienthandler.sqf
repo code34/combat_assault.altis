@@ -49,6 +49,15 @@
 		killzone = killzone + [_message];
 	};
 
+	BME_netcode_wccommanderoff = {
+		private ["_message"];
+		
+		_message = "<t color='#FF9933'>"+ localize "STR_COMMANDEROFF_TEXT" + "</t><br/>";
+		rollmessage = rollmessage + [_message];
+		_message = "<t align='center'><t color='#FF9933'>"+ localize "STR_COMMANDEROFF_TEXT" + "</t> ";
+		killzone = killzone + [_message];	
+	};
+
 	BME_netcode_wcaircraftstart = {
 		private ["_message"];
 	

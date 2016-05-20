@@ -158,6 +158,13 @@
 
 				_rank = ["getRankText", _globalratio] call scoreboard;
 				_text = _text + format ["<br/><t size='1'>Server Ranking: %1</t>", _rank];
+
+				if(wccandeploy) then {
+					_text = _text + "<br/><t size='1'>Situation : Safe</t>";
+				} else {
+					_text = _text + "<br/><t size='1'>Situation : Unsafe</t>";
+				};
+
 				_text = _text + format ["<br/><t size='1'>%1</t>", wcbannerserver];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 

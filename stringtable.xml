@@ -103,6 +103,10 @@
                 <Key ID="STR_SPOTTED_TEXT">
                         <Original>has been spotted</Original>
                         <French>a été localisé</French>
-                </Key>     
+                </Key>
+                <Key ID="STR_COMMANDEROFF_TEXT">
+                        <Original>Commander Site has been destroyed. No more deployement avalaible</Original>
+                        <French>Le centre de commandement a été détruit. Plus de déploiement disponible.</French>
+                </Key>                     
                 </Package>
         </Project>

@@ -86,6 +86,9 @@
                 <Key ID="STR_DEPLOY_BUTTON">
                         <Original>Deploy</Original>
                 </Key>
+                <Key ID="STR_EXIT_BUTTON">
+                        <Original>Exit</Original>
+                </Key>
                 <Key ID="STR_ROLLMESSAGEON_BUTTON">
                         <Original>Rollmessage On</Original>
                 </Key>

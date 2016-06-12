@@ -27,6 +27,16 @@
 		diag_log format["BME: %1", bme_log];
 	};
 
+	BME_netcode_server_wcunpackbase = {
+		_position = _this select 0;
+		["unpackBase", _position] call global_base;
+	};
+
+	BME_netcode_server_wcpackbase = {
+		_position = _this select 0;
+		["packBase", _position] call global_base;
+	};	
+
 	BME_netcode_server_playervehicle = {
 		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object"];
 		

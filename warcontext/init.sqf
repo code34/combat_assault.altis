@@ -67,7 +67,9 @@
 
 	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
 	_sectorsize = 100;
+	
 	global_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
+	global_namegenerator = "new" call OO_NAMEGENERATOR;
 
 	[] execVM "real_weather\real_weather.sqf";
 
@@ -82,15 +84,8 @@
 		sleep 0.01;
 	};
 
-	"respawn_west" setmarkerpos _position;
-	_base1  = ["new", _position] call OO_BASEGENERATOR;
-	"generate" call _base1;
-
-	global_namegenerator = "new" call OO_NAMEGENERATOR;
-	
-	_temp = createMarker ["globalbase", _position];
-	_temp setMarkerText (toUpper ((["generateName", (ceil (random 4) + 1)] call global_namegenerator)  + " Base"));
-	_temp setMarkerType "b_hq";
+	global_base  = ["new", _position] call OO_BASEGENERATOR;
+	["unpackBase", _position] call global_base;
 
 	// CONFIG VARIABLE 
 

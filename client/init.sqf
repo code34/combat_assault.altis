@@ -34,6 +34,7 @@
 		startLoadingScreen ["Loading Mission"];
 		sleep 1; 
 	};
+
 	player setpos ((getMarkerPos "globalbase") findEmptyPosition [30,100]);
 	progressLoadingScreen 0.35;
 

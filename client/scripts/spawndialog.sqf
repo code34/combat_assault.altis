@@ -144,6 +144,9 @@
 					((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlSetPosition _standard_map_pos;
 				};
 				((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlCommit 0.2;
+				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
+				_ctrl ctrlMapAnimAdd [0, 0, _player]; 
+				ctrlMapAnimCommit _ctrl;
 			};
 
 			if(wcchange) then {
@@ -183,13 +186,14 @@
 			sleep 0.01;
 		};
 
-
 	_playertype = "ammobox";
 	_position = position _cam;
 	_dir = getDir _cam;
 
 	_cam cameraEffect ["terminate","back"];
 	camDestroy _cam;
+
+	if(wcaction isEqualTo "exit") exitWith {};
 
 	if(_player == player) then {
 		openMap [false, false] ;

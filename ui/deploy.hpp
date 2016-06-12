@@ -4,7 +4,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { column, map, title, labelplayer, player, deploy, mapbutton, rollmessage, equipment, friendsmanagement}; 
+	controls[] = { column, map, title, labelplayer, player, deploy, exit, mapbutton, rollmessage, equipment, friendsmanagement}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
@@ -12,7 +12,7 @@ class spawndialog {
 		x = (0.15 * safezoneW + safezoneX) - ( 2 * BORDERSIZE);
 		y = (0.12 * safezoneH + safezoneY) - (3 * BORDERSIZE);
 		w = (0.15 * safezoneW) + (4 * BORDERSIZE);
-		h = (0.75 * safezoneH) + (6 * BORDERSIZE);
+		h = (0.80 * safezoneH) + (6 * BORDERSIZE);
 	};
 
 	class map : RscMapControl {
@@ -103,4 +103,15 @@ class spawndialog {
 		text = $STR_DEPLOY_BUTTON;
 		action = "closeDialog 0; wcaction = 'deploy';";
 	};
+
+	class exit : StdButton{
+		idc=-1;
+		x = (0.15 * safezoneW + safezoneX);
+		y = (0.88 * safezoneH + safezoneY);
+		w = (0.15 * safezoneW);
+		h = (0.05 * safezoneH);
+		sizeEx = 0.05 * safezoneH;
+		text = $STR_EXIT_BUTTON;
+		action = "closeDialog 0; wcaction = 'exit';";
+	};	
 };

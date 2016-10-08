@@ -38,9 +38,9 @@
 	} foreach _positions;
 
 	if(_air) then {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'rhs_vehclass_tank','rhs_vehclass_aircraft', 'rhs_vehclass_helicopter']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'rhs_vehclass_tank','rhs_vehclass_aircraft', 'rhs_vehclass_helicopter']  } } )" configClasses (configFile >> "CfgVehicles");
 	} else {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 2) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'rhs_vehclass_tank']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'rhs_vehclass_tank']  } } )" configClasses (configFile >> "CfgVehicles");
 	};
 
 	lbClear 1255;
@@ -48,13 +48,16 @@
 	_ammobox = (configFile >> "CfgVehicles" >> "B_supplyCrate_F");
 	_vehicleslist = [_ammobox] + _vehicleslist;
 	{ 
-		_name= getText (configFile >> "CfgVehicles" >> configname _x >> "DisplayName");
-		lbAdd [1255, _name];
-
-		// skip ammobox (no picture)
-		if(_forEachIndex > 0) then {
-			_picture = getText (configFile >> "CfgVehicles" >> configname _x >> "picture");	
-			lbSetPicture [1255, (lbSize 1255)-1, _picture] ;
+		if!(_x isEqualTo "PaperCar") then {
+			if!((configname _x) isEqualTo "PaperCar") then {
+				_name= getText (configFile >> "CfgVehicles" >> configname _x >> "DisplayName");
+				lbAdd [1255, _name];
+				// skip ammobox (no picture)
+				if(_forEachIndex > 0) then {
+					_picture = getText (configFile >> "CfgVehicles" >> configname _x >> "picture");
+					lbSetPicture [1255, (lbSize 1255)-1, _picture] ;
+				};
+			};
 		};
 	}foreach _vehicleslist;
 	lbSetCurSel [ 1255, 0];

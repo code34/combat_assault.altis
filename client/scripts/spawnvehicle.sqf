@@ -48,7 +48,7 @@
 	_ammobox = (configFile >> "CfgVehicles" >> "B_supplyCrate_F");
 	_vehicleslist = [_ammobox] + _vehicleslist;
 	{ 
-		if!(_x isEqualTo "PaperCar") then {
+		//if!(_x isEqualTo "PaperCar") then {
 			if!((configname _x) isEqualTo "PaperCar") then {
 				_name= getText (configFile >> "CfgVehicles" >> configname _x >> "DisplayName");
 				lbAdd [1255, _name];
@@ -57,8 +57,10 @@
 					_picture = getText (configFile >> "CfgVehicles" >> configname _x >> "picture");
 					lbSetPicture [1255, (lbSize 1255)-1, _picture] ;
 				};
+			} else {
+				_vehicleslist = _vehicleslist - [_x];
 			};
-		};
+		//};
 	}foreach _vehicleslist;
 	lbSetCurSel [ 1255, 0];
 

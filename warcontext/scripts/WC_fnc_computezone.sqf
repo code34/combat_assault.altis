@@ -42,7 +42,7 @@
 	for "_x" from 0 to wcnumberofzone step 1 do {
 		_key = _sectors call BIS_fnc_selectRandom;
 		["expandSector", _key] call global_controller;
-		["expandSectorAround", [_key, 15]] call global_controller;
+		["expandSectorAround", [_key, 7]] call global_controller;
 	};
 
 	{
@@ -50,6 +50,6 @@
 			_position = getmarkerpos _x;
 			_sector = ["getSectorFromPos", _position] call global_grid;
 			["expandSector", _sector] call global_controller;
-			["expandSectorAround", [_sector, 15]] call global_controller;
+			["expandSectorAround", [_sector, 7]] call global_controller;
 		};
 	} foreach ("getAirports" call global_atc);

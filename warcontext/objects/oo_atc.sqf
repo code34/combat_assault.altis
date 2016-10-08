@@ -46,7 +46,7 @@
 			"_positions pushBack (getArray (_x >> 'ilsPosition'))" configClasses (configFile >> "CfgWorlds" >> worldName >> "secondaryAirports");
 
 			{
-				_name = toUpper (["generateName", (ceil (random 4) + 1)] call global_namegenerator);
+				_name = toUpper (["generateName", (ceil (random 3) + 1)] call global_namegenerator);
 				
 				_temp = createMarker [_name+"_AIRPORT", _x];
 				_temp setMarkerType "mil_pickup";

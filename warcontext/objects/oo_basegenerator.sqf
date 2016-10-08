@@ -25,10 +25,12 @@
 		PRIVATE VARIABLE("array", "structures");
 		PRIVATE VARIABLE("array", "vehicles");
 		PRIVATE VARIABLE("string","marker");
+		PRIVATE VARIABLE("bool","packed");
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("position", _this);
 			MEMBER("createMarker", _this);
+			MEMBER("packed", true);
 		};
 
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
@@ -38,9 +40,10 @@
 		};
 
 		PUBLIC FUNCTION("array", "createMarker"){
+			private ["_position", "_marker"];
 			_position = _this;
 			_marker = createMarker ["globalbase", _position];
-			_marker setMarkerText (toUpper ((["generateName", (ceil (random 4) + 1)] call global_namegenerator)  + " Base"));
+			_marker setMarkerText (toUpper ((["generateName", (ceil (random 3) + 1)] call global_namegenerator)  + " Base"));
 			_marker setMarkerType "b_hq";
 			MEMBER("marker", _marker);
 		};
@@ -52,37 +55,41 @@
 			_structures = [];
 			_vehicles = [];
 
-			"respawn_west" setmarkerpos _position;
-			MEMBER("marker", nil) setMarkerPos _position;
+			if(MEMBER("packed", nil)) then {
+				MEMBER("packed", false);
 
-			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 100]);
+				"respawn_west" setmarkerpos _position;
+				MEMBER("marker", nil) setMarkerPos _position;
 
-			_temp = "Land_LampAirport_F" createVehicle (_position findEmptyPosition [30,60]);
-			_temp setdir (random 360);
-			_structures = _structures + [_temp];
+				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 100]);
 
-			_temp = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [40,100]);
-			_temp setdir (random 360);
-			_structures = _structures + [_temp];
-			wccommanderoff = true;
-			_temp addEventHandler ['Killed', { ["wccommanderoff", "client"] call BME_fnc_publicvariable;}];
-			_action = _temp addAction ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false];
-			
-			_temp = "Land_Cargo_House_V1_F" createVehicle (_position findEmptyPosition [30,100]);
-			_temp setdir (random 360);
-			_structures = _structures + [_temp];
-			
-			_temp = "Land_Medevac_house_V1_F" createVehicle (_position findEmptyPosition [30,100]);
-			_temp setdir (random 360);
-			_structures = _structures + [_temp];
-			
-			{
-				deleteVehicle _x;
-				sleep 0.01;
-			}foreach MEMBER("vehicles", nil);
-			
-			MEMBER("vehicles", _vehicles);
-			MEMBER("structures", _structures);
+				_temp = "Land_LampAirport_F" createVehicle (_position findEmptyPosition [0,20]);
+				[[_temp, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+				_temp setdir (random 360);
+				_structures = _structures + [_temp];
+
+				_temp = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [30,80]);
+				_temp setdir (random 360);
+				_structures = _structures + [_temp];
+				//wccommanderoff = true;
+				//_temp addEventHandler ['Killed', { ["wccommanderoff", "client"] call BME_fnc_publicvariable;}];
+				
+				_temp = "Land_Cargo_House_V1_F" createVehicle (_position findEmptyPosition [30,80]);
+				_temp setdir (random 360);
+				_structures = _structures + [_temp];
+				
+				_temp = "Land_Medevac_house_V1_F" createVehicle (_position findEmptyPosition [30,80]);
+				_temp setdir (random 360);
+				_structures = _structures + [_temp];
+				
+				{
+					deleteVehicle _x;
+					sleep 0.01;
+				}foreach MEMBER("vehicles", nil);
+				
+				MEMBER("vehicles", _vehicles);
+				MEMBER("structures", _structures);
+			};
 		};
 
 		PUBLIC FUNCTION("array", "packBase"){
@@ -92,16 +99,32 @@
 			_structures = [];
 			_vehicles = [];
 
-			{
-				deleteVehicle _x;
-				sleep 0.01;
-			}foreach MEMBER("structures", nil);
-			MEMBER("structures", _structures);
-		
-			_temp = "B_Truck_01_transport_F" createVehicle (_position findEmptyPosition [0,15]);
-			_action = _temp addAction ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false];
-			_vehicles = _vehicles + [_temp];
-			MEMBER("vehicles", _vehicles);
+			if(!MEMBER("packed", nil)) then {
+				MEMBER("packed", true);
+
+				{
+					deleteVehicle _x;
+					sleep 0.01;
+				}foreach MEMBER("structures", nil);
+				MEMBER("structures", _structures);
+			
+				_temp = "B_Truck_01_transport_F" createVehicle (_position findEmptyPosition [0,15]);
+				[[_temp, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+				
+				_mark = MEMBER("marker", nil);
+				[_temp, _mark] spawn {
+					while { alive (_this select 0)} do {
+						(_this select 1) setMarkerPos (getpos (_this select 0));
+						sleep 0.1;
+					};
+				};
+
+				wccommanderoff = true;
+				_temp addEventHandler ['Killed', { ["wccommanderoff", "client"] call BME_fnc_publicvariable;}];
+
+				_vehicles = _vehicles + [_temp];
+				MEMBER("vehicles", _vehicles);
+			};
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

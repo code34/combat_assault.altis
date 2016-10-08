@@ -42,7 +42,11 @@
 		PRIVATE FUNCTION("", "generateSyllabe"){
 			_voyelles = ["a", "e", "i", "o", "u"];
 			_consonnes = ["b","c","d","f","g","h","j","k","l","m","n","r","s","t","p"];
-			(_consonnes call BIS_fnc_selectRandom) + (_voyelles call BIS_fnc_selectRandom);
+			if(random 1 < 0.95) then {
+				(_consonnes call BIS_fnc_selectRandom) + (_voyelles call BIS_fnc_selectRandom);
+			} else {
+				(_voyelles call BIS_fnc_selectRandom) + (_voyelles call BIS_fnc_selectRandom);
+			};
 		};
 
 

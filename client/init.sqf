@@ -30,50 +30,45 @@
 	diag_log "Waiting player is alive ...";
 	waitUntil {alive player && !(isNull player);};
 
+	startLoadingScreen ["Loading Mission"];	
 	while { (getMarkerPos "globalbase") isEqualTo [0,0,0] } do { 
-		startLoadingScreen ["Loading Mission"];
-		sleep 1; 
+		sleep 0.1; 
 	};
 
-	player setpos ((getMarkerPos "globalbase") findEmptyPosition [30,100]);
-	progressLoadingScreen 0.35;
+	//progressLoadingScreen 1;
+	_position = ((getMarkerPos "globalbase") findEmptyPosition [2,100]);
+	player setpos _position;
 
-	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
-	WC_fnc_spawnvehicle = compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
-	WC_fnc_teleport = compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
-	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
+	WC_fnc_spawndialog 	= compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
+	WC_fnc_spawnvehicle 	= compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
+	WC_fnc_teleport 	= compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
+	WC_fnc_keymapperup 	= compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
-	WC_fnc_introcam = compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
-	WC_fnc_spawncam = compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
-
-	progressLoadingScreen 0.50;
-
-	[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";		
-	[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-
-	progressLoadingScreen 0.75;
-
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
-	[] call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
-	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-	[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-	[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+	WC_fnc_introcam 	= compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
+	WC_fnc_spawncam 	= compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
 
 	rollmessage = [];
 	killzone = [];
 	rollprintmessage = "";
-
-	progressLoadingScreen 1;
 	endLoadingScreen;
+	sleep 0.5;
 
-	sleep 1;
-
+	[] spawn {
+		[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
+		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
+		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+		[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+	};
+	
 	[] call WC_fnc_introcam;
 
 	// config variables
@@ -109,9 +104,18 @@
 
 	[] execVM "real_weather\real_weather.sqf";
 
+	setGroupIconsVisible [false,false];
+	disableUserInput false;	
+	disableUserInput true;
+	disableUserInput false;	
+
 	if(wcambiant == 2) then {
 		enableEnvironment false;
 		enableSentences false;
+		player disableConversation true;
+		enableRadio false;
+		showSubtitles false;
+		player setVariable ["BIS_noCoreConversations", true];
 	};
 
 	player addEventHandler ['Killed', {
@@ -175,7 +179,6 @@
 			//	player setDamage (damage player - 0.01); 
 			//	player setBleedingRemaining 30;
 			//};
-
 			switch (true) do {
 				case (damage player < 0.40) : {
 					player setDamage (damage player - 0.01); 
@@ -265,11 +268,17 @@
 
 	// MAIN LOOP
 	while {true} do {
+
+		// Should be here to be effective each respawn
+		if(wcfatigue == 2) then { 
+			player enableFatigue false; 
+			player enableStamina false;
+			player allowSprint true;
+		};
+
 		_index = player addEventHandler ["HandleDamage", {false}];
 		setviewdistance 1500;
 
-		if(wcfatigue == 2) then { player enableFatigue false; };
-	
 		["load", player] spawn inventory;	
 		[_body] call WC_fnc_spawndialog;
 

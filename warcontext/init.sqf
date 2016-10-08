@@ -79,7 +79,9 @@
 		_sector = [ceil (random (_size/_sectorsize)), ceil (random (_size/_sectorsize))];
 		_position = ["getPosFromSector", _sector] call global_grid;
 		if!(surfaceIsWater _position) then {
-			_flag = true;
+			if((_position isFlatEmpty  [100, -1, 0.1, 100, -1]) isEqualTo []) then {
+				_flag = true;
+			};
 		};
 		sleep 0.01;
 	};

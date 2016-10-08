@@ -16,14 +16,14 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_body",  "_ctrl", "_player", "_position", "_dir",  "_inforoles", "_standard_map_pos", "_frame_pos", "_old_fullmap", "_players", "_indexplayer"];
+	private ["_cam", "_body",  "_ctrl", "_player", "_position", "_dir",  "_inforoles", "_old_fullmap", "_players", "_indexplayer", "_map"];
 
 	_body = _this select 0;
 
 	playertype ='ammobox';
-
 	fullmap = 0;
 	_old_fullmap = 0;
+
 	_position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
 
 	showCinemaBorder false;
@@ -39,10 +39,9 @@
 
 	createDialog "spawndialog"; 
 	sleep 0.01;
-	
-	_standard_map_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003);
-	_frame_pos = ctrlPosition ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2004);
 
+	_map = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
+	
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;
 	if(wcwithrollmessages) then {
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEON_BUTTON");
@@ -50,13 +49,12 @@
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 	};
 
-
 	_indexplayer = -1;
-	_players = allunits;
+	_players = allplayers;
 
 	lbClear 2002;
 	{ 
-		if((side _x == side player) and ((name _x in wcfriendlist) or (_x == player))) then {
+		if((name _x in wcfriendlist) or (_x == player)) then {
 			if(alive _x) then {
 				lbAdd [2002, name _x];
 				if(_x == player) then { _indexplayer = _forEachIndex;};
@@ -69,9 +67,8 @@
 	lbSetCurSel [ 2002, _indexplayer];
 	_player = player;
 
-	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-	_ctrl ctrlMapAnimAdd [0, 0, _body];
-	ctrlMapAnimCommit _ctrl;		
+	_map ctrlMapAnimAdd [0, 0, _body];
+	ctrlMapAnimCommit _map;
 	
 	wcchange  = false;
 
@@ -139,21 +136,19 @@
 			if ( _old_fullmap != fullmap ) then {
 				_old_fullmap = fullmap;
 				if ( fullmap % 2 == 1 ) then {
-					 ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlSetPosition [ (_frame_pos select 0) + (_frame_pos select 2), (_frame_pos select 1), (0.6 * safezoneW), (_frame_pos select 3)];
+					_map ctrlShow false;
+					_map ctrlCommit 0;
 				} else {
-					((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlSetPosition _standard_map_pos;
+					_map ctrlShow true;
+					_map ctrlCommit 0;
 				};
-				((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003)  ctrlCommit 0.2;
-				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-				_ctrl ctrlMapAnimAdd [0, 0, _player]; 
-				ctrlMapAnimCommit _ctrl;
+				_map  ctrlCommit 0.2;
 			};
 
 			if(wcchange) then {
 				if(_player isequalto player) then {
-					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-					_ctrl ctrlMapAnimAdd [0, 0, _body]; 
-					ctrlMapAnimCommit _ctrl;
+					_map ctrlMapAnimAdd [0, 0, _body]; 
+					ctrlMapAnimCommit _map;
 					
 					detach _cam;
 					_cam cameraEffect ["internal","top"];
@@ -161,9 +156,8 @@
 					_cam camSetRelPos [0,100,50];
 					_cam CamCommit 0;
 				} else {
-					_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-					_ctrl ctrlMapAnimAdd [0, 0, _player]; 
-					ctrlMapAnimCommit _ctrl;
+					_map ctrlMapAnimAdd [0, 0, _player]; 
+					ctrlMapAnimCommit _map;
 
 					detach _cam;
 					if(vehicle _player == _player) then {

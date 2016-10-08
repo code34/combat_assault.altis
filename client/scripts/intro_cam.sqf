@@ -24,9 +24,6 @@
 	"(getText (_x >> 'type') in ['NameVillage', 'NameCity', 'NameCityCapital', 'CityCenter']) && {(_locations pushBack getText (_x >> 'name')) > -1}" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");	
 	"(getText (_x >> 'type') in ['NameVillage', 'NameCity', 'NameCityCapital', 'CityCenter']) && {(_positions pushBack getArray (_x >> 'position')) > -1}" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");
 
-	//"_locations pushBack configName _x" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");
-	//"_positions pushBack getarray (_x >> 'position')" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");
-
 	_dialog = createDialog "intromenu";
 	_condition = true;
 	_preload = false;

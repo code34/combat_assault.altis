@@ -17,10 +17,10 @@ class spawndialog {
 
 	class map : RscMapControl {
 		idc= 2003;
-		x = (0.15 * safezoneW + safezoneX);
-		y = (0.57 * safezoneH + safezoneY);
-		w = (0.15 * safezoneW);
-		h = (0.25 * safezoneH) - ( 1.5 * BORDERSIZE);
+		x = (0.15 * safezoneW + safezoneX) - ( 2 * BORDERSIZE) + (0.15 * safezoneW) + (4 * BORDERSIZE);
+		y = (0.12 * safezoneH + safezoneY) - (3 * BORDERSIZE);
+		w = (0.6 * safezoneW);
+		h = (0.80 * safezoneH) + (6 * BORDERSIZE);
 	};	
 	
 	class title : StdHeader{
@@ -89,7 +89,7 @@ class spawndialog {
 		y = (0.54 * safezoneH + safezoneY);
 		h = (0.025 * safezoneH);
 		sizeEx = 0.018 * safezoneH;
-		text = $STR_EXTENDMAP_BUTTON;
+		text = $STR_HIDEMAP_BUTTON;
 		action = "fullmap = fullmap + 1;";
 	};	
 

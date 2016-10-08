@@ -16,7 +16,7 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.35 CHLORE APEX - CUPS - RHS";
+		briefingName="COMBAT ASSAULT 1.35 TITANE APEX - CUPS - RHS";
 		overviewText="By Code34 - www.combat-assault.eu";
 		resistanceWest=0;
 		resistanceEast=1;

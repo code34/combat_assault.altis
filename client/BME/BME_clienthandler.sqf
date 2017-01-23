@@ -143,7 +143,7 @@
 		if(_killer isKindOf "Man") then {
 			_name = name _killer;
 			if( toUpper(_name) isEqualTo "ERROR: NO UNIT") then { 
-				_name = ["Francois Hollande", "Angela Merkel", "Barak Obama", "Vladimir Poutine", "Donald Trump", "Netarion", "Jp", "Snow Queen", "Ben Laden"] call BIS_fnc_selectRandom;
+				_name = ["Francois Hollande", "Angela Merkel", "Barak Obama", "Vladimir Poutine", "Donald Trump", "Netarion", "Jp", "Snow Queen", "Ben Laden", "America Fist", "Donald Trump", "Bachar el-Assad"] call BIS_fnc_selectRandom;
 			};
 		} else {
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
@@ -309,6 +309,8 @@
 		};
 	};
 
+	// variable send by the server
+	// playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]];
 	BME_netcode_playerstats = {
 		private ["_score", "_rank"];
 		_score = _this select 0;

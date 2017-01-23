@@ -104,8 +104,25 @@
 		};
 	};		
 
+	BME_netcode_server_wcgetdeployzone = {
+		private ["_playername", "_position"];
+		_playername = _this select 0;
+
+		{	
+			if (name _x == _playername) then { 
+				_position =   ("getPosition" call global_deploy) findEmptyPosition [0,50];
+				if(_position isEqualTo []) then {
+					_x setPosition getMarkerPos "respawn_west";
+				} else {
+					_x setpos _position;
+				};
+			};
+			sleep 0.0001;
+		}foreach playableUnits;
+	};
+
 	BME_netcode_server_wcteleport = {
-		private ["_playername", "_playerid", "_position", "_sector", "_result", "_around", "_side", "_list", "_pos"];
+		private ["_playername", "_playerid", "_position", "_sector", "_result", "_around", "_side", "_list", "_list2", "_pos"];
 
 		_playername = (_this select 0) select 0;
 		_position = (_this select 0) select 1;
@@ -131,23 +148,25 @@
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
 
-		_sector = ["getSectorFromPos", _position] call global_grid;
-		_pos = ["getPosFromSector", _sector] call global_grid;
+		//_sector = ["getSectorFromPos", _position] call global_grid;
+		//_pos = ["getPosFromSector", _sector] call global_grid;
 
-		_list = _pos nearEntities [["Man"], 100];
-		sleep 0.5;
-		if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
+		//_list = _pos nearEntities [["Man"], 100];
+		//_list2 = _pos nearEntities [["Tank"], 100];
+		//sleep 0.5;
+		//{ _list = _list + crew _x; sleep 0.0001;} foreach _list2;
+		//if(east countSide _list > 0) exitwith { wcteleportack = [1, _position]; ["wcteleportack", "client", _playerid] call BME_fnc_publicvariable; };
 
 		_result = [0, _position];
-		_around = ["getAllSectorsAroundSector", [_sector, 1]] call global_grid;
-		{
-			_sector = ["Get", str(_x)] call global_zone_hashmap;
-			if(!isnil "_sector") then {
-				if("getState" call _sector < 2) then {
-					_result = [1, _position];
-				};
-			};
-		}foreach _around;
+		//_around = ["getAllSectorsAroundSector", [_sector, 1]] call global_grid;
+		//{
+		//	_sector = ["Get", str(_x)] call global_zone_hashmap;
+		//	if(!isnil "_sector") then {
+		//		if("getState" call _sector < 2) then {
+		//			_result = [1, _position];
+		//		};
+		//	};
+		//}foreach _around;
 
 		wcteleportack = _result;
 		["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;

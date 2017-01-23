@@ -120,6 +120,8 @@
 			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden", "_needflare"];
 
 			_target = MEMBER("target", nil);
+			if(isNil "_target") exitWith {};
+
 			_isvehicle = !(_target isKindOf "MAN") ;
 			_isbuilding = if((nearestbuilding _target) distance _target < 10) then { true; } else { false; };
 			_isvisible = MEMBER("seeTarget", nil);
@@ -207,10 +209,17 @@
 		};		
 
 		PUBLIC FUNCTION("array", "getTargets") {
-			private ["_position", "_list"];
+			private ["_position", "_list", "_list2"];
 
 			_position = _this;
-			_list = _position nearEntities [["Man", "Tank"], 800];
+			_list = _position nearEntities [["Man"], 800];
+			_list2 = _position nearEntities [["Tank", "Air"], 800];
+
+			{
+				_list = _list + crew _x;
+				sleep 0.0001;
+			}foreach _list2;
+
 			sleep 0.5;
 			{
 				if(side _x != west) then {
@@ -371,7 +380,6 @@
 			["setAlertAround", true] call MEMBER("sector", nil);
 			MEMBER("alert", true);
 		};
-
 
 		PUBLIC FUNCTION("", "scanTargets") {
 			{

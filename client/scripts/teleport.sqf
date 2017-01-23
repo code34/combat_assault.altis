@@ -18,7 +18,10 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_position", "_list", "_vehicle"];
+	private ["_position", "_list", "_vehicle", "_backpack", "_items"];
+
+	//wcgetdeployzone = name player;
+	//["wcgetdeployzone", "server"] call BME_fnc_publicvariable;
 
 	_position = position player;
 
@@ -29,11 +32,31 @@
 	wcteleport = [];
 	wcteleportposition = [];
 	onMapSingleClick {
-		wcteleport = [name player, _pos];
+	 	wcteleport = [name player, _pos];
 		["wcteleport", "server"] call BME_fnc_publicvariable;
 	};
 	while {count wcteleportposition == 0} do { sleep 0.1;};
 	onMapSingleClick "";
 
-	player setpos wcteleportposition;
+	player setpos [wcteleportposition select 0, wcteleportposition select 1, 100];
+	player setVelocity [0, 0, 10];
 	hintSilent "";
+
+	_backpack = backpack player;
+	_items = backpackItems player;
+	removeBackpack player;
+
+	player addBackPack "B_parachute";
+	player action ["openParachute", player];
+
+	[_backpack, _items] spawn {
+		_backpack = _this select 0;
+		_items = _this select 1;
+
+		while { (getpos player) select 2 >  0.5 } do { sleep 0.5;};
+
+		player addBackpack _backpack;
+		{
+			player addItemToBackpack _x;
+		} foreach _items;
+	};

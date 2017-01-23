@@ -49,11 +49,17 @@ class Params
 		texts[] = {"OFTEN ", "SOMETIMES", "NEVER"};
 		default = 2;
 	};
+	class wcpopvehicleenemyparam {
+		title = "ACTIVATE ENEMY VEHICLES";
+		values[] = {1,2};
+		texts[] = {"ON", "OFF"};
+		default = 1;
+	};
 	class wcpopconvoyprobparam
 	{
 		title = "POP AN ENEMY CONVOY EACH";
-		values[] = {1,2,3};
-		texts[] = {"30 Minutes ", "1 Hour", "NEVER"};
+		values[] = {1,2,3,4};
+		texts[] = {"3 Minutes ", "5 Minutes", "30 Minutes", "NEVER"};
 		default = 1;
 	};
 	class wcambiant

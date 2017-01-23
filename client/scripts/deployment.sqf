@@ -1,1 +1,1 @@
-	[player] call WC_fnc_spawndialog;
+	(position player) call WC_fnc_spawndialog;

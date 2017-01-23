@@ -16,15 +16,16 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_body",  "_ctrl", "_player", "_position", "_dir",  "_inforoles", "_old_fullmap", "_players", "_indexplayer", "_map"];
+	private ["_cam", "_deathposition",  "_ctrl", "_ctrl2", "_ctrl3", "_player", "_position", "_dir",  "_inforoles", "_old_fullmap", "_players", "_indexplayer", "_map", "_positionplayer"];
 
-	_body = _this select 0;
+	_deathposition = _this;
 
 	playertype ='ammobox';
 	fullmap = 0;
 	_old_fullmap = 0;
 
 	_position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
+	_positionplayer = position player;
 
 	showCinemaBorder false;
 	_cam = "camera" camCreate _position;
@@ -39,10 +40,17 @@
 
 	createDialog "spawndialog"; 
 	sleep 0.01;
-
-	_map = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
-	
+	_map = ((uiNamespace getVariable 'wcspawndialog') displayCtrl 2003);
 	_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;
+	_ctrl2 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2006;
+	_ctrl3 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2007;
+
+	if(wcwithfriendsmarkers) then {
+		_ctrl3 ctrlSetText (localize "STR_FRIENDSMARKERSON_BUTTON");
+	} else {
+		_ctrl3 ctrlSetText (localize "STR_FRIENDSMARKERSOFF_BUTTON");
+	};
+
 	if(wcwithrollmessages) then {
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEON_BUTTON");
 	} else {
@@ -50,29 +58,38 @@
 	};
 
 	_indexplayer = -1;
+	
 	_players = allplayers;
-
 	lbClear 2002;
 	{ 
-		if((name _x in wcfriendlist) or (_x == player)) then {
+		//if((name _x in wcfriendlist) or (_x == player)) then {
 			if(alive _x) then {
 				lbAdd [2002, name _x];
 				if(_x == player) then { _indexplayer = _forEachIndex;};
 			};
-		} else {
-			_players = _players - [_x];
-		};
+		//} else {
+		//	_players = _players - [_x];
+		//};
 		sleep 0.001;
 	}foreach _players;
 	lbSetCurSel [ 2002, _indexplayer];
 	_player = player;
 
-	_map ctrlMapAnimAdd [0, 0, _body];
+	_map ctrlMapAnimAdd [0, 0, _deathposition];
 	ctrlMapAnimCommit _map;
 	
 	wcchange  = false;
 
-		while { wcaction != "deploy" && dialog} do {
+		while { dialog } do {
+			// on ferme le dialog uniquement
+			// si la cible n'est pas dans les airs
+			// si la cible est vivante
+			if(wcaction == "deploy") then {
+				if !(((getpos _player) select 2 > 2)  or !(alive _player)) then {
+					closeDialog 0;
+				};
+			};
+
 			if(wcaction == "equipment") then {
 				closeDialog 0;
 				_title = localize "STR_EQUIPMENT_TITLE";
@@ -84,19 +101,25 @@
 					sleep 0.01;
 				};
 				player addWeapon "ItemMap";
+
 				createDialog "spawndialog"; 
+				sleep 0.01;
+				_map = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2003;
+				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;
+				_ctrl2 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2006;
+				_ctrl3 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2007;
 				
 				_players = allplayers;
 				lbClear 2002;
 				{ 
-					if((side _x == side player) and ((name _x in wcfriendlist) or (_x == player))) then {
+					//if((side _x == side player) and ((name _x in wcfriendlist) or (_x == player))) then {
 						if(alive _x) then {
 							lbAdd [2002, name _x];
 							if(_x == player) then { _indexplayer = _forEachIndex;};
 						};
-					} else {
-						_players = _players - [_x];
-					};
+					//} else {
+					//	_players = _players - [_x];
+					//};
 					sleep 0.001;
 				}foreach _players;
 				lbSetCurSel [ 2002, _indexplayer];
@@ -110,14 +133,20 @@
 			};
 
 			if(wcaction == "friendsmanagement") then {
-				[] execVM "client\scripts\givehug.sqf";
+				//[] execVM "client\scripts\givehug.sqf";
 				wcaction = "";
+				wcwithfriendsmarkers = !wcwithfriendsmarkers;
+				if(wcwithfriendsmarkers) then {
+					_ctrl3 ctrlSetText (localize "STR_FRIENDSMARKERSON_BUTTON");
+				} else {
+					_ctrl3 ctrlSetText (localize "STR_FRIENDSMARKERSOFF_BUTTON");
+				};
+				_ctrl3 ctrlcommit 0;
 			};
 
 
 			if(wcaction == "rollmessage") then {
 				wcaction = "";
-				_ctrl = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2005;
 				wcwithrollmessages = !wcwithrollmessages;
 				if(wcwithrollmessages) then {
 					_ctrl ctrlSetText (localize "STR_ROLLMESSAGEON_BUTTON");
@@ -138,16 +167,18 @@
 				if ( fullmap % 2 == 1 ) then {
 					_map ctrlShow false;
 					_map ctrlCommit 0;
+					_ctrl2 ctrlSetText (localize "STR_SHOWMAP_BUTTON");
 				} else {
 					_map ctrlShow true;
 					_map ctrlCommit 0;
+					_ctrl2 ctrlSetText (localize "STR_HIDEMAP_BUTTON");
 				};
 				_map  ctrlCommit 0.2;
 			};
 
 			if(wcchange) then {
 				if(_player isequalto player) then {
-					_map ctrlMapAnimAdd [0, 0, _body]; 
+					_map ctrlMapAnimAdd [0, 0, _deathposition]; 
 					ctrlMapAnimCommit _map;
 					
 					detach _cam;
@@ -180,6 +211,7 @@
 			sleep 0.01;
 		};
 
+	closeDialog 0;
 	_playertype = "ammobox";
 	_position = position _cam;
 	_dir = getDir _cam;
@@ -192,25 +224,27 @@
 	if(_player == player) then {
 		openMap [false, false] ;
 		openMap [true, true];
-		mapAnimAdd [1, 0.30, _body]; 
+		mapAnimAdd [1, 0.30, _deathposition]; 
 		mapAnimCommit;
 		[] call WC_fnc_teleport;
 	} else {
 		if(_position distance getmarkerpos "respawn_west" < 1000) then {
 			openMap [false, false] ;
 			openMap [true, true];
-			mapAnimAdd [1, 0.30, _body]; 
+			mapAnimAdd [1, 0.30, _deathposition]; 
 			mapAnimCommit;
 			[] call WC_fnc_teleport;
 		} else {
 			if(vehicle _player == _player) then {
 				player setpos _position;
 				player setdir _dir;
+				//[] call WC_fnc_teleport;
 			} else {
 				if((vehicle _player) emptyPositions "cargo" == 0) then {
 					_position = [position (vehicle _player), 5, random 359] call BIS_fnc_relPos;
 					player setpos _position;
 					player setdir (getdir (vehicle _player));
+					//[] call WC_fnc_teleport;
 				} else {
 					player moveInAny (vehicle _player);
 				};
@@ -218,6 +252,7 @@
 		};
 	};
 
+	//while { position player distance _positionplayer < 100 } do { sleep 0.1;};
+	//closeDialog 0;
 	openMap [false, false];
-	deletevehicle _body;
 	[] call WC_fnc_spawncam;

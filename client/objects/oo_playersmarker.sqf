@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2016 Nicolas BOITEUX
+	Copyright (C) 2016-2017 Nicolas BOITEUX
 
 	CLASS OO_PLAYERSMARKER
 	
@@ -69,9 +69,13 @@
 
 		PUBLIC FUNCTION("","start") {
 			while { true } do {
-				MEMBER("draw", nil);
-				MEMBER("garbage", nil);
-				sleep 10;
+				if(wcwithfriendsmarkers) then {
+					MEMBER("draw", nil);
+					MEMBER("garbage", nil);
+				} else {
+					MEMBER("unDraw", nil);
+				};
+				sleep 5;
 			};
 		};
 
@@ -94,10 +98,10 @@
 		PUBLIC FUNCTION("","draw") {
 			private ["_array", "_position", "_temp", "_mark", "_list"];
 
-			_list = MEMBER("list", nil);
-
+			//_list = MEMBER("list", nil);
 			{
-				if(((name _x) in _list) and !(name _x in wcblacklist)) then {
+				//if(((name _x) in _list) and !(name _x in wcblacklist)) then {
+				if!(name _x in wcblacklist) then {
 					_position = position _x;
 					_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
 					if(isnil "_mark") then {
@@ -112,7 +116,7 @@
 						MEMBER("markers", _temp);
 					};
 				};
-			}foreach allplayers;
+			}foreach allPlayers;
 		};
 
 

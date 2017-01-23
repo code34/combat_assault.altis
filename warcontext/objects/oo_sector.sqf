@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014-2015 Nicolas BOITEUX
+	Copyright (C) 2014-2017 Nicolas BOITEUX
 
 	CLASS OO_SECTOR STRATEGIC GRID
 	
@@ -51,18 +51,18 @@
 			MEMBER("alert", false);
 
 			if(random 1 > wcpopsniperprob) then { _sniper = 1; } else { _sniper = 0;};
-			if(random 1 > wcpopchopperprob) then { _air = 1; } else { _air = 0; };
-			if(random 1 > wcpopvehicleprob) then { _vehicle = 1;} else { _vehicle = 0;};
+			if((random 1 > wcpopchopperprob) and (wcpopvehicleenemy)) then { _air = 1; } else { _air = 0; };
+			if((random 1 > wcpopvehicleprob) and (wcpopvehicleenemy)) then { _vehicle = 1;} else { _vehicle = 0;};
 			if(random 1 > wcpopinfantryprob) then { _infantry = 2;} else {_infantry = 1;};
 
 			_type = [ _infantry, _sniper, _vehicle, _air];
 			MEMBER("unitstype", _type);
 			
-			if(random 1 > wcpopartyprob) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
+			if((random 1 > wcpopartyprob) and (wcpopvehicleenemy)) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
 			if(random 1 > wcpopantiairprob) then { MEMBER("antiairactive", true);} else {MEMBER("antiairactive", false);};
 
-			MEMBER("setSupply", nil);
-			MEMBER("setMission", nil);
+			//MEMBER("setSupply", nil);
+			if(random 1 > 0.90) then { MEMBER("setMission", nil); };
 		};
 
 		PUBLIC FUNCTION("","getIndex") FUNC_GETVAR("index");
@@ -81,9 +81,7 @@
 			_sector;
 		};
 
-		// 0 - unactivate
-		// 1 - activate
-		// 2 - done
+		// state (0:unspawn, 1:spawn, 2:completed) 
 		PRIVATE FUNCTION("scalar", "setState") {
 			MEMBER("state", _this);
 		};
@@ -357,11 +355,15 @@
 			MEMBER("unPopSector", nil);
 			if(MEMBER("getAlert", nil)) then { 
 				["setTicket", "redzone"] call global_ticket;
-				if(random 1> 0.97) then {
-					_critical = MEMBER("bucket", nil) * 2;
-				} else {
-					_critical = MEMBER("bucket", nil);
-				};
+				// bucket are turn off 
+				// bucket sont utilises pour l expansion des zones
+				// plus necessaires pour le moment
+				//if(random 1> 0.97) then {
+					//_critical = MEMBER("bucket", nil) * 2;
+				//} else {
+					//_critical = MEMBER("bucket", nil);
+				//};
+				_critical = floor(random 2);
 				["expandSectorAround", [MEMBER("getSector", nil), _critical]] call global_controller;
 				["expandAlertAround", MEMBER("getSector", nil)] call global_controller;
 			};
@@ -457,7 +459,7 @@
 			_group = _array select 2;
 
 			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;			
-			_patrol = ["new", [_vehicle, _group, MEMBER("sector", nil)]] call OO_PATROLVEHICLE;
+			_patrol = ["new", [_vehicle, _group, MEMBER("getThis", nil)]] call OO_PATROLVEHICLE;
 			"patrol" spawn _patrol;
 		
 			{

@@ -22,6 +22,7 @@
 
 	if(_dikCode == DIK_TAB) then {
 		wcboard = true;
+		_handled = true;
 	};
 
 	_handled;

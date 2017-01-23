@@ -6,7 +6,7 @@
 	_pos3 = [ 0, -100, 20];
 	_pos4 = [0,0.4,1.75];
 
-	_camera = "camera" camCreate _pos0;
+	_camera = "camera" camCreate (position player);
 	_camera cameraEffect ["internal","front"];
 	_camera camSetTarget player;
 	_camera camSetRelPos _pos0;

@@ -23,17 +23,19 @@
 	CLASS("OO_PATROLVEHICLE")
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("group","group");
-		PRIVATE VARIABLE("array","sector");
+		PRIVATE VARIABLE("code","sector");
 		PRIVATE VARIABLE("array","around");
 		PRIVATE VARIABLE("array","underalert");
 		PRIVATE VARIABLE("array", "target");
 		PRIVATE VARIABLE("code", "marker");
-			
+		PRIVATE VARIABLE("bool", "alert");
+
 		PUBLIC FUNCTION("array","constructor") {				
 			MEMBER("vehicle",  _this select 0);
 			MEMBER("group",  _this select 1);
 			MEMBER("sector", _this select 2);
 
+			MEMBER("alert", false);
 			MEMBER("setMarker", nil);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setPatrolMode", nil);
@@ -50,6 +52,7 @@
 			_group = MEMBER("group", nil);
 
 			while { count (units _group) > 0 } do {
+				MEMBER("scanTargets", nil);
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
 				MEMBER("moveToNext", nil);
@@ -71,11 +74,28 @@
 			MEMBER("marker", _mark);
 		};
 
+		PUBLIC FUNCTION("", "scanTargets") {
+			private ["_list", "_list2"];
+
+			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man"], 200];
+			_list2 = (position MEMBER("vehicle", nil)) nearEntities [["Tank"], 200];
+			sleep 1;
+			{ _list = _list + crew _x; } foreach _list2;
+
+			{
+				if((leader MEMBER("group", nil)) knowsAbout _x > 0.40) then {
+					["setAlertAround", true] call MEMBER("sector", nil);
+					MEMBER("alert", true);
+				};
+				sleep 0.0001;
+			}foreach _list;
+		};		
+
 		// get all sector around the base sector
 		PUBLIC FUNCTION("", "getSectorAround") {
 			private ["_around", "_sector"];
-			_sector = MEMBER("sector", nil);
-			_around = ["getAllSectorsAroundSector", [_sector, 6]] call global_grid;
+			_sector = "getSector" call MEMBER("sector",nil);
+			_around = ["getAllSectorsAroundSector", [_sector, 4]] call global_grid;
 			MEMBER("around", _around);
 		};
 
@@ -84,20 +104,18 @@
 		PUBLIC FUNCTION("", "getSectorUnderAlert") {
 			private ["_sectors", "_position", "_list"];
 			_sectors = [];
-			{
-				//_nextsector = ["get", str(_x)] call global_zone_hashmap;
-				//if!(isnil "_nextsector") then {
-				//	if("getAlert" call _nextsector) then {
-				_position = ["getPosFromSector", _x] call global_grid;
-				_list = _position nearEntities [["Man", "Tank"], 50];
-				sleep 0.2;
-				if(west countSide _list > 0) then {
-					_sectors = _sectors + [_x];
-				};
-				//};
-				//};
-				//sleep 0.0001;
-			} foreach MEMBER("around", nil);
+
+			if(MEMBER("alert", nil)) then {
+				{
+					_position = ["getPosFromSector", _x] call global_grid;
+					_list = _position nearEntities [["Man", "Tank"], 50];
+
+					sleep 0.2;
+					if(west countSide _list > 0) then {
+						_sectors = _sectors + [_x];
+					};
+				} foreach MEMBER("around", nil);
+			};
 			MEMBER("underalert", _sectors);
 		};
 
@@ -108,7 +126,7 @@
 			_vehicle = MEMBER("vehicle", nil);
 			_group = MEMBER("group", nil);
 			_move = false;
-			
+	
 			_wp = _group addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
 			_wp setWaypointType "SAD";
@@ -136,7 +154,7 @@
 		PUBLIC FUNCTION("", "getNextTarget") {
 			private ["_nextsector", "_position"];
 
-			if(count MEMBER("underalert", nil) > 0) then {
+			if(MEMBER("alert", nil)) then {
 				_nextsector = MEMBER("underalert", nil) call BIS_fnc_selectRandom;
 				MEMBER("setCombatMode", nil);
 				MEMBER("revealTarget", nil);
@@ -201,5 +219,6 @@
 			DELETE_VARIABLE("sector");
 			DELETE_VARIABLE("underalert");
 			DELETE_VARIABLE("target");
+			DELETE_VARIABLE("alert");
 		};
 	ENDCLASS;

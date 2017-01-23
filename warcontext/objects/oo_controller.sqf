@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2017 Nicolas BOITEUX
 
 	CLASS OO_CONTROLLER
 	
@@ -43,16 +43,7 @@
 		PUBLIC FUNCTION("","getGroundPlayers") FUNC_GETVAR("groundplayers");
 
 		PUBLIC FUNCTION("", "getPlayers") {
-			private ["_array"];
-
-			_array = [];
-
-			{
-				if ((isplayer _x) and (side _x == west)) then {_array pushBack _x};
-				sleep 0.0000001;
-			} foreach (playableunits + alldead);
-
-			_array;			
+			(allPlayers - (entities "HeadlessClient_F"));
 		};
 
 		PUBLIC FUNCTION("string", "getPlayersOfType") {
@@ -73,8 +64,9 @@
 			_groundplayers = [];
 			_airplayers = [];
 
+			// tous les joueurs en dessous de 150m alt sont considérés comme au sol
 			{
-				if((getpos _x) select 2 < 4) then {
+				if((getpos _x) select 2 < 150) then {
 					_groundplayers = _groundplayers + [_x];
 				} else {
 					_airplayers = _airplayers + [_x];
@@ -300,7 +292,7 @@
 				_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
 				if(isnil "_sector") then {
 					_position = ["getPosFromSector", _key] call global_grid;
-					if((getmarkerpos "respawn_west" distance _position > 1300)) then {
+					//if((getmarkerpos "respawn_west" distance _position > 1300)) then {
 						if(!surfaceIsWater _position) then {
 							if(MEMBER("canExpandToSector", _key)) then {
 								_sector = ["new", [_key, _position, global_grid]] call OO_SECTOR;
@@ -309,7 +301,7 @@
 								_counter = _counter + 1;
 							};
 						};
-					};
+					//};
 				};
 				MEMBER("queuesector", nil) set [0, objnull]; 
 				_queue = MEMBER("queuesector", nil) - [objnull];

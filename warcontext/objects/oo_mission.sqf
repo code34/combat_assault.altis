@@ -29,44 +29,16 @@
 			private ["_position", "_random"];
 
 			_position = (_this select 0);
-
 			MEMBER("position", _position);
-
-			//if(MEMBER("setTarget", nil)) then {
-			//	MEMBER("destroy", nil);
-			//} else {
-				if(random 1 > 0.9) then {
-					_random = random 1;
-					switch (true) do {
-						case ((_random > 0 ) and (_random < 0.33)) : {
-							MEMBER("rescue", _position);
-						};
-
-						case ((_random > 0.32 ) and (_random < 0.66)) : {
-							MEMBER("rob", _position);
-						};
-
-						case ((_random > 0.65 ) and (_random < 0.81))  : {
-							MEMBER("weaponCache",  _position);
-						};
-
-						case (_random > 0.8 ) : {
-							MEMBER("getMen",  _position);
-						};																	
-
-						default {
-							MEMBER("rescue", _position);
-						};
-					};
-				};
-			//};
+			_type = ["destroy", "rescue", "rob", "weaponCache", "getMen", "bring"] call BIS_fnc_selectRandom;
+			MEMBER(_type, _position);
 			MEMBER("deconstructor", nil);
 		};
 
 		PUBLIC FUNCTION("","getMarker") FUNC_GETVAR("marker");
 		PUBLIC FUNCTION("","getTarget") FUNC_GETVAR("target");
 
-		PUBLIC FUNCTION("", "setTarget") {
+		PUBLIC FUNCTION("", "checkTarget") {
 			private ["_list", "_target", "_return", "_targets"];
 			
 			_targets = ["Land_Lighthouse_small_F", "Land_Airport_Tower_F", "Land_Hangar_F", "Land_dp_bigTank_F", "Land_dp_mainFactory_F", "Land_dp_smallTank_F", "Land_dp_transformer_F", "Land_Factory_Main_F", "Land_FuelStation_Feed_F", "Land_fs_feed_F", "Land_IndPipe1_ground_F", "Land_HighVoltageEnd_F", "Land_HighVoltageTower_F", "Land_HighVoltageTower_largeCorner_F", "Land_ReservoirTank_Airport_F", "Land_ReservoirTank_V1_F", "Land_ReservoirTower_F", "Land_Tank_rust_F", "Land_TTowerBig_1_F", "Land_TBox_F", "Land_TTowerBig_2_F", "MetalBarrel_burning_F", "Land_MetalBarrel_F", "Land_Cargo_House_V1_F", "Land_Cargo_House_V2_F", "Land_Cargo_House_V3_F", "Land_Cargo_HQ_V1_F", "Land_Cargo_HQ_V2_F", "Land_Cargo_HQ_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Cargo_Patrol_V2_F", "Land_Cargo_Patrol_V3_F", "Land_Cargo_Tower_V1_F", "Land_Cargo_Tower_V2_F", "Land_Cargo_Tower_V3_F", "Land_Radar_F", "Land_MilOffices_V1_F", "Land_Radar_Small_F", "Land_Dome_Small_F", "Land_Research_house_V1_F", "Land_Research_HQ_F", "Land_Offices_01_V1_F", "Land_dp_mainFactory_F", "Land_dp_smallFactory_F", "Land_Factory_Main_F", "Land_PowerLine_distributor_F", "Land_i_Shed_Ind_F", "Land_TTowerSmall_2_F"];
@@ -96,11 +68,20 @@
 			_index;
 		};
 
-		PUBLIC FUNCTION("", "destroy") {
-			private ["_counter", "_mark", "_name", "_target", "_win", "_run", "_text"];
-			
-			_target = MEMBER("target", nil);
-			
+		PUBLIC FUNCTION("array", "destroy") {
+			private ["_counter", "_mark", "_name", "_target", "_win", "_run", "_text", "_position"];
+
+			_position = _this;
+		
+			if! (MEMBER("checkTarget", nil)) then {
+				_target = ["Land_Lighthouse_small_F", "Land_Airport_Tower_F", "Land_Hangar_F", "Land_dp_bigTank_F", "Land_dp_mainFactory_F", "Land_dp_smallTank_F", "Land_dp_transformer_F", "Land_Factory_Main_F", "Land_fs_feed_F", "Land_IndPipe1_ground_F", "Land_HighVoltageEnd_F", "Land_HighVoltageTower_F", "Land_HighVoltageTower_largeCorner_F", "Land_ReservoirTank_Airport_F", "Land_ReservoirTank_V1_F", "Land_ReservoirTower_F", "Land_Tank_rust_F", "Land_TTowerBig_1_F", "Land_TBox_F", "Land_TTowerBig_2_F", "MetalBarrel_burning_F", "Land_MetalBarrel_F", "Land_Cargo_House_V1_F", "Land_Cargo_House_V2_F", "Land_Cargo_House_V3_F", "Land_Cargo_HQ_V1_F", "Land_Cargo_HQ_V2_F", "Land_Cargo_HQ_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Cargo_Patrol_V2_F", "Land_Cargo_Patrol_V3_F", "Land_Cargo_Tower_V1_F", "Land_Cargo_Tower_V2_F", "Land_Cargo_Tower_V3_F", "Land_Radar_F", "Land_MilOffices_V1_F", "Land_Radar_Small_F", "Land_Dome_Small_F", "Land_Research_house_V1_F", "Land_Research_HQ_F", "Land_Offices_01_V1_F", "Land_dp_mainFactory_F", "Land_dp_smallFactory_F", "Land_Factory_Main_F", "Land_PowerLine_distributor_F", "Land_i_Shed_Ind_F", "Land_TTowerSmall_2_F"] call BIS_fnc_selectRandom;
+				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 50]);
+				_target = _target createVehicle (_position findEmptyPosition [0, 50]);
+				MEMBER("target", _target);
+			} else {
+				_target = MEMBER("target", nil);
+			};
+
 			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _target) >> "DisplayName");
 			MEMBER("setMarker", _text);
 
@@ -183,8 +164,46 @@
 			deletevehicle _vehicle;
 		};
 
+		PUBLIC FUNCTION("array", "bring") {
+			private ["_position", "_run", "_vehicle", "_list"];
+
+			_position = _this;
+			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
+
+			_vehicle = createVehicle ["Land_FuelStation_Shed_F", _position,[], 0, "NONE"];
+			MEMBER("target", _vehicle);
+			
+			_text= "Bring an enemy truck";
+			MEMBER("setMarker", _text);
+
+			_run = true;
+			while { _run } do {
+				_list = nearestObjects [_position, ["TRUCK"], 25];
+				sleep 1;
+				if(count _list > 0) then { 
+					{
+						_vehicle = _x;
+						if(_vehicle getvariable ["isenemy", false]) then {
+							_run = false;
+						};
+						sleep 0.01;
+					} foreach _list;
+				};
+			};
+
+			_text= "Bring completed: " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+		};		
+
 		PUBLIC FUNCTION("array", "rob") {
-			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle"];
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle", "_count"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
@@ -192,6 +211,8 @@
 			_type = ["O_Truck_02_covered_F", "O_Truck_02_transport_F","O_Truck_03_transport_F","O_Truck_03_covered_F","O_Truck_03_repair_F","O_Truck_03_ammo_F","O_Truck_03_fuel_F"] call BIS_fnc_selectRandom;
 
 			_vehicle = createVehicle [_type, _position,[], 0, "NONE"];
+			_vehicle setvariable ["isenemy", true];
+
 			MEMBER("target", _vehicle);
 
 			_counter = 3600;
@@ -205,7 +226,7 @@
 				if(getdammage _vehicle > 0.7) then {
 					_run = false;
 				};
-				if(_position distance _vehicle > 200) then {
+				if(_position distance _vehicle > 500) then {
 					_run = false;
 					_win = true;
 				};
@@ -227,14 +248,40 @@
 				wcmissioncompleted = [false, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
+
+			_counter = 0;
+
+			while { _counter < 360 } do {
+				if(count (crew _vehicle) == 0) then {
+					_counter = _counter + 1;
+				} else {
+					_counter = 0;
+				};
+				sleep 1;
+			};
 			deletevehicle _vehicle;
 		};
 
 		PUBLIC FUNCTION("array", "rescue") {
-			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list", "_text"];
+			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list", "_text", "_house", "_index", "_positions"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
+			_positions = [];
+
+			if((_position isFlatEmpty  [100, -1, 0.05, 100, -1]) isEqualTo []) then {
+				_house = ["Land_Slum_House02_F", "Land_i_House_Big_01_V3_F", "Land_i_Shop_02_V1_F", "Land_i_House_Small_01_V2_F", "Land_u_House_Small_01_V1_F", "Land_Slum_House03_F"]  call BIS_fnc_selectRandom;
+				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 50]);
+				_house = _house createVehicle (_position findEmptyPosition [0, 50]);
+
+				_index = 0;
+				while { format ["%1", _house buildingPos _index] != "[0,0,0]" } do {
+					_positions = _positions + [(_house buildingPos _index)];
+					_index = _index + 1;
+					sleep 0.01;
+				};
+				_position = _positions call BIS_fnc_selectRandom;
+			};
 
 			_civils = ["C_man_1","C_man_p_fugitive_F","C_man_p_fugitive_F_afro","C_man_p_fugitive_F_euro","C_man_p_fugitive_F_asia","C_man_p_beggar_F","C_man_p_beggar_F_afro","C_man_p_beggar_F_euro","C_man_p_beggar_F_asia","C_man_p_scavenger_1_F","C_man_p_scavenger_1_F_afro","C_man_p_scavenger_1_F_euro","C_man_p_scavenger_1_F_asia","C_man_p_scavenger_2_F","C_man_p_scavenger_2_F_afro","C_man_p_scavenger_2_F_euro","C_man_p_scavenger_2_F_asia","C_man_w_farmer_1_F","C_man_w_fisherman_1_F","C_man_w_farmer_2_F","C_man_w_fisherman_2_F","C_man_w_worker_F","C_man_hunter_1_F","C_man_hunter_2_F","C_man_1_1_F","C_man_1_1_F_afro","C_man_1_1_F_euro","C_man_1_1_F_asia","C_man_1_2_F","C_man_1_2_F_afro","C_man_1_2_F_euro","C_man_1_2_F_asia","C_man_1_3_F","C_man_1_3_F_afro","C_man_1_3_F_euro","C_man_1_3_F_asia","C_man_2_1_F","C_man_2_1_F_afro","C_man_2_1_F_euro","C_man_2_1_F_asia","C_man_2_2_F","C_man_2_3_F","C_man_2_3_F_afro","C_man_2_3_F_euro","C_man_2_3_F_asia","C_man_3_1_F","C_man_3_1_F_afro","C_man_3_1_F_euro","C_man_3_1_F_asia","C_man_shepherd_F","C_man_p_scavenger_3_F","C_man_p_scavenger_3_F_afro","C_man_p_scavenger_3_F_euro","C_man_p_scavenger_3_F_asia","C_man_4_1_F","C_man_4_1_F_afro","C_man_4_1_F_euro","C_man_4_1_F_asia","C_man_4_2_F","C_man_4_2_F_afro","C_man_4_2_F_euro","C_man_4_2_F_asia","C_man_4_3_F","C_man_4_3_F_afro","C_man_4_3_F_euro","C_man_4_3_F_asia","C_man_priest_F","C_man_p_shorts_1_F","C_man_p_shorts_1_F_afro","C_man_p_shorts_1_F_euro","C_man_p_shorts_1_F_asia","C_man_p_shorts_2_F","C_man_p_shorts_2_F_afro","C_man_p_shorts_2_F_euro","C_man_p_shorts_2_F_asia","C_man_shorts_1_F","C_man_shorts_1_F_afro","C_man_shorts_1_F_euro","C_man_shorts_1_F_asia","C_man_shorts_2_F","C_man_shorts_2_F_afro","C_man_shorts_2_F_euro","C_man_shorts_2_F_asia","C_man_shorts_3_F","C_man_shorts_3_F_afro","C_man_shorts_3_F_euro","C_man_shorts_3_F_asia","C_man_shorts_4_F","C_man_shorts_4_F_afro","C_man_shorts_4_F_euro","C_man_shorts_4_F_asia","C_man_pilot_F","C_man_polo_1_F","C_man_polo_1_F_afro","C_man_polo_1_F_euro","C_man_polo_1_F_asia","C_man_polo_2_F","C_man_polo_2_F_afro","C_man_polo_2_F_euro","C_man_polo_2_F_asia","C_man_polo_3_F","C_man_polo_3_F_afro","C_man_polo_3_F_euro","C_man_polo_3_F_asia","C_man_polo_4_F","C_man_polo_4_F_afro","C_man_polo_4_F_euro","C_man_polo_4_F_asia","C_man_polo_5_F","C_man_polo_5_F_afro","C_man_polo_5_F_euro","C_man_polo_5_F_asia","C_man_polo_6_F","C_man_polo_6_F_afro","C_man_polo_6_F_euro","C_man_polo_6_F_asia","C_Orestes","C_Nikos"];
 
@@ -266,11 +313,13 @@
 					{
 						if((isPlayer _x) and (side _x == west)) then {
 							[_civil] joinSilent group _x;
+							_civil stop false;
+							_civil doFollow _x;
 						};
 					}foreach _list;
 				};
 				if(_count > 1) then {
-					_list = nearestObjects [position _civil, ["MAN"], 100];
+					_list = nearestObjects [position _civil, ["MAN"], 200];
 					sleep 0.5;
 					_count = east countSide _list;
 					if(_count == 0) then {
@@ -306,6 +355,10 @@
 			private ["_alive", "_handle","_type","_position","_group", "_position2", "_run", "_win", "_counter", "_text", "_vehicle"];
 
 			_position = _this;
+
+			_target = ["Land_Lighthouse_small_F", "Land_Airport_Tower_F", "Land_Hangar_F", "Land_dp_bigTank_F", "Land_dp_mainFactory_F", "Land_dp_smallTank_F", "Land_dp_transformer_F", "Land_Factory_Main_F", "Land_fs_feed_F", "Land_IndPipe1_ground_F", "Land_HighVoltageEnd_F", "Land_HighVoltageTower_F", "Land_HighVoltageTower_largeCorner_F", "Land_ReservoirTank_Airport_F", "Land_ReservoirTank_V1_F", "Land_ReservoirTower_F", "Land_Tank_rust_F", "Land_TTowerBig_1_F", "Land_TBox_F", "Land_TTowerBig_2_F", "MetalBarrel_burning_F", "Land_MetalBarrel_F", "Land_Cargo_House_V1_F", "Land_Cargo_House_V2_F", "Land_Cargo_House_V3_F", "Land_Cargo_HQ_V1_F", "Land_Cargo_HQ_V2_F", "Land_Cargo_HQ_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Cargo_Patrol_V2_F", "Land_Cargo_Patrol_V3_F", "Land_Cargo_Tower_V1_F", "Land_Cargo_Tower_V2_F", "Land_Cargo_Tower_V3_F", "Land_Radar_F", "Land_MilOffices_V1_F", "Land_Radar_Small_F", "Land_Dome_Small_F", "Land_Research_house_V1_F", "Land_Research_HQ_F", "Land_Offices_01_V1_F", "Land_dp_mainFactory_F", "Land_dp_smallFactory_F", "Land_Factory_Main_F", "Land_PowerLine_distributor_F", "Land_i_Shed_Ind_F", "Land_TTowerSmall_2_F"] call BIS_fnc_selectRandom;
+			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 50]);
+			_target = _target createVehicle (_position findEmptyPosition [0, 50]);
 	
 			_type = ["BUS_InfSquad_Weapons","BUS_InfSquad", "BUS_InfTeam", "BUS_InfTeam_AA", "BUS_InfTeam_AT", "BUS_ReconTeam"] call BIS_fnc_selectRandom;
 		

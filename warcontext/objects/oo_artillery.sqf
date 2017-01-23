@@ -71,7 +71,7 @@
 			MEMBER("target", _vehicle);
 			MEMBER("vehicle", _vehicle);
 			MEMBER("ammo", "32Rnd_155mm_Mo_shells");
-			MEMBER("round", 3);
+			MEMBER("round", floor(random 3));
 			MEMBER("setSuppression", false);
 			enableEngineArtillery true;
 		};

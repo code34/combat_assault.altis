@@ -33,9 +33,10 @@
 		};
 
 		PUBLIC FUNCTION("", "scoreboardHud") {
-			private ["_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_ctrl16"];
+			private ["_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_ctrl16", "_count"];
 			disableSerialization;
 			
+			_count = 0;
 			while { true} do {
 				if((!alive player) or wcboard) then {
 					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
@@ -64,6 +65,8 @@
 					_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
 					_ctrl16 ctrlSetStructuredText parsetext ("<t align='center'>Tickets: "+ str(wcticket) + "</t>");
 					_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
+					_count = _count + 1;
+					if(_count > 10) then { wcboard = false; _count = 0;};
 				} else {
 					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
 					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];

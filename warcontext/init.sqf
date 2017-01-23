@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2017 Nicolas BOITEUX
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
+	//call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_deploy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
@@ -74,25 +75,14 @@
 	[] execVM "real_weather\real_weather.sqf";
 
 	// generate random position for base
-	_flag = false;
-	while { !_flag } do {
-		_sector = [ceil (random (_size/_sectorsize)), ceil (random (_size/_sectorsize))];
-		_position = ["getPosFromSector", _sector] call global_grid;
-		if!(surfaceIsWater _position) then {
-			if((_position isFlatEmpty  [100, -1, 0.1, 100, -1]) isEqualTo []) then {
-				_flag = true;
-			};
-		};
-		sleep 0.01;
-	};
-
-	global_base  = ["new", _position] call OO_BASEGENERATOR;
-	["unpackBase", _position] call global_base;
+	global_base  = "new" call OO_BASEGENERATOR;
 
 	// CONFIG VARIABLE 
 
 	// square distance enemi unpop/pop
 	// wcpopsquaredistance = 3;
+
+	wcserverpassword = "serverisme";
 
 	// enemies light vehicles type
 	wclightvehicles = ["O_MRAP_02_hmg_F","O_MRAP_02_gmg_F","I_MRAP_03_hmg_F","I_MRAP_03_gmg_F", "B_G_Offroad_01_armed_F"];
@@ -118,6 +108,12 @@
 	// plane dogfight
 	wcplanevehicles = ["O_Plane_CAS_02_F"];
 
+	switch (wcpopvehicleenemyparam ) do {
+		case 1 :{wcpopvehicleenemy = true; };
+		case 2: {wcpopvehicleenemy = false;};
+		default {wcpopvehicleenemy = true;};
+	};
+
 	// pop chopper probabilities by sector
 	switch (wcpopchopperprobparam) do {
 		case 1: {wcpopchopperprob = 0.9;};
@@ -128,10 +124,11 @@
 
 	// pop a convoy every x seconds
 	switch (wcpopconvoyprobparam) do {
-		case 1: {wcconvoytime = 1800;};
-		case 2: {wcconvoytime = 3600;};
-		case 3: {wcconvoytime = 0;};
-		default {wcconvoytime = 1800;};
+		case 1: {wcconvoytime = 180;};
+		case 2: {wcconvoytime = 300;};
+		case 3: {wcconvoytime = 1800;};
+		case 4: {wcconvoytime = 0;};
+		default {wcconvoytime = 180;};
 	};
 	
 	// pop ground vehicles probabilities by sector
@@ -141,7 +138,7 @@
 	wcpopsniperprob = 0.85;
 
 	// pop artillery probabilities by sector
-	wcpopartyprob = 0.93;
+	wcpopartyprob = 0.98;
 
 	// pop artillery probabilities by sector
 	wcpopantiairprob = 0.85;
@@ -225,12 +222,21 @@
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;
 	(_size/_sectorsize) call WC_fnc_computezone;
+
+	//[] spawn {
+	//	sleep 5;
+	//	global_deploy = ["new", []] call OO_DEPLOY;
+	//	while { true } do {
+	//		"computePosition" call global_deploy;
+	//		sleep 30;
+	//	};
+	//};
 	
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;
 
 	// init for slow server
-	sleep 120;
+	sleep 10;
 
 	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;
@@ -251,4 +257,7 @@
 	"End1" call BIS_fnc_endMissionServer;
 
 	// Kick player before missions restart
-	serverCommand "#reboot";
+	serverCommand format ["#login %1", wcserverpassword];
+	{
+		serverCommand format ["#kick %1",_name];
+	} forEach allPlayers;

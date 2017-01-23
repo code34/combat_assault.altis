@@ -95,9 +95,19 @@
                 <Key ID="STR_ROLLMESSAGEOFF_BUTTON">
                         <Original>Rollmessage Off</Original>
                 </Key>
+                <Key ID="STR_FRIENDSMARKERSON_BUTTON">
+                        <Original>Friends markers On</Original>
+                </Key>
+                <Key ID="STR_FRIENDSMARKERSOFF_BUTTON">
+                        <Original>Friends markers Off</Original>
+                </Key>
                 <Key ID="STR_HIDEMAP_BUTTON">
                         <Original>Hide map</Original>
                         <French>Cacher la carte</French>
+                </Key> 
+                <Key ID="STR_SHOWMAP_BUTTON">
+                        <Original>Show map</Original>
+                        <French>Montrer la carte</French>
                 </Key> 
                 <Key ID="STR_ENEMYCONVOY_TEXT">
                         <Original>An Enemy convoy</Original>

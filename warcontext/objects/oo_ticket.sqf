@@ -80,7 +80,7 @@
 					_credit = -3;
 				};
 				case "achopper": {
-					_credit = -5;
+					_credit = -3;
 				};				
 				case "tank": {
 					_credit = -3;
@@ -89,25 +89,25 @@
 					_credit = -3;
 				};				
 				case "fighter": {
-					_credit = -5;
+					_credit = -3;
 				};
 				case "bomber": {
-					_credit = -5;
+					_credit = -3;
 				};				
 				case "soldier": {
 					_credit = -1;
 				};
 				case "bluezone": {
-					_credit = 10;
+					_credit = 1;
 				};
 				case "redzone": {
-					_credit = -10;
+					_credit = -1;
 				};
 				case "convoy": {
-					_credit = 40;
+					_credit = -2;
 				};			
 				case "mission": {
-					_credit = 40;
+					_credit = 4;
 				};
 				default {
 					_credit = -1;

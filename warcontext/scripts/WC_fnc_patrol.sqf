@@ -13,6 +13,7 @@
 		"_group", 
 		"_key",
 		"_list",
+		"_list2",
 		"_move",
 		"_newposition",
 		"_position",
@@ -48,7 +49,12 @@
 	while { (count (units _group) > 0) } do {
 		_cibles = [];
 		_shadows = [];
-		_list = _position nearEntities [["Man", "Tank"], 600];
+
+		_list = _position nearEntities [["Man"], 600];
+		_list2 = _position nearEntities [["Tank"], 600];
+
+		{ _list = _list + crew _x; sleep 0.0001; }foreach _list2;
+
 		if(count _list > 0) then {
 			{
 				if(side _x in _enemyside) then {

@@ -53,12 +53,12 @@ class spawndialog {
 	};
 
 	class friendsmanagement : StdButton {
-		idc = -1; 
+		idc = 2007; 
 		x = (0.15 * safezoneW + safezoneX);
 		w = (0.15 * safezoneW);
 		y = (0.45 * safezoneH + safezoneY);
 		h = (0.025 * safezoneH);
-		text = "Friends Management";
+		text = $STR_FRIENDSMARKERSON_BUTTON;
 		action = "wcaction = 'friendsmanagement';";
 	};
 
@@ -83,7 +83,7 @@ class spawndialog {
 	};	
 
 	class mapbutton : StdButton{
-		idc=-1;
+		idc=2006;
 		x = (0.15 * safezoneW + safezoneX);
 		w = (0.15 * safezoneW);
 		y = (0.54 * safezoneH + safezoneY);
@@ -101,7 +101,7 @@ class spawndialog {
 		h = (0.05 * safezoneH);
 		sizeEx = 0.05 * safezoneH;
 		text = $STR_DEPLOY_BUTTON;
-		action = "closeDialog 0; wcaction = 'deploy';";
+		action = "wcaction = 'deploy';";
 	};
 
 	class exit : StdButton{

@@ -72,11 +72,12 @@
 	[] call WC_fnc_introcam;
 
 	// config variables
-	wcblacklist = [];
+	wcblacklist = [name player];
 	wcfriendlist = [];
 	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
 	wcboard = false;
 	wcwithrollmessages = true;
+	wcwithfriendsmarkers = true;
 
 	wcticket = 0;
 	playerkill = 0;
@@ -133,12 +134,7 @@
 		};
 	}];
 
-	_body = player;
-	_view = cameraView;
-	_mark = ["new", [position player, true]] call OO_MARKER;
-
 	playertype = "ammobox";
-
 	[] spawn {
 		private ["_action", "_script", "_oldplayertype", "_hug"];
 		_oldplayertype = playertype;
@@ -155,18 +151,18 @@
 				if(isnil "_action") then {
 					_action = player addAction ["Deploy Vehicle", "client\scripts\popvehicle.sqf", nil, 1.5, false];
 				};
-				if(isnil "_hug") then {
-					_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
-				};
+				//if(isnil "_hug") then {
+				//	_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
+				//};
 			} else {
 				if(!isnil "_action") then {
 					player removeAction _action;
 					_action = nil;
 				};
-				if(!isnil "_hug") then {
-					player removeAction _hug;
-					_hug = nil;
-				};
+				//if(!isnil "_hug") then {
+				//	player removeAction _hug;
+				//	_hug = nil;
+				//};
 			};
 			if(!alive player) then {_action = nil; _hug = nil;};
 			sleep 1;
@@ -266,6 +262,11 @@
 		findDisplay 46 displayAddEventHandler ["KeyUp", {_this call WC_fnc_keymapperup;}];
 	};
 
+
+	_body = player;
+	_view = cameraView;
+	_mark = ["new", [position player, true]] call OO_MARKER;
+
 	// MAIN LOOP
 	while {true} do {
 
@@ -280,7 +281,7 @@
 		setviewdistance 1500;
 
 		["load", player] spawn inventory;	
-		[_body] call WC_fnc_spawndialog;
+		(position _body) call WC_fnc_spawndialog;
 
 		 player switchCamera _view;
 
@@ -318,6 +319,7 @@
 		["draw", "ColorRed"] spawn _mark;
 
 		waituntil {alive player};
+		deletevehicle _body;
 
 		wccam cameraEffect ["terminate","back"];
 		camDestroy wccam;

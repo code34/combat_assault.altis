@@ -16,11 +16,11 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_vehicleslist", "_index", "_type", "_air", "_name", "_picture", "_positions", "_list"];
-
+	private ["_vehicleslist", "_index", "_type", "_air", "_name", "_picture", "_positions", "_list", "_text", "_ctrl"];
 
 	_vehicles = [];
 	_positions = [];
+	disableSerialization;
 	
 	// Retrieve airports
 	_positions = [getarray (configfile >> "CfgWorlds" >> worldName >> "ilsPosition")];
@@ -64,6 +64,10 @@
 	}foreach _vehicleslist;
 	lbSetCurSel [ 1255, 0];
 
+	_text = format ["Command channel: DXQ FORM - 472 - %1 to HQ ! Request an immediate materials Air Drop on battlefied, at sector %2. Over !", name player, ["getSectorFromPos", position player] call client_grid];
+	_ctrl =(uiNamespace getVariable "wcspawndialog") displayCtrl 1256;
+	_ctrl ctrlSetText _text;
+	_ctrl ctrlcommit 0;
 
 	wcaction = "";
 	while { wcaction != "deploy" && dialog} do {

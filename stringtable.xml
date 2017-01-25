@@ -47,6 +47,10 @@
                         <Original>Redeployment</Original>
                         <French>Redeploiement</French>
                 </Key>
+                <Key ID="STR_AIRDROPREQUEST_TITLE">
+                        <Original>Air Drop Request</Original>
+                        <French>Air Drop Request</French>
+                </Key>
                 <Key ID="STR_REDEPLOY_STANCE">
                         <Original>No enemies near your. Use menu to redeploy</Original>
                         <French>Pas d'ennemis près de vous. Utilisez le menu pour vous redéployer</French>
@@ -60,8 +64,8 @@
                         <French>Prenez des munitions et placez les dans votre veste ou sac, et déployez vous!</French>
                 </Key>
                 <Key ID="STR_TELEPORT_TITLE">
-                        <Original>Select your deployement zone</Original>
-                        <French>Choissisez votre zone de déploiement</French>
+                        <Original>Select your paradrop zone</Original>
+                        <French>Choissisez votre zone de parachutage</French>
                 </Key>
                 <Key ID="STR_TELEPORT_TEXT">
                         <Original>Click once on the map near the red square where you'd like to be deploy!</Original>
@@ -84,7 +88,16 @@
                         <French>Choisissez la zone</French>
                 </Key>
                 <Key ID="STR_DEPLOY_BUTTON">
-                        <Original>Deploy</Original>
+                        <Original>Paradrop</Original>
+                        <French>Parachutage</French>
+                </Key>
+                <Key ID="STR_SEND_BUTTON">
+                        <Original>Send</Original>
+                        <French>Envoyer</French>
+                </Key>
+                <Key ID="STR_CANCEL_BUTTON">
+                        <Original>Cancel</Original>
+                        <French>Annuler</French>                        
                 </Key>
                 <Key ID="STR_EXIT_BUTTON">
                         <Original>Exit</Original>

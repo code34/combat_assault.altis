@@ -35,6 +35,14 @@ class Params
 		texts[] = {"ON", "OFF"};
 		default = 2;
 	};
+	class wcsway
+	{
+		title = "WEAPON SWAY";
+		values[] = {1, 2};
+		texts[] = {"ON", "OFF"};
+		default = 2;
+	};
+
 	class wcredeployement
 	{
 		title = "REDEPLOYEMENT SYSTEM";
@@ -62,6 +70,13 @@ class Params
 		texts[] = {"3 Minutes ", "5 Minutes", "30 Minutes", "NEVER"};
 		default = 1;
 	};
+	class wcpopplayervehiclecooldown
+	{
+		title = "PLAYER VEHICLE COOLDOWN";
+		values[] = {60,120,240,600};
+		texts[] = {"1 Minute", "2 Minutes ", "4 Minutes", "10 Minutes"};
+		default = 240;
+	};	
 	class wcambiant
 	{
 		title = "AMBIANT LIFES AND SOUNDS";

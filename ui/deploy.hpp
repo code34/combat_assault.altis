@@ -94,7 +94,7 @@ class spawndialog {
 	};	
 
 	class deploy : StdButton{
-		idc=-1;
+		idc=2008;
 		x = (0.15 * safezoneW + safezoneX);
 		y = (0.82 * safezoneH + safezoneY);
 		w = (0.15 * safezoneW);

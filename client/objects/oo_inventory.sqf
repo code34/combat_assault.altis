@@ -49,6 +49,7 @@
 			_array = [
 				(headgear _this), 
 				(goggles _this), 
+				(binocular _this),
 				(uniform _this), 
 				(UniformItems _this), 
 				(vest _this), 
@@ -70,7 +71,7 @@
 		};
 
 		PUBLIC FUNCTION("object","load") {
-			private ["_temp", "_array", "_headgear", "_goggles", "_uniform", "_uniformitems", "_vest", "_vestitems", "_backpack", "_backpackitems", "_primaryweapon", "_primaryweaponitems", "_primaryweaponmagazine", "_secondaryweapon", "_secondaryweaponitems", "_secondaryweaponmagazine", "_handgun", "_handgunweaponitems", "_handgunweaponmagazine", "_assigneditems", "_position", "_damage", "_dir"];
+			private ["_temp", "_array", "_binocular", "_headgear", "_goggles", "_uniform", "_uniformitems", "_vest", "_vestitems", "_backpack", "_backpackitems", "_primaryweapon", "_primaryweaponitems", "_primaryweaponmagazine", "_secondaryweapon", "_secondaryweaponitems", "_secondaryweaponmagazine", "_handgun", "_handgunweaponitems", "_handgunweaponmagazine", "_assigneditems", "_position", "_damage", "_dir"];
 
 			_array = MEMBER("inventory", nil);
 			if(count _array == 0) exitwith {false;};
@@ -79,26 +80,29 @@
 
 			_headgear = _array select 0;
 			_goggles = _array select 1;
-			_uniform = _array select 2;
-			_uniformitems = _array select 3;
-			_vest = _array select 4;
-			_vestitems = _array select 5;
-			_backpack = _array select 6;
-			_backpackitems = _array select 7;
-			_primaryweapon = _array select 8;
-			_primaryweaponitems = _array select 9;
-			_primaryweaponmagazine = _array select 10;
-			_secondaryweapon = _array select 11;
-			_secondaryweaponitems = _array select 12;
-			_secondaryweaponmagazine = _array select 13;
-			_handgunweapon = _array select 14;
-			_handgunweaponitems = _array select 15;
-			_handgunweaponmagazine = _array select 16;
-			_assigneditems = _array select 17;
+			_binocular = _array select 2;
+			_uniform = _array select 3;
+			_uniformitems = _array select 4;
+			_vest = _array select 5;
+			_vestitems = _array select 6;
+			_backpack = _array select 7;
+			_backpackitems = _array select 8;
+			_primaryweapon = _array select 9;
+			_primaryweaponitems = _array select 10;
+			_primaryweaponmagazine = _array select 11;
+			_secondaryweapon = _array select 12;
+			_secondaryweaponitems = _array select 13;
+			_secondaryweaponmagazine = _array select 14;
+			_handgunweapon = _array select 15;
+			_handgunweaponitems = _array select 16;
+			_handgunweaponmagazine = _array select 17;
+			_assigneditems = _array select 18;
 
 			_this addHeadgear _headgear;
 			_this forceAddUniform _uniform;
 			_this addGoggles _goggles;
+			_this addWeapon _binocular;
+
 			_this addVest _vest;
 
 
@@ -168,7 +172,7 @@
 			} foreach _handgunweaponitems;
 	
 			{
-				if(_x != "") then {
+				if((_x != "") and !(_x isEqualTo _binocular)) then {
 					_this additem _x;
 					_this assignItem _x;
 				};

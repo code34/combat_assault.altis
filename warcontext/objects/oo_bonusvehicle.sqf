@@ -54,25 +54,12 @@
 
 		PUBLIC FUNCTION("", "popVehicle") {
 			private ["_vehicle"];
-			_vehicle = createVehicle [MEMBER("getType", nil), _position, [], 0, "NONE"];
-			_vehicle addeventhandler ['HandleDamage', {
-				private ["_name", "_gunner", "_commander"];
-				if(side(_this select 3) in [west, civilian]) then {
-					if ((_this select 2) > 0.4) then {
-						(_this select 0) setHit [(_this select 1), (_this select 2)];
-						(_this select 0) setdamage (damage (_this select 0) + (_this select 2));
-						if(damage (_this select 0) > 0.9) then {
-							(_this select 0) setdamage 1;
-							(_this select 0) removeAllEventHandlers "HandleDamage";
-						};
-					};
-				};
-			}];
+			_vehicle = createVehicle [MEMBER("getType", nil), _position, [], 0, "FLY"];
+			_vehicle setpos [_position select 0, _position select 1,  150];
+			_vehicle setdir (random 360); 
+			_vehicle setVelocity [0, 0, 0];
+			MEMBER("paraVehicle", _vehicle);
 			MEMBER("vehicle", _vehicle);
-			if(random 1 > 0.9) then {
-				 _position = [_position, 3, random 360] call BIS_fnc_relPos;
-				createVehicle ["APERSBoundingMine_Range_Ammo", _position,[], 0, "can_collide"];
-			};
 		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {
@@ -128,6 +115,39 @@
 			}; 
 			MEMBER("deconstructor", nil);
 		};
+
+		PUBLIC FUNCTION("object", "paraVehicle") {
+		 	private ["_para","_paras","_p"]; 
+		 	
+		 	_para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+		 	_para setDir getDir _this; 
+		 	_para setPos getPos _this; 
+		 	_paras = [_para]; 
+		 	_this attachTo [_para, [0,0,-1]]; 
+		 	_this addEventHandler ["HandleDamage", {false}]; 	
+
+		 	[_this, _paras] spawn { 
+		 		private ["_vehicle", "_vel", "_paras"];
+		 		
+		 		_vehicle = _this select 0; 
+		 		_paras = _this select 1;
+		 		
+		 		while { !(getPos _vehicle select 2 < 1) } do {sleep 0.1;};
+		 		detach _vehicle; 
+
+		 		{ 
+		 			detach _x; 
+		 			_x disableCollisionWith _vehicle; 
+		 		} count _paras; 
+		 		
+		 		sleep 2;
+		 		{ if (!isNull _x) then {deleteVehicle _x};} count _paras; 
+		 		
+		 		_vehicle removeAllEventHandlers "HandleDamage";
+		 		_vehicle setDamage 0;
+		 		_vehicle setFuel 1;
+		 	};			
+		};		
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			["delete", MEMBER("marker", nil)] call OO_MARKER;

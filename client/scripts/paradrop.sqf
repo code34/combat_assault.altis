@@ -20,9 +20,6 @@
 
 	private ["_position", "_list", "_vehicle", "_backpack", "_items"];
 
-	//wcgetdeployzone = name player;
-	//["wcgetdeployzone", "server"] call BME_fnc_publicvariable;
-
 	_position = position player;
 
 	_title = localize "STR_TELEPORT_TITLE";
@@ -32,9 +29,9 @@
 	wcteleport = [];
 	wcteleportposition = [];
 	onMapSingleClick {
-	 	wcteleport = [name player, _pos];
-		["wcteleport", "server"] call BME_fnc_publicvariable;
+		wcteleportposition = _pos;
 	};
+
 	while {count wcteleportposition == 0} do { sleep 0.1;};
 	onMapSingleClick "";
 

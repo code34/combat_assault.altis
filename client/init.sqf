@@ -41,7 +41,7 @@
 
 	WC_fnc_spawndialog 	= compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_spawnvehicle 	= compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
-	WC_fnc_teleport 	= compilefinal preprocessFileLineNumbers "client\scripts\teleport.sqf";
+	WC_fnc_paradrop	= compilefinal preprocessFileLineNumbers "client\scripts\paradrop.sqf";
 	WC_fnc_keymapperup 	= compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 	WC_fnc_introcam 	= compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
@@ -149,7 +149,7 @@
 			};
 			if(vehicle player == player) then {
 				if(isnil "_action") then {
-					_action = player addAction ["Deploy Vehicle", "client\scripts\popvehicle.sqf", nil, 1.5, false];
+					_action = player addAction [localize "STR_AIRDROPREQUEST_TITLE", "client\scripts\popvehicle.sqf", nil, 1.5, false];
 				};
 				//if(isnil "_hug") then {
 				//	_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
@@ -242,7 +242,7 @@
 
 				if(_candeploy) then {
 					if(isnil "_teleport") then {
-						_teleport = player addAction ["Deployement", "client\scripts\deployment.sqf", nil, 1.5, false];
+						_teleport = player addAction [localize "STR_REDEPLOY_TITLE", "client\scripts\deployment.sqf", nil, 1.5, false];
 						wccandeploy = true;
 					};
 				} else {
@@ -269,13 +269,15 @@
 
 	// MAIN LOOP
 	while {true} do {
-
+		player setAnimSpeedCoef 1.2;
 		// Should be here to be effective each respawn
 		if(wcfatigue == 2) then { 
 			player enableFatigue false; 
 			player enableStamina false;
 			player allowSprint true;
 		};
+
+		if(wcsway == 2) then { player setCustomAimCoef 0;};
 
 		_index = player addEventHandler ["HandleDamage", {false}];
 		setviewdistance 1500;

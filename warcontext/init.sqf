@@ -46,7 +46,6 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
-	//call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_deploy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
@@ -223,15 +222,6 @@
 	"startZone" spawn global_controller;
 	(_size/_sectorsize) call WC_fnc_computezone;
 
-	//[] spawn {
-	//	sleep 5;
-	//	global_deploy = ["new", []] call OO_DEPLOY;
-	//	while { true } do {
-	//		"computePosition" call global_deploy;
-	//		sleep 30;
-	//	};
-	//};
-	
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;
 

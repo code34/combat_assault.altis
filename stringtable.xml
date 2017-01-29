@@ -88,6 +88,10 @@
                         <French>Choisissez la zone</French>
                 </Key>
                 <Key ID="STR_DEPLOY_BUTTON">
+                        <Original>Deploy</Original>
+                        <French>Deployement</French>
+                </Key>
+                <Key ID="STR_PARADROP_BUTTON">
                         <Original>Paradrop</Original>
                         <French>Parachutage</French>
                 </Key>
@@ -123,12 +127,20 @@
                         <French>Montrer la carte</French>
                 </Key> 
                 <Key ID="STR_ENEMYCONVOY_TEXT">
-                        <Original>An Enemy convoy</Original>
-                        <French>Un convoi enemi</French>
+                        <Original>An Enemy truck</Original>
+                        <French>Un camion enemi</French>
                 </Key>        
                 <Key ID="STR_SPOTTED_TEXT">
                         <Original>has been spotted</Original>
                         <French>a été localisé</French>
+                </Key>
+                <Key ID="STR_SUPPLYEMPTY">
+                        <Original>Supply Empty: Bring an enemy truck</Original>
+                        <French>Stock vide: Amenez un camion enemi</French>
+                </Key>
+                <Key ID="STR_SUPPLYFULL">
+                        <Original>Supply</Original>
+                        <French>Stock</French>
                 </Key>
                 <Key ID="STR_COMMANDEROFF_TEXT">
                         <Original>Commander Site has been destroyed. No more deployement avalaible</Original>

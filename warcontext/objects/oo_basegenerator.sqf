@@ -45,8 +45,10 @@
 				_position = MEMBER("generatePosition", nil);
 				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 100]);
 				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [20,80]);
-				_base addEventHandler ['HandleDamage', { _base setDamage 0; }];
-				_base setdir (random 360);
+				if!(_base isEqualTo objNull) then {
+					_base addEventHandler ['HandleDamage', { false; }];
+					_base setdir (random 360);
+				};
 				sleep 0.1;
 			};
 
@@ -95,5 +97,6 @@
 			MEMBER("deleteBase", nil);
 			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("marker");
+			DELETE_VARIABLE("base");
 		};
 	ENDCLASS;

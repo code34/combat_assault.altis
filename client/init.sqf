@@ -78,6 +78,7 @@
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;
+	wcearplugs = false;
 
 	wcticket = 0;
 	playerkill = 0;
@@ -136,7 +137,7 @@
 
 	playertype = "ammobox";
 	[] spawn {
-		private ["_action", "_script", "_oldplayertype", "_hug"];
+		private ["_action", "_script", "_oldplayertype", "_hug", "_earplug"];
 		_oldplayertype = playertype;
 
 		while { true} do {
@@ -154,17 +155,24 @@
 				//if(isnil "_hug") then {
 				//	_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
 				//};
+				if(isnil "_earplug") then {
+					_earplug = player addAction ["Add/Remove earplugs", "client\scripts\earplugs.sqf", nil, 1.5, false, true];	
+				};
 			} else {
 				if(!isnil "_action") then {
 					player removeAction _action;
 					_action = nil;
 				};
+				if(!isnil "_earplug") then {
+					player removeAction _earplug;
+					_earplug = nil;
+				};				
 				//if(!isnil "_hug") then {
 				//	player removeAction _hug;
 				//	_hug = nil;
 				//};
 			};
-			if(!alive player) then {_action = nil; _hug = nil;};
+			if(!alive player) then {_action = nil; _hug = nil; _earplug = nil;};
 			sleep 1;
 		};
 	};
@@ -267,20 +275,35 @@
 	_view = cameraView;
 	_mark = ["new", [position player, true]] call OO_MARKER;
 
+
+	// set viewdistance
+	[] spawn {
+		while { true} do {
+			if(vehicle player == player) then {
+				setviewdistance wcviewdistance;
+			} else {
+				setviewdistance wcvehicleviewdistance;
+			};
+			sleep 10;
+		};
+	};
+
 	// MAIN LOOP
 	while {true} do {
-		player setAnimSpeedCoef 1.2;
+		if(wcspeedcoeef == 1) then {
+			player setAnimSpeedCoef 1.2;
+		};
+		
 		// Should be here to be effective each respawn
 		if(wcfatigue == 2) then { 
 			player enableFatigue false; 
 			player enableStamina false;
 			player allowSprint true;
-		};
+		} ;
 
 		if(wcsway == 2) then { player setCustomAimCoef 0;};
 
 		_index = player addEventHandler ["HandleDamage", {false}];
-		setviewdistance 1500;
 
 		["load", player] spawn inventory;	
 		(position _body) call WC_fnc_spawndialog;

@@ -165,40 +165,51 @@
 		};
 
 		PUBLIC FUNCTION("array", "bring") {
-			private ["_position", "_run", "_vehicle", "_list"];
+			private ["_position", "_run", "_vehicle", "_list", "_supply", "_text"];
 
 			_position = _this;
+			_supply = ceil (random 100);
+
 			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
 
 			_vehicle = createVehicle ["Land_FuelStation_Shed_F", _position,[], 0, "NONE"];
+			_position = position _vehicle;
 			MEMBER("target", _vehicle);
-			
-			_text= "Bring an enemy truck";
-			MEMBER("setMarker", _text);
+			MEMBER("setMarker", localize "STR_SUPPLYFULL");
 
 			_run = true;
 			while { _run } do {
-				_list = nearestObjects [_position, ["TRUCK"], 25];
+				if(damage _vehicle > 0.9) then {
+					_run = false;
+				};
+			
+				if(_supply < 20 ) then {
+					_text = localize "STR_SUPPLYEMPTY";
+				} else {
+					_text = localize "STR_SUPPLYFULL";
+				};
+				["setText", _text] spawn MEMBER("marker", nil);
+
+				_list = nearestObjects [_position, ["TRUCK", "CAR"], 25];
 				sleep 1;
 				if(count _list > 0) then { 
 					{
-						_vehicle = _x;
-						if(_vehicle getvariable ["isenemy", false]) then {
-							_run = false;
+						if(_x getvariable ["isenemy", false]) then {
+							_x setVariable ["isenemy", false];
+							_text= "Bring completed: " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+							["setTicket", "mission"] call global_ticket;
+							wcmissioncompleted = [true, _text];
+							["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+							_supply = 100;
+						} else {
+							if(_supply > 20) then {
+								_x call WC_fnc_servicing;
+								_supply = _supply - 20;
+							};
 						};
 						sleep 0.01;
 					} foreach _list;
 				};
-			};
-
-			_text= "Bring completed: " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
-			if(_win)	then {
-				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = [true, _text];
-				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
-			} else {
-				wcmissioncompleted = [false, _text];
-				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 		};		
 

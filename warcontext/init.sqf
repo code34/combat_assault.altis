@@ -33,12 +33,13 @@
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
-	WC_fnc_setskill	 	= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
-	WC_fnc_computezone	= compile preprocessFile "warcontext\scripts\WC_fnc_computezone.sqf";
-	WC_fnc_patrol		= compile preprocessFile "warcontext\scripts\WC_fnc_patrol.sqf";
-	WC_fnc_setskill		= compile preprocessFile "warcontext\scripts\WC_fnc_setskill.sqf";
-	WC_fnc_vehiclehandler	= compile preprocessFile "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
-	WC_fnc_spawngroup	= compile preprocessFile "warcontext\scripts\WC_fnc_spawngroup.sqf";
+	WC_fnc_setskill	 	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_setskill.sqf";
+	WC_fnc_computezone	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_computezone.sqf";
+	WC_fnc_patrol		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_patrol.sqf";
+	WC_fnc_setskill		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_setskill.sqf";
+	WC_fnc_vehiclehandler	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
+	WC_fnc_spawngroup	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_spawngroup.sqf";
+	WC_fnc_servicing	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_servicing.sqf";
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
@@ -230,6 +231,21 @@
 
 	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;
+
+	[] spawn {
+		private ["_list"];
+		
+		while { true } do {	
+			_list = nearestObjects [getMarkerPos "respawn_west", ["TRUCK", "CAR", "TANK"], 25];
+			sleep 1;
+			if(count _list > 0) then { 
+				{
+					_x call WC_fnc_servicing;
+				} foreach _list;
+			};
+			sleep 30;
+		};
+	};
 
 	_end = false;
 	while { !_end} do {

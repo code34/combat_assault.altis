@@ -190,6 +190,7 @@
 
 		if(_newevent) then {
 			if(_player isequalto player) then {
+				_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");
 				_map ctrlMapAnimAdd [0, 0, _deathposition]; 
 				ctrlMapAnimCommit _map;
 				
@@ -199,6 +200,7 @@
 				_cam camSetRelPos [0,100,50];
 				_cam CamCommit 0;
 			} else {
+				_ctrl4 ctrlSetText (localize "STR_DEPLOY_BUTTON");
 				_map ctrlMapAnimAdd [0, 0, _player]; 
 				ctrlMapAnimCommit _map;
 

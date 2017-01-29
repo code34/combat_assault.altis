@@ -37,6 +37,7 @@
 
 	player setpos [wcteleportposition select 0, wcteleportposition select 1, 100];
 	player setVelocity [0, 0, 10];
+	player switchmove "HaloFreeFall_non";
 	hintSilent "";
 
 	_backpack = backpack player;

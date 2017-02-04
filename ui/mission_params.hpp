@@ -23,14 +23,21 @@ class Params
 	};
 	class wcviewdistance
 	{
-		title = "PLAYER VIEW DISTANCE";
+		title = "MAX PLAYER VIEW DISTANCE";
 		values[] = {1500,2000,2500,3000,3500,4000,4500,5000};
 		texts[] = {"1500","2000","2500","3000","3500", "4000", "4500", "5000"};
 		default = 1500;
 	};
 	class wcvehicleviewdistance
 	{
-		title = "VEHICLE VIEW DISTANCE";
+		title = "MAX VEHICLE VIEW DISTANCE";
+		values[] = {1500,2000,2500,3000,3500,4000,4500,5000};
+		texts[] = {"1500","2000","2500","3000","3500", "4000", "4500", "5000"};
+		default = 3000;
+	};
+	class wcairvehicleviewdistance
+	{
+		title = "MAX AIR VEHICLE VIEW DISTANCE";
 		values[] = {1500,2000,2500,3000,3500,4000,4500,5000};
 		texts[] = {"1500","2000","2500","3000","3500", "4000", "4500", "5000"};
 		default = 3000;
@@ -104,5 +111,12 @@ class Params
 		values[] = {1, 2};
 		texts[] = {"ON", "OFF"};
 		default = 2;
+	};
+	class wcwithunitstags
+	{
+		title = "UNITS TAGS OVER HEAD";
+		values[] = {1, 2};
+		texts[] = {"ON", "OFF"};
+		default = 1;
 	};
 };

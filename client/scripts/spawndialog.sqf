@@ -43,6 +43,7 @@
 	_ctrl2 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2006;
 	_ctrl3 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2007;
 	_ctrl4 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2008;
+	_ctrl5 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2009;
 
 	if(wcwithfriendsmarkers) then {
 		_ctrl3 ctrlSetText (localize "STR_FRIENDSMARKERSON_BUTTON");
@@ -54,6 +55,12 @@
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEON_BUTTON");
 	} else {
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
+	};
+
+	if(wcwithenemytags) then {
+		_ctrl5 ctrlSetText (localize "STR_ENEMYTAGON_BUTTON");
+	} else {
+		_ctrl5 ctrlSetText (localize "STR_ENEMYTAGOFF_BUTTON");
 	};
 
 	if(wcredeployement isEqualTo 2) then {
@@ -120,6 +127,12 @@
 				_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 			};
 
+			if(wcwithenemytags) then {
+				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGON_BUTTON");
+			} else {
+				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGOFF_BUTTON");
+			};			
+
 			if(wcredeployement isEqualTo 2) then {
 				_ctrl4 ctrlEnable false;
 			};
@@ -166,6 +179,17 @@
 				_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 			};
 			_ctrl ctrlcommit 0;				
+		};
+
+		if(wcaction == "enemytags") then {
+			wcaction = "";
+			wcwithenemytags = !wcwithenemytags;
+			if(wcwithenemytags) then {
+				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGON_BUTTON");
+			} else {
+				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGOFF_BUTTON");
+			};
+			_ctrl5 ctrlcommit 0;				
 		};
 
 		if ((lbCurSel 2002) != -1) then {

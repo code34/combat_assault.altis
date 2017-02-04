@@ -106,6 +106,12 @@
                 <Key ID="STR_EXIT_BUTTON">
                         <Original>Exit</Original>
                 </Key>
+                <Key ID="STR_ENEMYTAGON_BUTTON">
+                        <Original>Enemytags On</Original>
+                </Key>  
+                <Key ID="STR_ENEMYTAGOFF_BUTTON">
+                        <Original>Enemytags Off</Original>
+                </Key>
                 <Key ID="STR_ROLLMESSAGEON_BUTTON">
                         <Original>Rollmessage On</Original>
                 </Key>
@@ -145,6 +151,18 @@
                 <Key ID="STR_COMMANDEROFF_TEXT">
                         <Original>Commander Site has been destroyed. No more deployement avalaible</Original>
                         <French>Le centre de commandement a été détruit. Plus de déploiement disponible.</French>
-                </Key>                     
+                </Key> 
+                <Key ID="STR_EARPLUGSOFF_TEXT">
+                        <Original>Earplugs are off</Original>
+                        <French>Les bouchons sont enlevés</French>
+                </Key>
+                <Key ID="STR_EARPLUGSON_TEXT">
+                        <Original>Earplugs are on</Original>
+                        <French>Les bouchons sont mis</French>
+                </Key>
+                <Key ID="STR_DROPPED_TEXT">
+                        <Original> has been paradropped at sector </Original>
+                        <French> a été parachuté sur le secteur </French>
+                </Key>
                 </Package>
         </Project>

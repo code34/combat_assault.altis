@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2013-2017r Nicolas BOITEUX
 
 	CLASS OO_MARKER
 	
@@ -235,14 +235,17 @@
 			};
 		};
 
-		PUBLIC FUNCTION("object", "attachToSector") {
-			private ["_position"];
+		PUBLIC FUNCTION("array", "attachToSector") {
+			private ["_position", "_object", "_grid"];
+
+			_object = _this select 0;
+			_grid = _this select 1;
 
 			MEMBER("attached", true);
 			MEMBER("setDir", 0);
 			
 			while {MEMBER("attached", nil)} do {
-				_position = ["getSectorCenterPos", _position] call client_grid;
+				_position = ["getSectorCenterPos", position _object] call _grid;
 				MEMBER("setPos", _position);
 				sleep 1;
 			};

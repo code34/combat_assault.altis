@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2013-2017 Nicolas BOITEUX
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -78,6 +78,7 @@
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;
+	wcwithenemytags = true;
 	wcearplugs = false;
 
 	wcticket = 0;
@@ -100,6 +101,12 @@
 	"rollMessage" spawn hud;
 	"bottomHud" spawn hud;
 	"scoreboardHud" spawn hud;
+	
+	switch (wcwithunitstags) do {
+		case 1 :{["setPlayerTag", true] spawn hud;};
+		case 2: {["setPlayerTag", false] spawn hud;};
+		default {["setPlayerTag", true] spawn hud;};
+	};
 
 	inventory = ["new", []] call OO_INVENTORY;
 	["save", player] call inventory;
@@ -282,7 +289,11 @@
 			if(vehicle player == player) then {
 				setviewdistance wcviewdistance;
 			} else {
-				setviewdistance wcvehicleviewdistance;
+				if(vehicle player isKindOf "Air") then {
+					setviewdistance wcairvehicleviewdistance;
+				} else {
+					setviewdistance wcvehicleviewdistance;	
+				};
 			};
 			sleep 10;
 		};

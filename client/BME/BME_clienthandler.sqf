@@ -40,6 +40,17 @@
 		diag_log format ["You unblacklist by a BIG HUG : %1 %2", name _player, _player];
 	};
 
+	BME_netcode_wcbonusvehicle = {
+		private ["_vehicle", "_name", "_sector"];
+
+		_vehicle = _this select 0;
+		_sector = ["getSectorFromPos", position _vehicle] call client_grid ;
+		_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+
+		_message = "<t align='center'><t color='#FF9933'>"+ _name + "</t> " + localize "STR_DROPPED_TEXT" + format [" %1", _sector] + "</t>";
+		killzone = killzone + [_message];
+	};
+
 	BME_netcode_wcconvoystart = {
 		private ["_message"];
 		

@@ -69,7 +69,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "destroy") {
-			private ["_counter", "_mark", "_name", "_target", "_win", "_run", "_text", "_position"];
+			private ["_counter", "_mark", "_name", "_target", "_win", "_run", "_text", "_position", "_type"];
 
 			_position = _this;
 		
@@ -82,16 +82,15 @@
 				_target = MEMBER("target", nil);
 			};
 
+			// create mission marker
 			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _target) >> "DisplayName");
-			MEMBER("setMarker", _text);
-
-			_mark = MEMBER("marker", nil);
+			_type = "hd_destroy";
+			_mark = [_text, _type];
+			_mark = MEMBER("createMarker", _mark);
 
 			_run = true;
 			_win = false;
-			
 			_counter = 3600;
-			//_text = "getText" call _mark;
 
 			while { _run } do {
 				if(getdammage _target > 0.7) then {
@@ -117,7 +116,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "weaponCache") {
-			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle"];
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle", "_mark"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
@@ -127,11 +126,14 @@
 			_vehicle = createVehicle [_type, _position,[], 0, "NONE"];
 			MEMBER("target", _vehicle);
 
+			// create mission marker
+			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			_type = "hd_unknown";
+			_mark = [_text, _type];
+			_mark = MEMBER("createMarker", _mark);
+
 			_counter = 3600;
 			_run = true;
-
-			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
-			MEMBER("setMarker", _text);	
 			_win = false;
 
 			while { _run } do {
@@ -165,7 +167,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "bring") {
-			private ["_position", "_run", "_vehicle", "_list", "_supply", "_text"];
+			private ["_position", "_run", "_vehicle", "_list", "_supply", "_text", "_mark", "_type"];
 
 			_position = _this;
 			_supply = ceil (random 100);
@@ -175,7 +177,12 @@
 			_vehicle = createVehicle ["Land_FuelStation_Shed_F", _position,[], 0, "NONE"];
 			_position = position _vehicle;
 			MEMBER("target", _vehicle);
-			MEMBER("setMarker", localize "STR_SUPPLYFULL");
+
+			// create mission marker
+			_text = localize "STR_SUPPLYFULL";
+			_type = "hd_end";
+			_mark = [_text, _type];
+			_mark = MEMBER("createMarker", _mark);
 
 			_run = true;
 			while { _run } do {
@@ -188,7 +195,7 @@
 				} else {
 					_text = localize "STR_SUPPLYFULL";
 				};
-				["setText", _text] spawn MEMBER("marker", nil);
+				["setText", _text] spawn _mark;
 
 				_list = nearestObjects [_position, ["TRUCK", "CAR"], 25];
 				sleep 1;
@@ -214,7 +221,7 @@
 		};		
 
 		PUBLIC FUNCTION("array", "rob") {
-			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle", "_count"];
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle", "_count", "_mark"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
@@ -226,11 +233,15 @@
 
 			MEMBER("target", _vehicle);
 
-			_counter = 3600;
-			_run = true;
-
+			// create mission marker
 			_text= "Rob " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
-			MEMBER("setMarker", _text);	
+			_type = "hd_pickup";
+			_mark = [_text, _type];
+			_mark = MEMBER("createMarker", _mark);
+			//["attachTo", _vehicle] spawn _mark;
+
+			_counter = 3600;
+			_run = true;	
 			_win = false;
 
 			while { _run } do {
@@ -274,7 +285,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "rescue") {
-			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list", "_text", "_house", "_index", "_positions"];
+			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list", "_text", "_house", "_index", "_positions", "_mark"];
 
 			_position = _this;
 			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
@@ -308,12 +319,15 @@
 			
 			MEMBER("target", _civil);
 
+			// create mission marker
 			_text = "Rescue " + name _civil;
-			MEMBER("setMarker", _text);
+			_type = "hd_join";
+			_mark = [_text, _type];
+			_mark = MEMBER("createMarker", _mark);
+			//["attachTo", _civil] spawn _mark;
 
 			_run = true;
 			_win = false;
-			
 			_counter = 3600;
 
 			while { _run } do {
@@ -363,7 +377,7 @@
 		};
 
 		PRIVATE FUNCTION("array", "getMen") {
-			private ["_alive", "_handle","_type","_position","_group", "_position2", "_run", "_win", "_counter", "_text", "_vehicle"];
+			private ["_alive", "_handle","_type","_position","_group", "_position2", "_run", "_win", "_counter", "_text", "_vehicle", "_mark"];
 
 			_position = _this;
 
@@ -387,12 +401,14 @@
 				sleep 0.1;
 			}foreach (units _group);			 
 
+			// create mission marker
 			_text = "Support " + rank (leader _group) + " " +name (leader _group);
-			MEMBER("setMarker", _text);
+			_type = "hd_join";
+			_mark = [_text, _type];
+			_mark = MEMBER("createMarker", _mark);
 
 			_run = true;
 			_win = false;
-			
 			_counter = 3600;
 
 			while { _run } do {
@@ -440,18 +456,26 @@
 		};		
 
 
-		PUBLIC FUNCTION("string", "setMarker") {
-			private ["_mark", "_name", "_target", "_text"];
-			_text = _this;
+		PRIVATE FUNCTION("array", "createMarker") {
+			private ["_mark", "_name", "_target", "_text", "_type", "_position", "_array"];
+			
+			_text = _this select 0;
+			_type = _this select 1;
+
+			if(isnil "_type") then {_type = "hd_objective";};
 
 			_target = MEMBER("target", nil);
-			_mark = ["new", [position _target, false]] call OO_MARKER;
-			["attachTo", _target] spawn _mark;
+			_position = ["getSectorCenterPos", position _target] call global_grid;
+
+			_mark = ["new", [_position, false]] call OO_MARKER;
 			["setText", _text] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
-			["setType", "hd_objective"] spawn _mark;
+			["setType", _type] spawn _mark;
 			["setSize", [1,1]] spawn _mark;
+			_array = [_target, global_grid];
+			["attachToSector", _array] spawn _mark;
 			MEMBER("marker", _mark);
+			_mark;
 		};		
 
 		PUBLIC FUNCTION("","deconstructor") { 

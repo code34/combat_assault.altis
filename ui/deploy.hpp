@@ -4,7 +4,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { column, map, title, labelplayer, player, deploy, exit, mapbutton, rollmessage, equipment, friendsmanagement, enemytag}; 
+	controls[] = { column, map, title, labelplayer, player, deploy, exit, mapbutton, rollmessage, equipment, friendsmanagement, unittags}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
@@ -93,7 +93,7 @@ class spawndialog {
 		action = "fullmap = fullmap + 1;";
 	};	
 
-	class enemytag : StdButton{
+	class unittags : StdButton{
 		idc=2009;
 		x = (0.15 * safezoneW + safezoneX);
 		w = (0.15 * safezoneW);
@@ -101,7 +101,7 @@ class spawndialog {
 		h = (0.025 * safezoneH);
 		sizeEx = 0.018 * safezoneH;
 		text = $STR_ENEMYTAGOFF_BUTTON;
-		action = "wcaction = 'enemytags';";
+		action = "wcaction = 'unittags';";
 	};	
 
 	class deploy : StdButton{

@@ -112,11 +112,11 @@ class Params
 		texts[] = {"ON", "OFF"};
 		default = 2;
 	};
-	class wcwithunitstags
+	class wcwithunitstagsparam
 	{
-		title = "UNITS TAGS OVER HEAD";
-		values[] = {1, 2};
-		texts[] = {"ON", "OFF"};
+		title = "GENERAL UNITS TAGS OVER HEAD";
+		values[] = {0, 1};
+		texts[] = {"OFF", "ON"};
 		default = 1;
 	};
 };

@@ -57,10 +57,15 @@
 		_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 	};
 
-	if(wcwithenemytags) then {
-		_ctrl5 ctrlSetText (localize "STR_ENEMYTAGON_BUTTON");
+	if(wcwithunitstagslocked) then {
+		_ctrl5 ctrlEnable false;
+		_ctrl5 ctrlSetText (localize "STR_UNITTAGOFF_BUTTON");
 	} else {
-		_ctrl5 ctrlSetText (localize "STR_ENEMYTAGOFF_BUTTON");
+		if(wcwithunitstags) then {
+			_ctrl5 ctrlSetText (localize "STR_UNITTAGON_BUTTON");
+		} else {
+			_ctrl5 ctrlSetText (localize "STR_UNITTAGOFF_BUTTON");
+		};
 	};
 
 	if(wcredeployement isEqualTo 2) then {
@@ -105,7 +110,6 @@
 				sleep 0.01;
 			};
 			player addWeapon "ItemMap";
-
 			createDialog "spawndialog"; 
 			sleep 0.01;
 
@@ -114,6 +118,7 @@
 			_ctrl2 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2006;
 			_ctrl3 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2007;
 			_ctrl4 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2008;
+			_ctrl5 = (uiNamespace getVariable 'wcspawndialog') displayCtrl 2009;
 
 			if(wcwithfriendsmarkers) then {
 				_ctrl3 ctrlSetText (localize "STR_FRIENDSMARKERSON_BUTTON");
@@ -127,11 +132,16 @@
 				_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 			};
 
-			if(wcwithenemytags) then {
-				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGON_BUTTON");
+			if(wcwithunitstagslocked) then {
+				_ctrl5 ctrlEnable false;
+				_ctrl5 ctrlSetText (localize "STR_UNITTAGOFF_BUTTON");
 			} else {
-				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGOFF_BUTTON");
-			};			
+				if(wcwithunitstags) then {
+					_ctrl5 ctrlSetText (localize "STR_UNITTAGON_BUTTON");
+				} else {
+					_ctrl5 ctrlSetText (localize "STR_UNITTAGOFF_BUTTON");
+				};
+			};
 
 			if(wcredeployement isEqualTo 2) then {
 				_ctrl4 ctrlEnable false;
@@ -181,13 +191,13 @@
 			_ctrl ctrlcommit 0;				
 		};
 
-		if(wcaction == "enemytags") then {
+		if(wcaction == "unittags") then {
 			wcaction = "";
-			wcwithenemytags = !wcwithenemytags;
-			if(wcwithenemytags) then {
-				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGON_BUTTON");
+			wcwithunitstags = !wcwithunitstags;
+			if(wcwithunitstags) then {
+				_ctrl5 ctrlSetText (localize "STR_UNITTAGON_BUTTON");
 			} else {
-				_ctrl5 ctrlSetText (localize "STR_ENEMYTAGOFF_BUTTON");
+				_ctrl5 ctrlSetText (localize "STR_UNITTAGOFF_BUTTON");
 			};
 			_ctrl5 ctrlcommit 0;				
 		};

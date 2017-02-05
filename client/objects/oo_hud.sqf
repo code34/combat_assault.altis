@@ -282,26 +282,26 @@
 		PUBLIC FUNCTION("", "drawPlayerTag") {	
 			_code = "
 					private ['_code', '_vehicle', '_rank', '_img', '_color'];
-					if(vehicle player == player) then {
-						{	
-							if(_x distance player < 30) then {
-								_vehicle = _x;
-								_rank = rank _vehicle;
-								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
-								_distance = (player distance _vehicle) / 30;
-								if((side _vehicle == west) and !(_vehicle in wcblacklist)) then {
-									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
-									_color set [3, 1 - _distance];
-									drawIcon3D [_img, _color, [ getPosATLVisual _vehicle select 0, getPosATLVisual _vehicle select 1, (getPosATLVisual _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaSemiBold' ];
-								} else {
-									if(wcwithenemytags) then {
+					if(wcwithunitstags) then {
+						if(vehicle player == player) then {
+							{	
+								if(_x distance player < 30) then {
+									_vehicle = _x;
+									_rank = rank _vehicle;
+									_img = [_rank, 'texture'] call BIS_fnc_rankParams;
+									_distance = (player distance _vehicle) / 30;
+									if((side _vehicle == west) and !(_vehicle in wcblacklist)) then {
+										_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
+										_color set [3, 1 - _distance];
+										drawIcon3D [_img, _color, [ getPosATLVisual _vehicle select 0, getPosATLVisual _vehicle select 1, (getPosATLVisual _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaSemiBold' ];
+									} else {
 										_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorEnemy');
 										_color set [3, 1 - _distance];
 										drawIcon3D [_img, _color, [ getPosATLVisual _vehicle select 0, getPosATLVisual _vehicle select 1, (getPosATLVisual _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaSemiBold' ];
 									};
-								};
-							 };
-						}foreach allunits;
+								 };
+							}foreach allunits;
+						};
 					};
 			";
 			_code;

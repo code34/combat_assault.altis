@@ -106,11 +106,11 @@
                 <Key ID="STR_EXIT_BUTTON">
                         <Original>Exit</Original>
                 </Key>
-                <Key ID="STR_ENEMYTAGON_BUTTON">
-                        <Original>Enemytags On</Original>
+                <Key ID="STR_UNITTAGON_BUTTON">
+                        <Original>Units tags On</Original>
                 </Key>  
-                <Key ID="STR_ENEMYTAGOFF_BUTTON">
-                        <Original>Enemytags Off</Original>
+                <Key ID="STR_UNITTAGOFF_BUTTON">
+                        <Original>Units tags Off</Original>
                 </Key>
                 <Key ID="STR_ROLLMESSAGEON_BUTTON">
                         <Original>Rollmessage On</Original>

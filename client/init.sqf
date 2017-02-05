@@ -50,6 +50,27 @@
 	rollmessage = [];
 	killzone = [];
 	rollprintmessage = "";
+	
+	// config variables
+	wcblacklist = [name player];
+	wcfriendlist = [];
+	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
+	wcboard = false;
+	wcwithrollmessages = true;
+	wcwithfriendsmarkers = true;	
+	if(wcwithunitstagsparam isEqualTo 0) then {
+		wcwithunitstags = false;
+		wcwithunitstagslocked = true;
+	}else{
+		wcwithunitstags = true;
+		wcwithunitstagslocked = false;
+	};
+	wcearplugs = false;
+	wcticket = 0;
+	playerkill = 0;
+	playerdeath = 0;
+	wccandeploy = true;
+
 	endLoadingScreen;
 	sleep 0.5;
 
@@ -70,21 +91,6 @@
 	};
 	
 	[] call WC_fnc_introcam;
-
-	// config variables
-	wcblacklist = [name player];
-	wcfriendlist = [];
-	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
-	wcboard = false;
-	wcwithrollmessages = true;
-	wcwithfriendsmarkers = true;
-	wcwithenemytags = true;
-	wcearplugs = false;
-
-	wcticket = 0;
-	playerkill = 0;
-	playerdeath = 0;
-	wccandeploy = true;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
 	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");

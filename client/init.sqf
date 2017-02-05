@@ -162,24 +162,24 @@
 				//if(isnil "_hug") then {
 				//	_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
 				//};
-				if(isnil "_earplug") then {
-					_earplug = player addAction ["Add/Remove earplugs", "client\scripts\earplugs.sqf", nil, 1.5, false, true];	
-				};
 			} else {
 				if(!isnil "_action") then {
 					player removeAction _action;
 					_action = nil;
 				};
-				if(!isnil "_earplug") then {
-					player removeAction _earplug;
-					_earplug = nil;
-				};				
 				//if(!isnil "_hug") then {
 				//	player removeAction _hug;
 				//	_hug = nil;
 				//};
 			};
-			if(!alive player) then {_action = nil; _hug = nil; _earplug = nil;};
+			if(isnil "_earplug") then {
+				_earplug = player addAction ["Add/Remove earplugs", "client\scripts\earplugs.sqf", nil, 1.5, false, true];	
+			};
+			if(!alive player) then {
+				_action = nil; 
+				//_hug = nil; 
+				_earplug = nil;
+			};
 			sleep 1;
 		};
 	};

@@ -79,10 +79,10 @@
 				["wcconvoy", "client"] call BME_fnc_publicvariable;				
 				["setText", "Truck - Expanding failed"] spawn MEMBER("marker", nil);
 			};
-			
+		
 			_counter = 0;
 			while { _counter < 360 } do {
-				if(count (crew _vehicle) == 0) then {
+				if(({alive _x} count (crew _vehicle)) == 0) then {
 					_counter = _counter + 1;
 				} else {
 					_counter = 0;

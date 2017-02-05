@@ -411,11 +411,12 @@
 
 		// soldiers walk around the sector
 		PUBLIC FUNCTION("", "walk") {
-			private ["_around", "_areasize", "_basesector", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp", "_sector"];
+			private ["_around", "_areasize", "_basesector", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp", "_sector", "_maxtime"];
 			
 			_group = MEMBER("group", nil);
 			_leader = leader _group;
 			_areasize = MEMBER("areasize", nil);
+			_maxtime = 60;
 
 			MEMBER("setSafeMode", nil);
 			
@@ -442,16 +443,16 @@
 			_group setCurrentWaypoint _wp;
 
 			_counter = 0;
-			while { _counter < 300 } do {
+			while { _counter < _maxtime } do {
 				_leader = leader _group;
 				if(format["%1",  _leader getVariable "complete"] == "true") then {
 					_leader setvariable ['complete', false];
-					_counter = 300;
+					_counter = _maxtime;
 				};
 				if(format["%1",  _leader getVariable "combat"] == "true") then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
-					_counter = 300;
+					_counter = _maxtime;
 				};
 				//if(!MEMBER("isCompleteGroup" ,nil)) then {
 				//	if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
@@ -460,21 +461,22 @@
 				//};
 				if("getAlert" call MEMBER("sector", nil)) then {
 					MEMBER("alert", true);
-					_counter = 300;
+					_counter = _maxtime;
 				};
 				MEMBER("scanTargets", nil);
 				_counter = _counter + 1;
-				sleep 0.1;
+				sleep 1;
 			};
 			deletewaypoint _wp;
 		};
 
 		PUBLIC FUNCTION("", "walkInBuildings") {
-			private ["_areasize", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp"];
+			private ["_areasize", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp", "_maxtime"];
 			
 			_group = MEMBER("group", nil);
 			_leader = leader _group;
 			_areasize = MEMBER("areasize", nil);
+			_maxtime = 300;
 
 			MEMBER("setBuildingMode", nil);
 			{
@@ -483,16 +485,16 @@
 			}foreach units MEMBER("group", nil);
 
 			_counter = 0;
-			while { _counter < 300 } do {
+			while { _counter < _maxtime } do {
 				_leader = leader _group;
 				if(format["%1",  _leader getVariable "complete"] == "true") then {
 					_leader setvariable ['complete', false];
-					_counter = 300;
+					_counter = _maxtime;
 				};
 				if(format["%1",  _leader getVariable "combat"] == "true") then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
-					_counter = 300;
+					_counter = _maxtime;
 				};
 				//if(!MEMBER("isCompleteGroup" ,nil)) then {
 				//	if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
@@ -501,11 +503,11 @@
 				//};
 				if("getAlert" call MEMBER("sector", nil)) then {
 					MEMBER("alert", true);
-					_counter = 300;
+					_counter =  _maxtime;
 				};
 				MEMBER("scanTargets", nil);
 				_counter = _counter + 1;
-				sleep 0.1;
+				sleep 1;
 			};
 		};		
 

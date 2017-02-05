@@ -38,12 +38,18 @@
 		};
 
 		PUBLIC FUNCTION("array", "popMember") {
-			private ["_array", "_group", "_vehicle", "_marker", "_list"];
+			private ["_array", "_group", "_vehicle", "_marker", "_list", "_x", "_y", "_z"];
 
 			_position = _this;
 
 			_vehicle = wcairchoppers call BIS_fnc_selectRandom;
-			
+
+			// avoid collision
+			_x = (_position select 0) + random 100;
+			_y = (_position select 1) + random 100;
+			_z = (_position select 2) + random 200;
+
+			_position = [ _x, _y, _z];
 			_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;
@@ -144,13 +150,15 @@
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
 
+			sleep 5;
+			
 			while { !_move } do {
 				_sector = ["getSectorFromPos", position _vehicle] call global_grid;
-				sleep 7;
+				sleep (random 5);
 				if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call global_grid)) then {
 					_move = true;
 				};
-				if(speed _vehicle < 60) then {
+				if(speed _vehicle < 10) then {
 					_move = true;
 				};
 			};

@@ -479,7 +479,7 @@
 				_array = "getEast" call global_atc;
 				_marker =  _array call BIS_fnc_selectRandom;
 				_position = getmarkerpos _marker;
-				_position = [_position select 0, _position select 1, 100];		
+				_position = [_position select 0, _position select 1, 100];	
 				_list = _position nearEntities [["Man", "Tank"], 600];
 				sleep 0.2;
 				if(west countside _list == 0) exitwith {

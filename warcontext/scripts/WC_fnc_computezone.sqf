@@ -46,10 +46,8 @@
 	};
 
 	{
-		if(random 1 > 0.75) then {
-			_position = getmarkerpos _x;
-			_sector = ["getSectorFromPos", _position] call global_grid;
-			["expandSector", _sector] call global_controller;
-			["expandSectorAround", [_sector, 7]] call global_controller;
-		};
+		_position = getmarkerpos _x;
+		_sector = ["getSectorFromPos", _position] call global_grid;
+		["expandSector", _sector] call global_controller;
+		["expandSectorAround", [_sector, 7]] call global_controller;
 	} foreach ("getAirports" call global_atc);

@@ -409,6 +409,50 @@
 			units _group;
 		};
 
+
+		PRIVATE FUNCTION("", "popParachute") {
+			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2", "_patrol", "_chute", "_state"];
+
+			_marker	=  MEMBER("marker", nil);		
+			_markerpos 	= getmarkerpos _marker;
+			_markersize	= (getMarkerSize _marker) select 1;
+			_state 		= MEMBER("state", nil);
+
+			sleep 60;
+
+			if!(_state isEqualTo 1) exitWith {[];};
+		
+			if(count wcrhsinfantrysquads == 0) then {
+				_type = wcinfantrysquads call BIS_fnc_selectRandom;	
+			} else {
+				_type = wcrhsinfantrysquads call BIS_fnc_selectRandom;
+			};
+		
+			_position = _markerpos findEmptyPosition [0,30];
+			if(_position isEqualTo []) exitWith {[];};
+		
+			if(count wcrhsinfantrysquads == 0) then {
+				_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call WC_fnc_spawngroup;
+			} else {
+				_group = [_position, east, _type] call WC_fnc_spawngroup;
+			};
+		
+			{
+				_handle = [_x, _type] spawn WC_fnc_setskill;
+				_chute = "Steerable_Parachute_F" createVehicle [0,0,0]; 
+				_chute setPos [getPos _x select 0, getPos _x select 1, 100]; 
+				_x moveIndriver _chute;
+				sleep 0.1;
+			}foreach (units _group);
+			
+			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
+			"patrol" spawn _patrol;
+
+			_units = MEMBER("units",nil ) + units _group;
+			MEMBER("units", _units);
+		};
+
+
 		PRIVATE FUNCTION("", "popSniper") {
 			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2"];
 

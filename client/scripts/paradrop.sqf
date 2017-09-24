@@ -35,7 +35,7 @@
 	while {count wcteleportposition == 0} do { sleep 0.1;};
 	onMapSingleClick "";
 
-	player setpos [wcteleportposition select 0, wcteleportposition select 1, 100];
+	player setpos [wcteleportposition select 0, wcteleportposition select 1, 500];
 	player setVelocity [0, 0, 10];
 	player switchmove "HaloFreeFall_non";
 	hintSilent "";
@@ -45,7 +45,7 @@
 	removeBackpack player;
 
 	player addBackPack "B_parachute";
-	player action ["openParachute", player];
+	//player action ["openParachute", player];
 
 	[_backpack, _items] spawn {
 		_backpack = _this select 0;

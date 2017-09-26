@@ -221,6 +221,8 @@
 
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;
+	"startReinforcment" spawn global_controller;
+
 	(_size/_sectorsize) call WC_fnc_computezone;
 
 	"start" spawn global_dogfight;

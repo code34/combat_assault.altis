@@ -258,9 +258,12 @@
 			}foreach _around;
 		};		
 
-		PUBLIC FUNCTION("array", "expandAlertAround"){
+		PUBLIC FUNCTION("code", "expandAlertAround"){
 			private ["_sector", "_around"];
+			
 			_sector = _this;
+			["setAlert", true] call _this;
+			_sector = "getSector" call _this;
 
 			_around = ["getAllSectorsAroundSector", [_sector,3]] call global_grid;
 
@@ -390,6 +393,16 @@
 				MEMBER("setPlayers", nil);
 				MEMBER("spawnSector", nil);
 				sleep 0.0000001;
+			};
+		};
+		
+		PUBLIC FUNCTION("", "startReinforcment") {
+			while { true } do {
+				{
+					if(random 1 > 0.95) then { "popParachute" call _x; };
+					sleep 0.1;
+				} foreach ("entrySet" call MEMBER("zone_hashmap",nil));
+				sleep 60;
 			};
 		};
 

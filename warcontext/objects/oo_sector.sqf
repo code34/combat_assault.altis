@@ -73,13 +73,7 @@
 		PUBLIC FUNCTION("","getAntiAir") FUNC_GETVAR("antiair");
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
 		PUBLIC FUNCTION("","getState") FUNC_GETVAR("state");
-
-		PUBLIC FUNCTION("", "getThis") {
-			private ["_key", "_sector"];
-			_key = MEMBER("sector", nil);
-			_sector = ["get", str(_key)] call global_zone_hashmap;
-			_sector;
-		};
+		PUBLIC FUNCTION("", "getThis") { _self; };
 
 		// state (0:unspawn, 1:spawn, 2:completed) 
 		PRIVATE FUNCTION("scalar", "setState") {
@@ -344,11 +338,6 @@
 			MEMBER("alert", _this);
 		};
 
-		PUBLIC FUNCTION("bool", "setAlertAround") {
-			MEMBER("alert", _this);
-			["expandAlertAround", MEMBER("getSector", nil)] call global_controller;
-		};
-
 		PUBLIC FUNCTION("", "UnSpawn") {
 			private ["_critical"];
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
@@ -365,7 +354,7 @@
 				//};
 				_critical = floor(random 2);
 				["expandSectorAround", [MEMBER("getSector", nil), _critical]] call global_controller;
-				["expandAlertAround", MEMBER("getSector", nil)] call global_controller;
+				["expandAlertAround", MEMBER("getThis", nil)] call global_controller;
 			};
 			//MEMBER("setAlert", false);
 			MEMBER("state", 0);
@@ -410,15 +399,13 @@
 		};
 
 
-		PRIVATE FUNCTION("", "popParachute") {
-			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2", "_patrol", "_chute", "_state"];
+		PUBLIC FUNCTION("", "popParachute") {
+			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2", "_patrol", "_chute", "_state", "_units"];
 
 			_marker	=  MEMBER("marker", nil);		
 			_markerpos 	= getmarkerpos _marker;
 			_markersize	= (getMarkerSize _marker) select 1;
 			_state 		= MEMBER("state", nil);
-
-			sleep 60;
 
 			if!(_state isEqualTo 1) exitWith {[];};
 		
@@ -428,7 +415,7 @@
 				_type = wcrhsinfantrysquads call BIS_fnc_selectRandom;
 			};
 		
-			_position = _markerpos findEmptyPosition [0,30];
+			_position = _markerpos;
 			if(_position isEqualTo []) exitWith {[];};
 		
 			if(count wcrhsinfantrysquads == 0) then {

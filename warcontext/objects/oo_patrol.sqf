@@ -377,7 +377,7 @@
 		};		
 
 		PUBLIC FUNCTION("", "setAlert") {
-			["setAlertAround", true] call MEMBER("sector", nil);
+			["expandAlertAround", MEMBER("sector", nil)] call global_controller;
 			MEMBER("alert", true);
 		};
 

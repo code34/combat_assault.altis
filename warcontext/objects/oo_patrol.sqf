@@ -1,7 +1,7 @@
 
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2017 Nicolas BOITEUX
 
 	CLASS OO_PATROL
 	
@@ -43,6 +43,7 @@
 			MEMBER("getBuildings", nil);
 			MEMBER("alert", false);
 			MEMBER("setFlank", nil);
+			MEMBER("target", objNull);
 		};
 
 		PUBLIC FUNCTION("","getGroup") FUNC_GETVAR("group");
@@ -166,7 +167,7 @@
 			_leader = leader MEMBER("group", nil);
 			_candidats = [];
 			_target = MEMBER("target", nil);
-			_oldtarget = objnull;
+			_oldtarget = objNull;
 			
 			{
 				_array = [_leader, _x];
@@ -181,7 +182,6 @@
 					_array = [_leader, _oldtarget];
 					_index = floor (MEMBER("estimateTarget", _array));
 					_candidats = _candidats + [[_index, _oldtarget]];
-
 				};
 			};
 

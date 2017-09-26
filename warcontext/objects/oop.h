@@ -154,6 +154,7 @@
 			NAMESPACE setVariable [AUTO_INC_VAR(className), (GET_AUTO_INC(className) + 1)]; \
 			_code = compile format ['CHECK_THIS; ENSURE_INDEX(1,nil); (["%1", (_this select 0), (_this select 1), 0]) call GETCLASS(className);', (className + "_" + str(GET_AUTO_INC(className)))]; \
 			ENSURE_INDEX(1,nil); \
+			NAMESPACE setVariable [format['%1_%2_code', className, GET_AUTO_INC(className)], _code];\
 			[CONSTRUCTOR_METHOD, (_this select 1)] call _code; \
 			_code; \
 		}; \
@@ -162,12 +163,13 @@
 			[DECONSTRUCTOR_METHOD, (_this select 2)] call (_this select 1); \
 		}; \
 		default { \
-			private ["_classID", "_member","_argType","_access","_default"]; \
+			private ["_classID", "_member","_argType","_access","_default", "_self"]; \
 			_classID = _this select 0; \
 			_member = _this select 1; \
 			_access = DEFAULT_PARAM(3,0); \
 			_this = DEFAULT_PARAM(2,nil); \
 			_argType = if (isNil "_this") then {""} else {typeName _this}; \
+			_self = NAMESPACE getvariable format["%1_code", _classID]; \
 			switch (true) do {
 			
 #define FINALIZE_CLASS };};};};}]

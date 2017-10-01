@@ -396,7 +396,7 @@
 			};
 		};
 		
-		PUBLIC FUNCTION("", "startReinforcment") {
+		PUBLIC FUNCTION("", "startParaDrop") {
 			while { true } do {
 				{
 					if(random 1 > 0.95) then { "popParachute" call _x; };

@@ -24,9 +24,11 @@
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("string","marker");
 		PRIVATE VARIABLE("object","base");
+		PRIVATE VARIABLE("bool","packed");
 
 		PUBLIC FUNCTION("","constructor") {
 			MEMBER("buildBase", nil);
+			MEMBER("packed", false);
 		};
 
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
@@ -45,6 +47,8 @@
 				_position = MEMBER("generatePosition", nil);
 				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 100]);
 				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [20,80]);
+				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+
 				if!(_base isEqualTo objNull) then {
 					_base addEventHandler ['HandleDamage', { false; }];
 					_base setdir (random 360);
@@ -92,6 +96,53 @@
 			_marker setMarkerType "b_hq";
 			MEMBER("marker", _marker);
 		};
+
+		PUBLIC FUNCTION("array", "unpackBase"){
+			private ["_position", "_base"];
+
+			_position = _this;
+
+			if(MEMBER("packed", nil)) then {
+				MEMBER("packed", false);
+				deleteVehicle MEMBER("base", nil);
+
+				"respawn_west" setmarkerpos _position;
+				MEMBER("marker", nil) setMarkerPos _position;
+
+				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [20,80]);
+				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+				
+				if!(_base isEqualTo objNull) then {
+					_base addEventHandler ['HandleDamage', { false; }];
+					_base setdir (random 360);
+				};
+
+				MEMBER("base", _base);
+			};
+		};
+
+		PUBLIC FUNCTION("array", "packBase"){
+			private ["_position", "_base"];
+			
+			_position = _this;
+
+			if(!MEMBER("packed", nil)) then {
+				MEMBER("packed", true);
+				deleteVehicle MEMBER("base", nil);
+
+				_base = "B_Truck_01_transport_F" createVehicle (_position findEmptyPosition [0,15]);
+				[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+				
+				_mark = MEMBER("marker", nil);
+				[_base, _mark] spawn {
+					while { alive (_this select 0)} do {
+						(_this select 1) setMarkerPos (getpos (_this select 0));
+						sleep 0.1;
+					};
+				};
+				MEMBER("base", _base);
+			};
+		};		
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			MEMBER("deleteBase", nil);

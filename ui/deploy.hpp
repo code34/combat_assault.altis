@@ -4,7 +4,7 @@ class spawndialog {
 	enableSimulation = false; 
 	controlsBackground[] = { }; 
 	objects[] = { }; 
-	controls[] = { column, map, title, labelplayer, player, deploy, exit, mapbutton, rollmessage, equipment, friendsmanagement, unittags, sliderdistanceview, labelviewdistance, sliderdistanceview2, labelviewdistance2, sliderdistanceview3, labelviewdistance3}; 
+	controls[] = { column, map, title, labelplayer, player, deploy, exit, mapbutton, rollmessage, equipment, friendsmanagement, unittags}; 
 	onLoad = "uiNamespace setVariable ['wcspawndialog', _this select 0];";
 
 	class column : camo {
@@ -124,75 +124,5 @@ class spawndialog {
 		sizeEx = 0.05 * safezoneH;
 		text = $STR_EXIT_BUTTON;
 		action = "closeDialog 0; wcaction = 'exit';";
-	};
-
-	class labelviewdistance : StdText{
-		idc=-1;
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		y = (0.61 * safezoneH + safezoneY);
-		h = (0.025 * safezoneH);
-		sizeEx = 0.018 * safezoneH;
-		text = "View Distance";
 	};	
-
-	class sliderdistanceview {
-		idc = -1;
-    		type = CT_SLIDER;
-    		style = SL_HORZ; 
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		y = (0.64 * safezoneH + safezoneY);
-		h = (0.025 * safezoneH);
-    		color[] = { 1, 1, 1, 1 }; 
-    		coloractive[] = { 1, 1, 1, 1 };
-    		onSliderPosChanged = "desiredviewdistance_inf = (sliderPosition 712)";
-   	};
-
-	class labelviewdistance2 : StdText{
-		idc=-1;
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		y = (0.67 * safezoneH + safezoneY);
-		h = (0.025 * safezoneH);
-		sizeEx = 0.018 * safezoneH;
-		text = "Vehicle View Distance ";
-	};	
-
-	class sliderdistanceview2 {
-		idc = -1;
-    		type = CT_SLIDER;
-    		style = SL_HORZ; 
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		y = (0.70 * safezoneH + safezoneY);
-		h = (0.025 * safezoneH);
-    		color[] = { 1, 1, 1, 1 }; 
-    		coloractive[] = { 1, 1, 1, 1 };
-    		onSliderPosChanged = "desiredviewdistance_inf = (sliderPosition 712)";
-   	};
-
- 	class labelviewdistance3 : StdText{
-		idc=-1;
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		y = (0.73 * safezoneH + safezoneY);
-		h = (0.025 * safezoneH);
-		sizeEx = 0.018 * safezoneH;
-		text = "Air View Distance";
-	};	
-
-	class sliderdistanceview3 {
-		idc = -1;
-    		type = CT_SLIDER;
-    		style = SL_HORZ; 
-		x = (0.15 * safezoneW + safezoneX);
-		w = (0.15 * safezoneW);
-		y = (0.76 * safezoneH + safezoneY);
-		h = (0.025 * safezoneH);
-    		color[] = { 1, 1, 1, 1 }; 
-    		coloractive[] = { 1, 1, 1, 1 };
-    		onSliderPosChanged = "desiredviewdistance_inf = (sliderPosition 712)";
-   	};  	
-
 };

@@ -34,12 +34,12 @@
 	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
 	WC_fnc_setskill	 	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_setskill.sqf";
-	WC_fnc_computezone	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_computezone.sqf";
-	WC_fnc_patrol		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_patrol.sqf";
+	WC_fnc_computezone		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_computezone.sqf";
+	WC_fnc_patrol			= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_patrol.sqf";
 	WC_fnc_setskill		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_setskill.sqf";
 	WC_fnc_vehiclehandler	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
-	WC_fnc_spawngroup	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_spawngroup.sqf";
-	WC_fnc_servicing	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_servicing.sqf";
+	WC_fnc_spawngroup		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_spawngroup.sqf";
+	WC_fnc_servicing		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_servicing.sqf";
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
@@ -49,6 +49,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_factory.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
@@ -217,6 +218,7 @@
 	global_vehicles = ["new", []] call OO_HASHMAP;
 	global_ticket = ["new", wcnumberofticket] call OO_TICKET;
 	global_atc = ["new", _size] call OO_ATC;
+	global_factory = "new" call OO_FACTORY;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
 
 	"queueSector" spawn global_controller;
@@ -227,6 +229,7 @@
 
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;
+	"start" spawn global_factory;
 
 	// init for slow server
 	sleep 10;

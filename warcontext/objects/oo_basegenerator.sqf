@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2016 Nicolas BOITEUX
+	Copyright (C) 2016-2017 Nicolas BOITEUX
 
 	CLASS OO_BASEGENERATOR
 	
@@ -46,7 +46,7 @@
 			while { _base isEqualTo objNull } do {
 				_position = MEMBER("generatePosition", nil);
 				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 100]);
-				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [20,80]);
+				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
 				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 
 				if!(_base isEqualTo objNull) then {
@@ -98,45 +98,49 @@
 		};
 
 		PUBLIC FUNCTION("array", "unpackBase"){
-			private ["_position", "_base"];
+			private ["_position", "_base", "_newposition"];
 
-			_position = _this;
+			_position = getMarkerPos "respawn_west";
 
 			if(MEMBER("packed", nil)) then {
 				MEMBER("packed", false);
 				deleteVehicle MEMBER("base", nil);
 
-				"respawn_west" setmarkerpos _position;
-				MEMBER("marker", nil) setMarkerPos _position;
+				_newposition =  (_position findEmptyPosition [5,50]);
+				if(_newposition isEqualTo []) exitWith {};
 
-				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [20,80]);
+				_base = "Land_Cargo_HQ_V2_F" createVehicle _newposition;
 				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 				
-				if!(_base isEqualTo objNull) then {
-					_base addEventHandler ['HandleDamage', { false; }];
-					_base setdir (random 360);
-				};
+				_base addEventHandler ['HandleDamage', { false; }];
+				_base setdir (random 360);
 
+				"respawn_west" setmarkerpos (position _base);
+				MEMBER("marker", nil) setMarkerPos (position _base);
 				MEMBER("base", _base);
 			};
 		};
 
 		PUBLIC FUNCTION("array", "packBase"){
-			private ["_position", "_base"];
+			private ["_position", "_base", "_newposition"];
 			
-			_position = _this;
+			_position = getMarkerPos "respawn_west";
 
 			if(!MEMBER("packed", nil)) then {
 				MEMBER("packed", true);
 				deleteVehicle MEMBER("base", nil);
 
-				_base = "B_Truck_01_transport_F" createVehicle (_position findEmptyPosition [0,15]);
+				_newposition =  (_position findEmptyPosition [0,15]);
+				if(_newposition isEqualTo []) exitWith {};
+
+				_base = "B_Truck_01_transport_F" createVehicle _newposition;
 				[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 				
 				_mark = MEMBER("marker", nil);
 				[_base, _mark] spawn {
 					while { alive (_this select 0)} do {
 						(_this select 1) setMarkerPos (getpos (_this select 0));
+						"respawn_west" setmarkerpos (getpos (_this select 0));
 						sleep 0.1;
 					};
 				};

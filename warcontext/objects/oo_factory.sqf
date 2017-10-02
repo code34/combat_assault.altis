@@ -48,7 +48,7 @@
 			_objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F"], _size];
 			
 			for "_x" from 0 to 10 step 1 do {
-				_object = _objects deleteAt ceil((random(count _objects)));
+				_object = _objects deleteAt floor((random(count _objects)));
 				_factorys = _factorys + [position _object];
 			};
 

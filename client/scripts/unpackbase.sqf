@@ -18,5 +18,5 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	wcunpackbase = position player;
+	wcunpackbase = "";
 	["wcunpackbase", "server"] call BME_fnc_publicvariable;

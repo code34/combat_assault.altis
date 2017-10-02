@@ -97,7 +97,7 @@
 			MEMBER("marker", _marker);
 		};
 
-		PUBLIC FUNCTION("array", "unpackBase"){
+		PUBLIC FUNCTION("", "unpackBase"){
 			private ["_position", "_base", "_newposition"];
 
 			_position = getMarkerPos "respawn_west";
@@ -121,7 +121,7 @@
 			};
 		};
 
-		PUBLIC FUNCTION("array", "packBase"){
+		PUBLIC FUNCTION("", "packBase"){
 			private ["_position", "_base", "_newposition"];
 			
 			_position = getMarkerPos "respawn_west";

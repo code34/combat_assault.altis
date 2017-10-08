@@ -45,7 +45,7 @@
 			
 			_center = getArray (configfile >> "CfgWorlds" >> worldName >> "centerPosition");
 			_size = (getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
-			_objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F"], _size];
+			_objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F", "Land_MilOffices_V1_F"], _size];
 			
 			for "_x" from 0 to 10 step 1 do {
 				_object = _objects deleteAt floor((random(count _objects)));

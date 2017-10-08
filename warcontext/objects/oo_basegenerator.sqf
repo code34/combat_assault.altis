@@ -25,6 +25,7 @@
 		PRIVATE VARIABLE("string","marker");
 		PRIVATE VARIABLE("object","base");
 		PRIVATE VARIABLE("bool","packed");
+		PRIVATE VARIABLE("object", "grid");
 
 		PUBLIC FUNCTION("","constructor") {
 			MEMBER("buildBase", nil);
@@ -38,7 +39,7 @@
 		};
 
 		PUBLIC FUNCTION("", "buildBase"){
-			private ["_position", "_base"];
+			private ["_position", "_base", "_grid"];
 
 			_position = [0,0];
 			_base = objNull;
@@ -55,12 +56,20 @@
 				};
 				sleep 0.1;
 			};
-
+			_grid = ["new", [(_position select 0) -50, (_position select 1) - 50, 150, 150, 10, 10]] call OO_GRID;
 			"respawn_west" setmarkerpos _position;
 			MEMBER("marker", nil) setMarkerPos _position;
 			MEMBER("createMarker", _position);
 			MEMBER("position", _position);
 			MEMBER("base", _base);
+			MEMBER("grid", _grid);
+
+			_sectors = ["getAllSectorsAroundPos", [_position, 4]] call _grid;
+			{
+				_position = ["getPosFromSector", _x]  call _grid;
+				_test = "Land_Cargo_House_V3_F" createVehicle _position;
+				sleep 0.01;
+			}foreach _sectors;
 		};
 
 		PUBLIC FUNCTION("", "deleteBase"){
@@ -98,12 +107,13 @@
 		};
 
 		PUBLIC FUNCTION("", "unpackBase"){
-			private ["_position", "_base", "_newposition"];
+			private ["_position", "_base", "_newposition", "_dir", "_sectors", "_position"];
 
 			_position = getMarkerPos "respawn_west";
 
 			if(MEMBER("packed", nil)) then {
 				MEMBER("packed", false);
+				_dir = getDir MEMBER("base", nil);
 				deleteVehicle MEMBER("base", nil);
 
 				_newposition =  (_position findEmptyPosition [5,50]);
@@ -113,7 +123,7 @@
 				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 				
 				_base addEventHandler ['HandleDamage', { false; }];
-				_base setdir (random 360);
+				_base setdir _dir;
 
 				"respawn_west" setmarkerpos (position _base);
 				MEMBER("marker", nil) setMarkerPos (position _base);

@@ -22,13 +22,24 @@
 
 	CLASS("OO_BASEGENERATOR")
 		PRIVATE VARIABLE("array","position");
+		PRIVATE VARIABLE("array","structures");
 		PRIVATE VARIABLE("string","marker");
 		PRIVATE VARIABLE("object","base");
 		PRIVATE VARIABLE("bool","packed");
-		PRIVATE VARIABLE("object", "grid");
+		PRIVATE VARIABLE("code", "grid");
 
 		PUBLIC FUNCTION("","constructor") {
-			MEMBER("buildBase", nil);
+			
+			_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
+			_sectorsize = 10;
+			_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
+			MEMBER("grid", _grid);
+
+			_position = MEMBER("generateRandomPosition", nil);
+			MEMBER("createMarker", _position);
+			MEMBER("buildTerrain", _position);
+			MEMBER("buildHQ", _position);
+			MEMBER("buildStructures", _position);
 			MEMBER("packed", false);
 		};
 
@@ -38,38 +49,46 @@
 			MEMBER("position", _this);
 		};
 
-		PUBLIC FUNCTION("", "buildBase"){
-			private ["_position", "_base", "_grid"];
+		PUBLIC FUNCTION("array", "buildTerrain"){
+			private ["_position", "_positions", "_grid"];
+			_position = _this;
+			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 150]);
+		}; 
 
-			_position = [0,0];
-			_base = objNull;
+		PUBLIC FUNCTION("array", "buildStructures"){
+			private ["_type", "_structures", "_position", "_sectors", "_grid"];
 
-			while { _base isEqualTo objNull } do {
-				_position = MEMBER("generatePosition", nil);
-				{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 100]);
-				_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
-				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+			_position = _this;
+			_grid = MEMBER("grid", nil);
+			_structures = [];
 
-				if!(_base isEqualTo objNull) then {
-					_base addEventHandler ['HandleDamage', { false; }];
-					_base setdir (random 360);
-				};
-				sleep 0.1;
-			};
-			_grid = ["new", [(_position select 0) -50, (_position select 1) - 50, 150, 150, 10, 10]] call OO_GRID;
-			"respawn_west" setmarkerpos _position;
-			MEMBER("marker", nil) setMarkerPos _position;
-			MEMBER("createMarker", _position);
-			MEMBER("position", _position);
-			MEMBER("base", _base);
-			MEMBER("grid", _grid);
-
-			_sectors = ["getAllSectorsAroundPos", [_position, 4]] call _grid;
+			_type = ["Land_Cargo_House_V3_F","Land_Cargo_House_V3_F","Land_Cargo_Patrol_V1_F", "Land_Cargo_House_V3_F","Land_Cargo_House_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Medevac_house_V1_F", "Land_Medevac_house_V1_F", "Land_Medevac_house_V1_F", "Land_Medevac_house_V1_F", "Land_HBarrierTower_F", "CamoNet_BLUFOR_F", "Land_Research_house_V1_F"];
+			_sectors = ["getAllSectorsAroundPos", [_position, 3]] call _grid;
 			{
+				//_positions = _positions + [["getPosFromSector", _x]  call _grid];
 				_position = ["getPosFromSector", _x]  call _grid;
-				_test = "Land_Cargo_House_V3_F" createVehicle _position;
+				_object = (selectRandom _type)  createVehicle _position;
+				_object setdir (selectRandom [0,90,180,270]);
+				_structures = _structures + [_object];
 				sleep 0.01;
 			}foreach _sectors;
+			MEMBER("structures", _structures);
+		};
+
+		PUBLIC FUNCTION("array", "buildHQ"){
+			private ["_position", "_base"];
+
+			_position = _this;
+
+			_base = objNull;
+			_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
+			[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+			_base addEventHandler ['HandleDamage', { false; }];
+			
+			"respawn_west" setmarkerpos _position;
+			MEMBER("marker", nil) setMarkerPos _position;
+			MEMBER("position", _position);
+			MEMBER("base", _base);
 		};
 
 		PUBLIC FUNCTION("", "deleteBase"){
@@ -77,7 +96,7 @@
 			deleteMarker MEMBER("marker", nil);
 		};
 
-		PUBLIC FUNCTION("", "generatePosition"){
+		PUBLIC FUNCTION("", "generateRandomPosition"){
 			private ["_flag", "_sector", "_position", "_size", "_sectorsize"];
 			
 			_flag = false;
@@ -116,18 +135,11 @@
 				_dir = getDir MEMBER("base", nil);
 				deleteVehicle MEMBER("base", nil);
 
-				_newposition =  (_position findEmptyPosition [5,50]);
-				if(_newposition isEqualTo []) exitWith {};
+				_position =  (_position findEmptyPosition [5,50]);
+				if(_position isEqualTo []) exitWith {};
 
-				_base = "Land_Cargo_HQ_V2_F" createVehicle _newposition;
-				[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
-				
-				_base addEventHandler ['HandleDamage', { false; }];
-				_base setdir _dir;
-
-				"respawn_west" setmarkerpos (position _base);
-				MEMBER("marker", nil) setMarkerPos (position _base);
-				MEMBER("base", _base);
+				MEMBER("buildHQ", _position);
+				MEMBER("buildStructures", _position);
 			};
 		};
 
@@ -139,6 +151,7 @@
 			if(!MEMBER("packed", nil)) then {
 				MEMBER("packed", true);
 				deleteVehicle MEMBER("base", nil);
+				{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);
 
 				_newposition =  (_position findEmptyPosition [0,15]);
 				if(_newposition isEqualTo []) exitWith {};

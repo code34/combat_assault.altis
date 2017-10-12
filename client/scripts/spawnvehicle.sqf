@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_vehicleslist", "_index", "_type", "_air", "_name", "_picture", "_positions", "_list", "_text", "_ctrl"];
+	private ["_vehicleslist", "_index", "_type", "_air","_armor","_name", "_picture", "_positions", "_list", "_text", "_ctrl"];
 
 	_vehicles = [];
 	_positions = [];
@@ -36,6 +36,39 @@
 			};
 		};
 	} foreach _positions;
+
+	if(isnil "wcairports") then { 
+		["getairports", "server"] call BME_fnc_publicvariable;
+		waitUntil { !isNil "wcairports"; };
+	};
+	if(isnil "wcfactorys") then { 
+		["getfactorys", "server"] call BME_fnc_publicvariable;
+		waitUntil { !isNil "wcfactorys"; };
+	};
+
+	_air = false;
+	_armor = false;
+	{
+		if(position player distance _x < 300) then {
+			_list = (position player) nearEntities [["Man", "Tank"], 300];
+			sleep 0.2;
+			if(east countside _list == 0) then {
+				_air = true;
+			};
+		};
+	} forEach wcairports;
+
+	{
+		if(position player distance _x < 300) then {
+			_list = (position player) nearEntities [["Man", "Tank"], 300];
+			sleep 0.2;
+			if(east countside _list == 0) then {
+				_armor = true;
+			};
+		};
+	} forEach wcfactorys;
+
+
 
 	if(_air) then {
 		_vehicleslist = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'rhs_vehclass_tank','rhs_vehclass_aircraft', 'rhs_vehclass_helicopter']  } } )" configClasses (configFile >> "CfgVehicles");

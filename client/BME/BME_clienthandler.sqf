@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2013-2017 Nicolas BOITEUX
 
 	Bus Message Exchange (BME)
 	
@@ -25,6 +25,14 @@
 	BME_netcode_bme_message = {
 		bme_message = _this select 0;
 		hint bme_message;
+	};
+
+	BME_netcode_wcairports = {
+		wcairports = _this select 0;
+	};
+
+	BME_netcode_wcfactorys = {
+		wcfactorys = _this select 0;
 	};
 	
 	BME_netcode_vehicleavalaible = {

@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2013-2017 Nicolas BOITEUX
 
 	Bus Message Exchange (BME)
 	
@@ -29,6 +29,16 @@
 
 	BME_netcode_server_wcpackbase = {
 		"packBase" call global_base;
+	};
+
+	BME_netcode_server_getairports = {
+		wcairports = "getAirports" call global_atc;
+		["wcairports", "client"] call BME_fnc_publicvariable;
+	};
+
+	BME_netcode_server_getfactorys = {
+		wcfactorys = "getFactorys" call global_factory;
+		["wcfactorys", "client"] call BME_fnc_publicvariable;
 	};
 
 	BME_netcode_server_bme_log = {

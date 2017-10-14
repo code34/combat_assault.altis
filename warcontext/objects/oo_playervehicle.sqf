@@ -144,18 +144,17 @@
 				};
 
 				default {
-					if(_position distance (getMarkerPos "respawn_west") > 300) then {
-						_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-						//_vehicle = _type createVehicle [_position select 0, _position select 1,  5000];
-						_vehicle = createVehicle [_type, [_position select 0, _position select 1,  5000], [], 0, "FLY"];
-						_vehicle setpos [_position select 0, _position select 1,  150];
-						_vehicle setdir (random 360); 
-						_vehicle setVelocity [0, 0, 0];
-						MEMBER("paraVehicle", _vehicle);
-					} else {
-						_position = ((getMarkerPos "respawn_west") findEmptyPosition [10,60]);
-						_vehicle = _type createVehicle _position;
-					};
+					//if(_position distance (getMarkerPos "respawn_west") > 300) then {
+					//	_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					//	_vehicle = createVehicle [_type, [_position select 0, _position select 1,  5000], [], 0, "FLY"];
+					//	_vehicle setpos [_position select 0, _position select 1,  150];
+					//	_vehicle setdir (random 360); 
+					//	_vehicle setVelocity [0, 0, 0];
+					//	MEMBER("paraVehicle", _vehicle);
+					//} else {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle _position;
+					//};
 				};
 			};	
 			

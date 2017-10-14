@@ -20,6 +20,7 @@
 
 	_vehicles = [];
 	_positions = [];
+	_vehicleslist = [];
 	disableSerialization;
 	
 	// Retrieve airports
@@ -38,10 +39,12 @@
 	} foreach _positions;
 
 	if(isnil "wcairports") then { 
+		getairports = "";
 		["getairports", "server"] call BME_fnc_publicvariable;
 		waitUntil { !isNil "wcairports"; };
 	};
 	if(isnil "wcfactorys") then { 
+		getfactorys = "";
 		["getfactorys", "server"] call BME_fnc_publicvariable;
 		waitUntil { !isNil "wcfactorys"; };
 	};
@@ -49,7 +52,7 @@
 	_air = false;
 	_armor = false;
 	{
-		if(position player distance _x < 300) then {
+		if(position player distance (getMarkerPos _x)  < 300) then {
 			_list = (position player) nearEntities [["Man", "Tank"], 300];
 			sleep 0.2;
 			if(east countside _list == 0) then {
@@ -59,7 +62,7 @@
 	} forEach wcairports;
 
 	{
-		if(position player distance _x < 300) then {
+		if(position player distance  (getMarkerPos _x) <150) then {
 			_list = (position player) nearEntities [["Man", "Tank"], 300];
 			sleep 0.2;
 			if(east countside _list == 0) then {
@@ -68,13 +71,18 @@
 		};
 	} forEach wcfactorys;
 
-
-
 	if(_air) then {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'rhs_vehclass_tank','rhs_vehclass_aircraft', 'rhs_vehclass_helicopter']  } } )" configClasses (configFile >> "CfgVehicles");
-	} else {
-		_vehicleslist = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'rhs_vehclass_tank']  } } )" configClasses (configFile >> "CfgVehicles");
+		_temp = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Air', 'rhs_vehclass_aircraft', 'rhs_vehclass_helicopter']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = _vehicleslist + _temp;
 	};
+
+	if(_armor) then {
+		_temp = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Armored', 'rhs_vehclass_tank']  } } )" configClasses (configFile >> "CfgVehicles");
+		_vehicleslist = _vehicleslist + _temp;
+	};
+
+	_temp = "( (getNumber (_x >> 'scope') >= 1) && {getNumber (_x >> 'side') >= 0 && {getText (_x >> 'vehicleClass') in ['Car']  } } )" configClasses (configFile >> "CfgVehicles");
+	_vehicleslist = _vehicleslist + _temp;
 
 	lbClear 1255;
 

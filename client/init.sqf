@@ -54,7 +54,7 @@
 	// config variables
 	wcblacklist = [name player];
 	wcfriendlist = [];
-	wcbannerserver = "TS: COMBAT-ASSAULT.EU";
+	wcbannerserver = "COMBAT ASSAULT MOD 1.40 (Alpha)";
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;	

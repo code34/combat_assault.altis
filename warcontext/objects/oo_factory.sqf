@@ -27,6 +27,7 @@
 		PRIVATE VARIABLE("array", "factorys");
 
 		PUBLIC FUNCTION("","constructor") {
+			private ["_array"];
 			_array = [];
 			MEMBER("run", false);
 			MEMBER("west", _array);
@@ -39,13 +40,13 @@
 		PUBLIC FUNCTION("","getFactorys") FUNC_GETVAR("factorys");
 
 		PUBLIC FUNCTION("", "discover") {
-			private ["_positions", "_factorys", "_center", "_size", "_names"];
+			private ["_positions", "_factorys", "_center", "_size", "_names", "_temp", "_name", "_objects", "_object", "_center"];
 
 			_factorys = [];
 			
 			_center = getArray (configfile >> "CfgWorlds" >> worldName >> "centerPosition");
 			_size = (getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
-			_objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F", "Land_MilOffices_V1_F"], _size];
+			_objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F", "Land_MilOffices_V1_F", "Land_Factory_Main_F", "Land_Factory_Tunnel_F", "Land_DPP_01_mainFactory_F", "Land_DPP_01_smallFactory_F", "Land_SCF_01_boilerBuilding_F", "Land_SM_01_shed_F", "Land_SM_01_shed_unfinished_F", "Land_SM_01_shelter_narrow_F", "Land_SM_01_shelter_wide_F"], _size];
 			
 			for "_x" from 0 to 10 step 1 do {
 				_object = _objects deleteAt floor((random(count _objects)));

@@ -25,6 +25,7 @@
 		"_globalindex",
 		"_position",
 		"_sector",
+		"_sectorsize",
 		"_exist"
 	];
 
@@ -225,7 +226,7 @@
 	"startZone" spawn global_controller;
 	"startParaDrop" spawn global_controller;
 
-	(_size/_sectorsize) call WC_fnc_computezone;
+	 (_size/_sectorsize) call WC_fnc_computezone;
 
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;

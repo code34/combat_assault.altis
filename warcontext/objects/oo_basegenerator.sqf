@@ -29,7 +29,8 @@
 		PRIVATE VARIABLE("code", "grid");
 
 		PUBLIC FUNCTION("","constructor") {
-			
+			private ["_size", "_sectorsize", "_grid", "_position"];
+
 			_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
 			_sectorsize = 10;
 			_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
@@ -50,19 +51,17 @@
 		};
 
 		PUBLIC FUNCTION("array", "buildTerrain"){
-			private ["_position", "_positions", "_grid"];
-			_position = _this;
-			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,[], 150]);
+			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_this,[], 150]);
 		}; 
 
 		PUBLIC FUNCTION("array", "buildStructures"){
-			private ["_type", "_structures", "_position", "_sectors", "_grid"];
+			private ["_type", "_structures", "_position", "_sectors", "_grid", "_object"];
 
 			_position = _this;
 			_grid = MEMBER("grid", nil);
 			_structures = [];
 
-			_type = ["Land_Cargo_House_V3_F","Land_Cargo_House_V3_F","Land_Cargo_Patrol_V1_F", "Land_Cargo_House_V3_F","Land_Cargo_House_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Medevac_house_V1_F", "Land_Medevac_house_V1_F", "Land_Medevac_house_V1_F", "Land_Medevac_house_V1_F", "Land_HBarrierTower_F", "CamoNet_BLUFOR_F", "Land_Research_house_V1_F"];
+			_type = ["Land_Radar_Small_F","Land_Cargo_House_V3_F","Land_Cargo_Patrol_V1_F", "Land_Cargo_House_V3_F","Land_Cargo_House_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Medevac_house_V1_F", "Land_HBarrierTower_F", "CamoNet_BLUFOR_F", "Land_Research_house_V1_F"];
 			_sectors = ["getAllSectorsAroundPos", [_position, 3]] call _grid;
 			{
 				//_positions = _positions + [["getPosFromSector", _x]  call _grid];
@@ -117,9 +116,8 @@
 		};
 
 		PUBLIC FUNCTION("array", "createMarker"){
-			private ["_position", "_marker"];
-			_position = _this;
-			_marker = createMarker ["globalbase", _position];
+			private ["_marker"];
+			_marker = createMarker ["globalbase", _this];
 			_marker setMarkerText (toUpper ((["generateName", (ceil (random 3) + 1)] call global_namegenerator)  + " Base"));
 			_marker setMarkerType "b_hq";
 			MEMBER("marker", _marker);
@@ -144,7 +142,7 @@
 		};
 
 		PUBLIC FUNCTION("", "packBase"){
-			private ["_position", "_base", "_newposition"];
+			private ["_position", "_base", "_newposition", "_mark"];
 			
 			_position = getMarkerPos "respawn_west";
 

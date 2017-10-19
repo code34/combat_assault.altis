@@ -54,19 +54,43 @@
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_this,[], 150]);
 		}; 
 
+		PUBLIC FUNCTION("", "getRandomStructure"){
+			private ["_kind", "_type"];
+
+			_kind = "";
+			_type = [
+				["Land_Radar_Small_F", 0.97],
+				["Land_Cargo_Tower_V2_F", 0.97],
+				["Land_HBarrierTower_F", 0.93],
+				["Land_Cargo_Patrol_V1_F", 0.93],
+				["CamoNet_BLUFOR_F", 0.90],
+				["Land_Medevac_house_V1_F", 0.9],
+				["Land_Research_house_V1_F", 0.9],
+				["Land_Cargo_House_V3_F", 0.7]
+				];
+
+			while { _kind isEqualTo ""} do {
+				{
+					if(random 1 > (_x select 1)) then {
+						_kind = _x select 0;
+					};
+				} foreach _type;
+				sleep 0.1;
+			};
+			_kind;
+		};
+
 		PUBLIC FUNCTION("array", "buildStructures"){
-			private ["_type", "_structures", "_position", "_sectors", "_grid", "_object"];
+			private ["_structures", "_position", "_sectors", "_grid", "_object"];
 
 			_position = _this;
 			_grid = MEMBER("grid", nil);
 			_structures = [];
 
-			_type = ["Land_Radar_Small_F","Land_Cargo_House_V3_F","Land_Cargo_Patrol_V1_F", "Land_Cargo_House_V3_F","Land_Cargo_House_V3_F", "Land_Cargo_Patrol_V1_F", "Land_Medevac_house_V1_F", "Land_HBarrierTower_F", "CamoNet_BLUFOR_F", "Land_Research_house_V1_F"];
 			_sectors = ["getAllSectorsAroundPos", [_position, 3]] call _grid;
 			{
-				//_positions = _positions + [["getPosFromSector", _x]  call _grid];
 				_position = ["getPosFromSector", _x]  call _grid;
-				_object = (selectRandom _type)  createVehicle _position;
+				_object = MEMBER("getRandomStructure", nil) createVehicle _position;
 				_object setdir (selectRandom [0,90,180,270]);
 				_structures = _structures + [_object];
 				sleep 0.01;

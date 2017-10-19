@@ -253,6 +253,18 @@
 		};
 	};
 
+	// put every players in the same group
+	[] spawn {
+		private ["_group"];
+		_group = createGroup west;
+
+		while { true } do {
+			allPlayers joinSilent _group;
+			sleep 5;
+		};
+	};
+
+
 	_end = false;
 	while { !_end} do {
 		if("checkVictory" call global_controller) then {

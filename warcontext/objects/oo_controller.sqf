@@ -64,9 +64,9 @@
 			_groundplayers = [];
 			_airplayers = [];
 
-			// tous les joueurs en dessous de 150m alt sont considérés comme au sol
+			// tous les joueurs en dessous de 250m alt sont considérés comme au sol
 			{
-				if((getpos _x) select 2 < 150) then {
+				if((getpos _x) select 2 < 250) then {
 					_groundplayers = _groundplayers + [_x];
 				} else {
 					_airplayers = _airplayers + [_x];

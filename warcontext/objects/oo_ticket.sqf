@@ -52,21 +52,13 @@
 			MEMBER("add", _credit);
 			_ticket = MEMBER("ticket", nil);
 
-			if(_ticket > 0) then {
-				_value = [_ticket, _type, _credit];
-				MEMBER("send", _value);
-			} else {
-				// write scores on media
-				{
-					"flushBDD" call _x;
-				} foreach ("entrySet" call global_scores);
-
-				"epicFail" call BIS_fnc_endMissionServer;
+			if(_ticket > -1) then {
+				MEMBER("send", nil);
 			};
 		};
 
-		PUBLIC FUNCTION("array", "send"){
-			wcticket = _this;
+		PUBLIC FUNCTION("", "send"){
+			wcticket = MEMBER("ticket", nil);
 			["wcticket", "client"] call BME_fnc_publicvariable;
 		};
 

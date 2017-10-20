@@ -264,21 +264,24 @@
 		};
 	};
 
-
 	_end = false;
 	while { !_end} do {
 		if("checkVictory" call global_controller) then {
-			_end = true;	
+			{
+				"flushBDD" call _x;
+			} foreach ("entrySet" call global_scores);
+			"End1" call BIS_fnc_endMissionServer;
+			_end = true;
 		};
-		sleep 60;
+		if("getTicket" call global_ticket < 1)then {
+			{
+				"flushBDD" call _x;
+			} foreach ("entrySet" call global_scores);
+			"epicFail" call BIS_fnc_endMissionServer;
+			_end = true;
+		};
+		sleep 30;
 	};
-
-	// write scores on media
-	{
-		"flushBDD" call _x;
-	} foreach ("entrySet" call global_scores);
-
-	"End1" call BIS_fnc_endMissionServer;
 
 	// Kick player before missions restart
 	serverCommand format ["#login %1", wcserverpassword];

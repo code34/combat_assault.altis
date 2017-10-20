@@ -249,18 +249,7 @@
 	};
 
 	BME_netcode_wcticket = {
-		private ["_value", "_type", "_ticket", "_credit"];
-		_value = _this select 0;
-		_ticket = _value select 0;
-		_type = _value select 1;
-		_credit = _value select 2;
-		wcticket = _ticket;
-
-		_index = round ((random 30) + 87);
-		_entry = configFile >> "CfgMusic";
-		_track = configName(_entry select _index);
-		playMusic _track;
-		["hintScore", [_ticket, _type, _credit]] call hud;
+		wcticket = _this select 0;
 	};
 
 	BME_netcode_wcteleportack = {

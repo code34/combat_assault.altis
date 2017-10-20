@@ -28,6 +28,13 @@
 		PRIVATE VARIABLE("bool","packed");
 		PRIVATE VARIABLE("code", "grid");
 
+		PRIVATE VARIABLE("bool", "medicactive");
+		PRIVATE VARIABLE("bool", "radaractive");
+		PRIVATE VARIABLE("bool", "toweractive");
+		PRIVATE VARIABLE("bool", "bunkeractive");
+		PRIVATE VARIABLE("bool", "researchactive");
+
+
 		PUBLIC FUNCTION("","constructor") {
 			private ["_size", "_sectorsize", "_grid", "_position"];
 
@@ -35,6 +42,12 @@
 			_sectorsize = 10;
 			_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
 			MEMBER("grid", _grid);
+
+			MEMBER("medicactive", false);
+			MEMBER("radaractive", false);
+			MEMBER("toweractive", false);
+			MEMBER("bunkeractive", false);
+			MEMBER("researchactive", false);
 
 			_position = MEMBER("generateRandomPosition", nil);
 			MEMBER("createMarker", _position);
@@ -59,19 +72,19 @@
 
 			_kind = "";
 			_type = [
-				["Land_Radar_Small_F", 0.97],
-				["Land_Cargo_Tower_V2_F", 0.97],
-				["Land_HBarrierTower_F", 0.93],
-				["Land_Cargo_Patrol_V1_F", 0.93],
-				["CamoNet_BLUFOR_F", 0.90],
-				["Land_Medevac_house_V1_F", 0.9],
-				["Land_Research_house_V1_F", 0.9],
-				["Land_Cargo_House_V3_F", 0.7]
+				["Land_Radar_Small_F", 0.97, MEMBER("radaractive", nil)],
+				["Land_Cargo_Tower_V2_F", 0.97, MEMBER("toweractive", nil)],
+				["Land_HBarrierTower_F", 0.93, MEMBER("toweractive", nil)],
+				["Land_Cargo_Patrol_V1_F", 0.93, MEMBER("bunkeractive", nil)],
+				["CamoNet_BLUFOR_F", 0.90, true],
+				["Land_Medevac_house_V1_F", 0.9, MEMBER("medicactive", nil)],
+				["Land_Research_house_V1_F", 0.9, MEMBER("researchactive", nil)],
+				["Land_Cargo_House_V3_F", 0.7, true]
 				];
 
 			while { _kind isEqualTo ""} do {
 				{
-					if(random 1 > (_x select 1)) then {
+					if((random 1 > (_x select 1)) and (_x select 2)) then {
 						_kind = _x select 0;
 					};
 				} foreach _type;
@@ -161,8 +174,17 @@
 				if(_position isEqualTo []) exitWith {};
 
 				MEMBER("buildHQ", _position);
+				MEMBER("checkStructuresAvalaible", nil);
 				MEMBER("buildStructures", _position);
 			};
+		};
+
+		PUBLIC FUNCTION("", "checkStructuresAvalaible"){
+			if (("countWest" call global_atc) > 0) then { MEMBER("toweractive", true); } else { MEMBER("toweractive", false); };
+			if (("countWest" call global_atc) > 0) then { MEMBER("radaractive", true); } else { MEMBER("radaractive", false); };
+			if (("countWest" call global_factory) > 0) then { MEMBER("bunkeractive", true); } else { MEMBER("bunkeractive", false); };
+			if (("countWest" call global_factory) > 0) then { MEMBER("researchactive", true); } else { MEMBER("reserchactive", false); };
+			if (("getTicket" call global_ticket) > 100) then { MEMBER("medicactive", true); } else { MEMBER("medicactive", false); };
 		};
 
 		PUBLIC FUNCTION("", "packBase"){

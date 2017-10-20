@@ -60,9 +60,6 @@
 			
 			if((random 1 > wcpopartyprob) and (wcpopvehicleenemy)) then { MEMBER("artilleryactive", true);} else {MEMBER("artilleryactive", false);};
 			if(random 1 > wcpopantiairprob) then { MEMBER("antiairactive", true);} else {MEMBER("antiairactive", false);};
-
-			//MEMBER("setSupply", nil);
-			if(random 1 > 0.90) then { MEMBER("setMission", nil); };
 		};
 
 		PUBLIC FUNCTION("","getIndex") FUNC_GETVAR("index");
@@ -78,12 +75,6 @@
 		// state (0:unspawn, 1:spawn, 2:completed) 
 		PRIVATE FUNCTION("scalar", "setState") {
 			MEMBER("state", _this);
-		};
-
-		PUBLIC FUNCTION("", "setMission") {
-			private ["_position"];
-			_position = MEMBER("getPosition", nil);
-			_mission = ["new", [_position]] spawn OO_MISSION;
 		};
 
 		PUBLIC FUNCTION("", "setSupply") {

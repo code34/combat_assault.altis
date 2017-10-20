@@ -141,12 +141,12 @@
                         <French>a été localisé</French>
                 </Key>
                 <Key ID="STR_SUPPLYEMPTY">
-                        <Original>Supply Empty: Bring an enemy truck</Original>
-                        <French>Stock vide: Amenez un camion enemi</French>
+                        <Original>Fuel Depot empty: Bring a truck</Original>
+                        <French>Stock Fuel vide: Amenez un camion</French>
                 </Key>
                 <Key ID="STR_SUPPLYFULL">
-                        <Original>Supply</Original>
-                        <French>Stock</French>
+                        <Original>Fuel Depot</Original>
+                        <French>Depot Fuel</French>
                 </Key>
                 <Key ID="STR_COMMANDEROFF_TEXT">
                         <Original>Commander Site has been destroyed. No more deployement avalaible</Original>

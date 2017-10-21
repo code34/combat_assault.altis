@@ -42,6 +42,8 @@
 	WC_fnc_spawngroup		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_spawngroup.sqf";
 	WC_fnc_servicing		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_servicing.sqf";
 
+	wc_fnc_fueldepot		= compileFinal preprocessFileLineNumbers "warcontext\missions\wc_fnc_fueldepot.sqf";
+
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
@@ -231,6 +233,8 @@
 	"start" spawn global_dogfight;
 	"start" spawn global_atc;
 	"start" spawn global_factory;
+
+	(position player) spawn wc_fnc_fueldepot;
 
 	// init for slow server
 	sleep 10;

@@ -41,6 +41,10 @@
 		["wcfactorys", "client"] call BME_fnc_publicvariable;
 	};
 
+	BME_netcode_server_gettickets = {
+		"send" call global_ticket;
+	};
+
 	BME_netcode_server_bme_log = {
 		bme_log = _this select 0;
 		diag_log format["BME: %1", bme_log];

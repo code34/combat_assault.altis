@@ -39,13 +39,11 @@
 	} foreach _positions;
 
 	if(isnil "wcairports") then { 
-		getairports = "";
-		["getairports", "server"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["getairports", "", "server"]] call global_bme;
 		waitUntil { !isNil "wcairports"; };
 	};
 	if(isnil "wcfactorys") then { 
-		getfactorys = "";
-		["getfactorys", "server"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["getfactorys", "", "server"]] call global_bme;
 		waitUntil { !isNil "wcfactorys"; };
 	};
 
@@ -119,6 +117,5 @@
 	closeDialog 0;
 
 	if(wcaction == 'deploy') then {
-		playervehicle = [name player, position player, _type];
-		["playervehicle", "server"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["playervehicle", [name player, position player, _type], "server"]] call global_bme;
 	};

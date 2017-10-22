@@ -67,7 +67,7 @@
 			_return = false;
 			{
 				_value = MEMBER("get", _x);
-				if(_value isequalto _search) then {
+				if(_value isEqualTo _search) then {
 					_return = true;
 				};
 			}foreach MEMBER("index", nil);
@@ -80,7 +80,7 @@
 			_array = [];
 			{
 				_value = MEMBER("get", _x);
-				_array = _array + [_value];
+				_array pushBack _value;
 			}foreach MEMBER("index", nil);
 			_array;
 		};
@@ -108,7 +108,7 @@
 
 		// Associates the specified value with the specified key in this map.
 		PUBLIC FUNCTION("array", "put") {
-			private ["_array", "_key", "_index", "_value", "_set", "_hash"];
+			private ["_key", "_value", "_set", "_hash"];
 
 			_key = _this select 0;
 			_value = _this select 1;
@@ -120,8 +120,7 @@
 			_set = missionNamespace getVariable _hash;
 			
 			if(isnil "_set") then {
-				_array = MEMBER("index", nil) + [_key];
-				MEMBER("index", _array);
+				MEMBER("index", nil) pushBack _key;
 			} ;
 			missionNamespace setVariable [_hash, _value];
 		};

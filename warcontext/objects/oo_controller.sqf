@@ -90,30 +90,25 @@
 		};
 
 		PUBLIC FUNCTION("", "getNewSectorAround") {
-			private ["_array", "_around", "_temp"];
+			private ["_around", "_temp"];
 			_around = [];
-			_array = MEMBER("getNewSector", nil);		
 			{
 				_temp = ["getAllSectorsAroundSector", [_x, wcpopsquaredistance]] call global_grid;
 				_around = _around + _temp;
 				sleep 0.0000001;
-			}foreach _array; 
+			}foreach MEMBER("getNewSector", nil); 
 			_around;
 		};
 
 
 		PUBLIC FUNCTION("array", "expandSector"){
-			private ["_queue"];
-			_queue = MEMBER("queuesector", nil) + [_this];
-			MEMBER("queuesector", _queue);
+			MEMBER("queuesector", nil) pushBack _this;
 		};
 
 		PUBLIC FUNCTION("array", "getNumberNeighour"){
-			private ["_cross", "_key", "_neighbour"];
+			private ["_key", "_neighbour", "_sector"];
 
-			_key = _this;
-			
-			_cross = ["getSectorsCrossAroundSector", _key] call global_grid;
+			_key = _this;		
 			_neighbour = 1;
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -123,23 +118,22 @@
 					};
 				};
 				sleep 0.0000001;
-			} foreach _cross;
+			} foreach (["getSectorsCrossAroundSector", _key] call global_grid);
 			_neighbour;
 		};
 
 		PUBLIC FUNCTION("array", "canExpandToNeighbour"){	
-			private ["_can", "_cross", "_key", "_boundaries", "_neighbour"];
+			private ["_can", "_key", "_boundaries", "_neighbour"];
 
 			_key = _this;
 			_can = true;
 			_boundaries = MEMBER("getNumberNeighour", _key);
 			if(_boundaries < 4) then {
-				_cross = ["getSectorsCrossAroundSector", _key] call global_grid;
 				{
 					_boundaries = MEMBER("getNumberNeighour", _x);
 					if(_boundaries > 3) then {_can = false;};
 					sleep 0.0000001;
-				}foreach _cross;
+				}foreach (["getSectorsCrossAroundSector", _key] call global_grid);
 			} else {
 				_can = false;
 			};
@@ -147,16 +141,15 @@
 		};
 
 		PUBLIC FUNCTION("array", "canExpandToNeighbour2"){
-			private ["_count", "_key", "_around", "_temp"];
+			private ["_count", "_key", "_temp"];
 			_key = _this;
 			_count = 1;
-			_around = ["getSectorsCrossAroundSector", _key] call global_grid;
 			{
 				_temp = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
 				if!(isnil "_temp") then {
 					_count = _count + 1;
 				};
-			}foreach _around;
+			}foreach (["getSectorsCrossAroundSector", _key] call global_grid);
 			if(_count > 2) then {false;}else{true;};
 		};
 
@@ -164,8 +157,7 @@
 			private ["_sector", "_cost", "_costmin"];
 
 			_sector = _this;
-			_costmin = 10;
-			
+			_costmin = 10;	
 			{
 				_sector = ["getSectorFromPos", position _x] call global_grid;
 				_cost = ["GetEstimateCost", [_sector, _key]] call global_grid;
@@ -177,16 +169,17 @@
 
 		PUBLIC FUNCTION("", "getSectorFarOfPlayers"){
 			private ["_sector"];
-			_sector = ("entrySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
+			_sector = selectRandom ("entrySet" call MEMBER("zone_hashmap",nil));
 			if( !MEMBER("isplayerAroundSector", _sector))  then {
-				sleep 10;
+				//sleep 10;
+				sleep 0.1;
 				_sector = MEMBER("getSectorFarOfPlayers", nil);
 			};
 			_sector;
 		};
 
 		PUBLIC FUNCTION("array", "canExpandToSector"){
-			private ["_key", "_sector", "_cost", "_costmin", "_neighbour", "_return"];
+			private ["_key", "_sector", "_cost", "_costmin", "_return"];
 
 			_key = _this;
 			_costmin = 4;
@@ -220,8 +213,7 @@
 			_around = ["getAllSectorsAroundSector", [_sector,3]] call global_grid;
 
 			while { count _around > 0 } do {
-				_x = _around call BIS_fnc_selectRandom;
-				_around = _around - [_x];
+				_x = _around deleteAt (floor(random (count _around)));
 				_rate = ["GetEstimateCost", [_x, _sector]] call global_grid;
 				_rate = (_rate / 10) + 0.5;
 				if((random 1 > _rate) and (_iteration > 0)) then {
@@ -233,11 +225,9 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandFriendlyAround"){
-			private ["_sector", "_around", "_position"];
+			private ["_sector", "_position"];
 			_position = _this;
 			_sector = ["getSectorFromPos", _position] call global_grid;
-
-			_around = ["getAllSectorsAroundSector", [_sector,2]] call global_grid;
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -251,17 +241,15 @@
 					};
 				};
 				sleep 0.0000001;
-			}foreach _around;
+			}foreach (["getAllSectorsAroundSector", [_sector,2]] call global_grid);
 		};		
 
 		PUBLIC FUNCTION("code", "expandAlertAround"){
-			private ["_sector", "_around"];
-			
+			private ["_sector"];
+	
 			_sector = _this;
 			["setAlert", true] call _this;
 			_sector = "getSector" call _this;
-
-			_around = ["getAllSectorsAroundSector", [_sector,3]] call global_grid;
 
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -271,7 +259,7 @@
 					};
 				};
 				sleep 0.0000001;
-			}foreach _around;
+			}foreach (["getAllSectorsAroundSector", [_sector,3]] call global_grid);
 		};
 
 		PUBLIC FUNCTION("array", "deleteSector"){
@@ -283,35 +271,27 @@
 		};
 
 		PUBLIC FUNCTION("", "queueSector"){
-			private ["_queue", "_key", "_position", "_sector", "_counter"];
-			_counter = 0;
+			private ["_key", "_position", "_sector"];
 			while { true } do {
-				waituntil { count MEMBER("queuesector", nil) > 0 };
-				_key = MEMBER("queuesector", nil) select 0;
-				_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
-				if(isnil "_sector") then {
-					_position = ["getPosFromSector", _key] call global_grid;
-					//if((getmarkerpos "respawn_west" distance _position > 1300)) then {
+				_key = MEMBER("queuesector", nil) deleteAt 0;
+				if!(isNil "_key") then {
+					_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
+					if(isnil "_sector") then {
+						_position = ["getPosFromSector", _key] call global_grid;
 						if(!surfaceIsWater _position) then {
 							if(MEMBER("canExpandToSector", _key)) then {
 								_sector = ["new", [_key, _position, global_grid]] call OO_SECTOR;
 								"draw" call _sector;
 								["put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
-								_counter = _counter + 1;
 							};
 						};
-					//};
+					};
 				};
-				MEMBER("queuesector", nil) set [0, objnull]; 
-				_queue = MEMBER("queuesector", nil) - [objnull];
-				MEMBER("queuesector", _queue);
 			};
 		};
 
 		PUBLIC FUNCTION("object", "getPlayerSector") {
-			private ["_sector"];
-			_sector = ["getSectorFromPos", position _this] call global_grid;
-			_sector;
+			["getSectorFromPos", position _this] call global_grid;
 		};
 
 		PUBLIC FUNCTION("object", "getPlayerSaveSector") {
@@ -360,7 +340,7 @@
 		};		
 
 		PUBLIC FUNCTION("", "spawnConvoy") {
-			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
+			private ["_convoy", "_startposition", "_sector"];
 			
 			_sector = MEMBER("getSectorFarOfPlayers", nil);
 			_startposition = ["getPosFromSector", "getSector" call _sector] call global_grid;
@@ -384,7 +364,6 @@
 		};
 
 		PUBLIC FUNCTION("", "startZone") {
-			private ["_sector"];
 			while { true } do {
 				MEMBER("setPlayers", nil);
 				MEMBER("spawnSector", nil);

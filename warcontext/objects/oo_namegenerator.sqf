@@ -43,9 +43,9 @@
 			_voyelles = ["a", "e", "i", "o", "u"];
 			_consonnes = ["b","c","d","f","g","h","j","k","l","m","n","r","s","t","p"];
 			if(random 1 < 0.95) then {
-				(_consonnes call BIS_fnc_selectRandom) + (_voyelles call BIS_fnc_selectRandom);
+				(selectRandom _consonnes) + (selectRandom _voyelles);
 			} else {
-				(_voyelles call BIS_fnc_selectRandom) + (_voyelles call BIS_fnc_selectRandom);
+				(selectRandom _voyelles) + (selectRandom _voyelles);
 			};
 		};
 

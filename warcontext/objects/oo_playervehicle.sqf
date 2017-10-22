@@ -105,7 +105,6 @@
 				case (_type isKindOf "Helicopter") : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_vehicle = _type createVehicle _position;
-
 					_vehicle setdamage 0;
 					["remoteSpawn", ["vehiclegetin", _vehicle, "client", _netid]] call global_bme;
 				};
@@ -194,9 +193,7 @@
 		};
 
 		PUBLIC FUNCTION("", "unPop") {
-			private ["_vehicle"];
-			_vehicle = MEMBER("vehicle", nil);
-			deletevehicle _vehicle;
+			deletevehicle MEMBER("vehicle", nil);
 			MEMBER("unMark", nil);
 		};
 

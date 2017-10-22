@@ -128,7 +128,7 @@
 				_nextsector = ["get", str(_x)] call global_zone_hashmap;
 				if!(isnil "_nextsector") then {
 					if("getAlert" call _nextsector) then {
-						_sectors = _sectors + [_nextsector];
+						_sectors pushBack _nextsector;
 					};
 				};
 				sleep 0.01;
@@ -169,10 +169,10 @@
 			private ["_nextsector", "_position"];
 
 			if(count MEMBER("underalert", nil) > 0) then {
-				_nextsector = "getSector" call (MEMBER("underalert", nil) call BIS_fnc_selectRandom);
+				_nextsector = "getSector" call (selectRandom MEMBER("underalert", nil));
 				MEMBER("revealTarget", nil);
 			} else {
-				_nextsector = MEMBER("around", nil) call BIS_fnc_selectRandom;
+				_nextsector = selectRandom MEMBER("around", nil);
 			};
 			_position = ["getPosFromSector", _nextsector] call global_grid;
 			MEMBER("target", _position);
@@ -182,6 +182,7 @@
 			private ["_list"];	
 
 			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man", "Tank"], 600];
+			sleep 0.5;
 			{
 				(leader MEMBER("group", nil)) reveal [_x, 4];
 				sleep 0.01;

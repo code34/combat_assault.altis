@@ -172,7 +172,7 @@
 			{
 				_array = [_leader, _x];
 				_index = floor (MEMBER("estimateTarget", _array));
-				_candidats = _candidats + [[_index, _x]];
+				_candidats pushBack [_index, _x];
 				sleep 0.0001;
 			}foreach MEMBER("targets", nil);
 
@@ -181,7 +181,7 @@
 					_oldtarget = MEMBER("target", nil);
 					_array = [_leader, _oldtarget];
 					_index = floor (MEMBER("estimateTarget", _array));
-					_candidats = _candidats + [[_index, _oldtarget]];
+					_candidats pushBack [_index, _oldtarget];
 				};
 			};
 
@@ -290,16 +290,16 @@
 			_index = 0;
 
 			while { format ["%1", _building buildingPos _index] != "[0,0,0]" } do {
-				_positions = _positions + [(_building buildingPos _index)];
+				_positions pushBack (_building buildingPos _index);
 				_index = _index + 1;
 				sleep 0.0001;
 			};
 
 			{
-				_x domove (_positions call BIS_fnc_selectRandom);
+				_x domove (selectRandom _positions);
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
-			sleep 30;
+			sleep 60;
 		};
 
 		// move around target
@@ -420,7 +420,7 @@
 
 			MEMBER("setSafeMode", nil);
 			
-			_formationtype = ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"] call BIS_fnc_selectRandom;
+			_formationtype = selectRandom ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"];
 			_group setFormation _formationtype;
 
 			_position = position _leader;
@@ -428,7 +428,7 @@
 			
 			while { (position _leader) distance _position < _areasize } do {
 				_around = ["getAllSectorsAroundSector", [_basesector, 2]] call global_grid;
-				_sector = _around call BIS_fnc_selectRandom;
+				_sector = selectRandom _around;
 				_position = ["getPosFromSector", _sector] call global_grid;
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;
 				sleep 0.0001;
@@ -454,11 +454,6 @@
 					MEMBER("setAlert", nil);
 					_counter = _maxtime;
 				};
-				//if(!MEMBER("isCompleteGroup" ,nil)) then {
-				//	if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
-				//	MEMBER("setAlert", nil);
-				//	_counter = 300;
-				//};
 				if("getAlert" call MEMBER("sector", nil)) then {
 					MEMBER("alert", true);
 					_counter = _maxtime;
@@ -480,27 +475,22 @@
 
 			MEMBER("setBuildingMode", nil);
 			{
-				_x domove (MEMBER("buildings",nil) call BIS_fnc_selectRandom);
+				_x domove (selectRandom MEMBER("buildings",nil));
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 
 			_counter = 0;
 			while { _counter < _maxtime } do {
 				_leader = leader _group;
-				if(format["%1",  _leader getVariable "complete"] == "true") then {
+				if(format["%1",  _leader getVariable "complete"] isEqualTo "true") then {
 					_leader setvariable ['complete', false];
 					_counter = _maxtime;
 				};
-				if(format["%1",  _leader getVariable "combat"] == "true") then {
+				if(format["%1",  _leader getVariable "combat"] isEqualTo "true") then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
 					_counter = _maxtime;
 				};
-				//if(!MEMBER("isCompleteGroup" ,nil)) then {
-				//	if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
-				//	MEMBER("setAlert", nil);
-				//	_counter = 300;
-				//};
 				if("getAlert" call MEMBER("sector", nil)) then {
 					MEMBER("alert", true);
 					_counter =  _maxtime;

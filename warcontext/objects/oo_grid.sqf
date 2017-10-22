@@ -86,20 +86,20 @@
 			_this : function name - string
 		*/ 
 		PUBLIC FUNCTION("string", "parseAllSectors") {
-			private["_array", "_position", "_sector", "_x", "_y"];
+			private["_sectors", "_position", "_sector", "_x", "_y"];
 
-			_array = [];
+			_sectors = [];
 
 			for "_y" from MEMBER("ygrid", nil) to MEMBER("ygridsize", nil) step MEMBER("ysectorsize", nil) do {
 				for "_x" from MEMBER("xgrid", nil) to MEMBER("xgridsize", nil) step MEMBER("xsectorsize", nil) do {
 					_position = [_x, _y];
 					_sector = MEMBER("getSectorFromPos", _position);
 					if(MEMBER(_this, _sector)) then {
-						_array pushback _sector;
+						_sectors pushback _sector;
 					};
 				};
 			};
-			_array;
+			_sectors;
 		};
 
 		/*
@@ -311,7 +311,7 @@
 				{
 					_index = 0;
 					while { format ["%1", _x buildingPos _index] != "[0,0,0]" } do {
-						_positions = _positions + [(_x buildingPos _index)];
+						_positions pushBack (_x buildingPos _index);
 						_index = _index + 1;
 						sleep 0.0001;
 					};

@@ -345,6 +345,8 @@
 		_view = cameraView;
 
 		if(isnil "killer") then { killer = _body;};
+		if(isNull killer) then  { killer = _body;};
+
 		wccam = "camera" camCreate (position killer);
 		wccam cameraEffect ["internal","back"];
 	

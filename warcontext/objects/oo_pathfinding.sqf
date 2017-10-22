@@ -85,16 +85,14 @@
 
 			_path = [];
 			while {!(_current isequalto _start)} do {
-				_path = _path + [["getPosFromSector", _current] call _grid];
+				_path pushBack (["getPosFromSector", _current] call _grid);
 				_current = ["get", str(_current)] call _hashmap;
 				sleep 0.000001;
 			};
-			_path = _path + [["getPosFromSector", _current] call _grid];
+			_path pushBack (["getPosFromSector", _current] call _grid);
 			reverse _path;
-
 			["delete", _hashmap] call OO_HASHMAP;
 			["delete", _frontier] call OO_QUEUE;
-
 			_path;
 		};		
 

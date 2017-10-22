@@ -118,7 +118,6 @@
 		PUBLIC FUNCTION("", "popArtillery") {
 			private ["_position", "_artillery"];
 			_position = [MEMBER("position", nil), 3000,5000,10,0,3,0] call BIS_fnc_findSafePos;
-
 			_artillery = ["new", [_position]] call OO_ARTILLERY;
 			MEMBER("artillery", _artillery);
 		};
@@ -126,7 +125,6 @@
 		PUBLIC FUNCTION("", "popAntiAir") {
 			private ["_position", "_antiair"];
 			_position = [MEMBER("position", nil), 1000,2000,10,0,3,0] call BIS_fnc_findSafePos;
-
 			_antiair = ["new", [_position]] call OO_ANTIAIR;
 			MEMBER("antiair", _antiair);
 		};
@@ -161,40 +159,35 @@
 			};
 
 			for "_i" from 1 to (_unitstype select 0) step 1 do {
-				_units = _units + MEMBER("popInfantry", nil);
+				{ _units pushBack _x;} foreach MEMBER("popInfantry", nil);
 				sleep 0.01;
 			};
 
 			for "_i" from 1 to (_unitstype select 2) step 1 do {
-				_units = _units + MEMBER("popSniper", nil);
+				{ _units pushBack _x;} foreach MEMBER("popSniper", nil);
 				sleep 0.01;
 			};
 										
 			for "_i" from 1 to (_unitstype select 2) step 1 do {
-				_units = _units + MEMBER("popVehicle", nil);
+				{ _units pushBack _x;} foreach MEMBER("popVehicle", nil);
 				sleep 0.01;
 			};
 		
 			for "_i" from 1 to (_unitstype select 3) step 1 do {
-				// air pop only one time
 				MEMBER("popAir", nil);
 				sleep 0.01;
 			};
-
 			_type = [ 1, (_unitstype select 1), (_unitstype select 2), 0];
-
-			MEMBER("unitstype", _type);;
+			MEMBER("unitstype", _type);
 			MEMBER("units", _units);
 		};
 
 		PUBLIC FUNCTION("", "unPopSector") {
-			private ["_group", "_units"];
+			private ["_group"];
 			_group = [];
 
 			{
-				if!(group _x in _group) then {
-					_group = _group + [group _x];
-				};
+				_group pushBackUnique (group _x);
 				_x removeEventHandler ["killed", 0];
 				_x setdammage 1;
 				deletevehicle _x;
@@ -213,9 +206,7 @@
 			if(MEMBER("antiairactive", nil)) then {
 				["delete", MEMBER("antiair", nil)] call OO_ANTIAIR;
 			};
-
-			_units = [];
-			MEMBER("units", _units);
+			MEMBER("units", []);
 		};
 
 		// recupere tous les sectors dans lesquels patrouilles les unites AI
@@ -224,12 +215,10 @@
 			_sectors = [];
 			{
 				_sector = ["getSectorFromPos", position _x] call global_grid;
-				if!(_sector in _sectors) then {
-					_sectors = _sectors + [_sector];
-				};
+				_sectors pushBackUnique _sector;
 				sleep 0.0001;
 			}foreach MEMBER("units", nil);
-			_sectors = _sectors + [MEMBER("sector", nil)];
+			_sectors pushBackUnique MEMBER("sector", nil);
 			_sectors;
 		};
 
@@ -327,44 +316,29 @@
 		};
 
 		PUBLIC FUNCTION("", "UnSpawn") {
-			private ["_critical"];
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);
 			if(MEMBER("getAlert", nil)) then { 
 				["setTicket", "redzone"] call global_ticket;
-				// bucket are turn off 
-				// bucket sont utilises pour l expansion des zones
-				// plus necessaires pour le moment
-				//if(random 1> 0.97) then {
-					//_critical = MEMBER("bucket", nil) * 2;
-				//} else {
-					//_critical = MEMBER("bucket", nil);
-				//};
-				_critical = floor(random 2);
-				["expandSectorAround", [MEMBER("getSector", nil), _critical]] call global_controller;
+				["expandSectorAround", [MEMBER("getSector", nil), floor(random 2)]] call global_controller;
 				["expandAlertAround", MEMBER("getThis", nil)] call global_controller;
 			};
-			//MEMBER("setAlert", false);
 			MEMBER("state", 0);
 			MEMBER("bucket", 0);
 		};
 
 		PRIVATE FUNCTION("", "popInfantry") {
-			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2", "_patrol"];
+			private ["_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_patrol"];
 
 			_marker	=  MEMBER("marker", nil);		
 			_markerpos 	= getmarkerpos _marker;
 			_markersize	= (getMarkerSize _marker) select 1;
 		
 			if(count wcrhsinfantrysquads == 0) then {
-				_type = wcinfantrysquads call BIS_fnc_selectRandom;	
+				_type = selectRandom wcinfantrysquads;
 			} else {
-				_type = wcrhsinfantrysquads call BIS_fnc_selectRandom;
+				_type = selectRandom wcrhsinfantrysquads;
 			};
-		
-			//_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
-			//_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
-			//if(_position isequalto _position2)  exitwith {[];};
 
 			_position = _markerpos findEmptyPosition [0,30];
 			if(_position isEqualTo []) exitWith {[];};
@@ -376,19 +350,18 @@
 			};
 		
 			{
-				_handle = [_x, _type] spawn WC_fnc_setskill;
+				[_x, _type] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
 			
 			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
 			"patrol" spawn _patrol;
-
 			units _group;
 		};
 
 
 		PUBLIC FUNCTION("", "popParachute") {
-			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2", "_patrol", "_chute", "_state", "_units"];
+			private ["_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_patrol", "_chute", "_state"];
 
 			_marker	=  MEMBER("marker", nil);		
 			_markerpos 	= getmarkerpos _marker;
@@ -398,9 +371,9 @@
 			if!(_state isEqualTo 1) exitWith {[];};
 		
 			if(count wcrhsinfantrysquads == 0) then {
-				_type = wcinfantrysquads call BIS_fnc_selectRandom;	
+				_type = selectRandom wcinfantrysquads;
 			} else {
-				_type = wcrhsinfantrysquads call BIS_fnc_selectRandom;
+				_type = selectRandom wcrhsinfantrysquads;
 			};
 		
 			_position = _markerpos;
@@ -413,7 +386,7 @@
 			};
 		
 			{
-				_handle = [_x, _type] spawn WC_fnc_setskill;
+				[_x, _type] spawn WC_fnc_setskill;
 				_chute = "Steerable_Parachute_F" createVehicle [0,0,0]; 
 				_chute setPos [getPos _x select 0, getPos _x select 1, 100]; 
 				_x moveIndriver _chute;
@@ -422,50 +395,46 @@
 			
 			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
 			"patrol" spawn _patrol;
-
-			_units = MEMBER("units",nil ) + units _group;
-			MEMBER("units", _units);
+			{MEMBER("units", nil) pushBack _x;} foreach (units _group);
 		};
 
 
 		PRIVATE FUNCTION("", "popSniper") {
-			private ["_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2"];
+			private ["_marker","_markersize","_markerpos","_type","_sector","_position","_group", "_position2"];
 
 			_marker 	=  MEMBER("marker", nil);		
 			_markerpos 	= getmarkerpos _marker;
 			_markersize 	= (getMarkerSize _marker) select 1;
 
-			_type = wcinfantrysnipers call BIS_fnc_selectRandom;
+			_type = selectRandom wcinfantrysnipers;
 
 			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
 			if(_position isequalto _position2)  exitwith {[];};			
 
 			_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
-		
 			{
-				_handle = [_x, _type] spawn WC_fnc_setskill;
+				[_x, _type] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
 		
 			_patrol = ["new", [_group, MEMBER("getThis", nil), _markersize]] call OO_PATROL;
 			"patrol" spawn _patrol;
-		
 			units _group;
 		};
 
 
 		PRIVATE FUNCTION("", "popVehicle") {
-			private ["_array","_handle","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle", "_position2", "_patrol"];
+			private ["_array","_marker","_markersize","_markerpos","_type","_sector","_position","_group","_units","_vehicle", "_position2", "_patrol"];
 		
 			_marker		=  MEMBER("marker", nil);
 			_markerpos 		= getmarkerpos _marker;
 			_markersize		= (getMarkerSize _marker) select 1;
 		
 			if(random 1 > 0.5) then {
-				_vehicle = wclightvehicles call BIS_fnc_selectRandom;
+				_vehicle = selectRandom wclightvehicles;
 			} else {
-				_vehicle = wcheavyvehicles call BIS_fnc_selectRandom;
+				_vehicle = selectRandom wcheavyvehicles;
 			};
 		
 			_position = [_markerpos, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
@@ -477,7 +446,7 @@
 			_vehicle = _array select 0;
 			_group = _array select 2;
 
-			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;			
+			[_vehicle] spawn WC_fnc_vehiclehandler;			
 			_patrol = ["new", [_vehicle, _group, MEMBER("getThis", nil)]] call OO_PATROLVEHICLE;
 			"patrol" spawn _patrol;
 		

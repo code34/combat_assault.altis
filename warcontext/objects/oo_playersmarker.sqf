@@ -65,7 +65,7 @@
 				} else {
 					["setPos", _position] spawn _mark;
 				};
-				_array = _array + [_mark];
+				_array pushBack _mark;
 			}foreach playableUnits;
 			MEMBER("markers", _array);
 		};

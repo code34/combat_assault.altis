@@ -64,7 +64,7 @@
 			_gameranking = MEMBER("getGameRanking", nil);
 			if(_gameranking == 0) exitwith {};
 
-			_array = MEMBER("serverranking", nil) + [_gameranking];
+			_array = MEMBER("serverranking", nil) pushBack _gameranking;
 			profileNamespace setVariable [_key, _array];
 			saveProfileNamespace;
 		};

@@ -144,7 +144,7 @@
 					_queue = [];
 				};
 			};			
-			_queue = _queue + [_element];
+			_queue pushBack _element;
 
 			MEMBER("queue", nil) set [_queueid, _queue];
 			true;

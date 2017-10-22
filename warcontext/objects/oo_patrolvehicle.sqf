@@ -109,10 +109,9 @@
 				{
 					_position = ["getPosFromSector", _x] call global_grid;
 					_list = _position nearEntities [["Man", "Tank"], 50];
-
 					sleep 0.2;
 					if(west countSide _list > 0) then {
-						_sectors = _sectors + [_x];
+						_sectors pushBack _x;
 					};
 				} foreach MEMBER("around", nil);
 			};
@@ -136,11 +135,6 @@
 			sleep 5;
 
 			while { !_move } do {
-				//_sector = ["getSectorFromPos", position _vehicle] call global_grid;
-				//if(_sector isEqualTo (["getSectorFromPos", position _vehicle] call global_grid)) then {
-				//	_move = true;
-				//};
-
 				if(speed _vehicle < 10) then {
 					_move = true;
 					sleep 5;
@@ -155,11 +149,11 @@
 			private ["_nextsector", "_position"];
 
 			if(MEMBER("alert", nil)) then {
-				_nextsector = MEMBER("underalert", nil) call BIS_fnc_selectRandom;
+				_nextsector = selectRandom MEMBER("underalert", nil);
 				MEMBER("setCombatMode", nil);
 				MEMBER("revealTarget", nil);
 			} else {
-				_nextsector = MEMBER("around", nil) call BIS_fnc_selectRandom;
+				_nextsector =selectRandom MEMBER("around", nil);
 				MEMBER("setPatrolMode", nil);
 			};
 			_position = ["getPosFromSector", _nextsector] call global_grid;

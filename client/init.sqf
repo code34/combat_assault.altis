@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013-2017 Nicolas BOITEUX
+	Copyright (C) 2013-2018 Nicolas BOITEUX
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -47,17 +47,43 @@
 	WC_fnc_introcam 	= compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
 	WC_fnc_spawncam 	= compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
 
+	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+	call compilefinal preprocessFileLineNumbers "client\BME\BME_clienthandler.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_bme.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+
+	global_bme = "new" call OO_BME;
+	"bme_addqueue" addPublicVariableEventHandler {
+		["addReceiveQueue", _this select 1] call global_bme;
+	};
+
 	rollmessage = [];
 	killzone = [];
 	rollprintmessage = "";
-	
-	// config variables
 	wcblacklist = [name player];
 	wcfriendlist = [];
 	wcbannerserver = "COMBAT ASSAULT MOD 1.40 (Alpha)";
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;	
+	wcearplugs = false;
+	wcticket = 0;
+	playerkill = 0;
+	playerdeath = 0;
+	wccandeploy = true;
+	wcmaxviewdistance = wcviewdistance;
+	wcmaxvehicleviewdistance = wcvehicleviewdistance;
+	wcmaxairvehicleviewdistance = wcairvehicleviewdistance;
 	
 	if(wcwithunitstagsparam isEqualTo 0) then {
 		wcwithunitstags = false;
@@ -66,36 +92,10 @@
 		wcwithunitstags = true;
 		wcwithunitstagslocked = false;
 	};
-	
-	wcearplugs = false;
-	wcticket = 0;
-	playerkill = 0;
-	playerdeath = 0;
-	wccandeploy = true;
-
-	wcmaxviewdistance = wcviewdistance;
-	wcmaxvehicleviewdistance = wcvehicleviewdistance;
-	wcmaxairvehicleviewdistance = wcairvehicleviewdistance;
 
 	endLoadingScreen;
-	sleep 0.5;
+	sleep 2;
 
-	[] spawn {
-		[] call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
-		[] call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
-		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-		[] call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-		[] call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
-	};
-	
 	[] call WC_fnc_introcam;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
@@ -140,9 +140,7 @@
 	};
 
 	player addEventHandler ['Killed', {
-		killer = _this select 1;
-		wcdeath = [(_this select 0), (_this select 1)];
-		["wcdeath", "all"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["wcdeath", [(_this select 0), (_this select 1)], "all"]] call global_bme;
 	}];
 
 	player addEventHandler ['HandleDamage', {

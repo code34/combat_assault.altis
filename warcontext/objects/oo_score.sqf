@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_SCORE
 	
@@ -28,7 +28,7 @@
 		PRIVATE VARIABLE("scalar","gamescore");
 	
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_key", "_array"];
+			private ["_key"];
 			_key = (_this select 0) + "cba126";
 			MEMBER("uid", _key);
 			MEMBER("initBDD", _key);
@@ -195,9 +195,7 @@
 
 			_kill = MEMBER("getKill", nil);
 			_death = MEMBER("getDeath", nil);
-
-			playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]];
-			["playerstats", "client"] call BME_fnc_publicvariable;
+			["remoteSpawn", ["playerstats", [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]], "client"]] call global_bme;
 		};
 
 

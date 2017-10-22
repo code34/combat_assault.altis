@@ -27,10 +27,9 @@
 		PRIVATE VARIABLE("array", "airports");
 
 		PUBLIC FUNCTION("scalar","constructor") {
-			_array = [];
 			MEMBER("run", false);
-			MEMBER("west", _array);
-			MEMBER("east", _array);
+			MEMBER("west", []);
+			MEMBER("east", []);
 			MEMBER("discover", _this);
 		};
 

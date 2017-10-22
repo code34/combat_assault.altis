@@ -28,14 +28,9 @@
 		PRIVATE VARIABLE("group","group");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_array", "_startposition", "_endposition"];
-
-			_startposition = _this;
-			MEMBER("startposition", _startposition);
-
-			_array = [];
+			MEMBER("startposition", _this);
 			MEMBER("vehicle", objNull);
-			MEMBER("setTarget", _startposition);
+			MEMBER("setTarget", _this);
 			MEMBER("popTruck", nil);
 		};
 
@@ -44,9 +39,7 @@
 		PUBLIC FUNCTION("", "startConvoy") {
 			private ["_rate", "_vehicle", "_sector", "_text", "_position", "_group", "_counter"];
 			
-			wcconvoystart = true;
-			["wcconvoystart", "client"] call BME_fnc_publicvariable;	
-
+			["remoteSpawn", ["wcconvoystart", true, "client"]] call global_bme;
 			_group = MEMBER("group", nil);
 			_leader = leader _group;
 			_vehicle = vehicle _leader;
@@ -69,14 +62,12 @@
 
 			if(_rate > 99) then {
 				_sector = ["getSectorFromPos", position _leader] call global_grid;
-				wcconvoy = true;
-				["wcconvoy", "client"] call BME_fnc_publicvariable;				
+				["remoteSpawn", ["wcconvoy", true, "client"]] call global_bme;
 				["expandSector", _sector] call global_controller;
 				["expandSectorAround", [_sector, floor(random 2)]] call global_controller;
 				["setText", "Truck - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
-				wcconvoy = false;
-				["wcconvoy", "client"] call BME_fnc_publicvariable;				
+				["remoteSpawn", ["wcconvoy", false, "client"]] call global_bme;
 				["setText", "Truck - Expanding failed"] spawn MEMBER("marker", nil);
 			};
 		

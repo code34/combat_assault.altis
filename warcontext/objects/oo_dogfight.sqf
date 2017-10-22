@@ -35,16 +35,14 @@
 
 			
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_array"];
-			_array = [];
 			MEMBER("atc", _this select 0);
 			MEMBER("patrol", false);
-			MEMBER("squadron", _array);
-			MEMBER("airtargets", _array);
-			MEMBER("groundtargets", _array);
-			MEMBER("playertargets", _array);
-			MEMBER("targets", _array);
-			MEMBER("target", _array);
+			MEMBER("squadron", []);
+			MEMBER("airtargets", []);
+			MEMBER("groundtargets", []);
+			MEMBER("playertargets", []);
+			MEMBER("targets", []);
+			MEMBER("target", []);
 			MEMBER("squadronsize", 0);
 			MEMBER("counter", 5);
 			MEMBER("age", 10);
@@ -69,7 +67,7 @@
 
 		// Defini la taille de l'escadre
 		PUBLIC FUNCTION("", "setSquadronSize") {
-			private ["_array", "_ground", "_air", "_size", "_player"];
+			private ["_ground", "_air", "_size", "_player"];
 
 			// compte le nombre de vehicules au sol bluefor
 			_ground = count MEMBER("groundtargets", nil);
@@ -229,12 +227,10 @@
 		};
 
 		PUBLIC FUNCTION("", "popMember") {
-			private ["_atc", "_crew", "_vehicle", "_mark", "_position", "_squad"];
+			private ["_crew", "_vehicle", "_mark", "_position", "_squad", "_array", "_list"];
 			
-			_atc = MEMBER("atc", nil);
-			_array = "getEast" call _atc;
-			_marker =  _array call BIS_fnc_selectRandom;
-			 _position = getmarkerpos _marker;
+			_array = "getEast" call MEMBER("atc", nil);
+			_position =  getmarkerpos (selectRandom _array);
 
 			 _list = _position nearEntities [["Man", "Tank"], 300];
 			 sleep 0.5;
@@ -246,8 +242,8 @@
 
 				_vehicle = _array select 0;
 				_crew = (_array select 1) select 0;
-				_handle = [_crew, ""] spawn WC_fnc_setskill;
-				_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
+				[_crew, ""] spawn WC_fnc_setskill;
+				[_vehicle] spawn WC_fnc_vehiclehandler;
 
 				_mark = ["new", [position _vehicle, false]] call OO_MARKER;
 
@@ -301,8 +297,7 @@
 							sleep 10;
 						};
 						MEMBER("counter", 0);
-						wcaircraftstart = true;
-						["wcaircraftstart", "client"] call BME_fnc_publicvariable;	
+						["remoteSpawn", ["wcaircraftstart", true, "client"]] call global_bme;
 					} else {
 						_counter = _counter + 1;
 						MEMBER("counter", _counter);

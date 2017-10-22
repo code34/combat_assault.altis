@@ -56,9 +56,7 @@
 			if(_win)	then {
 				["expandFriendlyAround", MEMBER("position", nil)] call global_controller;
 				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = [true, _text];
-				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				["remoteSpawn", ["wcmissioncompleted", [true, _text], "client"]] call global_bme;
 			} else {
-				wcmissioncompleted = [false, _text];
-				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				["remoteSpawn", ["wcmissioncompleted", [false, _text], "client"]] call global_bme;
 			};

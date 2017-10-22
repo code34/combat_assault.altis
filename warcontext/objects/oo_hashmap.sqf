@@ -26,10 +26,8 @@
 		PRIVATE VARIABLE("scalar","keyid");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_array", "_instanceid"];
-			_array = [];
-			MEMBER("index", _array);
-
+			private ["_instanceid"];
+			MEMBER("index", []);
 			_instanceid = MEMBER("instanceid",nil);
 			if (isNil "_instanceid") then {_instanceid = 0;};
 			_instanceid = _instanceid + 1;
@@ -39,14 +37,13 @@
 
 		// Removes all of the mappings from this map.
 		PUBLIC FUNCTION("", "clear") {
-			private ["_array", "_hash"];
+			private ["_hash"];
 			
 			{
 				_hash = MEMBER("keyName", _x);
 				missionNamespace setVariable [_hash, nil];
 			}foreach MEMBER("index", nil);
-			_array = [];
-			MEMBER("index", _array);
+			MEMBER("index", []);
 		};		
 
 		PUBLIC FUNCTION("string", "keyName") {

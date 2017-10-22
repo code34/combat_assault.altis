@@ -53,8 +53,7 @@
 			_group setBehaviour "COMBAT";
 			_group setCombatMode "RED";
 
-			wcartillerystart = true;
-			["wcartillerystart", "client"] call BME_fnc_publicvariable;	
+			["remoteSpawn", ["wcartillerystart", true, "client"]] call global_bme;
 			
 			_mark = ["new", [position _vehicle, false]] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;

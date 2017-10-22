@@ -58,8 +58,7 @@
 		};
 
 		PUBLIC FUNCTION("", "send"){
-			wcticket = MEMBER("ticket", nil);
-			["wcticket", "client"] call BME_fnc_publicvariable;
+			["remoteSpawn", ["wcticket", MEMBER("ticket", nil), "client"]] call global_bme;
 		};
 
 		PUBLIC FUNCTION("string", "getCredit"){

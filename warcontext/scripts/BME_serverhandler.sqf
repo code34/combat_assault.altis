@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013-2017 Nicolas BOITEUX
+	Copyright (C) 2013-2018 Nicolas BOITEUX
 
 	Bus Message Exchange (BME)
 	
@@ -32,13 +32,11 @@
 	};
 
 	BME_netcode_server_getairports = {
-		wcairports = "getAirports" call global_atc;
-		["wcairports", "client"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["wcairports", "getAirports" call global_atc, "client"]] call global_bme;
 	};
 
 	BME_netcode_server_getfactorys = {
-		wcfactorys = "getFactorys" call global_factory;
-		["wcfactorys", "client"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["wcfactorys", "getFactorys" call global_factory, "client"]] call global_bme;
 	};
 
 	BME_netcode_server_gettickets = {
@@ -46,14 +44,14 @@
 	};
 
 	BME_netcode_server_bme_log = {
-		bme_log = _this select 0;
+		bme_log = _this;
 		diag_log format["BME: %1", bme_log];
 	};
 
 	BME_netcode_server_playervehicle = {
 		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object"];
 		
-		_array = _this select 0;
+		_array = _this;
 		_name = _array select 0;
 		_position = _array select 1;
 		_type = _array select 2;
@@ -77,8 +75,7 @@
 		
 		if(_alive > 0) then {
 			"sanity" call _vehicle;
-			vehicleavalaible = _alive;
-			["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
+			["remoteSpawn", ["vehicleavalaible", _alive, "client", _netid]] call global_bme;
 		} else {
 			_object = ["pop", [_position, _netid, _name]] call _vehicle;
 			"checkAlive" spawn _vehicle;
@@ -88,8 +85,8 @@
 	BME_netcode_server_wcdeath = {
 		private ["_score", "_uid", "_killer", "_victim"];
 
-		_victim = (_this select 0) select 0;
-		_killer = (_this select 0) select 1;
+		_victim = _this select 0;
+		_killer = _this select 1;
 
 		if((isplayer _killer) && !(_victim isEqualTo _killer)) then {
 			_uid = getPlayerUID _killer;

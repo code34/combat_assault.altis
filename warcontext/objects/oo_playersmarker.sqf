@@ -27,14 +27,11 @@
 
 		
 		PUBLIC FUNCTION("string","constructor") {
-			private ["_array", "_grid", "_hashmap"];
-			
-			_array = [];
-			MEMBER("markers", _array);
-			
+			private ["_grid", "_hashmap"];
+		
+			MEMBER("markers", []);		
 			_grid = ["new", [0,0, 31000,31000,1000,1000]] call OO_GRID;
 			MEMBER("grid", _grid);
-			
 			_hashmap  = ["new", []] call OO_HASHMAP;
 			MEMBER("hashmap", _hashmap);
 		};

@@ -107,8 +107,7 @@
 					_vehicle = _type createVehicle _position;
 
 					_vehicle setdamage 0;
-					vehiclegetin = _vehicle;
-					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+					["remoteSpawn", ["vehiclegetin", _vehicle, "client", _netid]] call global_bme;
 				};
 
 				//case (_type in ["B_Plane_CAS_01_F","I_Plane_Fighter_03_CAS_F","I_Plane_Fighter_03_AA_F"]) : {
@@ -123,9 +122,7 @@
 					}foreach units (_array select 2);
 					deletegroup (_array select 2);
 					_vehicle setdamage 0;
-					
-					vehiclegetin = _vehicle;
-					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;				
+					["remoteSpawn", ["vehiclegetin", _vehicle, "client", _netid]] call global_bme;
 				};
 
 				case (_type isEqualTo "B_supplyCrate_F") : {

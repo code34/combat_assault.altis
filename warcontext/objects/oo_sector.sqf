@@ -234,7 +234,7 @@
 		};
 
 		PUBLIC FUNCTION("", "spawn") {
-			private ["_deadcounter", "_array", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_unpopsquaredistance"];
+			private ["_deadcounter", "_around", "_bucket", "_mincost", "_cost", "_cost2", "_run", "_player_sector", "_sector", "_units", "_position", "_vehicle", "_type", "_sectors", "_sector", "_unpopsquaredistance"];
 
 			MEMBER("state", 1);
 			MEMBER("marker", nil) setmarkercolor "ColorOrange";
@@ -314,10 +314,7 @@
 			MEMBER("state", 2);
 			["setTicket", "bluezone"] call global_ticket;
 			_position = MEMBER("getPosition", nil);
-
-			wcsectorcompleted = MEMBER("getSector", nil);
-			["wcsectorcompleted", "client"] call BME_fnc_publicvariable;
-
+			["remoteSpawn", ["wcsectorcompleted", MEMBER("getSector", nil), "client"]] call global_bme;
 			_position = [_position, 0,50,5,0,3,0] call BIS_fnc_findSafePos;
 			["new", _position] spawn OO_BONUSVEHICLE;
 			MEMBER("unPopSector", nil);
@@ -494,12 +491,10 @@
 		};
 
 		PRIVATE FUNCTION("", "popAir") {
-			private ["_patrol", "_airport", "_array", "_marker", "_position", "_list"];
-			_airport = "countEast" call global_atc;
+			private ["_patrol", "_marker", "_position", "_list"];
 			
-			if(_airport > 0) then {
-				_array = "getEast" call global_atc;
-				_marker =  _array call BIS_fnc_selectRandom;
+			if("countEast" call global_atc > 0) then {
+				_marker = selectRandom ("getEast" call global_atc);
 				_position = getmarkerpos _marker;
 				_position = [_position select 0, _position select 1, 100];	
 				_list = _position nearEntities [["Man", "Tank"], 600];

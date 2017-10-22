@@ -57,8 +57,7 @@
 		Return : nothing
 		*/
 		PUBLIC FUNCTION("", "clearQueue") {
-			_array = [];
-			MEMBER("queue", _array);
+			MEMBER("queue", []);
 		};
 
 		/*

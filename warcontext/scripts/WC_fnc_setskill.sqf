@@ -173,8 +173,7 @@
 	}];
 
 	_unit addeventhandler ['Killed', {
-		wcdeath = [(_this select 0), (_this select 1)];
-		["wcdeath", "all"] call BME_fnc_publicvariable;
+		["remoteSpawn", ["wcdeath", [(_this select 0), (_this select 1)], "all"]] call global_bme;
 	}];
 
 	true;

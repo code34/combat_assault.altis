@@ -27,11 +27,9 @@
 		PRIVATE VARIABLE("array", "factorys");
 
 		PUBLIC FUNCTION("","constructor") {
-			private ["_array"];
-			_array = [];
 			MEMBER("run", false);
-			MEMBER("west", _array);
-			MEMBER("east", _array);
+			MEMBER("west", []);
+			MEMBER("east", []);
 			MEMBER("discover", nil);
 		};
 

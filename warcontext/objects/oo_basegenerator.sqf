@@ -39,7 +39,7 @@
 			private ["_size", "_sectorsize", "_grid", "_position"];
 
 			_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
-			_sectorsize = 10;
+			_sectorsize = 12;
 			_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
 			MEMBER("grid", _grid);
 

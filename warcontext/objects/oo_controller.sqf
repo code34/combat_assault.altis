@@ -29,14 +29,10 @@
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("setPlayers", nil);
-
 			MEMBER("zone_hashmap", global_zone_hashmap);
-
 			_hashmap = ["new", []] call OO_HASHMAP;
 			MEMBER("player_hashmap", _hashmap);
-
-			_array = [];
-			MEMBER("queuesector", _array);
+			MEMBER("queuesector", []);
 		};
 
 		PUBLIC FUNCTION("","getAirPlayers") FUNC_GETVAR("airplayers");

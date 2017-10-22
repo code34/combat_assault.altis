@@ -58,14 +58,12 @@
 
 			if(_win)	then {
 				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = [true, _text];
-				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				["remoteSpawn", ["wcmissioncompleted", [true, _text], "client"]] call global_bme;
 				while { count crew _vehicle > 0} do {
 					sleep 30;
 				};
 			} else {
-				wcmissioncompleted = [false, _text];
-				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				["remoteSpawn", ["wcmissioncompleted", [false, _text], "client"]] call global_bme;
 			};
 
 			_counter = 0;

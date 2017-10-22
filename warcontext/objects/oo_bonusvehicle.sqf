@@ -60,9 +60,7 @@
 			_vehicle setVelocity [0, 0, 0];
 			MEMBER("paraVehicle", _vehicle);
 			MEMBER("vehicle", _vehicle);
-			
-			wcbonusvehicle = _vehicle;
-			["wcbonusvehicle", "client"] call BME_fnc_publicvariable;	
+			["remoteSpawn", ["wcbonusvehicle", _vehicle, "client"]] call global_bme;
 		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {

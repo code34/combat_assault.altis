@@ -31,8 +31,7 @@
 
 	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\config.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\scripts\BME_serverhandler.sqf";
 
 	WC_fnc_setskill	 	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_setskill.sqf";
 	WC_fnc_computezone		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_computezone.sqf";
@@ -41,12 +40,12 @@
 	WC_fnc_vehiclehandler	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_vehiclehandler.sqf";
 	WC_fnc_spawngroup		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_spawngroup.sqf";
 	WC_fnc_servicing		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_servicing.sqf";
-
 	wc_fnc_fueldepot		= compileFinal preprocessFileLineNumbers "warcontext\missions\wc_fnc_fueldepot.sqf";
 
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_bme.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
@@ -57,6 +56,7 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_supply.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolvehicle.sqf";
@@ -69,6 +69,12 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_basegenerator.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_namegenerator.sqf";
 
+	if(!local player) then {
+		global_bme = "new" call OO_BME;
+		"bme_addqueue" addPublicVariableEventHandler {
+			["addReceiveQueue", _this select 1] call global_bme;
+		};
+	};
 
 	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
 	_sectorsize = 100;
@@ -211,7 +217,7 @@
 	};
 
 	onPlayerConnected {
-		["wcticket", "client"] call BME_fnc_publicvariable;
+		"send" call global_ticket;
 	};
 
 

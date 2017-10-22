@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013-2017 Nicolas BOITEUX
+	Copyright (C) 2013-2018 Nicolas BOITEUX
 
 	Bus Message Exchange (BME)
 	
@@ -22,117 +22,102 @@
 	*/
 
 	// Example function hint message on client side
-	BME_netcode_bme_message = {
-		bme_message = _this select 0;
+	BME_netcode_client_bme_message = {
+		bme_message = _this;
 		hint bme_message;
 	};
 
-	BME_netcode_wcairports = {
-		wcairports = _this select 0;
+	BME_netcode_client_wcairports = {
+		wcairports = _this;
 	};
 
-	BME_netcode_wcfactorys = {
-		wcfactorys = _this select 0;
+	BME_netcode_client_wcfactorys = {
+		wcfactorys = _this;
 	};
 	
-	BME_netcode_vehicleavalaible = {
-		private ["_alive"];
-		_alive = _this select 0;
-		"Vehicle servicing" hintC format ["Vehicle will be avalaible in %1 seconds", _alive];
+	BME_netcode_client_vehicleavalaible = {
+		"Vehicle servicing" hintC format ["Vehicle will be avalaible in %1 seconds", _this];
 	};
 
-	BME_netcode_wcunblacklist = {
-		private  ["_player"];
-		_player = _this select 0;
-		wcblacklist = wcblacklist - [name _player];
-		diag_log format ["You unblacklist by a BIG HUG : %1 %2", name _player, _player];
+	BME_netcode_client_wcunblacklist = {
+		wcblacklist = wcblacklist - [name _this];
+		diag_log format ["You unblacklist by a BIG HUG : %1 %2", name _this, _this];
 	};
 
-	BME_netcode_wcbonusvehicle = {
-		private ["_vehicle", "_name", "_sector"];
-
-		_vehicle = _this select 0;
-		_sector = ["getSectorFromPos", position _vehicle] call client_grid ;
-		_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
-
+	BME_netcode_client_wcbonusvehicle = {
+		private ["_name", "_sector", "_message"];
+		_sector = ["getSectorFromPos", position _this] call client_grid ;
+		_name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
 		_message = "<t align='center'><t color='#FF9933'>"+ _name + "</t> " + localize "STR_DROPPED_TEXT" + format [" %1", _sector] + "</t>";
-		killzone = killzone + [_message];
+		killzone pushBack _message;
 	};
 
-	BME_netcode_wcconvoystart = {
+	BME_netcode_client_wcconvoystart = {
 		private ["_message"];
-		
 		_message = "<t color='#FF9933'>"+ localize "STR_ENEMYCONVOY_TEXT" + "</t> " + localize "STR_SPOTTED_TEXT" + "<br/>";
-		rollmessage = rollmessage + [_message];
+		rollmessage pushBack _message;
 		_message = "<t align='center'><t color='#FF9933'>"+ localize "STR_ENEMYCONVOY_TEXT" + "</t> " + localize "STR_SPOTTED_TEXT" + "</t>";
-		killzone = killzone + [_message];
+		killzone pushBack _message;
 	};
 
-	BME_netcode_wccommanderoff = {
+	BME_netcode_client_wccommanderoff = {
 		private ["_message"];
-		
 		_message = "<t color='#FF9933'>"+ localize "STR_COMMANDEROFF_TEXT" + "</t><br/>";
-		rollmessage = rollmessage + [_message];
+		rollmessage pushBack _message;
 		_message = "<t align='center'><t color='#FF9933'>"+ localize "STR_COMMANDEROFF_TEXT" + "</t> ";
-		killzone = killzone + [_message];	
+		killzone pushBack _message;	
 	};
 
-	BME_netcode_wcaircraftstart = {
+	BME_netcode_client_wcaircraftstart = {
 		private ["_message"];
-	
 		_message = "<t color='#FF9933'>An Enemy Aircraft</t> has been discovered<br/>";
-		rollmessage = rollmessage + [_message];
+		rollmessage pushBack _message;
 		_message = "<t align='center'><t color='#FF9933'>An Enemy Aircraft</t> has been discovered</t>";
-		killzone = killzone + [_message];
+		killzone pushBack _message;
 	};
 
-	BME_netcode_wcartillerystart = {
+	BME_netcode_client_wcartillerystart = {
 		private ["_message"];
-	
 		_message = "<t color='#FF9933'>An Enemy Artillery</t> has been discovered<br/>";
-		rollmessage = rollmessage + [_message];
+		rollmessage pushBack _message;
 		_message = "<t align='center'><t color='#FF9933'>An Enemy Artillery</t> has been discovered</t>";
-		killzone = killzone + [_message];
+		killzone pushBack _message;
 	};
 
-	BME_netcode_wcsectorcompleted = {
-		private ["_sector", "_message"];
-		_sector = _this select 0;
-		
-		_message = format ["<t color='#FF9933'>Sector %1%2</t> has been completed<br/>", _sector select 0, _sector select 1];
-		rollmessage = rollmessage + [_message];
-		_message = format["<t align='center'><t color='#FF9933'>Sector %1%2</t> has been completed</t>",_sector select 0, _sector select 1];
-		killzone = killzone + [_message];
+	BME_netcode_client_wcsectorcompleted = {
+		private ["_message"];
+		_message = format ["<t color='#FF9933'>Sector %1%2</t> has been completed<br/>", _this select 0, _this select 1];
+		rollmessage pushBack _message;
+		_message = format["<t align='center'><t color='#FF9933'>Sector %1%2</t> has been completed</t>",_this select 0, _this select 1];
+		killzone pushBack _message;
 	};	
 
-	BME_netcode_wcconvoy = {
-		private ["_expand", "_message", "_message2"];
-		
-		_expand = _this select 0;
-		if(_expand) then {
+	BME_netcode_client_wcconvoy = {
+		private ["_message"];
+		if(_this) then {
 			_message = "<t color='#FF9933'>Enemy convoy</t> - expanding done<br/>";
-			_message2 = "<t align='center'><t color='#FF9933'>Enemy convoy</t> - expanding done</t>";
+			rollmessage pushBack _message;
+			_message = "<t align='center'><t color='#FF9933'>Enemy convoy</t> - expanding done</t>";
+			killzone pushBack _message;
 		} else {
 			_message = "<t color='#FF9933'>Enemy Convoy</t> - expanding failed<br/>";
-			_message2 = "<t align='center'><t color='#FF9933'>Enemy Convoy</t> - expanding failed</t>";
+			rollmessage pushBack _message;
+			_message = "<t align='center'><t color='#FF9933'>Enemy Convoy</t> - expanding failed</t>";
+			killzone pushBack _message;
 		};
-		rollmessage = rollmessage + [_message];
-		killzone = killzone + [_message2];
 	};
 
-	BME_netcode_vehiclegetin = {
-		private ["_vehicle"];
-		_vehicle = _this select 0;
-		player moveindriver _vehicle;
-		waituntil {speed _vehicle > 60};
-		_reload = ["new", _vehicle] call OO_RELOADPLANE;
+	BME_netcode_client_vehiclegetin = {
+		player moveindriver _this;
+		waituntil {speed _this > 60};
+		_reload = ["new", _this] call OO_RELOADPLANE;
 		"start" spawn _reload;
 	};
 
-	BME_netcode_wcaideath = {
+	BME_netcode_client_wcaideath = {
 		private ["_unit", "_killer", "_message", "_weapon", "_displayname", "_playerkill", "_playerdeath"];
 		
-		_array = _this select 0;
+		_array = _this;
 		_unit = _array select 0;
 		_killer = _array select 1;
 		_weapon = _array select 2;
@@ -149,14 +134,14 @@
 		} else {
 			_message = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
 		};
-		rollmessage = rollmessage + [_message];		
+		rollmessage pushBack _message;		
 	};
 
-	BME_netcode_wcdeath = {
+	BME_netcode_client_wcdeath = {
 		private ["_victim", "_killer", "_message", "_message2", "_displayname", "_weapon", "_name"];
 		
-		_victim = (_this select 0) select 0;
-		_killer = (_this select 0) select 1;
+		_victim = _this select 0;
+		_killer = _this select 1;
 		_weapon = currentWeapon _killer;
 
 		if(_killer isKindOf "Man") then {
@@ -228,35 +213,29 @@
 			_message = "<t align='center'><t color='#FF9933'>"+ name _victim + "</t> was killed</t>";
 			_message2 = "<t color='#FF9933'>"+ name _victim + "</t> was killed<br/>";
 		};
-
-		killzone = killzone + [_message];
-		rollmessage = rollmessage + [_message2];
+		killzone pushBack _message;
+		rollmessage pushBack _message2;
 	};
 
-	BME_netcode_wcmissioncompleted = {
-		private ["_array", "_message", "_win", "_text"];
-		_array = _this select 0;
-		
-		_win = _array select 0;
-		_text = _array select 1;
-
-		if(_win) then {
-			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t>: "+_text+"</t><br/>";
+	BME_netcode_client_wcmissioncompleted = {
+		private ["_message"];
+		if(_this select 0) then {
+			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t>: "+(_this select 1)+"</t><br/>";
 		} else {
-			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t>: "+_text+"</t><br/>";
+			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t>: "+(_this select 0)+"</t><br/>";
 		};
-		killzone = killzone + [_message];
+		killzone pushBack _message;
 	};
 
-	BME_netcode_wcticket = {
-		wcticket = _this select 0;
+	BME_netcode_client_wcticket = {
+		wcticket = _this;
 	};
 
-	BME_netcode_wcteleportack = {
+	BME_netcode_client_wcteleportack = {
 		private ["_returncode", "_position"];
 
-		_returncode = (_this select 0) select 0;
-		_position = (_this select 0) select 1;
+		_returncode = _this select 0;
+		_position = _this select 1;
 
 		switch (_returncode) do {
 			case 0 : {
@@ -319,9 +298,9 @@
 
 	// variable send by the server
 	// playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]];
-	BME_netcode_playerstats = {
+	BME_netcode_client_playerstats = {
 		private ["_score", "_rank"];
-		_score = _this select 0;
+		_score = _this;
 		if((_score select 0) == name player) then { 
 			playerkill = ((_score select 1) select 4);
 			playerdeath = ((_score select 1) select 5);
@@ -334,9 +313,8 @@
 		}foreach alldead;
 	};
 
-	BME_netcode_end = {
-		_end = _this select 0;
-		if(_end == "win") then {
+	BME_netcode_client_end = {
+		if(toLower(_this select 0) isEqualTo "win") then {
 			["end1",false,2] call BIS_fnc_endMission;
 		} else {
 			["epicFail",false,2] call BIS_fnc_endMission;

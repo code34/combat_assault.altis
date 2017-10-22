@@ -49,7 +49,7 @@
 
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
-	call compilefinal preprocessFileLineNumbers "client\BME\BME_clienthandler.sqf";
+	call compilefinal preprocessFileLineNumbers "client\scripts\BME_clienthandler.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_bme.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";

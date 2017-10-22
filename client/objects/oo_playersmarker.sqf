@@ -26,11 +26,10 @@
 		PRIVATE VARIABLE("code","hashmap");
 		
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_array", "_hashmap"];
+			private ["_hashmap"];
 			
-			_array = [];
-			MEMBER("list", _array);
-			MEMBER("markers", _array);
+			MEMBER("list", []);
+			MEMBER("markers", []);
 					
 			_hashmap  = ["new", []] call OO_HASHMAP;
 			MEMBER("hashmap", _hashmap);

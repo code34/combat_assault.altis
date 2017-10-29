@@ -34,6 +34,7 @@
 
 	while {count wcteleportposition == 0} do { sleep 0.1;};
 	onMapSingleClick "";
+	if(wcteleportposition distance (getMarkerPos "respawn_west") > 1500) exitWith {};
 
 	player setpos [wcteleportposition select 0, wcteleportposition select 1, 500];
 	player setVelocity [0, 0, 10];

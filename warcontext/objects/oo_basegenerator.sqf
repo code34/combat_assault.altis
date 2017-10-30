@@ -24,6 +24,7 @@
 		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("array","structures");
 		PRIVATE VARIABLE("string","marker");
+		PRIVATE VARIABLE("string","deploymarker");
 		PRIVATE VARIABLE("object","base");
 		PRIVATE VARIABLE("bool","packed");
 		PRIVATE VARIABLE("code", "grid");
@@ -51,6 +52,7 @@
 
 			_position = MEMBER("generateRandomPosition", nil);
 			MEMBER("createMarker", _position);
+			MEMBER("createDeployMarker", _position);
 			MEMBER("buildTerrain", _position);
 			MEMBER("buildHQ", _position);
 			MEMBER("buildStructures", _position);
@@ -159,6 +161,16 @@
 			_marker setMarkerType "b_hq";
 			MEMBER("marker", _marker);
 		};
+
+		PUBLIC FUNCTION("array", "createDeployMarker"){
+			private ["_marker"];
+			_marker = createMarker ["globalbasedeploy", _this];
+			_marker setMarkerShape "ELLIPSE";
+			_marker setMarkerBrush "border";
+			_marker setMarkerSize [1500,1500];
+			_marker setMarkerColorLocal "ColorBlue";
+			MEMBER("deploymarker", _marker);
+		};		
 
 		PUBLIC FUNCTION("", "unpackBase"){
 			private ["_position", "_base", "_newposition", "_dir", "_sectors", "_position"];

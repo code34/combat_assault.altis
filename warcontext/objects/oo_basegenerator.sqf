@@ -125,6 +125,7 @@
 			
 			"respawn_west" setmarkerpos _position;
 			MEMBER("marker", nil) setMarkerPos _position;
+			MEMBER("deploymarker", nil) setMarkerPos _position;
 			MEMBER("position", _position);
 			MEMBER("base", _base);
 		};
@@ -200,7 +201,7 @@
 		};
 
 		PUBLIC FUNCTION("", "packBase"){
-			private ["_position", "_base", "_newposition", "_mark"];
+			private ["_position", "_base", "_newposition", "_mark", "_deploymark"];
 			
 			_position = getMarkerPos "respawn_west";
 
@@ -216,9 +217,12 @@
 				[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 				
 				_mark = MEMBER("marker", nil);
-				[_base, _mark] spawn {
+				_deploymark = MEMBER("deploymarker", nil);
+
+				[_base, _mark, _deploymark] spawn {
 					while { alive (_this select 0)} do {
 						(_this select 1) setMarkerPos (getpos (_this select 0));
+						(_this select 2) setMarkerPos (getpos (_this select 0));
 						"respawn_west" setmarkerpos (getpos (_this select 0));
 						sleep 0.1;
 					};

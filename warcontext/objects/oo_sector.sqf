@@ -380,15 +380,15 @@
 			if(_position isEqualTo []) exitWith {[];};
 		
 			if(count wcrhsinfantrysquads == 0) then {
-				_group = [_position, east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call WC_fnc_spawngroup;
+				_group = [[0,0,0], east, (configfile >> "CfgGroups" >> "East" >> "OPF_F" >> "infantry" >> _type)] call WC_fnc_spawngroup;
 			} else {
-				_group = [_position, east, _type] call WC_fnc_spawngroup;
+				_group = [[0,0,0], east, _type] call WC_fnc_spawngroup;
 			};
 		
 			{
 				[_x, _type] spawn WC_fnc_setskill;
 				_chute = "Steerable_Parachute_F" createVehicle [0,0,0]; 
-				_chute setPos [getPos _x select 0, getPos _x select 1, 100]; 
+				_chute setPos [getPos _x select 0, getPos _x select 1, 200]; 
 				_x moveIndriver _chute;
 				sleep 0.1;
 			}foreach (units _group);

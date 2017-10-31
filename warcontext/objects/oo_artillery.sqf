@@ -32,50 +32,51 @@
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("group","group");
 		PRIVATE VARIABLE("object","target");
-		PRIVATE VARIABLE("array","position");
 		PRIVATE VARIABLE("string","ammo");
 		PRIVATE VARIABLE("scalar","round");
 		PRIVATE VARIABLE("bool","suppression");
 		PRIVATE VARIABLE("code","marker");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_position", "_vehicle", "_mark"];
-
-			_position = _this select 0;
-			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
-			MEMBER("position", _position);
-
-			_vehicle = wcartilleryvehicles call BIS_fnc_selectRandom;
-			_array = [_position, 180, _vehicle, EAST] call bis_fnc_spawnvehicle;
-
-			_vehicle = _array select 0;
-			_group = _array select 2;
-			_group setBehaviour "COMBAT";
-			_group setCombatMode "RED";
-
+			private _position = [(_this select 0), 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+			MEMBER("createArtillery", _position);
+			MEMBER("createMarker", _vehicle);
+			MEMBER("setCombatMode", nil);
 			["remoteSpawn", ["wcartillerystart", true, "client"]] call global_bme;
-			
-			_mark = ["new", [position _vehicle, false]] call OO_MARKER;
-			["attachTo", _vehicle] spawn _mark;
-			["setText", "Artillery"] spawn _mark;
-			["setColor", "ColorRed"] spawn _mark;
-			["setType", "hd_destroy"] spawn _mark;
-			["setSize", [0.5,0.5]] spawn _mark;
-			MEMBER("marker", _mark);
+		};
 
+		PUBLIC FUNCTION("array", "createArtillery") {
+			private _array = [_this, 180, (selectRandom wcartilleryvehicles), EAST] call bis_fnc_spawnvehicle;
+			private _vehicle = _array select 0;
+			private _group = _array select 2;
 			MEMBER("group", _group);
-
-			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
-
 			MEMBER("target", _vehicle);
 			MEMBER("vehicle", _vehicle);
+			[_vehicle] spawn WC_fnc_vehiclehandler;
 			MEMBER("ammo", "32Rnd_155mm_Mo_shells");
 			MEMBER("round", floor(random 3));
 			MEMBER("setSuppression", false);
 			enableEngineArtillery true;
 		};
 
-		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
+		PUBLIC FUNCTION("array", "isAlive") {
+			alive MEMBER("vehicle", nil);
+		};
+
+		PUBLIC FUNCTION("object", "createMarker") {
+			private _mark = ["new", [position _this, false]] call OO_MARKER;
+			["attachTo", _this] spawn _mark;
+			["setText", "Artillery"] spawn _mark;
+			["setColor", "ColorRed"] spawn _mark;
+			["setType", "hd_destroy"] spawn _mark;
+			["setSize", [0.5,0.5]] spawn _mark;
+			MEMBER("marker", _mark);
+		};
+
+		PUBLIC FUNCTION("","getPosition") {
+			position MEMBER("vehicle", nil);
+		};
+
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
 		PUBLIC FUNCTION("","getAmmo") FUNC_GETVAR("ammo");
 		PUBLIC FUNCTION("","getTarget") FUNC_GETVAR("target");
@@ -102,12 +103,29 @@
 			MEMBER("getVehicle", nil) getArtilleryETA [(position MEMBER("target", nil)), currentMagazine MEMBER("getVehicle", nil)];
 		};
 
+		PUBLIC FUNCTION("", "setMoveMode") {
+			MEMBER("group", nil) setBehaviour "AWARE";
+			MEMBER("group", nil) setCombatMode "RED";
+			MEMBER("group", nil) setSpeedMode "FULL";
+			MEMBER("group", nil) allowFleeing 0.1;
+		};		
+
+		PUBLIC FUNCTION("", "setSafeMode") {
+			MEMBER("group", nil) setBehaviour "SAFE";
+			MEMBER("group", nil) setCombatMode "GREEN";
+			MEMBER("group", nil) setSpeedMode "NORMAL";
+			MEMBER("group", nil) allowFleeing 0.1;
+		};
+
+		PUBLIC FUNCTION("", "setCombatMode") {
+			MEMBER("group", nil) setBehaviour "COMBAT";
+			MEMBER("group", nil) setCombatMode "RED";
+			MEMBER("group", nil) setSpeedMode "FULL";
+			MEMBER("group", nil) allowFleeing 0.1;
+		};		
+
 		PUBLIC FUNCTION("object", "callFireOnTarget") {
-			private ["_target"];
-			
-			_target = _this;
-			
-			MEMBER("setTarget", _target);
+			MEMBER("setTarget", _this);
 			MEMBER("autoSetAmmo", nil);
 			MEMBER("doFire", nil);
 		};
@@ -118,20 +136,19 @@
 				deletevehicle _x;
 				sleep 0.01;
 			}foreach (crew MEMBER("getVehicle", nil));
-
 			MEMBER("getVehicle", nil) setdamage 1;
 			deletevehicle MEMBER("getVehicle", nil);
 		};
 
 		PUBLIC FUNCTION("bool", "autoSetAmmo") {
-			private ["_ammo", "_target"];
-			_target = MEMBER("target", nil);
+			private _target = MEMBER("target", nil);
+			private _ammo = "";
 
 			if(!MEMBER("suppression", nil)) then {			
 				if( _target iskindof "Man") then {
-					_ammo = ["smoke", "cluster", "bomb", "mine", "bigbomb"] call BIS_fnc_selectRandom;
+					_ammo = selectRandom ["smoke", "cluster", "bomb", "mine", "bigbomb"];
 				} else {
-					_ammo = ["cluster", "bomb", "mine", "bigbomb"] call BIS_fnc_selectRandom;
+					_ammo = selectRandom ["cluster", "bomb", "mine", "bigbomb"];
 				};
 			} else {
 				_ammo = "smoke";
@@ -140,8 +157,7 @@
 		};
 
 		PUBLIC FUNCTION("string", "setAmmo") {
-			private ["_ammo"];
-
+			private _ammo = "";
 			switch (_this) do {
 				case "bomb": {
 					_ammo = "32Rnd_155mm_Mo_shells";
@@ -190,7 +206,6 @@
 			MEMBER("round", _this);
 		};
 
-
 		PUBLIC FUNCTION("","deconstructor") { 
 			["delete", MEMBER("marker", nil)] call OO_MARKER;
 			MEMBER("removeVehicle", nil);
@@ -198,7 +213,6 @@
 			deleteGroup MEMBER("group", nil);
 			DELETE_VARIABLE("group");
 			DELETE_VARIABLE("target");
-			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("ammo");
 			DELETE_VARIABLE("round");
 			DELETE_VARIABLE("suppression");

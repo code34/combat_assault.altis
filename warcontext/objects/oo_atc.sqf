@@ -64,6 +64,9 @@
 			private _around = [];
 			private _enemies = false;
 
+			MEMBER("east", []);
+			MEMBER("west", []);
+
 			{						
 				_enemies = false;
 				_sector = ["getSectorFromPos", getmarkerpos _x] call global_grid;

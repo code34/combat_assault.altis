@@ -26,47 +26,44 @@
 		PRIVATE VARIABLE("array","east");
 		PRIVATE VARIABLE("array", "airports");
 
-		PUBLIC FUNCTION("scalar","constructor") {
+		PUBLIC FUNCTION("","constructor") {
+			MEMBER("airports", []);
 			MEMBER("run", false);
 			MEMBER("west", []);
 			MEMBER("east", []);
-			MEMBER("discover", _this);
+			MEMBER("discover", nil);
 		};
 
 		PUBLIC FUNCTION("","getWest") FUNC_GETVAR("west");
 		PUBLIC FUNCTION("","getEast") FUNC_GETVAR("east");
 		PUBLIC FUNCTION("","getAirports") FUNC_GETVAR("airports");
 
-		PUBLIC FUNCTION("scalar", "discover") {
-			private ["_positions", "_airports"];
-
-			_airports = [];
-			_positions = [getarray (configfile >> "CfgWorlds" >> worldName >> "ilsPosition")];
+		PUBLIC FUNCTION("", "discover") {
+			private _airports = [];
+			private _mark = "";
+			private _mark2 = "";
+			private _positions = [getarray (configfile >> "CfgWorlds" >> worldName >> "ilsPosition")];
 			"_positions pushBack (getArray (_x >> 'ilsPosition'))" configClasses (configFile >> "CfgWorlds" >> worldName >> "secondaryAirports");
 
 			{
 				_name = toUpper (["generateName", (ceil (random 3) + 1)] call global_namegenerator);
-				
-				_temp = createMarker [_name+"_AIRPORT", _x];
-				_temp setMarkerType "mil_pickup";
-				_temp setMarkerText (_name + " AIRPORT");
-
-				_temp = createMarker [_name, _x];
-				_temp setMarkerShape "ELLIPSE";
-				_temp setMarkerSize [300,300];
-				_temp setMarkerColor "COLORBLUE";
-				_temp setMarkerBrush "FDiagonal";
-
-				_airports = _airports + [_name];
+				_mark = createMarker [_name+"_AIRPORT", _x];
+				_mark setMarkerType "mil_pickup";
+				_mark setMarkerText (_name + " AIRPORT");
+				_mark2 = createMarker [_name, _x];
+				_mark2 setMarkerShape "ELLIPSE";
+				_mark2 setMarkerSize [300,300];
+				_mark2 setMarkerColor "COLORBLUE";
+				_mark2 setMarkerBrush "FDiagonal";
+				MEMBER("airports", nil) pushBack _name;
 			}foreach _positions;
-			MEMBER("airports", _airports);
 		};
 
-		PUBLIC FUNCTION("", "isFriendly") {
-			private ["_enemies", "_sector", "_around", "_wairport", "_eairport"];
-			
-			_wairport = [];
-			_eairport = [];
+		PUBLIC FUNCTION("", "isFriendly") {	
+			private _sector = [];
+			private _around = [];
+			private _enemies = false;
+
 			{						
 				_enemies = false;
 				_sector = ["getSectorFromPos", getmarkerpos _x] call global_grid;
@@ -83,15 +80,13 @@
 				
 				if(_enemies) then {
 					_x setmarkercolor "colorRed";
-					_eairport = _eairport + [_x];
+					MEMBER("east", nil) pushBack _x;
 				} else {
 					_x setmarkercolor "colorBlue";
-					_wairport = _wairport + [_x];
+					MEMBER("west", nil) pushBack _x;
 				};
 				sleep 1;
 			}foreach MEMBER("airports", nil);
-			MEMBER("west", _wairport);
-			MEMBER("east", _eairport);
 		};
 
 		PUBLIC FUNCTION("", "countWest") {

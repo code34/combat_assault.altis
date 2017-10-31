@@ -226,7 +226,7 @@
 	global_scores = ["new", []] call OO_HASHMAP;
 	global_vehicles = ["new", []] call OO_HASHMAP;
 	global_ticket = ["new", wcnumberofticket] call OO_TICKET;
-	global_atc = ["new", _size] call OO_ATC;
+	global_atc = "new" call OO_ATC;
 	global_factory = "new" call OO_FACTORY;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
 

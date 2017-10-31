@@ -30,6 +30,7 @@
 			MEMBER("run", false);
 			MEMBER("west", []);
 			MEMBER("east", []);
+			MEMBER("factorys", []);
 			MEMBER("discover", nil);
 		};
 
@@ -38,45 +39,44 @@
 		PUBLIC FUNCTION("","getFactorys") FUNC_GETVAR("factorys");
 
 		PUBLIC FUNCTION("", "discover") {
-			private ["_positions", "_factorys", "_center", "_size", "_names", "_temp", "_name", "_objects", "_object", "_center"];
-
-			_factorys = [];
-			
-			_center = getArray (configfile >> "CfgWorlds" >> worldName >> "centerPosition");
-			_size = (getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
-			_objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F", "Land_MilOffices_V1_F", "Land_Factory_Main_F", "Land_Factory_Tunnel_F", "Land_DPP_01_mainFactory_F", "Land_DPP_01_smallFactory_F", "Land_SCF_01_boilerBuilding_F", "Land_SM_01_shed_F", "Land_SM_01_shed_unfinished_F", "Land_SM_01_shelter_narrow_F", "Land_SM_01_shelter_wide_F"], _size];
+			private _factorys = [];
+			private _center = getArray (configfile >> "CfgWorlds" >> worldName >> "centerPosition");
+			private _size = (getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize") / 2);
+			private _objects = nearestObjects [_center, ["Land_dp_mainFactory_F","Land_dp_smallFactory_F", "Land_MilOffices_V1_F", "Land_Factory_Main_F", "Land_Factory_Tunnel_F", "Land_DPP_01_mainFactory_F", "Land_DPP_01_smallFactory_F", "Land_SCF_01_boilerBuilding_F", "Land_SM_01_shed_F", "Land_SM_01_shed_unfinished_F", "Land_SM_01_shelter_narrow_F", "Land_SM_01_shelter_wide_F"], _size];
+			private _object = objNull;
 			
 			for "_x" from 0 to 10 step 1 do {
 				_object = _objects deleteAt floor((random(count _objects)));
-				_factorys = _factorys + [position _object];
+				_factorys pushBack (position _object);
 			};
 
-			_names = [];
-
+			private _mark1 = "";
+			private _mark2 = "";
+			private _name = "";
+			private _names = [];
 			{
-				_name = toUpper (["generateName", (ceil (random 3) + 1)] call global_namegenerator);
-				
-				_temp = createMarker [_name+"_FACTORY", _x];
-				_temp setMarkerType "respawn_armor";
-				_temp setMarkerText (_name + " FACTORY");
-				_temp	setMarkerSize [0.5,0.5];
-
-				_temp = createMarker [_name, _x];
-				_temp setMarkerShape "ELLIPSE";
-				_temp setMarkerSize [50,50];
-				_temp setMarkerColor "COLORBLUE";
-				_temp setMarkerBrush "FDiagonal";
-
-				_names = _names + [_name];
+				_name = toUpper (["generateName", (ceil (random 3) + 1)] call global_namegenerator);		
+				 _mark1 = createMarker [_name+"_FACTORY", _x];
+				_mark1 setMarkerType "respawn_armor";
+				_mark1 setMarkerText (_name + " FACTORY");
+				_mark1	setMarkerSize [0.5,0.5];
+				_mark2 = createMarker [_name, _x];
+				_mark2 setMarkerShape "ELLIPSE";
+				_mark2 setMarkerSize [50,50];
+				_mark2 setMarkerColor "COLORBLUE";
+				_mark2 setMarkerBrush "FDiagonal";
+				_names pushBack _name;
 			}foreach _factorys;
 			MEMBER("factorys", _names);
 		};
 
-		PUBLIC FUNCTION("", "isFriendly") {
-			private ["_enemies", "_sector", "_around", "_wfactory", "_efactory"];
-			
-			_wfactory = [];
-			_efactory = [];
+		PUBLIC FUNCTION("", "isFriendly") {	
+			private _enemies = false;
+			private _sector = [];
+			private _around = [];
+
+			MEMBER("west", []);
+			MEMBER("east", []);
 			{						
 				_enemies = false;
 				_sector = ["getSectorFromPos", getmarkerpos _x] call global_grid;
@@ -93,15 +93,13 @@
 				
 				if(_enemies) then {
 					_x setmarkercolor "colorRed";
-					_efactory = _efactory + [_x];
+					MEMBER("east", _nil) pushBack _x;
 				} else {
 					_x setmarkercolor "colorBlue";
-					_wfactory = _wfactory + [_x];
+					MEMBER("west", _nil) pushBack _x;
 				};
 				sleep 1;
 			}foreach MEMBER("factorys", nil);
-			MEMBER("west", _wfactory);
-			MEMBER("east", _efactory);
 		};
 
 		PUBLIC FUNCTION("", "countWest") {

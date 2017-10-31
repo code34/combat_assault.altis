@@ -37,26 +37,24 @@
 
 
 		PUBLIC FUNCTION("","constructor") {
-			private ["_size", "_sectorsize", "_grid", "_position"];
+			private _size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
+			private _sectorsize = 12;
+			private _grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
+			private _position = MEMBER("generateRandomPosition", nil);
 
-			_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
-			_sectorsize = 12;
-			_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
+			MEMBER("structures", []);
 			MEMBER("grid", _grid);
-
 			MEMBER("medicactive", false);
 			MEMBER("radaractive", false);
 			MEMBER("toweractive", false);
 			MEMBER("bunkeractive", false);
 			MEMBER("researchactive", false);
-
-			_position = MEMBER("generateRandomPosition", nil);
 			MEMBER("createMarker", _position);
 			MEMBER("createDeployMarker", _position);
-			MEMBER("buildTerrain", _position);
-			MEMBER("buildHQ", _position);
-			MEMBER("buildStructures", _position);
+			"respawn_west" setmarkerpos _position;
+			MEMBER("position", _position);
 			MEMBER("packed", false);
+			MEMBER("packBase", nil);
 		};
 
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
@@ -70,10 +68,8 @@
 		}; 
 
 		PUBLIC FUNCTION("", "getRandomStructure"){
-			private ["_kind", "_type"];
-
-			_kind = "";
-			_type = [
+			private _kind = "";
+			private _type = [
 				["Land_Radar_Small_F", 0.97, MEMBER("radaractive", nil)],
 				["Land_Cargo_Tower_V2_F", 0.97, MEMBER("toweractive", nil)],
 				["Land_HBarrierTower_F", 0.93, MEMBER("toweractive", nil)],
@@ -96,29 +92,25 @@
 		};
 
 		PUBLIC FUNCTION("array", "buildStructures"){
-			private ["_structures", "_position", "_sectors", "_grid", "_object"];
+			private _position = _this;
+			private _grid = MEMBER("grid", nil);
+			private _object = objNull;
 
-			_position = _this;
-			_grid = MEMBER("grid", nil);
-			_structures = [];
-
-			_sectors = ["getAllSectorsAroundPos", [_position, 3]] call _grid;
+			private _sectors = ["getAllSectorsAroundPos", [_position, 3]] call _grid;
 			{
 				_position = ["getPosFromSector", _x]  call _grid;
 				_object = MEMBER("getRandomStructure", nil) createVehicle _position;
 				_object setdir (selectRandom [0,90,180,270]);
-				_structures = _structures + [_object];
+				MEMBER("structures", nil) pushBack _object;
 				sleep 0.01;
 			}foreach _sectors;
-			MEMBER("structures", _structures);
+			true;
 		};
 
 		PUBLIC FUNCTION("array", "buildHQ"){
-			private ["_position", "_base"];
+			private _position = _this;
+			private _base = objNull;
 
-			_position = _this;
-
-			_base = objNull;
 			_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
 			[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 			_base addEventHandler ['HandleDamage', { false; }];
@@ -136,11 +128,11 @@
 		};
 
 		PUBLIC FUNCTION("", "generateRandomPosition"){
-			private ["_flag", "_sector", "_position", "_size", "_sectorsize"];
-			
-			_flag = false;
-			_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
-			_sectorsize = 100;
+			private _flag = false;
+			private _size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
+			private _sectorsize = 100;
+			private _sector = [];
+			private _position = [];
 
 			while { !_flag } do {
 				_sector = [ceil (random (_size/_sectorsize)), ceil (random (_size/_sectorsize))];
@@ -156,16 +148,14 @@
 		};
 
 		PUBLIC FUNCTION("array", "createMarker"){
-			private ["_marker"];
-			_marker = createMarker ["globalbase", _this];
+			private _marker = createMarker ["globalbase", _this];
 			_marker setMarkerText (toUpper ((["generateName", (ceil (random 3) + 1)] call global_namegenerator)  + " Base"));
 			_marker setMarkerType "b_hq";
 			MEMBER("marker", _marker);
 		};
 
 		PUBLIC FUNCTION("array", "createDeployMarker"){
-			private ["_marker"];
-			_marker = createMarker ["globalbasedeploy", _this];
+			private _marker = createMarker ["globalbasedeploy", _this];
 			_marker setMarkerShape "ELLIPSE";
 			_marker setMarkerBrush "border";
 			_marker setMarkerSize [1500,1500];
@@ -174,9 +164,8 @@
 		};		
 
 		PUBLIC FUNCTION("", "unpackBase"){
-			private ["_position", "_base", "_newposition", "_dir", "_sectors", "_position"];
-
-			_position = getMarkerPos "respawn_west";
+			private _position = getMarkerPos "respawn_west";
+			private _dir = 0;
 
 			if(MEMBER("packed", nil)) then {
 				MEMBER("packed", false);
@@ -200,26 +189,22 @@
 			if (("getTicket" call global_ticket) > 100) then { MEMBER("medicactive", true); } else { MEMBER("medicactive", false); };
 		};
 
-		PUBLIC FUNCTION("", "packBase"){
-			private ["_position", "_base", "_newposition", "_mark", "_deploymark"];
-			
-			_position = getMarkerPos "respawn_west";
+		PUBLIC FUNCTION("", "packBase"){		
+			private _position = getMarkerPos "respawn_west";
+			private _base = objNull;
 
 			if(!MEMBER("packed", nil)) then {
 				MEMBER("packed", true);
 				deleteVehicle MEMBER("base", nil);
 				{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);
+				_position =  (_position findEmptyPosition [0,15]);
+				if(_position isEqualTo []) exitWith {};
 
-				_newposition =  (_position findEmptyPosition [0,15]);
-				if(_newposition isEqualTo []) exitWith {};
+				_base = "B_Truck_01_transport_F" createVehicle _position;
+				[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;			
+				MEMBER("base", _base);
 
-				_base = "B_Truck_01_transport_F" createVehicle _newposition;
-				[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
-				
-				_mark = MEMBER("marker", nil);
-				_deploymark = MEMBER("deploymarker", nil);
-
-				[_base, _mark, _deploymark] spawn {
+				[_base, MEMBER("marker", nil), MEMBER("deploymarker", nil)] spawn {
 					while { alive (_this select 0)} do {
 						(_this select 1) setMarkerPos (getpos (_this select 0));
 						(_this select 2) setMarkerPos (getpos (_this select 0));
@@ -227,7 +212,6 @@
 						sleep 0.1;
 					};
 				};
-				MEMBER("base", _base);
 			};
 		};		
 

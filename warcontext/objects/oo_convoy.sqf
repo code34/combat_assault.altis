@@ -110,7 +110,7 @@
 				"(getText (_x >> 'type') in ['NameVillage', 'NameCity', 'NameCityCapital', 'CityCenter']) && {(_locations pushBack getText (_x >> 'name')) > -1}" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");
 				_distance = 30000;
 				{
-					if((_x distance _position < _distance) and (_x distance _position > 1500)) then {
+					if((_x distance _position < _distance) and (_x distance _position > 3000)) then {
 						_distance = _x distance _position;
 						_endposition = _x;
 						_locationname = _locations select _forEachIndex;

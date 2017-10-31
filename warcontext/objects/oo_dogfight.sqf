@@ -52,8 +52,7 @@
 		PUBLIC FUNCTION("","getTargets") FUNC_GETVAR("targets");
 
 		PUBLIC FUNCTION("", "cleaner") {
-			private ["_vehicle", "_crew", "_mark"];
-
+			private _vehicle = objNull;
 			{
 				_vehicle = _x select 0;
 				if(getDammage _vehicle > 0.90) then {
@@ -67,19 +66,17 @@
 
 		// Defini la taille de l'escadre
 		PUBLIC FUNCTION("", "setSquadronSize") {
-			private ["_ground", "_air", "_size", "_player"];
-
 			// compte le nombre de vehicules au sol bluefor
-			_ground = count MEMBER("groundtargets", nil);
+			private _ground = count MEMBER("groundtargets", nil);
 
 			// compte le nombre d avions bluefor
-			_air = count MEMBER("airtargets", nil);
+			private _air = count MEMBER("airtargets", nil);
 
 			// compte le nombre d infantery
-			_player = count MEMBER("playertargets", nil);
+			private _player = count MEMBER("playertargets", nil);
 
 			// la taille de l escadre ne peut pas etre superieur a 6
-			_size = _ground + (2 * _air) + round(_player / 5);
+			private _size = _ground + (2 * _air) + round(_player / 5);
 
 			if(_size > 6) then { _size = 6;};
 			MEMBER("squadronsize", _size);		
@@ -107,21 +104,20 @@
 		};
 
 		PUBLIC FUNCTION("object", "checkScoreByVehicle") {
-			private ["_score", "_vehicle"];
-			_vehicle = _this;
-			_score = 0;
+			private _score = 0;
 			{
 				_score = _score + score _x;
 				sleep 0.0001;
-			}foreach (crew _vehicle);
+			}foreach (crew _this);
 			_score;
 		};
 
 		PUBLIC FUNCTION("", "setTarget") {
-			private ["_target", "_score", "_newscore"];
+			private _target = [];
+			private _score = -1000;
+			private _newscore = 0;
 
 			if(count MEMBER("targets", nil) > 0) then {
-				_score = -1000;
 				{
 					_newscore = MEMBER("checkScoreByVehicle", _x);
 					if(_newscore > _score) then {
@@ -130,47 +126,35 @@
 					};
 					sleep 0.0001;
 				} foreach MEMBER("targets", nil);
-			} else {
-				_target = [];
-			};
+			} ;
 			MEMBER("target", _target);
 		};
 
 		PUBLIC FUNCTION("", "intercept") {
-			private ["_target", "_vehicle", "_squadron"];
-
 			if(count MEMBER("target", nil) > 0) then {
-				_target = MEMBER("target", nil) select 0;
-				_squadron = MEMBER("squadron", nil);
+				private _target = MEMBER("target", nil) select 0;
+				private _squadron = MEMBER("squadron", nil);
 				
 				{
-					_vehicle = _x select 0;
-					_vehicle domove (position _target);
-					_vehicle dotarget _target;
-					diag_log format ["oo_dogfight target %1 %2 %3", position _target, _target, _vehicle];
-					if(count crew _target == 0) then {
-						_target engineOn true;
-					};
+					(_x select 0) domove (position _target);
+					(_x select 0) dotarget _target;
+					if(count crew _target == 0) then { _target engineOn true; };
 					sleep 0.01;
 				}foreach MEMBER("squadron", nil);
 			};
 		};
 
 		PUBLIC FUNCTION("", "setFuel") {
-			private ["_conso", "_fuel", "_vehicle"];
 			{
-				_vehicle = _x select 0;
-				_vehicle setFuel 1;
-				_vehicle setVehicleAmmoDef 1;
+				(_x select 0) setFuel 1;
+				(_x select 0) setVehicleAmmoDef 1;
 				sleep 0.0001;
 			}foreach MEMBER("squadron", nil);
 		};
 
-		PUBLIC FUNCTION("", "checkTargets") {
-			private ["_target", "_age"];
-			
-			_target = MEMBER("target", nil);
-			_age = MEMBER("age", nil);
+		PUBLIC FUNCTION("", "checkTargets") {	
+			private _target = MEMBER("target", nil);
+			private _age = MEMBER("age", nil);
 
 			if( ((position (_target select 0)) isEqualTo [0,0,0]) or (_age < 1) ) then { 
 				_target = [];
@@ -190,28 +174,19 @@
 		};
 
 		PUBLIC FUNCTION("", "detectTargets") {
-			private ["_groundtargets", "_airtargets", "_vehicle", "_playertargets", "_targets"];
-
-			_groundtargets = [];
-			_airtargets = [];
-			_playertargets = [];
+			private _groundtargets = [];
+			private _airtargets = [];
+			private _playertargets = [];
 			
 			{
-				if(side _x ==  west) then {
-					_vehicle = vehicle _x;
-					if(_vehicle == _x) then {
-						if!(_x in _playertargets) then {
-							_playertargets = _playertargets + [_x];
-						};
+				if((side _x) isEqualTo west) then { 
+					if((vehicle _x) isEqualTo _x) then {
+						_playertargets pushBackUnique _x;
 					} else {
 						if((getposatl _x) select 2 > 10) then {
-							if!(_vehicle in _airtargets) then {
-								_airtargets = _airtargets + [_vehicle];
-							};
+							_airtargets pushBackUnique (vehicle _x);
 						} else {
-							if!(_vehicle in _groundtargets) then {
-								_groundtargets = _groundtargets + [_vehicle];
-							};
+							_groundtargets pushBackUnique (vehicle _x);
 						};
 					};
 					sleep 0.0001;
@@ -226,70 +201,57 @@
 			MEMBER("targets", _targets);
 		};
 
-		PUBLIC FUNCTION("", "popMember") {
-			private ["_crew", "_vehicle", "_mark", "_position", "_squad", "_array", "_list"];
-			
-			_array = "getEast" call MEMBER("atc", nil);
-			_position =  getmarkerpos (selectRandom _array);
+		PUBLIC FUNCTION("object", "createMarker") {
+			private _mark = ["new", [position _this, false]] call OO_MARKER;
+			["attachTo", _this] spawn _mark;
+			["setText", "Mig"] spawn _mark;
+			["setColor", "ColorRed"] spawn _mark;
+			["setType", "o_plane"] spawn _mark;
+			["setSize", [1,1]] spawn _mark;
+		};
 
-			 _list = _position nearEntities [["Man", "Tank"], 300];
+		PUBLIC FUNCTION("", "popMember") {	
+			private _array = "getEast" call MEMBER("atc", nil);
+			private _position =  getmarkerpos (selectRandom _array);
+			 private _list = _position nearEntities [["Man", "Tank"], 300];
 			 sleep 0.5;
+			 
 			 if(west countSide _list == 0) then {
 				_position = [_position select 0, _position select 1, 100];
-
-				_vehicle = wcplanevehicles call BIS_fnc_selectRandom;
+				private _vehicle = selectRandom wcplanevehicles;
 				_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
-
 				_vehicle = _array select 0;
-				_crew = (_array select 1) select 0;
+				private _crew = (_array select 1) select 0;
 				[_crew, ""] spawn WC_fnc_setskill;
 				[_vehicle] spawn WC_fnc_vehiclehandler;
-
-				_mark = ["new", [position _vehicle, false]] call OO_MARKER;
-
-				["attachTo", _vehicle] spawn _mark;
-				["setText", "Mig"] spawn _mark;
-				["setColor", "ColorRed"] spawn _mark;
-				["setType", "o_plane"] spawn _mark;
-				["setSize", [1,1]] spawn _mark;
-
-				_squad = MEMBER("squadron", nil);
-				_squad = _squad + [[_vehicle, _crew, _mark]];
-				MEMBER("squadron", _squad);
+				MEMBER("createMarker", _vehicle);
+				MEMBER("squadron", nil) pushBack [_vehicle, _crew, _mark];
 			};
 		};
 
 		PUBLIC FUNCTION("object", "unpopMember") {
-			private ["_counter", "_group", "_squadron"];
-
-			_squadron = MEMBER("squadron", nil);
 			{
-				if(_x select 0 == _this) then {
+				if(_x select 0 isEqualTo _this) then {
 					(_x select 0) setdammage 1;
 					deletevehicle (_x select 0) ;
-					_group = group (_x select 1);
 					(_x select 1) setdammage 1;
 					deletevehicle (_x select 1);
-					deletegroup _group;
+					deletegroup (group (_x select 1));
 					"detach" call (_x select 2);
 					["delete", (_x select 2)] call OO_MARKER;
-					_squadron set [_foreachindex, -1];
+					MEMBER("squadron", nil) deleteAt _forEachIndex;
 				};
 				sleep 0.01;
-			}foreach _squadron;
-			_squadron = _squadron - [-1];
-			MEMBER("squadron", _squadron);
+			}foreach MEMBER("squadron", nil);
 		};
 
-		PUBLIC FUNCTION("", "popSquadron") {
-			private ["_atc", "_counter", "_airport", "_size"];		
-			
-			_atc = MEMBER("atc", nil);
-			_airport = "countEast" call _atc;
-			_counter = MEMBER("counter", nil);
+		PUBLIC FUNCTION("", "popSquadron") {	
+			private _atc = MEMBER("atc", nil);
+			private _airport = "countEast" call _atc;
+			private _counter = MEMBER("counter", nil);
 			
 			if(_airport > 0) then {
-				_size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);			
+				private _size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);			
 				if(_size > 0) then {
 					if(_counter >  3) then {
 						for "_i" from 1 to _size do {

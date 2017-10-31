@@ -121,7 +121,7 @@
 #define CHECK_ACCESS(lvl) case ((_access >= lvl) &&
 #define CHECK_TYPE(typeStr) ((_argType isEqualTo toUpper(typeStr)) || {toUpper(typeStr) isEqualTo "ANY"})
 #define CHECK_NIL (_argType isEqualTo "")
-#define CHECK_MEMBER(name) (_member isEqualTo name)
+#define CHECK_MEMBER(name) (_member == name)
 #define CHECK_VAR(typeStr,varName) {CHECK_MEMBER(varName)} && {CHECK_TYPE(typeStr) || CHECK_NIL}
 
 #define GETVAR(var) (_classID + "_" + var)

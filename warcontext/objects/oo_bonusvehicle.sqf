@@ -28,22 +28,15 @@
 		PRIVATE VARIABLE("code","marker");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_counter", "_position"];
-
-			_counter = MEMBER("counter",nil);
+			private _counter = MEMBER("counter",nil);
 			if (isNil "_counter") then {_counter = 0;};
 			_counter = _counter + 1;
 			MEMBER("counter", _counter);
 			if(_counter < 8) exitwith {};
 			MEMBER("counter", 0);
-
-			// increase difficulty
-			wcskill = wcskill + 0.01;
-
-			_position = _this;
-			MEMBER("position", _position);
+			MEMBER("position", _this);
 			MEMBER("setType", nil);
-			MEMBER("popVehicle", nil);
+			MEMBER("popVehicle", _this);
 			MEMBER("setMarker", nil);
 			MEMBER("checkAlive", nil);
 		};
@@ -52,10 +45,9 @@
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
 
-		PUBLIC FUNCTION("", "popVehicle") {
-			private ["_vehicle"];
-			_vehicle = createVehicle [MEMBER("getType", nil), _position, [], 0, "FLY"];
-			_vehicle setpos [_position select 0, _position select 1,  150];
+		PUBLIC FUNCTION("array", "popVehicle") {
+			private _vehicle = createVehicle [MEMBER("getType", nil), _this, [], 0, "FLY"];
+			_vehicle setpos [_this select 0, _this select 1,  500];
 			_vehicle setdir (random 360); 
 			_vehicle setVelocity [0, 0, 0];
 			MEMBER("paraVehicle", _vehicle);
@@ -69,10 +61,9 @@
 		};
 
 		PUBLIC FUNCTION("", "setMarker") {
-			private ["_mark", "_name"];
-			_mark = ["new", [position MEMBER("vehicle", nil), false]] call OO_MARKER;
+			private _mark = ["new", [position MEMBER("vehicle", nil), false]] call OO_MARKER;
 			["attachTo", MEMBER("vehicle", nil)] spawn _mark;
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf MEMBER("vehicle", nil)) >> "DisplayName");
+			private _name= getText (configFile >> "CfgVehicles" >> (typeOf MEMBER("vehicle", nil)) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
 			["setType", "mil_arrow"] spawn _mark;
@@ -80,32 +71,26 @@
 			MEMBER("marker", _mark);
 		};
 
-		PUBLIC FUNCTION("", "setType") {
-			private ["_position", "_airport", "_type"];
-			
-			_position = MEMBER("position", nil);
-			_airport = false;
-
+		PUBLIC FUNCTION("", "setType") {	
+			private _airport = false;
+			private _type = "";
 			{
-				if(_position distance getmarkerpos _x < 1000) then {
-					_airport = true;
-				};
+				if(MEMBER("position", nil) distance getmarkerpos _x < 1000) then { _airport = true; };
 			}foreach ("getAirports" call global_atc);
 			
 			if(_airport) then {
-				_type = ["B_Heli_Light_01_F", "B_Heli_Light_01_armed_F", "O_Heli_Light_02_F", "O_Heli_Light_02_unarmed_F", "I_Heli_light_03_F", "I_Heli_light_03_unarmed_F"]  call BIS_fnc_selectRandom;
+				_type = selectRandom ["B_Heli_Light_01_F", "B_Heli_Light_01_armed_F", "O_Heli_Light_02_F", "O_Heli_Light_02_unarmed_F", "I_Heli_light_03_F", "I_Heli_light_03_unarmed_F"];
 			} else {
-				_type = ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"] call BIS_fnc_selectRandom;
+				_type = selectRandom ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"];
 			};
 			MEMBER("type", _type);
 		};
 
 
 		PUBLIC FUNCTION("", "checkAlive") {
-			private ["_counter", "_vehicle"];
-
-			_counter = 0;
-			_vehicle = MEMBER("getVehicle", nil);
+			private _counter = 0;
+			private _vehicle = MEMBER("getVehicle", nil);
+			private _name = "";
 
 			while { ((getDammage _vehicle < 0.9) and (fuel _vehicle > 0.1)) } do {
 				if(count crew _vehicle == 0) then { _counter = _counter + 1} else {_counter = 0;};
@@ -117,33 +102,23 @@
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("object", "paraVehicle") {
-		 	private ["_para","_paras","_p"]; 
-		 	
-		 	_para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+		PUBLIC FUNCTION("object", "paraVehicle") {	 	
+		 	private _para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
 		 	_para setDir getDir _this; 
 		 	_para setPos getPos _this; 
-		 	_paras = [_para]; 
 		 	_this attachTo [_para, [0,0,-1]]; 
 		 	_this addEventHandler ["HandleDamage", {false}]; 	
 
-		 	[_this, _paras] spawn { 
-		 		private ["_vehicle", "_vel", "_paras"];
-		 		
-		 		_vehicle = _this select 0; 
-		 		_paras = _this select 1;
-		 		
+		 	[_this, _para] spawn { 
+				private _vel = 0;		 		
+		 		private _vehicle = _this select 0; 
+		 		private _paras = _this select 1;
 		 		while { !(getPos _vehicle select 2 < 1) } do {sleep 0.1;};
-		 		detach _vehicle; 
-
-		 		{ 
-		 			detach _x; 
-		 			_x disableCollisionWith _vehicle; 
-		 		} count _paras; 
-		 		
+		 		detach _vehicle;  		 
+	 			detach _para; 
+	 			_x disableCollisionWith _vehicle; 
 		 		sleep 2;
-		 		{ if (!isNull _x) then {deleteVehicle _x};} count _paras; 
-		 		
+				if (!isNull _para) then {deleteVehicle _para;};
 		 		_vehicle removeAllEventHandlers "HandleDamage";
 		 		_vehicle setDamage 0;
 		 		_vehicle setFuel 1;

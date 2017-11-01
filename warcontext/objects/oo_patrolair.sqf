@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_PATROLAIR
 	
@@ -32,39 +32,27 @@
 		PUBLIC FUNCTION("array","constructor") {				
 			MEMBER("popMember",  _this select 1);
 			MEMBER("sector", _this select 0);
-			MEMBER("setMarker", nil);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setCombatMode", nil);
 		};
 
 		PUBLIC FUNCTION("array", "popMember") {
-			private ["_array", "_group", "_vehicle", "_marker", "_list", "_x", "_y", "_z"];
+			private _x = (_this select 0) + random 100;
+			private _y = (_this select 1) + random 100;
+			private _z = (_this select 2) + random 200;
 
-			_position = _this;
-
-			_vehicle = wcairchoppers call BIS_fnc_selectRandom;
-
-			// avoid collision
-			_x = (_position select 0) + random 100;
-			_y = (_position select 1) + random 100;
-			_z = (_position select 2) + random 200;
-
-			_position = [ _x, _y, _z];
-			_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
-		
-			_vehicle = _array select 0;
-			_group = _array select 2;
-			
+			private _array = [[ _x, _y, _z], 0, (wcairchoppers call BIS_fnc_selectRandom), east] call bis_fnc_spawnvehicle;			
 			{
-				_handle = [_x, ""] spawn WC_fnc_setskill;
+				[_x, ""] spawn WC_fnc_setskill;
 				sleep 0.1;
-			}foreach (units _group);
+			}foreach (units (_array select 2));
 			
-			_vehicle setVehicleLock "LOCKED";
-			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
+			(_array select 0) setVehicleLock "LOCKED";
+			[(_array select 0)] spawn WC_fnc_vehiclehandler;
 			
-			MEMBER("vehicle", _vehicle);
-			MEMBER("group", _group);
+			MEMBER("createMarker", (_array select 0));
+			MEMBER("vehicle", (_array select 0));
+			MEMBER("group", (_array select 2));
 		};
 
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
@@ -74,9 +62,7 @@
 		PUBLIC FUNCTION("","getUnderAlert") FUNC_GETVAR("underalert");
 
 		PUBLIC FUNCTION("", "patrol") {
-			private ["_group"];
-			_group = MEMBER("group", nil);
-			while { count (units _group) > 0 } do {
+			while { count (units MEMBER("group", nil)) > 0 } do {
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
 				MEMBER("moveToNext", nil);
@@ -86,12 +72,10 @@
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("", "setMarker") {
-			private ["_vehicle", "_mark"];
-			_vehicle = MEMBER("vehicle", nil);
-			_mark = ["new", [position _vehicle, false]] call OO_MARKER;
-			["attachTo", _vehicle] spawn _mark;
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+		PUBLIC FUNCTION("object", "createMarker") {
+			private _mark = ["new", [position _this, false]] call OO_MARKER;
+			["attachTo", _this] spawn _mark;
+			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "o_plane"] spawn _mark;
@@ -100,51 +84,45 @@
 		};
 
 		PUBLIC FUNCTION("", "checkAlt") {
-			private ["_position", "_group"];
-			_position = position MEMBER("vehicle", nil);
-			_group = MEMBER("group", nil);
-			if(_position select 2 < 10) then {
+			if((position MEMBER("vehicle", nil)) select 2 < 10) then {
 				{
 					_x setdammage 1;
 					sleep 0.01;
-				}foreach units _group;
+				}foreach units MEMBER("group", nil);
 			};
 		};
 
 		// get all sector around the base sector
 		PUBLIC FUNCTION("", "getSectorAround") {
-			private ["_around", "_sector"];
-			_sector = "getSector" call MEMBER("sector", nil);
-			_around = ["getAllSectorsAroundSector", [_sector, 6]] call global_grid;
+			private _sector = "getSector" call MEMBER("sector", nil);
+			private _around = ["getAllSectorsAroundSector", [_sector, 6]] call global_grid;
 			MEMBER("around", _around);
 		};
 
 		// retrieve all sectors around under Alert state
 		// if none return empty array
 		PUBLIC FUNCTION("", "getSectorUnderAlert") {
-			private ["_around", "_sectors", "_nextsector"];
-			_sectors = [];
+			private _nextsector = [];
+			MEMBER("underalert", []);
 			{
 				_nextsector = ["get", str(_x)] call global_zone_hashmap;
 				if!(isnil "_nextsector") then {
 					if("getAlert" call _nextsector) then {
-						_sectors pushBack _nextsector;
+						MEMBER("underalert", []) pushBack _nextsector;
 					};
 				};
 				sleep 0.01;
 			} foreach MEMBER("around", nil);
-			MEMBER("underalert", _sectors);
 		};
 
 		// movetoNext target position
 		PUBLIC FUNCTION("", "moveToNext") {
-			private ["_group", "_vehicle", "_wp", "_sector", "_move"];
+			private _vehicle = MEMBER("vehicle", nil);
+			private _group = MEMBER("group", nil);
+			private _move = false;
+			private _sector = [];
 
-			_vehicle = MEMBER("vehicle", nil);
-			_group = MEMBER("group", nil);
-			_move = false;
-
-			_wp = _group addWaypoint [MEMBER("target", nil), 25];
+			private _wp = _group addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
 			_wp setWaypointType "HOLD";
 			_wp setWaypointSpeed "FULL";
@@ -166,22 +144,19 @@
 		};
 
 		PUBLIC FUNCTION("", "getNextTarget") {
-			private ["_nextsector", "_position"];
-
+			private _sector = [];
 			if(count MEMBER("underalert", nil) > 0) then {
-				_nextsector = "getSector" call (selectRandom MEMBER("underalert", nil));
+				_sector = "getSector" call (selectRandom MEMBER("underalert", nil));
 				MEMBER("revealTarget", nil);
 			} else {
-				_nextsector = selectRandom MEMBER("around", nil);
+				_sector = selectRandom MEMBER("around", nil);
 			};
-			_position = ["getPosFromSector", _nextsector] call global_grid;
-			MEMBER("target", _position);
+			_sector = ["getPosFromSector", _sector] call global_grid;
+			MEMBER("target", _sector);
 		};
 
 		PUBLIC FUNCTION("", "revealTarget") {
-			private ["_list"];	
-
-			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man", "Tank"], 600];
+			private _list = (position MEMBER("vehicle", nil)) nearEntities [["Man", "Tank"], 600];
 			sleep 0.5;
 			{
 				(leader MEMBER("group", nil)) reveal [_x, 4];

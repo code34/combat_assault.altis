@@ -33,7 +33,7 @@
 		PUBLIC FUNCTION("","getActive") FUNC_GETVAR("active");
 
 		PUBLIC FUNCTION("scalar", "add"){
-			_value = MEMBER("ticket", nil) + _this;
+			private _value = MEMBER("ticket", nil) + _this;
 			MEMBER("ticket", _value);
 		};
 
@@ -41,18 +41,11 @@
 			MEMBER("active", _this);
 		};
 
-		PUBLIC FUNCTION("string", "setTicket"){
-			private ["_type", "_credit", "_value", "_ticket"];
-			
+		PUBLIC FUNCTION("string", "setTicket"){		
 			if!(MEMBER("active", nil)) exitwith {};
-
-			_type = _this;
-			_credit = MEMBER("getCredit", _type);
-
+			private _credit = MEMBER("getCredit", _this);
 			MEMBER("add", _credit);
-			_ticket = MEMBER("ticket", nil);
-
-			if(_ticket > -1) then {
+			if((MEMBER("ticket", nil) > -1) then {
 				MEMBER("send", nil);
 			};
 		};
@@ -62,11 +55,8 @@
 		};
 
 		PUBLIC FUNCTION("string", "getCredit"){
-			private ["_type", "_credit"];
-
-			_type = _this;
-
-			switch (_type) do { 
+			private _credit = 0;
+			switch (_this) do { 
 				case "chopper": {
 					_credit = -3;
 				};

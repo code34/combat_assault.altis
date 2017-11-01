@@ -37,62 +37,32 @@
 			MEMBER("ticket", _value);
 		};
 
-		PUBLIC FUNCTION("bool", "setActive"){
-			MEMBER("active", _this);
-		};
+		PUBLIC FUNCTION("bool", "setActive"){ MEMBER("active", _this); };
 
 		PUBLIC FUNCTION("string", "setTicket"){		
 			if!(MEMBER("active", nil)) exitwith {};
 			private _credit = MEMBER("getCredit", _this);
 			MEMBER("add", _credit);
-			if((MEMBER("ticket", nil) > -1) then {
-				MEMBER("send", nil);
-			};
+			if(MEMBER("ticket", nil) > -1) then { MEMBER("send", nil); };
 		};
 
-		PUBLIC FUNCTION("", "send"){
-			["remoteSpawn", ["wcticket", MEMBER("ticket", nil), "client"]] call global_bme;
-		};
+		PUBLIC FUNCTION("", "send"){ 	["remoteSpawn", ["wcticket", MEMBER("ticket", nil), "client"]] call global_bme; };
 
 		PUBLIC FUNCTION("string", "getCredit"){
 			private _credit = 0;
 			switch (_this) do { 
-				case "chopper": {
-					_credit = -3;
-				};
-				case "achopper": {
-					_credit = -3;
-				};				
-				case "tank": {
-					_credit = -3;
-				};
-				case "tankaa": {
-					_credit = -3;
-				};				
-				case "fighter": {
-					_credit = -3;
-				};
-				case "bomber": {
-					_credit = -3;
-				};				
-				case "soldier": {
-					_credit = -1;
-				};
-				case "bluezone": {
-					_credit = 1;
-				};
-				case "redzone": {
-					_credit = -1;
-				};
-				case "convoy": {
-					_credit = -2;
-				};			
-				case "mission": {
-					_credit = 4;
-				};
-				default {
-					_credit = -1;
-				};
+				case "chopper": { _credit = -3; };
+				case "achopper": {_credit = -3;};				
+				case "tank": {_credit = -3;};
+				case "tankaa": {_credit = -3;};				
+				case "fighter": {_credit = -3;};
+				case "bomber": {_credit = -3;};				
+				case "soldier": {_credit = -1;};
+				case "bluezone": {_credit = 1;};
+				case "redzone": {_credit = -1;};
+				case "convoy": {_credit = -2;};			
+				case "mission": {_credit = 4;};
+				default {_credit = -1;};
 			};
 			_credit;
 		};

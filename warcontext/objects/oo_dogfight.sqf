@@ -208,6 +208,7 @@
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "o_plane"] spawn _mark;
 			["setSize", [1,1]] spawn _mark;
+			_mark;
 		};
 
 		PUBLIC FUNCTION("", "popMember") {	
@@ -224,7 +225,7 @@
 				private _crew = (_array select 1) select 0;
 				[_crew, ""] spawn WC_fnc_setskill;
 				[_vehicle] spawn WC_fnc_vehiclehandler;
-				MEMBER("createMarker", _vehicle);
+				private _mark = MEMBER("createMarker", _vehicle);
 				MEMBER("squadron", nil) pushBack [_vehicle, _crew, _mark];
 			};
 		};

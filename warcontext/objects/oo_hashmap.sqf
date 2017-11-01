@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_HASMAP
 	
@@ -26,9 +26,8 @@
 		PRIVATE VARIABLE("scalar","keyid");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_instanceid"];
-			MEMBER("index", []);
-			_instanceid = MEMBER("instanceid",nil);
+			MEMBER("index",  []);
+			private _instanceid = MEMBER("instanceid",nil);
 			if (isNil "_instanceid") then {_instanceid = 0;};
 			_instanceid = _instanceid + 1;
 			MEMBER("instanceid",_instanceid);
@@ -37,8 +36,7 @@
 
 		// Removes all of the mappings from this map.
 		PUBLIC FUNCTION("", "clear") {
-			private ["_hash"];
-			
+			private _hash = "";
 			{
 				_hash = MEMBER("keyName", _x);
 				missionNamespace setVariable [_hash, nil];
@@ -52,50 +50,34 @@
 
 		// Returns true if this map contains a mapping for the specified key.
 		PUBLIC FUNCTION("string", "containsKey") {
-			private ["_hash", "_set"];
-			_hash = MEMBER("keyName", _this);
-			_set = missionNamespace getVariable _hash;
+			private _hash = MEMBER("keyName", _this);
+			private _set = missionNamespace getVariable _hash;
 			if(isnil "_set") then {false;} else {true;};
 		};
 
 		// Returns true if this map contains a mapping for the specified value
 		PUBLIC FUNCTION("array", "containsValue") {
-			private ["_search", "_value", "_return"];
-
-			_search = _this select 0;
-
-			_return = false;
+			private _search = _this select 0;
+			private _return = false;
 			{
-				_value = MEMBER("get", _x);
-				if(_value isEqualTo _search) then {
-					_return = true;
-				};
+				if(MEMBER("get", _x) isequalto _search) exitWith { _return = true; };
 			}foreach MEMBER("index", nil);
 			_return;			
 		};
 
 		// Returns a set view of the mappings contained in this map.
 		PUBLIC FUNCTION("","entrySet"){
-			private ["_array", "_value"];
-			_array = [];
+			private _array = [];
 			{
-				_value = MEMBER("get", _x);
-				_array pushBack _value;
+				_array pushBack MEMBER("get", _x);
 			}foreach MEMBER("index", nil);
 			_array;
 		};
 
 		// Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
 		PUBLIC FUNCTION("string", "get") {
-			private ["_key", "_hash"];
-
-			_key = _this;
-
-			if(isnil "_key") exitwith {false};
-			if!(typename _key == "STRING") exitwith {false};			
-
-			_hash = MEMBER("keyName", _key);
-			missionNamespace getVariable _hash;
+			if((isnil "_this") or !(_this isEqualType "")) exitwith {false};
+			missionNamespace getVariable MEMBER("keyName", _this);
 		};
 
 		// Returns true if this map contains no key-value mappings.
@@ -108,32 +90,23 @@
 
 		// Associates the specified value with the specified key in this map.
 		PUBLIC FUNCTION("array", "put") {
-			private ["_key", "_value", "_set", "_hash"];
-
-			_key = _this select 0;
-			_value = _this select 1;
-
-			if(isnil "_key") exitwith {false};
-			if!(typename _key == "STRING") exitwith {false};
-
-			_hash = MEMBER("keyName", _key);
-			_set = missionNamespace getVariable _hash;
+			private _key = (_this select 0);			
+			if((isnil "_key") or !(_key isEqualType "")) exitwith {false};
 			
-			if(isnil "_set") then {
-				MEMBER("index", nil) pushBack _key;
-			} ;
+			private _value = _this select 1;
+			private _hash = MEMBER("keyName", _key);
+			private _set = missionNamespace getVariable _hash;
+			
+			if(isnil "_set") then { MEMBER("index", nil) pushBack _key; } ;
 			missionNamespace setVariable [_hash, _value];
 		};
 
 		// Removes the mapping for the specified key from this map if present.
 		PUBLIC FUNCTION("string", "remove") {
-			private ["_key", "_index", "_value"];
-
-			_key = _this;
-
-			if(isnil "_key") exitwith {false};
-			_hash = MEMBER("keyName", _key);
-			_array = MEMBER("index", nil) - [_key];
+			if(isnil "_this") exitwith {false};
+			private _key = _this;
+			private _hash = MEMBER("keyName", _key);
+			private _array = MEMBER("index", nil) - [_key];
 			MEMBER("index", _array);
 			missionNamespace setVariable [_hash, nil];
 		};

@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_GROUP
 	

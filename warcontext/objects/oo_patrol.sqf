@@ -38,12 +38,16 @@
 			MEMBER("group", _this select 0);
 			MEMBER("sector", _this select 1);
 			MEMBER("areasize", _this select 2);
-
-			MEMBER("sizegroup", count units (_this select 0));
-			MEMBER("getBuildings", nil);
+			MEMBER("around", []);
+			MEMBER("buildings", []);
 			MEMBER("alert", false);
-			MEMBER("setFlank", nil);
+			MEMBER("city", false);
+			MEMBER("flank", 0);
+			MEMBER("targets", []);
+			MEMBER("sizegroup", count units (_this select 0));
 			MEMBER("target", objNull);
+			MEMBER("getBuildings", nil);
+			MEMBER("setFlank", nil);
 		};
 
 		PUBLIC FUNCTION("","getGroup") FUNC_GETVAR("group");
@@ -51,17 +55,13 @@
 		PUBLIC FUNCTION("","getSector") FUNC_GETVAR("sector");
 
 		PUBLIC FUNCTION("", "setFlank") {
-			if(random 1 > 0.5) then {
-				MEMBER("flank", 110);
-			} else {
-				MEMBER("flank", -110);
-			};
+			MEMBER("flank", 110);
+			if(random 1 > 0.5) then { MEMBER("flank", -110); };
 		};
 
 		PUBLIC FUNCTION("", "patrol") {
-			private ["_group", "_position"];
-			_group = MEMBER("group", nil);
-			_position = "getPosition" call MEMBER("sector",nil);
+			private _group = MEMBER("group", nil);
+			private _position = "getPosition" call MEMBER("sector",nil);
 
 			while { count (units _group) > 0 } do {
 				MEMBER("getTargets", _position);
@@ -80,9 +80,8 @@
 		};
 
 		PUBLIC FUNCTION("", "attack") {
-			private ["_group", "_position"];
-			_group = MEMBER("group", nil);
-			_position = "getPosition" call MEMBER("sector",nil);
+			private _group = MEMBER("group", nil);
+			private _position = "getPosition" call MEMBER("sector",nil);
 
 			MEMBER("setCombatMode", nil);
 			while { count (units _group) > 0 } do {
@@ -94,39 +93,30 @@
 		};
 
 		PUBLIC FUNCTION("", "getBuildings") {
-			private ["_sector", "_positions"];
-			_sector = "getSector" call MEMBER("sector", nil);
-			_positions = ["getPositionsBuilding", _sector] call global_grid;
+			private _sector = "getSector" call MEMBER("sector", nil);
+			private _positions = ["getPositionsBuilding", _sector] call global_grid;
 			MEMBER("buildings", _positions);
-			if(count _positions > 10) then {
-				MEMBER("city", true);
-			}else{
-				MEMBER("city", false);
-			};
+			if(count _positions > 10) then { MEMBER("city", true); }else{ MEMBER("city", false); };
 		};
 
 		PUBLIC FUNCTION("", "fireFlare") {
-			private ["_flare", "_target", "_leader"];
-
-			_leader = leader MEMBER("group", nil);
-			_target = MEMBER("target", nil);
+			private _leader = leader MEMBER("group", nil);
+			private _target = MEMBER("target", nil);
 
 			if(_leader distance _target < 200) then {
-				_flare = "F_40mm_White" createvehicle ((_target) ModelToWorld [0,0,200]); 
+				private _flare = "F_40mm_White" createvehicle ((_target) ModelToWorld [0,0,200]); 
 				_flare setVelocity [0,0,-10];
 			};
 		};
 
 		PUBLIC FUNCTION("", "engageTarget") {
-			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden", "_needflare"];
-
-			_target = MEMBER("target", nil);
+			private _target = MEMBER("target", nil);
 			if(isNil "_target") exitWith {};
 
-			_isvehicle = !(_target isKindOf "MAN") ;
-			_isbuilding = if((nearestbuilding _target) distance _target < 10) then { true; } else { false; };
-			_isvisible = MEMBER("seeTarget", nil);
-			_needflare = if((date select 3 > 21) or (date select 3 <6)) then { true; } else {false;};
+			private _isvehicle = !(_target isKindOf "MAN") ;
+			private _isbuilding = if((nearestbuilding _target) distance _target < 10) then { true; } else { false; };
+			private _isvisible = MEMBER("seeTarget", nil);
+			private _needflare = if((date select 3 > 21) or (date select 3 <6)) then { true; } else {false;};
 
 			if(_isvehicle) then {
 				MEMBER("setMoveMode", nil);
@@ -134,22 +124,16 @@
 				MEMBER("putMine", nil);
 			} else {
 				if(_isbuilding) then {
-					//hint "movebuilding";
-					if(_isvisible) then {
-						MEMBER("doFire", nil);
-					};
+					if(_isvisible) then { MEMBER("doFire", nil); };
 					MEMBER("setCombatMode", nil);
-					//MEMBER("setMoveMode", nil);
 					MEMBER("moveInto", nearestbuilding _target);
 				} else {
-					if((_needflare) and (random 1 > 0.5)) then { MEMBER("fireFlare", nil);};
+					if((_needflare) and (random 1 > 0.5)) then { MEMBER("dropFlare", nil);};
 					if(_isvisible) then {
-						//hint format ["moveto %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
 						MEMBER("doFire", nil);
 						MEMBER("moveToTarget", nil);
 					} else {
-						//hint format ["movearound %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
 						MEMBER("moveAround", 25);
 					};
@@ -161,13 +145,13 @@
 		};
 
 
-		PUBLIC FUNCTION("", "getNextTarget") {
-			private ["_array", "_candidats", "_index", "_leader", "_target", "_min", "_oldtarget"];
-			
-			_leader = leader MEMBER("group", nil);
-			_candidats = [];
-			_target = MEMBER("target", nil);
-			_oldtarget = objNull;
+		PUBLIC FUNCTION("", "getNextTarget") {	
+			private _leader = leader MEMBER("group", nil);
+			private _candidats = [];
+			private _target = MEMBER("target", nil);
+			private _oldtarget = objNull;
+			private _array = [];
+			private _index = 0;
 			
 			{
 				_array = [_leader, _x];
@@ -186,7 +170,7 @@
 			};
 
 			// over no target, not see
-			_min = 100000;
+			private _min = 100000;
 			{
 				if((_x select 0) < _min) then {
 					_target = _x select 1;
@@ -209,37 +193,32 @@
 		};		
 
 		PUBLIC FUNCTION("array", "getTargets") {
-			private ["_position", "_list", "_list2"];
+			private _position = _this;
+			private _list = _position nearEntities [["Man"], 800];
+			private _list2 = _position nearEntities [["Tank", "Air"], 800];
 
-			_position = _this;
-			_list = _position nearEntities [["Man"], 800];
-			_list2 = _position nearEntities [["Tank", "Air"], 800];
+			sleep 1;
 
+			MEMBER("targets", []);
 			{
-				_list = _list + crew _x;
+				_list append (crew _x);
 				sleep 0.0001;
 			}foreach _list2;
 
 			sleep 0.5;
 			{
-				if(side _x != west) then {
-					_list set [_foreachindex, -1];
-				};
+				if(side _x isEqualTo west) then { MEMBER("targets", nil) pushBack _x };
 				sleep 0.0001;
 			}foreach _list;
-			_list = _list - [-1];
-			MEMBER("targets", _list);
 		};		
 
 		PUBLIC FUNCTION("", "seeTarget") {
-			private ["_target", "_objects", "_see"];
-			_see = false;
-			_target =  MEMBER("target", nil);
+			private _see = false;
+			private _target =  MEMBER("target", nil);
+			private _array = [];
 
 			{
 				if(alive _x) then {
-					//_objects = lineIntersectsWith [eyePos _x, position _target];
-					//if(count _objects == 0) then { _see = true;};
 					_array = [_x, _target];
 					if(MEMBER("estimateTarget", _array) < 2) then {_see = true;};
 				};
@@ -249,19 +228,14 @@
 		};		
 
 		PUBLIC FUNCTION("array", "estimateTarget") {
-			private ["_target", "_position", "_realposition", "_source"];
-			_source = _this select 0;
-			_target = _this select 1;
-			
-			_position = _source getHideFrom _target;
-			_realposition = position _target;
+			private _position = (_this select 0) getHideFrom (_this select 1);
+			private _realposition = position (_this select 1);
 			_position distance _realposition;
 		};
 
-		PUBLIC FUNCTION("", "doFire") {
-			private ["_target", "_skill"];
-			
-			_target = MEMBER("target", nil);
+		PUBLIC FUNCTION("", "doFire") {		
+			private _target = MEMBER("target", nil);
+			private _skill = 0;
 			{
 				_skill = MEMBER("getSkill", (_x distance _target));
 				_x setskill ["aimingAccuracy", _skill];
@@ -274,22 +248,17 @@
 		};
 
 		PUBLIC FUNCTION("scalar", "getSkill") {
-			private ["_skill", "_distance"];
-			_distance = _this;
-			if(_distance > 300) then {_distance = 300};
-			_skill = wcskill * (1 - (_this / 300));
-			_skill;
+			if(_this > 300) then {_this = 300};
+			wcskill * (1 - (_this / 300));
 		};
 
 		// moveInto Buildings
-		PUBLIC FUNCTION("object", "moveInto") {
-			private ["_building", "_index", "_positions"];
+		PUBLIC FUNCTION("object", "moveInto") {	
+			private _building = _this;
+			private _positions = [];
+			private _index = 0;
 
-			_building = _this;
-			_positions = [];
-			_index = 0;
-
-			while { format ["%1", _building buildingPos _index] != "[0,0,0]" } do {
+			while { !((_building buildingPos _index) isEqualTo [0,0,0]) } do {
 				_positions pushBack (_building buildingPos _index);
 				_index = _index + 1;
 				sleep 0.0001;
@@ -304,66 +273,58 @@
 
 		// move around target
 		PUBLIC FUNCTION("", "moveToTarget") {
-			private ["_position"];
-			_position = position MEMBER("target", nil);
-			MEMBER("moveTo", _position);
+			MEMBER("moveTo", (position MEMBER("target", nil)));
 		};
 
 		// move around target
 		PUBLIC FUNCTION("scalar", "moveAround") {
-			private ["_areasize", "_dir", "_leader", "_position", "_target"];
-			
-			_areasize = _this;
-			_target = MEMBER("target", nil);
-			_leader = leader MEMBER("group", nil);
-			_dir = [_leader, _target] call BIS_fnc_dirTo;
+			private _areasize = _this;
+			private _target = MEMBER("target", nil);
+			private _leader = leader MEMBER("group", nil);
+			private _dir = [_leader, _target] call BIS_fnc_dirTo;
 
 			_dir = _dir + MEMBER("flank", nil);
 			if(_dir > 359) then {_dir = _dir - 360};
 			if(_dir < 0) then {_dir = _dir + 360};
 
-			_position = [position _target, _areasize, _dir] call BIS_fnc_relPos;
+			private _position = [position _target, _areasize, _dir] call BIS_fnc_relPos;
 			MEMBER("moveTo", _position);
 		};
 
 		// put mine
 		PUBLIC FUNCTION("", "putMine") {
-			private ["_leader", "_target"];
-			
-			_target = MEMBER("target", nil);
-			_leader = leader MEMBER("group", nil);
-
-			if((_target distance _leader < 10) and (damage _target < 0.9)) then {
-				createVehicle ["ATMine_Range_Ammo", position _target,[], 0, "can_collide"];
-			};
+			private _target = MEMBER("target", nil);
+			private _done = false;
+			{
+				if((_target distance _x < 10) and (damage _target < 0.9) and !(_done)) then {
+					createVehicle ["ATMine_Range_Ammo", position _target,[], 0, "can_collide"];
+					_done = true;
+				};
+				sleep 0.001;
+			} forEach units MEMBER("group", nil);
 		};		
 
 		// moveTo position
 		PUBLIC FUNCTION("array", "moveTo") {
-			private ["_group", "_position", "_wp"];
-
-			_position = _this;
-			_group = MEMBER("group", nil);
-
 			{
-				_x domove _position;
+				_x domove _this;
 				sleep 0.001;
-			}foreach units _group;
-
+			}foreach units MEMBER("group", nil);
 			sleep 30;
 		};		
 
 		PUBLIC FUNCTION("", "isCompleteGroup") {
-			_count = MEMBER("sizegroup", nil);
-			_count2 = count units (MEMBER("group", nil));
+			private _count = MEMBER("sizegroup", nil);
+			private _count2 = count units (MEMBER("group", nil));
 			if( _count == _count2) then { true; } else { false;};
 		};
 
 		PUBLIC FUNCTION("", "dropSmoke") {
-			private ["_group", "_round"];
-			_group = MEMBER("group", nil);
+			private _group = MEMBER("group", nil);
+			private _round = ceil(random 3);
+			private _smokeposition = [];
+			private _smoke = [];
 
-			_round = ceil(random 3);
 			for "_x" from 0 to _round step 1 do {
 				_smokeposition = [position (leader _group), 2, random 359] call BIS_fnc_relPos;
 				_smoke = createVehicle ["G_40mm_Smoke", _smokeposition, [], 0, "NONE"];
@@ -372,7 +333,7 @@
 
 		PUBLIC FUNCTION("", "dropFlare") {
 			if((date select 3 < 4) or (date select 3 > 20)) then {
-
+				MEMBER("fireFlare", nil);
 			};
 		};		
 
@@ -383,58 +344,46 @@
 
 		PUBLIC FUNCTION("", "scanTargets") {
 			{
-				if((leader MEMBER("group", nil)) knowsAbout _x > 0.40) then {
-					MEMBER("setAlert", nil);
-				};
+				if((leader MEMBER("group", nil)) knowsAbout _x > 1) then { MEMBER("setAlert", nil); };
 				sleep 0.0001;
 			}foreach MEMBER("targets", nil);
 		};		
 
 		PUBLIC FUNCTION("object", "callArtillery") {
-			private ["_key", "_sector", "_artillery", "_target"];
-
-			_target = _this;	
-			_sector = MEMBER("sector", nil);
+			private _target = _this;	
+			private _sector = MEMBER("sector", nil);
 
 			if("isArtillery" call _sector) then { 
-				_artillery = "getArtillery" call _sector;
-				_key = ["getSectorFromPos", position _target] call global_grid;
+				private_artillery = "getArtillery" call _sector;
+				private _key = ["getSectorFromPos", position _target] call global_grid;
 				_sector = ["get", str(_key)] call global_zone_hashmap;
-				if(!isnil "_sector") then {
-					["setSuppression", true] call _artillery;
-				} else {
-					["setSuppression", false] call _artillery;
-				};
+				if(!isnil "_sector") then { ["setSuppression", true] call _artillery; } else { ["setSuppression", false] call _artillery;	};
 				["callFireOnTarget", _target] call _artillery;
 			};
 		};
 
 		// soldiers walk around the sector
-		PUBLIC FUNCTION("", "walk") {
-			private ["_around", "_areasize", "_basesector", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp", "_sector", "_maxtime"];
-			
-			_group = MEMBER("group", nil);
-			_leader = leader _group;
-			_areasize = MEMBER("areasize", nil);
-			_maxtime = 60;
+		PUBLIC FUNCTION("", "walk") {	
+			private _group = MEMBER("group", nil);
+			private _leader = leader _group;
+			private _areasize = MEMBER("areasize", nil);
+			private _maxtime = 60;
 
+			_group setFormation (selectRandom ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"]);
 			MEMBER("setSafeMode", nil);
-			
-			_formationtype = selectRandom ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"];
-			_group setFormation _formationtype;
 
-			_position = position _leader;
-			_basesector = "getSector" call MEMBER("sector", nil);
+			private _position = position _leader;
+			private _basesector = "getSector" call MEMBER("sector", nil);
+			private _around = [];
 			
 			while { (position _leader) distance _position < _areasize } do {
 				_around = ["getAllSectorsAroundSector", [_basesector, 2]] call global_grid;
-				_sector = selectRandom _around;
-				_position = ["getPosFromSector", _sector] call global_grid;
+				_position = ["getPosFromSector", (selectRandom _around)] call global_grid;
 				_position = [_position, _areasize, random 359] call BIS_fnc_relPos;
 				sleep 0.0001;
 			};
 
-			_wp = _group addWaypoint [_position, 10];
+			private _wp = _group addWaypoint [_position, 10];
 			_wp setWaypointPosition [_position, 10];
 			_wp setWaypointType "GUARD";
 			_wp setWaypointVisible true;
@@ -442,14 +391,16 @@
 			_wp setWaypointStatements ["true", "this setvariable ['complete', true]; false"];
 			_group setCurrentWaypoint _wp;
 
-			_counter = 0;
+			private _counter = 0;
+			private _maxtime = 60;
+
 			while { _counter < _maxtime } do {
 				_leader = leader _group;
-				if(format["%1",  _leader getVariable "complete"] == "true") then {
+				if(format["%1",  _leader getVariable "complete"] isEqualTo "true") then {
 					_leader setvariable ['complete', false];
 					_counter = _maxtime;
 				};
-				if(format["%1",  _leader getVariable "combat"] == "true") then {
+				if(format["%1",  _leader getVariable "combat"] isEqualTo "true") then {
 					if(random 1 > 0.8) then {MEMBER("dropSmoke", nil);};
 					MEMBER("setAlert", nil);
 					_counter = _maxtime;
@@ -465,13 +416,11 @@
 			deletewaypoint _wp;
 		};
 
-		PUBLIC FUNCTION("", "walkInBuildings") {
-			private ["_areasize", "_counter", "_leader", "_position", "_group", "_formationtype", "_wp", "_maxtime"];
-			
-			_group = MEMBER("group", nil);
-			_leader = leader _group;
-			_areasize = MEMBER("areasize", nil);
-			_maxtime = 300;
+		PUBLIC FUNCTION("", "walkInBuildings") {		
+			private _group = MEMBER("group", nil);
+			private _leader = leader _group;
+			private _maxtime = 300;
+			private _counter = 0;
 
 			MEMBER("setBuildingMode", nil);
 			{
@@ -479,7 +428,6 @@
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
 
-			_counter = 0;
 			while { _counter < _maxtime } do {
 				_leader = leader _group;
 				if(format["%1",  _leader getVariable "complete"] isEqualTo "true") then {

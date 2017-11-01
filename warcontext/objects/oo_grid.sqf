@@ -280,7 +280,7 @@
 				sleep 0.5;
 				{
 					_index = 0;
-					while { !(format ["%1", _x buildingPos _index] isEqualTo "[0,0,0]") } do {
+					while { !((_x buildingPos _index) isEqualTo [0,0,0]) } do {
 						_positions pushBack (_x buildingPos _index);
 						_index = _index + 1;
 						sleep 0.0001;

@@ -28,20 +28,16 @@
 		};
 
 		PUBLIC FUNCTION("scalar", "generateName"){
-			private ["_name", "_size"];
-
-			_size = _this;
-
-			_name = "";
-			for "_i" from 0 to _size do {
+			private _name = "";
+			for "_i" from 0 to _this do {
 				_name = _name + MEMBER("generateSyllabe", nil);
 			};
 			_name;
 		};
 
 		PRIVATE FUNCTION("", "generateSyllabe"){
-			_voyelles = ["a", "e", "i", "o", "u"];
-			_consonnes = ["b","c","d","f","g","h","j","k","l","m","n","r","s","t","p"];
+			private _voyelles = ["a", "e", "i", "o", "u"];
+			private _consonnes = ["b","c","d","f","g","h","j","k","l","m","n","r","s","t","p"];
 			if(random 1 < 0.95) then {
 				(selectRandom _consonnes) + (selectRandom _voyelles);
 			} else {

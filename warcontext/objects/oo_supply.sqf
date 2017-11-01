@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2016 Nicolas BOITEUX
+	Copyright (C) 2016-2018 Nicolas BOITEUX
 
 	CLASS OO_SUPPLY
 	
@@ -26,15 +26,12 @@
 
 		PUBLIC FUNCTION("object","constructor") {
 			MEMBER("supply", _this);	
-			MEMBER("setMarker", _this);
+			MEMBER("createMarker", _this);
 		};
 
-		PUBLIC FUNCTION("object", "setMarker") {
-			private ["_mark", "_name", "_supply", "_text"];
-			
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
-			_mark = ["new", [position _this, false]] call OO_MARKER;
-
+		PUBLIC FUNCTION("object", "createMarker") {	
+			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
+			private _mark = ["new", [position _this, false]] call OO_MARKER;
 			["setPos", position _this] spawn _mark;
 			["setText", _name] spawn _mark;
 			["setColor", "ColorOrange"] spawn _mark;

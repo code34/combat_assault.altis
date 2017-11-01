@@ -146,7 +146,7 @@
 
 		if(_killer isKindOf "Man") then {
 			_name = name _killer;
-			if( toUpper(_name) isEqualTo "ERROR: NO UNIT") then { 
+			if(toUpper(_name) isEqualTo "ERROR: NO UNIT") then { 
 				_name = ["Francois Hollande", "Angela Merkel", "Barak Obama", "Vladimir Poutine", "Donald Trump", "Netarion", "Jp", "Snow Queen", "Ben Laden", "America Fist", "Donald Trump", "Bachar el-Assad"] call BIS_fnc_selectRandom;
 			};
 		} else {

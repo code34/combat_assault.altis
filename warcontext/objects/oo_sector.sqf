@@ -375,7 +375,7 @@
 
 
 		PRIVATE FUNCTION("", "popSniper") {
-			private_marker 	=  MEMBER("marker", nil);		
+			private _marker 	=  MEMBER("marker", nil);		
 			private _position 	= getmarkerpos _marker;
 			private _markersize	= (getMarkerSize _marker) select 1;
 			private _type = selectRandom wcinfantrysnipers;

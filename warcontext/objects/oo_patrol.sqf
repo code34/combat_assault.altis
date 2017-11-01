@@ -354,7 +354,7 @@
 			private _sector = MEMBER("sector", nil);
 
 			if("isArtillery" call _sector) then { 
-				private_artillery = "getArtillery" call _sector;
+				private _artillery = "getArtillery" call _sector;
 				private _key = ["getSectorFromPos", position _target] call global_grid;
 				_sector = ["get", str(_key)] call global_zone_hashmap;
 				if(!isnil "_sector") then { ["setSuppression", true] call _artillery; } else { ["setSuppression", false] call _artillery;	};

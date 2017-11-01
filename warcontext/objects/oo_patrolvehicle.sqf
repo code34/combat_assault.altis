@@ -34,9 +34,11 @@
 			MEMBER("vehicle",  _this select 0);
 			MEMBER("group",  _this select 1);
 			MEMBER("sector", _this select 2);
-
+			MEMBER("around", []);
+			MEMBER("underalert", []);
+			MEMBER("target", []);
 			MEMBER("alert", false);
-			MEMBER("setMarker", nil);
+			MEMBER("createMarker", _this select 0);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setPatrolMode", nil);
 		};
@@ -48,10 +50,7 @@
 		PUBLIC FUNCTION("","getUnderAlert") FUNC_GETVAR("underalert");
 
 		PUBLIC FUNCTION("", "patrol") {
-			private ["_group"];
-			_group = MEMBER("group", nil);
-
-			while { count (units _group) > 0 } do {
+			while { count (units MEMBER("group", nil)) > 0 } do {
 				MEMBER("scanTargets", nil);
 				MEMBER("getSectorUnderAlert", nil);
 				MEMBER("getNextTarget", nil);
@@ -61,12 +60,10 @@
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("", "setMarker") {
-			private ["_vehicle", "_mark"];
-			_vehicle = MEMBER("vehicle", nil);
-			_mark = ["new", [position _vehicle, false]] call OO_MARKER;
-			["attachTo", _vehicle] spawn _mark;
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+		PUBLIC FUNCTION("object", "createMarker") {
+			private _mark = ["new", [position _this, false]] call OO_MARKER;
+			["attachTo", _this] spawn _mark;
+			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "o_plane"] spawn _mark;
@@ -75,12 +72,10 @@
 		};
 
 		PUBLIC FUNCTION("", "scanTargets") {
-			private ["_list", "_list2"];
-
-			_list = (position MEMBER("vehicle", nil)) nearEntities [["Man"], 200];
-			_list2 = (position MEMBER("vehicle", nil)) nearEntities [["Tank"], 200];
+			private _list = (position MEMBER("vehicle", nil)) nearEntities [["Man"], 200];
+			private _list2 = (position MEMBER("vehicle", nil)) nearEntities [["Tank"], 200];
 			sleep 1;
-			{ _list = _list + crew _x; } foreach _list2;
+			{ _list append (crew _x); } foreach _list2;
 
 			{
 				if((leader MEMBER("group", nil)) knowsAbout _x > 0.40) then {
@@ -93,49 +88,36 @@
 
 		// get all sector around the base sector
 		PUBLIC FUNCTION("", "getSectorAround") {
-			private ["_around", "_sector"];
-			_sector = "getSector" call MEMBER("sector",nil);
-			_around = ["getAllSectorsAroundSector", [_sector, 4]] call global_grid;
+			private _sector = "getSector" call MEMBER("sector",nil);
+			private _around = ["getAllSectorsAroundSector", [_sector, 4]] call global_grid;
 			MEMBER("around", _around);
 		};
 
 		// retrieve all sectors around under Alert state
 		// if none return empty array
 		PUBLIC FUNCTION("", "getSectorUnderAlert") {
-			private ["_sectors", "_position", "_list"];
-			_sectors = [];
-
+			MEMBER("underalert", []);
 			if(MEMBER("alert", nil)) then {
 				{
-					_position = ["getPosFromSector", _x] call global_grid;
-					_list = _position nearEntities [["Man", "Tank"], 50];
+					private _position = ["getPosFromSector", _x] call global_grid;
+					private _list = _position nearEntities [["Man", "Tank"], 50];
 					sleep 0.2;
-					if(west countSide _list > 0) then {
-						_sectors pushBack _x;
-					};
+					if(west countSide _list > 0) then { MEMBER("underalert", nil) pushBack _x; };
 				} foreach MEMBER("around", nil);
 			};
-			MEMBER("underalert", _sectors);
 		};
 
 		// movetoNext target position
 		PUBLIC FUNCTION("", "moveToNext") {
-			private ["_group", "_vehicle", "_wp", "_sector", "_move"];
-
-			_vehicle = MEMBER("vehicle", nil);
-			_group = MEMBER("group", nil);
-			_move = false;
-	
-			_wp = _group addWaypoint [MEMBER("target", nil), 25];
+			private _move = false;
+			private _wp = MEMBER("group", nil) addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
 			_wp setWaypointType "SAD";
 			_wp setWaypointSpeed "FULL";
-			_group setCurrentWaypoint _wp;
-
+			MEMBER("group", nil) setCurrentWaypoint _wp;
 			sleep 5;
-
 			while { !_move } do {
-				if(speed _vehicle < 10) then {
+				if(speed MEMBER("vehicle", nil) < 10) then {
 					_move = true;
 					sleep 5;
 				} else {
@@ -146,41 +128,33 @@
 		};
 
 		PUBLIC FUNCTION("", "getNextTarget") {
-			private ["_nextsector", "_position"];
-
+			private _sector = [];
 			if(MEMBER("alert", nil)) then {
-				_nextsector = selectRandom MEMBER("underalert", nil);
+				_sector = selectRandom MEMBER("underalert", nil);
 				MEMBER("setCombatMode", nil);
 				MEMBER("revealTarget", nil);
 			} else {
-				_nextsector =selectRandom MEMBER("around", nil);
+				_sector =selectRandom MEMBER("around", nil);
 				MEMBER("setPatrolMode", nil);
 			};
-			_position = ["getPosFromSector", _nextsector] call global_grid;
+			private _position = ["getPosFromSector", _sector] call global_grid;
 			MEMBER("target", _position);
 		};
 
 		PUBLIC FUNCTION("array", "estimateTarget") {
-			private ["_target", "_position", "_realposition", "_source"];
-			_source = _this select 0;
-			_target = _this select 1;
-			
-			_position = _source getHideFrom _target;
-			_realposition = position _target;
+			private _position = (_this select 0) getHideFrom (_this select 1);
+			private _realposition = position (_this select 1);
 			_position distance _realposition;
 		};
 
 		PUBLIC FUNCTION("", "revealTarget") {
-			private ["_list", "_array", "_leader"];
-
-			_leader = (leader MEMBER("group", nil));
-			_list = (position MEMBER("vehicle", nil)) nearEntities [["Air", "Man", "Tank"], 600];
+			private _leader = (leader MEMBER("group", nil));
+			private _list = (position MEMBER("vehicle", nil)) nearEntities [["Air", "Man", "Tank"], 600];
+			private _array = [];
 			sleep 0.5;
 			{
 				_array = [_leader, _x];
-				if(MEMBER("estimateTarget", _array) < 2) then {
-				 	_leader reveal [_x, 4];
-				 };
+				if(MEMBER("estimateTarget", _array) < 2) then { _leader reveal [_x, 4]; };
 				sleep 0.0001;
 			}foreach _list;
 		};

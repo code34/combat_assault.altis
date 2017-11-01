@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2016 Nicolas BOITEUX
+	Copyright (C) 2016-2018 Nicolas BOITEUX
 
 	CLASS OO_PLAYERSMARKER
 	
@@ -25,14 +25,11 @@
 		PRIVATE VARIABLE("code","grid");
 		PRIVATE VARIABLE("code","hashmap");
 
-		
 		PUBLIC FUNCTION("string","constructor") {
-			private ["_grid", "_hashmap"];
-		
 			MEMBER("markers", []);		
-			_grid = ["new", [0,0, 31000,31000,1000,1000]] call OO_GRID;
+			private _grid = ["new", [0,0, 31000,31000,1000,1000]] call OO_GRID;
 			MEMBER("grid", _grid);
-			_hashmap  = ["new", []] call OO_HASHMAP;
+			private _hashmap  = ["new", []] call OO_HASHMAP;
 			MEMBER("hashmap", _hashmap);
 		};
 
@@ -44,19 +41,18 @@
 		};
 
 		PUBLIC FUNCTION("","draw") {
-			private ["_array", "_position", "_sector", "_mark"];
-			_array = [];
+			private _position = [];
+			private _mark = "";
+			MEMBER("markers", []);
+
 			{
-
-				_position = position _x;
-				_position = ["getSectorCenterPos", _position] call MEMBER("grid", nil);
-
+				_position = ["getSectorCenterPos", (position _x)] call MEMBER("grid", nil);
 				_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
 				if(isnil "_mark") then {
 					_mark = ["new", [_position, false]] call OO_MARKER;
 					["setShape", "RECTANGLE"] spawn _mark;
 					["setSize", [500,500]] spawn _mark;
-					if(side _x == west) then {
+					if(side _x isEqualTo west) then {
 						["setColor", "ColorBlue"] spawn _mark;
 					} else {
 						["setColor", "ColorRed"] spawn _mark;
@@ -65,9 +61,8 @@
 				} else {
 					["setPos", _position] spawn _mark;
 				};
-				_array pushBack _mark;
+				MEMBER("markers", nil) pushBack _mark;
 			}foreach playableUnits;
-			MEMBER("markers", _array);
 		};
 
 

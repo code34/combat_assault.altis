@@ -143,7 +143,8 @@
 		PRIVATE FUNCTION("object", "createMarker") {
 			private _mark = ["new", [position _this, false]] call OO_MARKER;
 			["attachTo", _this] spawn _mark;
-			["setText", "Convoy"] spawn _mark;
+			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
+			["setText", _name] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "o_support"] spawn _mark;
 			["setSize", [0.5,0.5]] spawn _mark;

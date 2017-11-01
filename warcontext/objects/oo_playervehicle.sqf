@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_PLAYERVEHICLE
 	
@@ -40,29 +40,21 @@
 		};
 
 		PUBLIC FUNCTION("", "sanity") {
-			private ["_vehicle"];
-
-			_vehicle = MEMBER("vehicle", nil);
+			private _vehicle = MEMBER("vehicle", nil);
 
 			{
-				if!(alive _x) then {
-					deletevehicle _x;
-				};
+				if!(alive _x) then { deletevehicle _x; };
 				sleep 0.0001;
 			}foreach (crew _vehicle);
 
 			if(count (crew _vehicle) == 0) then {
-				if(damage _vehicle < 0.9) then {
-					_vehicle setdamage 0.91;
-				};
+				if(damage _vehicle < 0.9) then { _vehicle setdamage 0.91; };
 			};
 		};
 
 		PUBLIC FUNCTION("", "checkAlive") {
-			private ["_counter", "_vehicle"];
-
-			_counter = wcpopplayervehiclecooldown;
-			_vehicle = MEMBER("vehicle", nil);
+			private _counter = wcpopplayervehiclecooldown;
+			private _vehicle = MEMBER("vehicle", nil);
 
 			while { position _vehicle select 2 > 2} do { sleep 1;};
 			sleep 10;
@@ -84,7 +76,6 @@
 					_counter = wcpopplayervehiclecooldown;
 				};
 				MEMBER("alive", _counter);
-				diag_log format ["Player Vehicle : %1 %2 ", count (crew _vehicle), damage _vehicle];
 				sleep 1;
 			}; 
 			MEMBER("unPop", nil);
@@ -92,16 +83,15 @@
 		};
 
 		PUBLIC FUNCTION("array", "pop") {
-			private ["_vehicle", "_position", "_netid", "_type", "_name"];
-
-			_position = _this select 0;
-			_netid = _this select 1;
-			_name = _this select 2;
-			_type = MEMBER("type", nil);
+			private _position = _this select 0;
+			private _netid = _this select 1;
+			private _name = _this select 2;
+			private _type = MEMBER("type", nil);
+			private _vehicle = objNull;
+			private _array = [];
 			MEMBER("alive", wcpopplayervehiclecooldown);
 
 			switch (true) do {
-				//case (_type in ["B_Heli_Light_01_F","B_Heli_Light_01_armed_F","C_Heli_Light_01_civil_F","B_Heli_Attack_01_F","B_Heli_Transport_01_F","B_Heli_Transport_01_camo_F","I_Heli_Transport_02_F","I_Heli_light_03_F","I_Heli_light_03_unarmed_F","B_Heli_Transport_03_F","B_Heli_Transport_03_unarmed_F"]) :  {
 				case (_type isKindOf "Helicopter") : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_vehicle = _type createVehicle _position;
@@ -109,7 +99,6 @@
 					["remoteSpawn", ["vehiclegetin", _vehicle, "client", _netid]] call global_bme;
 				};
 
-				//case (_type in ["B_Plane_CAS_01_F","I_Plane_Fighter_03_CAS_F","I_Plane_Fighter_03_AA_F"]) : {
 				case (_type isKindOf "Plane") : {
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_position = [_position select 0, _position select 1, 200];
@@ -152,40 +141,31 @@
 					_vehicle = _type createVehicle _position;
 					//};
 				};
-			};	
-			
+			};
 			MEMBER("vehicle", _vehicle);
-			MEMBER("mark", nil);
+			MEMBER("createMarker", _vehicle);
 			_vehicle;
 		};
 
-		PUBLIC FUNCTION("object", "paraVehicle") {
-		 	private ["_para","_paras","_p"]; 
-		 	
-		 	_para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+		PUBLIC FUNCTION("object", "paraVehicle") {	
+		 	private _para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
 		 	_para setDir getDir _this; 
 		 	_para setPos getPos _this; 
-		 	_paras = [_para]; 
 		 	_this attachTo [_para, [0,0,-1]]; 
 		 	_this addEventHandler ["HandleDamage", {false}]; 	
 
-		 	[_this, _paras] spawn { 
-		 		private ["_vehicle", "_vel", "_paras"];
-		 		
-		 		_vehicle = _this select 0; 
-		 		_paras = _this select 1;
+		 	[_this, _para] spawn {  		
+		 		private _vehicle = _this select 0; 
+		 		private _para = _this select 1;
 		 		
 		 		while { !(getPos _vehicle select 2 < 1) } do {sleep 0.1;};
 		 		detach _vehicle; 
 
-		 		{ 
-		 			detach _x; 
-		 			_x disableCollisionWith _vehicle; 
-		 		} count _paras; 
+	 			detach _para; 
+	 			_para disableCollisionWith _vehicle; 
 		 		
 		 		sleep 2;
-		 		{ if (!isNull _x) then {deleteVehicle _x};} count _paras; 
-		 		
+		 		if (!isNull _para) then {deleteVehicle _para};
 		 		_vehicle removeAllEventHandlers "HandleDamage";
 		 		_vehicle setDamage 0;
 		 		_vehicle setFuel 1;
@@ -198,10 +178,8 @@
 		};
 
 		PUBLIC FUNCTION("object", "setHandler") {
-			private ["_vehicle"];
-			_vehicle = _this;
-			_vehicle removeAllEventHandlers "HandleDamage";
-			_vehicle addeventhandler ['HandleDamage', {
+			_this removeAllEventHandlers "HandleDamage";
+			_this addeventhandler ['HandleDamage', {
 				if(getdammage (_this select 0) > 0.9) then {
 						(_this select 0) setdamage 1;
 						(_this select 0) removeAllEventHandlers "HandleDamage";
@@ -211,22 +189,17 @@
 				};
 			}];
 
-			_vehicle addeventhandler ['Hit', {
+			_this addeventhandler ['Hit', {
 				if(_this select 2 > 0.30) then {
 					(_this select 0) setdamage (getdammage (_this select 0) + random (1));
 				};
 			}];
 		};
 
-		PUBLIC FUNCTION("", "mark") {
-			private ["_vehicle", "_mark", "_position"];
-			
-			_vehicle = MEMBER("vehicle", nil);
-			_position = position _vehicle;
-
-			_mark = ["new", [_position, false]] call OO_MARKER;
-			["attachTo", _vehicle] spawn _mark;
-			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+		PUBLIC FUNCTION("object", "createMarker") {
+			private _mark = ["new", [position _this, false]] call OO_MARKER;
+			["attachTo", _this] spawn _mark;
+			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
 			["setType", "b_armor"] spawn _mark;

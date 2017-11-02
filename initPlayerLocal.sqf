@@ -1,4 +1,4 @@
 	if (local player) then {
-		[] spawn compilefinal preprocessFileLineNumbers "client\init.sqf";
+		[] spawn compile preprocessFileLineNumbers "client\init.sqf";
 	};
 

@@ -29,12 +29,18 @@
 	wcteleport = [];
 	wcteleportposition = [];
 	onMapSingleClick {
-		wcteleportposition = _pos;
+		if(_pos distance getMarkerPos "respawn_west" > 1500) then {
+			_title = localize "STR_TELEPORT_TITLE_TOOFAR";
+			_text = localize "STR_TELEPORT_TEXT_TOOFAR";
+			["hint", [_title, _text]] call hud;
+		} else {
+			wcteleportposition = _pos;
+		};
 	};
 
-	while {count wcteleportposition == 0} do { sleep 0.1;};
+	while {count wcteleportposition isEqualTo 0} do { sleep 0.1;};
 	onMapSingleClick "";
-	if(wcteleportposition distance (getMarkerPos "respawn_west") > 1500) exitWith {};
+	if(wcteleportposition distance getMarkerPos "respawn_west" < 100) exitWith {player setpos wcteleportposition;};
 
 	player setpos [wcteleportposition select 0, wcteleportposition select 1, 500];
 	player setVelocity [0, 0, 10];

@@ -99,7 +99,7 @@
 			};
 		};
 
-		if(wcaction == "equipment") then {
+		if(wcaction isEqualTo "equipment") then {
 			closeDialog 0;
 			_title = localize "STR_EQUIPMENT_TITLE";
 			_text = localize "STR_EQUIPMENT_TEXT";
@@ -167,7 +167,7 @@
 			_newevent = true;
 		};
 
-		if(wcaction == "friendsmanagement") then {
+		if(wcaction isEqualTo "friendsmanagement") then {
 			//[] execVM "client\scripts\givehug.sqf";
 			wcaction = "";
 			wcwithfriendsmarkers = !wcwithfriendsmarkers;
@@ -223,8 +223,10 @@
 		};
 
 		if(_newevent) then {
+			// si le joueur ne choisit rien
+			// on lui propose le paradrop
 			if(_player isequalto player) then {
-				_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");
+				_ctrl4 ctrlSetText (localize "STR_DEPLOY_BUTTON");				
 				_map ctrlMapAnimAdd [0, 0, _deathposition]; 
 				ctrlMapAnimCommit _map;
 				
@@ -234,12 +236,15 @@
 				_cam camSetRelPos [0,100,50];
 				_cam CamCommit 0;
 			} else {
+				// si le joueur choisit un autre joueur
+				// on affiche la camera derrière le joueur
+				// on propose le bouton deployer
 				_ctrl4 ctrlSetText (localize "STR_DEPLOY_BUTTON");
 				_map ctrlMapAnimAdd [0, 0, _player]; 
 				ctrlMapAnimCommit _map;
 
 				detach _cam;
-				if(vehicle _player == _player) then {
+				if(vehicle _player isEqualTo _player) then {
 					_cam cameraEffect ["internal", "BACK"];
 					_cam camSetTarget _player;
 					_cam attachto [_player,[0.7,-3, + 0.5], "neck"];

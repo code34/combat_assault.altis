@@ -67,6 +67,10 @@
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_this,[], 150]);
 		}; 
 
+		PUBLIC FUNCTION("", "isPack"){
+			MEMBER("packed", nil);
+		};
+
 		PUBLIC FUNCTION("", "getRandomStructure"){
 			private _kind = "";
 			private _type = [

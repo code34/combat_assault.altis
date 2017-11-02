@@ -226,7 +226,7 @@
 			// si le joueur ne choisit rien
 			// on lui propose le paradrop
 			if(_player isequalto player) then {
-				_ctrl4 ctrlSetText (localize "STR_DEPLOY_BUTTON");				
+				_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");				
 				_map ctrlMapAnimAdd [0, 0, _deathposition]; 
 				ctrlMapAnimCommit _map;
 				

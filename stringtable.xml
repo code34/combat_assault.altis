@@ -71,6 +71,14 @@
                         <Original>Click once on the map near the red square where you'd like to be deploy!</Original>
                         <French>Cliquez une fois sur la carte près des zones rouges ou vous voulez être déployé!</French>
                 </Key>
+                <Key ID="STR_TELEPORT_TITLE_TOOFAR">
+                        <Original>Drop zone is too far</Original>
+                        <French>La zone de parachutage est trop loin</French>
+                </Key>
+                <Key ID="STR_TELEPORT_TEXT_TOOFAR">
+                        <Original>You can only drop into the blue drop zone of your base</Original>
+                        <French>Vous pouvez vous parachuter uniquement dans la zone bleue de votre base</French>
+                </Key>
                 <Key ID="STR_SERVICING_TITLE">
                         <Original>Vehicle Servicing</Original>
                         <French>Service logistique</French>
@@ -88,8 +96,8 @@
                         <French>Choisissez la zone</French>
                 </Key>
                 <Key ID="STR_DEPLOY_BUTTON">
-                        <Original>Deploy</Original>
-                        <French>Deployement</French>
+                        <Original>Deployement</Original>
+                        <French>Deploiement</French>
                 </Key>
                 <Key ID="STR_PARADROP_BUTTON">
                         <Original>Paradrop</Original>

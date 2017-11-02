@@ -29,9 +29,9 @@
 		"_exist"
 	];
 
-	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\config.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\scripts\BME_serverhandler.sqf";
+	call compile preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+	call compile preprocessFileLineNumbers "warcontext\config.sqf";
+	call compile preprocessFileLineNumbers "warcontext\scripts\BME_serverhandler.sqf";
 
 	WC_fnc_setskill	 	= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_setskill.sqf";
 	WC_fnc_computezone		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_computezone.sqf";
@@ -42,32 +42,32 @@
 	WC_fnc_servicing		= compileFinal preprocessFileLineNumbers "warcontext\scripts\WC_fnc_servicing.sqf";
 	WC_fnc_fueldepot		= compileFinal preprocessFileLineNumbers "warcontext\missions\WC_fnc_fueldepot.sqf";
 
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_bme.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_factory.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_supply.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolvehicle.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_playervehicle.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_queue.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_pathfinding.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_basegenerator.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_namegenerator.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_artillery.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_antiair.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_atc.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_bme.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_bonusvehicle.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_convoy.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_controller.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_dogfight.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_factory.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_supply.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_patrolvehicle.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_playervehicle.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_queue.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_pathfinding.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_basegenerator.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_namegenerator.sqf";
 
 	if(!local player) then {
 		global_bme = "new" call OO_BME;

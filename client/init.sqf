@@ -47,20 +47,20 @@
 	WC_fnc_introcam 	= compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
 	WC_fnc_spawncam 	= compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
 
-	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
-	call compilefinal preprocessFileLineNumbers "client\scripts\BME_clienthandler.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_bme.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
-	call compilefinal preprocessFileLineNumbers "client\objects\oo_camera.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	call compile preprocessFileLineNumbers "client\scripts\task.sqf";
+	call compile preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";
+	call compile preprocessFileLineNumbers "client\scripts\BME_clienthandler.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_bme.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_hud.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_playersmarker.sqf";
+	call compile preprocessFileLineNumbers "client\objects\oo_camera.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
+	call compile preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 
 	global_bme = "new" call OO_BME;
 	"bme_addqueue" addPublicVariableEventHandler {
@@ -247,7 +247,7 @@
 				_list2 = position player nearEntities [["Tank"], 1000];
 				sleep 1;
 				{
-					_list = _list + crew _x;
+					_list append crew _x;
 					sleep 0.001;
 				}foreach _list2;
 

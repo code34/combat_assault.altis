@@ -397,7 +397,7 @@
 
 		PRIVATE FUNCTION("", "popVehicle") {
 			private _marker	=  MEMBER("marker", nil);
-			private _markerpos 	= getmarkerpos _marker;
+			private _position 	= getmarkerpos _marker;
 			private _markersize	= (getMarkerSize _marker) select 1;
 			private _vehicle = "";
 			private _units = [];
@@ -411,7 +411,7 @@
 			};
 
 			_position = _position findEmptyPosition [0,50];
-			if(_position isEqualTo []) exitWith {[];};							
+			if(_position isEqualTo []) exitWith {[];};					
 			
 			_array = [_position, random 359, _vehicle, east] call bis_fnc_spawnvehicle;
 			_vehicle = _array select 0;

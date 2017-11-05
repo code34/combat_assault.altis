@@ -280,8 +280,7 @@
 					_code 			= nil;
 					
 					if (isNil "_targetid") then { _targetid = 0;};
-					//Debug time - should be delete later
-					//diag_log format ["log: %1", _message];
+
 
 					if(isserver and ((_destination isEqualTo "server") or (_destination isEqualTo "all"))) then {
 						_code = (missionNamespace getVariable (format ["BME_netcode_server_%1", _remotefunction]));
@@ -292,7 +291,7 @@
 						};
 					};
 
-					if(local player and (_targetid isEqualTo owner player) and ((_destination isEqualTo "client") or (_destination isEqualTo "all"))) then {
+					if(local player and ((_destination isEqualTo "client") or (_destination isEqualTo "all"))) then {
 						_code = (missionNamespace getVariable (format ["BME_netcode_client_%1", _remotefunction]));
 						if!(isnil "_code") then {
 							_parameters spawn _code;

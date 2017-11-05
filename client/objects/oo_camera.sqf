@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014-2015 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_CAMERA
 	
@@ -29,34 +29,31 @@
 		PRIVATE VARIABLE("scalar","instanceid");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_cam", "_instanceid", "_name"];
-
-			_instanceid = MEMBER("globalinstanceid",nil);
+			DEBUG(#, "OO_CAMERA::constructor")
+			private _instanceid = MEMBER("globalinstanceid",nil);
 			if (isNil "_instanceid") then {_instanceid = 0;};
-			_instanceid = _instanceid + 1;
+			private _instanceid = _instanceid + 1;
 			MEMBER("globalinstanceid",_instanceid);
 			MEMBER("instanceid",_instanceid);						
-
-			_name = "rtt"+str(_instanceid);
+			private _name = "rtt"+str(_instanceid);
 			MEMBER("name", _name);
-
-			_cam = "camera" camCreate [position player select 0, position player select 1, 50];
+			private _cam = "camera" camCreate [position player select 0, position player select 1, 50];
 			_cam cameraEffect ["internal","back", _name]; 
 			MEMBER("camera", _cam);
-
 			_name = "ctrlname" + str(MEMBER("instanceid", nil));
 			MEMBER("ctrlname", _name);
 		};
 
 		PUBLIC FUNCTION("array","setPipEffect") {
+			DEBUG(#, "OO_CAMERA::setPipEffect")
 			MEMBER("name", nil) setPiPEffect _this;
 		};
 
 		PUBLIC FUNCTION("array", "presetCamera"){
-			private ["_object", "_preset"];
-			
-			_object = _this select 0;
-			_preset = _this select 1;
+			DEBUG(#, "OO_CAMERA::presetCamera")	
+			private _object = _this select 0;
+			private _preset = _this select 1;
+			private _array = [];
 
 			switch(_preset) do {
 				case "backCamera": {
@@ -81,17 +78,17 @@
 		};
 
 		PUBLIC FUNCTION("array", "attachTo"){
-			private ["_object", "_position", "_poscamera", "_vehicle"];
-			
-			_object = _this select 0;
-			_position = _this select 1;
-			
+			DEBUG(#, "OO_CAMERA::attachTo")	
+			private _object = _this select 0;
+			private _position = _this select 1;
+			private _poscamera = [];
+
 			if(count _this > 2) then {
 				_poscamera = _this select 2;
 			} else {
 				_poscamera = "";
 			};
-			_vehicle = vehicle _object;
+			private _vehicle = vehicle _object;
 
 			MEMBER("camera", nil) attachto [_object,_position, _poscamera];
 			MEMBER("camera", nil) camSetTarget _object;
@@ -110,13 +107,15 @@
 		};
 
 		PUBLIC FUNCTION("", "detach"){
+			DEBUG(#, "OO_CAMERA::detach")
 			MEMBER("attach", false);
 		};
 
 		PUBLIC FUNCTION("object", "uavCamera"){
-			private ["_uav", "_position", "_wp"];
-			_position = [position _this select 0, position _this select 1, 100];
-			_uav = createVehicle ["B_UAV_01_F", _position, [], 0, "FLY"]; 
+			DEBUG(#, "OO_CAMERA::uavCamera")
+			private _position = [position _this select 0, position _this select 1, 100];
+			private _uav = createVehicle ["B_UAV_01_F", _position, [], 0, "FLY"]; 
+			private _wp = "";
 			createVehicleCrew _uav; 
 			_uav flyInHeight 50;
 			MEMBER("camera", nil) attachTo [_uav, [0,1,0]];
@@ -135,6 +134,7 @@
 		};
 
 		PUBLIC FUNCTION("array","r2w") {
+			DEBUG(#, "OO_CAMERA::r2w")
 			uiNamespace setvariable [MEMBER("ctrlname", nil), findDisplay 46 ctrlCreate ["RscPicture", -1]]; 
 			(uiNamespace getvariable MEMBER("ctrlname", nil)) ctrlSetPosition _this; 
 			(uiNamespace getvariable MEMBER("ctrlname", nil)) ctrlCommit 0; 
@@ -142,12 +142,12 @@
 		};
 
 		PUBLIC FUNCTION("object","r2o") {
-			private ["_object"];
-			_object = _this;
-			_object setObjectTexture [0, "#(argb,512,512,9)r2t("+ MEMBER("name", nil) + ",1.0)"];
+			DEBUG(#, "OO_CAMERA::r2o")
+			_this setObjectTexture [0, "#(argb,512,512,9)r2t("+ MEMBER("name", nil) + ",1.0)"];
 		};		
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DEBUG(#, "OO_CAMERA::deconstructor")
 			camDestroy MEMBER("camera", nil);
 			ctrlDelete (uiNamespace getvariable MEMBER("ctrlname", nil));
 			DELETE_VARIABLE("attach");

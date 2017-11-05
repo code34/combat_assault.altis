@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014-2015 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_CIRCULARLIST
 	
@@ -26,26 +26,26 @@
 		PRIVATE VARIABLE("code","condition");
 
 		PUBLIC FUNCTION("array","constructor") {
+			DEBUG(#, "OO_CIRCULARLIST::constructor")
 			MEMBER("index", 0);
 			MEMBER("list", _this);
 		};
 
 		PUBLIC FUNCTION("array","set") {
+			DEBUG(#, "OO_CIRCULARLIST::set")
 			MEMBER("index", 0);
 			MEMBER("list", _this);
 		};
 
-		PUBLIC FUNCTION("array","getPrev") {
-			private ["_index", "_continue", "_element", "_count", "_size", "_condition", "_return"];
-			
-			_condition = _this select 0;
-			_return = _this select 1;
-
-			_continue = true;
-			_count = -1;
-			
-			_size = count MEMBER("list", nil) - 1;
-			_index = MEMBER("index", nil);
+		PUBLIC FUNCTION("array","getPrev") {	
+			DEBUG(#, "OO_CIRCULARLIST::getPrev")
+			private _condition = _this select 0;
+			private _return = _this select 1;
+			private _continue = true;
+			private _count = -1;
+			private _size = count MEMBER("list", nil) - 1;
+			private _index = MEMBER("index", nil);
+			private _element = "";
 
 			while { _continue} do {
 				_index = _index - 1;
@@ -63,23 +63,21 @@
 					_continue = false;
 					_element = _return;
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			};
 			MEMBER("index", _index);
 			_element;
 		};
 
-		PUBLIC FUNCTION("array","getNext") {
-			private ["_index", "_continue", "_element", "_count", "_size", "_condition", "_return"];
-			
-			_condition = _this select 0;
-			_return = _this select 1;
-
-			_continue = true;
-			_count = -1;
-
-			_size = count MEMBER("list", nil) - 1;
-			_index = MEMBER("index", nil);
+		PUBLIC FUNCTION("array","getNext") {	
+			DEBUG(#, "OO_CIRCULARLIST::getNext")
+			private _condition = _this select 0;
+			private _return = _this select 1;
+			private _continue = true;
+			private _count = -1;
+			private _size = count MEMBER("list", nil) - 1;
+			private _index = MEMBER("index", nil);
+			private _element = "";
 			
 			while { _continue} do {
 				_index = _index + 1;
@@ -97,13 +95,14 @@
 						_element = _return;
 					};
 				};
-				sleep 0.01;
+				sleep 0.0001;
 			};
 			MEMBER("index", _index);
 			_element;
 		};
 		
-		PUBLIC FUNCTION("","deconstructor") { 
+		PUBLIC FUNCTION("","deconstructor") {
+			DEBUG(#, "OO_CIRCULARLIST::deconstructor") 
 			DELETE_VARIABLE("condition");
 			DELETE_VARIABLE("index");
 			DELETE_VARIABLE("list");

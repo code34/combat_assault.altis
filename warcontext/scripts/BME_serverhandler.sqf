@@ -23,25 +23,17 @@
 
 	// Example function write log on server side
 
-	BME_netcode_server_wcunpackbase = {
-		"unpackBase" call global_base;
-	};
+	BME_netcode_server_isPackedBase = { "isPackedBase" call global_base; };
 
-	BME_netcode_server_wcpackbase = {
-		"packBase" call global_base;
-	};
+	BME_netcode_server_wcunpackbase = { "unpackBase" call global_base; };
 
-	BME_netcode_server_getairports = {
-		"getAirports" call global_atc;
-	};
+	BME_netcode_server_wcpackbase = { "packBase" call global_base; };
 
-	BME_netcode_server_getfactorys = {
-		"getFactorys" call global_factory;
-	};
+	BME_netcode_server_getairports = { "getAirports" call global_atc; };
 
-	BME_netcode_server_gettickets = {
-		"send" call global_ticket;
-	};
+	BME_netcode_server_getfactorys = { "getFactorys" call global_factory; };
+
+	BME_netcode_server_gettickets = { "send" call global_ticket; };
 
 	BME_netcode_server_bme_log = {
 		bme_log = _this;

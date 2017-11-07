@@ -32,11 +32,11 @@
 	};
 
 	BME_netcode_server_getairports = {
-		["remoteSpawn", ["wcairports", "getAirports" call global_atc, "client"]] call global_bme;
+		"getAirports" call global_atc;
 	};
 
 	BME_netcode_server_getfactorys = {
-		["remoteSpawn", ["wcfactorys", "getFactorys" call global_factory, "client"]] call global_bme;
+		"getFactorys" call global_factory;
 	};
 
 	BME_netcode_server_gettickets = {

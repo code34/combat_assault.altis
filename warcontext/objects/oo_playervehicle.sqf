@@ -27,6 +27,7 @@
 		PRIVATE VARIABLE("scalar","alive");
 		
 		PUBLIC FUNCTION("string","constructor") {
+			DEBUG(#, "OO_PLAYERVEHICLE::constructor")
 			MEMBER("type", _this);
 			MEMBER("vehicle", objnull);
 			MEMBER("alive", 0);
@@ -36,32 +37,29 @@
 		PUBLIC FUNCTION("","getAlive") FUNC_GETVAR("alive");
 
 		PUBLIC FUNCTION("string", "setType") {
+			DEBUG(#, "OO_PLAYERVEHICLE::setType")
 			MEMBER("type", _this);
 		};
 
 		PUBLIC FUNCTION("", "sanity") {
+			DEBUG(#, "OO_PLAYERVEHICLE::sanity")
 			private _vehicle = MEMBER("vehicle", nil);
-
 			{
 				if!(alive _x) then { deletevehicle _x; };
 				sleep 0.0001;
 			}foreach (crew _vehicle);
-
-			if(count (crew _vehicle) == 0) then {
-				if(damage _vehicle < 0.9) then { _vehicle setdamage 0.91; };
-			};
+			if(count (crew _vehicle) == 0) then { if(damage _vehicle < 0.9) then { _vehicle setdamage 0.91; }; };
 		};
 
 		PUBLIC FUNCTION("", "checkAlive") {
+			DEBUG(#, "OO_PLAYERVEHICLE::checkAlive")
 			private _counter = wcpopplayervehiclecooldown;
 			private _vehicle = MEMBER("vehicle", nil);
-
 			while { position _vehicle select 2 > 2} do { sleep 1;};
 			sleep 10;
 		 	MEMBER("setHandler", _vehicle);
 
 			while { _counter > 1 } do {
-
 				{
 					if!(alive _x) then {
 						_x action ["Eject", _vehicle];
@@ -83,6 +81,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "pop") {
+			DEBUG(#, "OO_PLAYERVEHICLE::pop")
 			private _position = _this select 0;
 			private _netid = _this select 1;
 			private _name = _this select 2;
@@ -147,7 +146,8 @@
 			_vehicle;
 		};
 
-		PUBLIC FUNCTION("object", "paraVehicle") {	
+		PUBLIC FUNCTION("object", "paraVehicle") {
+			DEBUG(#, "OO_PLAYERVEHICLE::paraVehicle")	
 		 	private _para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
 		 	_para setDir getDir _this; 
 		 	_para setPos getPos _this; 
@@ -173,11 +173,13 @@
 		};
 
 		PUBLIC FUNCTION("", "unPop") {
+			DEBUG(#, "OO_PLAYERVEHICLE::unPop")	
 			deletevehicle MEMBER("vehicle", nil);
 			MEMBER("unMark", nil);
 		};
 
 		PUBLIC FUNCTION("object", "setHandler") {
+			DEBUG(#, "OO_PLAYERVEHICLE::setHandler")	
 			_this removeAllEventHandlers "HandleDamage";
 			_this addeventhandler ['HandleDamage', {
 				if(getdammage (_this select 0) > 0.9) then {
@@ -197,6 +199,7 @@
 		};
 
 		PUBLIC FUNCTION("object", "createMarker") {
+			DEBUG(#, "OO_PLAYERVEHICLE::createMarker")	
 			private _mark = ["new", [position _this, false]] call OO_MARKER;
 			["attachTo", _this] spawn _mark;
 			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
@@ -208,10 +211,13 @@
 		};
 
 		PUBLIC FUNCTION("", "unMark") {
+			DEBUG(#, "OO_PLAYERVEHICLE::unMark")
 			["delete", MEMBER("marker", nil)] call OO_MARKER;
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DEBUG(#, "OO_PLAYERVEHICLE::deconstructor")
+			MEMBER("unPop", _vehicle);
 			DELETE_VARIABLE("type");
 			DELETE_VARIABLE("vehicle");
 			DELETE_VARIABLE("marker");

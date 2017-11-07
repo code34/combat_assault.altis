@@ -67,7 +67,7 @@
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_this,[], 150]);
 		}; 
 
-		PUBLIC FUNCTION("", "isPack"){
+		PUBLIC FUNCTION("", "isPackedBase"){
 			MEMBER("packed", nil);
 		};
 

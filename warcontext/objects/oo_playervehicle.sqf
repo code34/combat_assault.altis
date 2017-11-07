@@ -96,7 +96,7 @@
 					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
 					_vehicle = _type createVehicle _position;
 					_vehicle setdamage 0;
-					["remoteSpawn", ["vehiclegetin", _vehicle, "client", _netid]] call global_bme;
+					["remoteSpawn", ["getInAirVehicle", _vehicle, "client", _netid]] call global_bme;
 				};
 
 				case (_type isKindOf "Plane") : {
@@ -110,7 +110,7 @@
 					}foreach units (_array select 2);
 					deletegroup (_array select 2);
 					_vehicle setdamage 0;
-					["remoteSpawn", ["vehiclegetin", _vehicle, "client", _netid]] call global_bme;
+					["remoteSpawn", ["getInAirVehicle", _vehicle, "client", _netid]] call global_bme;
 				};
 
 				case (_type isEqualTo "B_supplyCrate_F") : {

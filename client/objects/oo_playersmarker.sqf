@@ -26,34 +26,28 @@
 		PRIVATE VARIABLE("code","hashmap");
 		
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_hashmap"];
-			
+			DEBUG(#, "OO_PLAYERSMARKER::constructor")		
 			MEMBER("list", []);
 			MEMBER("markers", []);
-					
-			_hashmap  = ["new", []] call OO_HASHMAP;
+			private _hashmap  = ["new", []] call OO_HASHMAP;
 			MEMBER("hashmap", _hashmap);
 		};
 
 		PUBLIC FUNCTION("string","addPlayer") {
-			private ["_array", "_result"];
-			
-			_array = MEMBER("list", _nil);
-			_result = false;
-
-			if!(_this in _array) then {
-				_array = _array +  [_this];
-				MEMBER("list", _array);
+			DEBUG(#, "OO_PLAYERSMARKER::addPlayer")	
+			private _result = false;
+			if!(_this in MEMBER("list", _nil)) then {
+				MEMBER("list", nil) pushBack _this;
 				_result = true;
 			};
 			_result;
 		};
 
 		PUBLIC FUNCTION("string","removePlayer") {
-			private ["_array", "_result"];
-			
-			_array = MEMBER("list", _nil);
-			_result = false;
+			DEBUG(#, "OO_PLAYERSMARKER::removePlayer")		
+			private _array = MEMBER("list", _nil);
+			private _result = false;
+			private _mark = "";
 
 			if(_this in _array) then {
 				_array = _array - [_this];
@@ -67,6 +61,7 @@
 		};	
 
 		PUBLIC FUNCTION("","start") {
+			DEBUG(#, "OO_PLAYERSMARKER::start")	
 			while { true } do {
 				if(wcwithfriendsmarkers) then {
 					MEMBER("draw", nil);
@@ -79,12 +74,13 @@
 		};
 
 		PUBLIC FUNCTION("","garbage") {
-			private ["_temp", "_mark", "_unit"];
-
+			DEBUG(#, "OO_PLAYERSMARKER::garbage")
+			private _temp = "";
+			private _mark = "";
+			private _unit = objNull;
 			{
 				_mark = _x select 0;
 				_unit = _x select 1;
-
 				if( (("getPos" call _mark) distance [0,0] < 100) or !(alive _unit) ) then {
 					["remove", str(_unit)] call MEMBER("hashmap", nil);
 					["delete", _mark] call OO_MARKER;
@@ -95,24 +91,21 @@
 		};
 
 		PUBLIC FUNCTION("","draw") {
-			private ["_array", "_position", "_temp", "_mark", "_list"];
+			DEBUG(#, "OO_PLAYERSMARKER::draw")
+			private _mark = "";
 
-			//_list = MEMBER("list", nil);
 			{
-				//if(((name _x) in _list) and !(name _x in wcblacklist)) then {
 				if!(name _x in wcblacklist) then {
-					_position = position _x;
 					_mark = ["get", str(_x)] call MEMBER("hashmap", nil);
 					if(isnil "_mark") then {
-						_mark = ["new", [_position, true]] call OO_MARKER;
+						_mark = ["new", [position _x, true]] call OO_MARKER;
 						["attachTo", _x] spawn _mark;
 						["setText", name _x] spawn _mark;
 						["setColor", "ColorGreen"] spawn _mark;
 						["setType", "mil_arrow2"] spawn _mark;
 						["setSize", [0.5,0.5]] spawn _mark;
 						["put", [str(_x), _mark]] call MEMBER("hashmap", nil);
-						_temp = MEMBER("markers", nil) + [[_mark, _x]];
-						MEMBER("markers", _temp);
+						MEMBER("markers", nil) pushBack [_mark, _x];
 					};
 				};
 			}foreach allPlayers;
@@ -120,18 +113,16 @@
 
 
 		PUBLIC FUNCTION("","unDraw") {
+			DEBUG(#, "OO_PLAYERSMARKER::unDraw")
 			{
-				_mark = _x select 0;
-				_unit = _x select 1;
-				["remove", str(_unit)] call MEMBER("hashmap", nil);
-				["delete", _mark] call OO_MARKER;
+				["remove", str(_x select 1)] call MEMBER("hashmap", nil);
+				["delete", (_x select 0)] call OO_MARKER;
 			} foreach MEMBER("markers", nil);
-			
-			_temp = [];
-			MEMBER("markers", _temp);
+			MEMBER("markers", []);
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DEBUG(#, "OO_PLAYERSMARKER::deconstructor")
 			DELETE_VARIABLE("list");
 			DELETE_VARIABLE("markers");
 			DELETE_VARIABLE("hashmap");

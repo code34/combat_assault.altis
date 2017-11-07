@@ -71,9 +71,6 @@
 
 	if(!local player) then {
 		global_bme = "new" call OO_BME;
-		"bme_addqueue" addPublicVariableEventHandler {
-			["addReceiveQueue", _this select 1] call global_bme;
-		};
 	};
 
 	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");

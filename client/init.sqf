@@ -63,9 +63,6 @@
 	call compile preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 
 	global_bme = "new" call OO_BME;
-	"bme_addqueue" addPublicVariableEventHandler {
-		["addReceiveQueue", _this select 1] call global_bme;
-	};
 
 	rollmessage = [];
 	killzone = [];

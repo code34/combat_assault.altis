@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2014-2018 Nicolas BOITEUX
 
 	CLASS OO_RELOADPLANE
 	
@@ -25,15 +25,18 @@
 		PRIVATE VARIABLE("object","vehicle");
 				
 		PUBLIC FUNCTION("object","constructor") {
+			DEBUG(#, "OO_RELOADPLANE::constructor")
 			MEMBER("vehicle", _this);
+			"start" call _self;
 		};
 
 		PUBLIC FUNCTION("", "start") {
-			private ["_message", "_time", "_vehicle"];
+			DEBUG(#, "OO_RELOADPLANE::start")
 			MEMBER("run", true);
-			_time = 0;
-			_message = false;
-			_vehicle = MEMBER("vehicle", nil);
+			private _time = 0;
+			private _message = false;
+			private _vehicle = MEMBER("vehicle", nil);
+			private _airports = ["remoteCall", ["getairports", "", "server"]] call global_bme;
 
 			while { MEMBER("run", nil) } do {
 				MEMBER("setFuel", nil);
@@ -44,7 +47,7 @@
 					};
 					{
 						if((getmarkerpos _x) distance _vehicle < 300) then {
-							if(getMarkerColor _x == "ColorBlue") then {
+							if(getMarkerColor _x isEqualTo "ColorBlue") then {
 								MEMBER("reFuel", nil);
 								MEMBER("reFuelMessage", _x);
 								_message = false;
@@ -52,11 +55,9 @@
 							};
 						};
 						sleep 0.001;
-					}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+					}foreach _airports;
 				};
-				if(getDammage _vehicle > 0.9) then {
-					MEMBER("run", false);
-				};
+				if(getDammage _vehicle > 0.9) then { MEMBER("run", false); };
 				_time = _time + 1;
 				sleep 1;
 			};
@@ -64,40 +65,43 @@
 		};
 
 		PUBLIC FUNCTION("", "stop") {
+			DEBUG(#, "OO_RELOADPLANE::stop")
 			MEMBER("run", false);
 		};
 
 		PUBLIC FUNCTION("", "reFuel") {
-			private ["_vehicle"];
-			_vehicle = MEMBER("vehicle", nil);
+			DEBUG(#, "OO_RELOADPLANE::reFuel")
+			private _vehicle = MEMBER("vehicle", nil);
 			_vehicle setVehicleAmmoDef 1;
 			_vehicle setdamage 0;
 			_vehicle setfuel 1;
 		};
 
 		PUBLIC FUNCTION("", "airportAvalaibleMessage") {
+			DEBUG(#, "OO_RELOADPLANE::airportAvalaibleMessage")
 			_txt =  "<t color='#ff0000'>MESSAGE FROM: Air Traffic Control</t><br />";
 			_txt2 = "Come back to Refuel and Reload<br />";
 			hint parseText (_txt + _txt2); 
 		};
 
 		PUBLIC FUNCTION("string", "reFuelMessage") {
-			_name = toUpper(_this);
-			_txt =  "<t color='#ff0000'>MESSAGE FROM: "+ _name + " Air Traffic Control</t><br />";
-			_txt2 = "Vehicule Refuel ! Good luck !<br />";
+			DEBUG(#, "OO_RELOADPLANE::reFuelMessage")
+			private _name = toUpper(_this);
+			private _txt =  "<t color='#ff0000'>MESSAGE FROM: "+ _name + " Air Traffic Control</t><br />";
+			private _txt2 = "Vehicule Refuel ! Good luck !<br />";
 			hint parseText (_txt + _txt2); 
 		};
 
 		PUBLIC FUNCTION("", "setFuel") {
-			private ["_conso", "_vehicle", "_fuel"];
-			_vehicle = MEMBER("vehicle", nil);
-			_fuel = fuel _vehicle;
-			
-			_conso = (speed _vehicle * 0.0005) / 100;
+			DEBUG(#, "OO_RELOADPLANE::setFuel")
+			private _vehicle = MEMBER("vehicle", nil);
+			private _fuel = fuel _vehicle;
+			private _conso = (speed _vehicle * 0.0005) / 100;
 			_vehicle setfuel (_fuel - _conso);
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DEBUG(#, "OO_RELOADPLANE::deconstructor")
 			DELETE_VARIABLE("vehicle");
 			DELETE_VARIABLE("run");
 		};

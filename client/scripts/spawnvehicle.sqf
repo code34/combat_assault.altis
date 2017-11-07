@@ -15,6 +15,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
+	disableSerialization;
 
 	private _vehicles = [];
 	private _positions = [];
@@ -26,8 +27,7 @@
 	private _armor = false;
 	private _type = "";
 
-	disableSerialization;
-
+	if (["remoteCall", ["isPackedBase", "", "server"]] call global_bme) exitWith { closedialog 0; hint "Base should be Unpack";};
 	_airports = ["remoteCall", ["getairports", "", "server"]] call global_bme;
 	_factorys = ["remoteCall", ["getfactorys", "", "server"]] call global_bme;
 

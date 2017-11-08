@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013-2017r Nicolas BOITEUX
+	Copyright (C) 2013-2018 Nicolas BOITEUX
 
 	CLASS OO_MARKER
 	

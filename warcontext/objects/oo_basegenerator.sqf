@@ -67,6 +67,11 @@
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_this,[], 150]);
 		}; 
 
+		PUBLIC FUNCTION("", "isAlive"){
+			//if (getDammage MEMBER("base", nil) > 0) then { true; } else { false;};
+			alive MEMBER("base", nil);
+		};
+
 		PUBLIC FUNCTION("", "isPackedBase"){
 			MEMBER("packed", nil);
 		};
@@ -117,7 +122,7 @@
 
 			_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
 			[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
-			_base addEventHandler ['HandleDamage', { false; }];
+			//_base addEventHandler ['HandleDamage', { false; }];
 			
 			"respawn_west" setmarkerpos _position;
 			MEMBER("marker", nil) setMarkerPos _position;
@@ -180,8 +185,8 @@
 				if(_position isEqualTo []) exitWith {};
 
 				MEMBER("buildHQ", _position);
-				MEMBER("checkStructuresAvalaible", nil);
-				MEMBER("buildStructures", _position);
+				//MEMBER("checkStructuresAvalaible", nil);
+				//MEMBER("buildStructures", _position);
 			};
 		};
 

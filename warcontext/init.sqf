@@ -278,6 +278,9 @@
 			"End1" call BIS_fnc_endMissionServer;
 			_end = true;
 		};
+		if!("isAlive" call global_base) then {
+			"epicFail" call BIS_fnc_endMissionServer;
+		};
 		if("getTicket" call global_ticket < 1)then {
 			{
 				"flushBDD" call _x;

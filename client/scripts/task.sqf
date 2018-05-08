@@ -3,8 +3,6 @@
 	player createDiaryRecord ["Diary", ["Author", "code34 - email: nicolas_boiteux@yahoo.fr"]];
 
 	player createDiaryRecord ["Diary", ["Credits", "I thank my family for all the time they gave me. Thanks to Jp for all the time he spend helping me to test the mission. Thanks to Naught for the excellent oop.h. Thanks to all members of the steam group : Combat Assault."]];
-	
-	player createDiaryRecord ["Diary", ["Online Documentation", "You can get more information by accessing the online documentation that more accurately describes the game: http://www.combat-assault.eu"]];
 
 	player createDiaryRecord ["Diary", ["Friendly Vehicles", "Different roles from the main menu. You can retrieve tanks, planes, helicopters. Each vehicle has its own rules, does not allow you to appear near combat zones."]];
 

@@ -175,8 +175,8 @@
 			DEBUG(#, "OO_BASEGENERATOR::createDeployMarker")
 			private _marker = createMarker ["globalbasedeploy", _this];
 			_marker setMarkerShape "ELLIPSE";
-			_marker setMarkerBrush "border";
-			_marker setMarkerSize [1500,1500];
+			_marker setMarkerBrush "FDiagonal";
+			_marker setMarkerSize [1500 ,1500];
 			_marker setMarkerColorLocal "ColorBlue";
 			MEMBER("deploymarker", _marker);
 		};		
@@ -192,6 +192,7 @@
 			_dir = getDir MEMBER("base", nil);
 			deleteVehicle MEMBER("base", nil);
 			MEMBER("buildHQ", _position);
+			MEMBER("deploymarker", nil) setMarkerSize [1500 , 1500];
 			["remoteSpawn", ["BME_netcode_client_notifyBaseUnpack", "", "client"]] call server_bme;
 		};
 
@@ -208,14 +209,14 @@
 			_base = "B_Truck_01_transport_F" createVehicle _position;
 			[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 			MEMBER("base", _base);
-			[_base, MEMBER("marker", nil), MEMBER("deploymarker", nil)] spawn {
+			[_base, MEMBER("marker", nil)] spawn {
 				while { alive (_this select 0)} do {
 					(_this select 1) setMarkerPos (getpos (_this select 0));
-					(_this select 2) setMarkerPos (getpos (_this select 0));
 					"respawn_west" setmarkerpos (getpos (_this select 0));
 					sleep 0.1;
 				};
 			};
+			MEMBER("deploymarker", nil) setMarkerSize [0,0];
 			["remoteSpawn", ["BME_netcode_client_notifyBasePack", "", "client"]] call server_bme;
 		};
 

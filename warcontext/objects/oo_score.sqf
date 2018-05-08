@@ -38,7 +38,7 @@
 		};
 
 		PUBLIC FUNCTION("", "getKill") FUNC_GETVAR("gamekill");
-		PUBLIC FUNCTION("", "getDeath") FUNC_GETVAR("gamedeath");		
+		PUBLIC FUNCTION("", "getDeath") FUNC_GETVAR("gamedeath");
 
 		PUBLIC FUNCTION("", "getMatches") {
 			count MEMBER("serverranking", nil);
@@ -54,7 +54,7 @@
 			MEMBER("serverranking", _array);
 		};
 
-		PUBLIC FUNCTION("", "flushBDD") {		
+		PUBLIC FUNCTION("", "flushBDD") {	
 			private _key = MEMBER("uid", nil);
 			private _gameranking = MEMBER("getGameRanking", nil);
 			if(_gameranking isEqualTo 0) exitwith {};
@@ -115,7 +115,7 @@
 			_ranking;
 		};
 
-		PUBLIC FUNCTION("scalar", "getRank") {	
+		PUBLIC FUNCTION("scalar", "getRank") {
 			private _ranking = _this;
 			private _rank = "";
 			switch (true) do {
@@ -124,7 +124,7 @@
 				case (_ranking > 2 and _ranking < 2.99) : {_rank = "SERGEANT";};
 				case (_ranking > 3 and _ranking < 3.99) : {_rank = "LIEUTENANT";};
 				case (_ranking > 4 and _ranking < 4.99) : {_rank = "CAPTAIN";};
-				case (_ranking > 5 and _ranking < 5.99) : {_rank = "MAJOR";};				
+				case (_ranking > 5 and _ranking < 5.99) : {_rank = "MAJOR";};
 				case (_ranking > 6) : {_rank = "COLONEL" ;};		
 				default {_rank = "PRIVATE";};
 			};
@@ -140,7 +140,7 @@
 			_this setrank _rank;
 			private _kill = MEMBER("getKill", nil);
 			private _death = MEMBER("getDeath", nil);
-			["remoteSpawn", ["playerstats", [(name _this), [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]], "client"]] call global_bme;
+			["remoteSpawn", ["BME_netcode_client_playerstats", [(name _this), [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]], "client"]] call global_bme;
 		};
 
 
@@ -149,6 +149,6 @@
 			DELETE_VARIABLE("serverranking");
 			DELETE_VARIABLE("gamekill");
 			DELETE_VARIABLE("gamedeath");
-			DELETE_VARIABLE("gamescore");			
+			DELETE_VARIABLE("gamescore");
 		};
 	ENDCLASS;

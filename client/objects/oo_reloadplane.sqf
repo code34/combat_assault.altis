@@ -23,11 +23,12 @@
 	CLASS("OO_RELOADPLANE")
 		PRIVATE VARIABLE("bool","run");
 		PRIVATE VARIABLE("object","vehicle");
-				
+		PRIVATE VARIABLE("code","this");
+		
 		PUBLIC FUNCTION("object","constructor") {
 			DEBUG(#, "OO_RELOADPLANE::constructor")
 			MEMBER("vehicle", _this);
-			"start" call _self;
+			"start" call MEMBER("this",nil);
 		};
 
 		PUBLIC FUNCTION("", "start") {
@@ -104,5 +105,6 @@
 			DEBUG(#, "OO_RELOADPLANE::deconstructor")
 			DELETE_VARIABLE("vehicle");
 			DELETE_VARIABLE("run");
+			DELETE_VARIABLE("this");
 		};
 	ENDCLASS;

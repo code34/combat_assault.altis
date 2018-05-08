@@ -27,6 +27,7 @@
 		PRIVATE VARIABLE("array","receivecallqueue");
 		PRIVATE VARIABLE("array","receiveloopbackqueue");
 		PRIVATE VARIABLE("scalar","transactid");
+		PRIVATE VARIABLE("code","this");
 		
 		PUBLIC FUNCTION("","constructor") {
 			DEBUG(#, "OO_BME::constructor")
@@ -38,15 +39,15 @@
 			MEMBER("transactid", 0);
 			MEMBER("declareHandler", nil);
 
-			["runReceiveCallQueue", 0.1] spawn _self;
-			["runReceiveSpawnQueue", 0.1] spawn _self;
-			["runSendCallQueue", 0.1] spawn _self;
-			["runSendSpawnQueue", 0.1] spawn _self;
+			["runReceiveCallQueue", 0.1] spawn MEMBER("this",nil);
+			["runReceiveSpawnQueue", 0.1] spawn MEMBER("this",nil);
+			["runSendCallQueue", 0.1] spawn MEMBER("this",nil);
+			["runSendSpawnQueue", 0.1] spawn MEMBER("this",nil);
 		};
 
 		PUBLIC FUNCTION("","declareHandler") {
 			DEBUG(#, "OO_BME::declareHandler")
-			missionNamespace setVariable ["bme_handlers", _self];
+			missionNamespace setVariable ["bme_handlers", MEMBER("this",nil)];
 			"bme_add_spawnqueue" addPublicVariableEventHandler {
 				["addReceiveSpawnQueue", _this select 1] call bme_handlers;
 			};
@@ -377,5 +378,6 @@
 			DELETE_VARIABLE("receivespawnqueue");
 			DELETE_VARIABLE("receivecallqueue");
 			DELETE_VARIABLE("receiveloopbackqueue");
+			DELETE_VARIABLE("this");
 		};
 	ENDCLASS;

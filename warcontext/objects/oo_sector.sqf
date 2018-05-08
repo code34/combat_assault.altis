@@ -281,7 +281,7 @@
 			MEMBER("marker", nil) setmarkercolor "ColorBlue";
 			MEMBER("state", 2);
 			["setTicket", "bluezone"] call global_ticket;
-			["remoteSpawn", ["wcsectorcompleted", MEMBER("getSector", nil), "client"]] call global_bme;
+			["remoteSpawn", ["BME_netcode_client_wcsectorcompleted", MEMBER("getSector", nil), "client"]] call global_bme;
 			private _position = [MEMBER("getPosition", nil), 0,50,5,0,3,0] call BIS_fnc_findSafePos;
 			["new", _position] spawn OO_BONUSVEHICLE;
 			MEMBER("unPopSector", nil);

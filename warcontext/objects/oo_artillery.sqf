@@ -42,7 +42,7 @@
 			MEMBER("createArtillery", _position);
 			MEMBER("createMarker", _vehicle);
 			MEMBER("setCombatMode", nil);
-			["remoteSpawn", ["wcartillerystart", true, "client"]] call global_bme;
+			["remoteSpawn", ["BME_netcode_client_wcartillerystart", true, "client"]] call global_bme;
 		};
 
 		PUBLIC FUNCTION("array", "createArtillery") {

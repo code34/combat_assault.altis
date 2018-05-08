@@ -98,9 +98,9 @@
 
 			if(_win)	then {
 				["setTicket", "mission"] call global_ticket;
-				["remoteSpawn", ["wcmissioncompleted", [true, _text], "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call global_bme;
 			} else {
-				["remoteSpawn", ["wcmissioncompleted", [false, _text], "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [false, _text], "client"]] call global_bme;
 			};
 			sleep 60;
 			deletevehicle _civil;

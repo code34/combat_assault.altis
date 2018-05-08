@@ -98,5 +98,7 @@
 		_alive = ["remoteCall", ["BME_netcode_server_playervehicle", [name player, position player, _type], 2,-1,2]] call client_bme;
 		if (_alive > 0) then {
 			"Vehicles servicing" hintC format ["Vehicle will be avalaible in %1 seconds", _alive];
+		} else {
+			hint "Vehicle has been delivered";
 		};
 	};

@@ -28,6 +28,7 @@
 		PRIVATE VARIABLE("code","marker");
 
 		PUBLIC FUNCTION("array","constructor") {
+			DEBUG(#, "OO_ANTIAIR::constructor")
 			MEMBER("position",  (_this select 0));
 			private _array = [ (_this select 0), 180, (selectRandom wcantiairvehicles), EAST] call bis_fnc_spawnvehicle;
 			MEMBER("group", (_array select 2));
@@ -40,6 +41,7 @@
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
 
 		PUBLIC FUNCTION("object", "createMarker") {
+			DEBUG(#, "OO_ANTIAIR::createMarker")
 			private _mark = ["new", [position _this, false]] call OO_MARKER;
 			["attachTo", _this] spawn _mark;
 			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
@@ -51,6 +53,7 @@
 		};
 
 		PUBLIC FUNCTION("", "setMoveMode") {
+			DEBUG(#, "OO_ANTIAIR::setMoveMode")
 			MEMBER("group", nil) setBehaviour "AWARE";
 			MEMBER("group", nil) setCombatMode "RED";
 			MEMBER("group", nil) setSpeedMode "FULL";
@@ -58,6 +61,7 @@
 		};		
 
 		PUBLIC FUNCTION("", "setSafeMode") {
+			DEBUG(#, "OO_ANTIAIR::setSafeMode")
 			MEMBER("group", nil) setBehaviour "SAFE";
 			MEMBER("group", nil) setCombatMode "GREEN";
 			MEMBER("group", nil) setSpeedMode "NORMAL";
@@ -65,6 +69,7 @@
 		};
 
 		PUBLIC FUNCTION("", "setCombatMode") {
+			DEBUG(#, "OO_ANTIAIR::setCombatMode")
 			MEMBER("group", nil) setBehaviour "COMBAT";
 			MEMBER("group", nil) setCombatMode "RED";
 			MEMBER("group", nil) setSpeedMode "FULL";
@@ -72,6 +77,7 @@
 		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {
+			DEBUG(#, "OO_ANTIAIR::removeVehicle")
 			{
 				_x setdamage 1;
 				deletevehicle _x;
@@ -82,7 +88,8 @@
 			deletevehicle MEMBER("getVehicle", nil);
 		};
 
-		PUBLIC FUNCTION("object", "patrol") {	
+		PUBLIC FUNCTION("object", "patrol") {
+			DEBUG(#, "OO_ANTIAIR::patrol")
 			private _group = MEMBER("group", nil);
 			while { count (units _group) > 0 } do {
 				{
@@ -94,7 +101,8 @@
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("","deconstructor") { 
+		PUBLIC FUNCTION("","deconstructor") {
+			DEBUG(#, "OO_ANTIAIR::deconstructor")
 			["delete", MEMBER("marker", nil)] call OO_MARKER;
 			MEMBER("removeVehicle", nil);
 			DELETE_VARIABLE("vehicle");

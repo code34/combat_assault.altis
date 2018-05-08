@@ -30,7 +30,8 @@
 		PRIVATE VARIABLE("code", "marker");
 		PRIVATE VARIABLE("bool", "alert");
 
-		PUBLIC FUNCTION("array","constructor") {				
+		PUBLIC FUNCTION("array","constructor") {
+			DEBUG(#, "OO_PATROLVEHICLE::constructor")
 			MEMBER("vehicle",  _this select 0);
 			MEMBER("group",  _this select 1);
 			MEMBER("sector", _this select 2);
@@ -50,6 +51,7 @@
 		PUBLIC FUNCTION("","getUnderAlert") FUNC_GETVAR("underalert");
 
 		PUBLIC FUNCTION("", "patrol") {
+			DEBUG(#, "OO_PATROLVEHICLE::patrol")
 			while { count (units MEMBER("group", nil)) > 0 } do {
 				MEMBER("scanTargets", nil);
 				MEMBER("getSectorUnderAlert", nil);
@@ -61,6 +63,7 @@
 		};
 
 		PUBLIC FUNCTION("object", "createMarker") {
+			DEBUG(#, "OO_PATROLVEHICLE::createMarker")
 			private _mark = ["new", [position _this, false]] call OO_MARKER;
 			["attachTo", _this] spawn _mark;
 			private _name= getText (configFile >> "CfgVehicles" >> (typeOf _this) >> "DisplayName");
@@ -72,6 +75,7 @@
 		};
 
 		PUBLIC FUNCTION("", "scanTargets") {
+			DEBUG(#, "OO_PATROLVEHICLE::scanTargets")
 			private _list = (position MEMBER("vehicle", nil)) nearEntities [["Man"], 200];
 			private _list2 = (position MEMBER("vehicle", nil)) nearEntities [["Tank"], 200];
 			sleep 1;
@@ -88,6 +92,7 @@
 
 		// get all sector around the base sector
 		PUBLIC FUNCTION("", "getSectorAround") {
+			DEBUG(#, "OO_PATROLVEHICLE::getSectorAround")
 			private _sector = "getSector" call MEMBER("sector",nil);
 			private _around = ["getAllSectorsAroundSector", [_sector, 4]] call global_grid;
 			MEMBER("around", _around);
@@ -96,6 +101,7 @@
 		// retrieve all sectors around under Alert state
 		// if none return empty array
 		PUBLIC FUNCTION("", "getSectorUnderAlert") {
+			DEBUG(#, "OO_PATROLVEHICLE::getSectorUnderAlert")
 			MEMBER("underalert", []);
 			if(MEMBER("alert", nil)) then {
 				{
@@ -109,6 +115,7 @@
 
 		// movetoNext target position
 		PUBLIC FUNCTION("", "moveToNext") {
+			DEBUG(#, "OO_PATROLVEHICLE::moveToNext")
 			private _move = false;
 			private _wp = MEMBER("group", nil) addWaypoint [MEMBER("target", nil), 25];
 			_wp setWaypointPosition [MEMBER("target", nil), 25];
@@ -128,6 +135,7 @@
 		};
 
 		PUBLIC FUNCTION("", "getNextTarget") {
+			DEBUG(#, "OO_PATROLVEHICLE::getNextTarget")
 			private _sector = [];
 			if(MEMBER("alert", nil)) then {
 				_sector = selectRandom MEMBER("underalert", nil);
@@ -142,12 +150,14 @@
 		};
 
 		PUBLIC FUNCTION("array", "estimateTarget") {
+			DEBUG(#, "OO_PATROLVEHICLE::estimateTarget")
 			private _position = (_this select 0) getHideFrom (_this select 1);
 			private _realposition = position (_this select 1);
 			_position distance _realposition;
 		};
 
 		PUBLIC FUNCTION("", "revealTarget") {
+			DEBUG(#, "OO_PATROLVEHICLE::revealTarget")
 			private _leader = (leader MEMBER("group", nil));
 			private _list = (position MEMBER("vehicle", nil)) nearEntities [["Air", "Man", "Tank"], 600];
 			private _array = [];
@@ -160,18 +170,21 @@
 		};
 
 		PUBLIC FUNCTION("", "setPatrolMode") {
+			DEBUG(#, "OO_PATROLVEHICLE::setPatrolMode")
 			MEMBER("group", nil) setBehaviour "SAFE";
 			MEMBER("group", nil) setCombatMode "GREEN";
 			MEMBER("group", nil) setSpeedMode "FULL";
 		};	
 
 		PUBLIC FUNCTION("", "setCombatMode") {
+			DEBUG(#, "OO_PATROLVEHICLE::setCombatMode")
 			MEMBER("group", nil) setBehaviour "COMBAT";
 			MEMBER("group", nil) setCombatMode "RED";
 			MEMBER("group", nil) setSpeedMode "FULL";
 		};		
 
-		PUBLIC FUNCTION("","deconstructor") { 
+		PUBLIC FUNCTION("","deconstructor") {
+			DEBUG(#, "OO_PATROLVEHICLE::deconstructor")
 			["delete", MEMBER("marker", nil)] call OO_MARKER;
 			deletevehicle MEMBER("vehicle", nil);
 			{

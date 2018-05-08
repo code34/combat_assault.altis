@@ -68,7 +68,7 @@
 	rollprintmessage = "";
 	wcblacklist = [name player];
 	wcfriendlist = [];
-	wcbannerserver = "COMBAT ASSAULT MOD 1.40 (Alpha)";
+	wcbannerserver = "COMBAT ASSAULT MOD 1.40";
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;	

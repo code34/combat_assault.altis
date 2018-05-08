@@ -18,4 +18,4 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	["remoteSpawn", ["wcunpackbase", "", "server"]] call global_bme;
+	["remoteSpawn", ["BME_netcode_server_wcunpackbase", "", "server"]] call global_bme;

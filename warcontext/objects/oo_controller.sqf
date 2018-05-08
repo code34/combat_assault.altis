@@ -28,6 +28,7 @@
 		PRIVATE VARIABLE("code","player_hashmap");
 
 		PUBLIC FUNCTION("array","constructor") {
+			DEBUG(#, "OO_CONTROLLER::constructor")
 			MEMBER("groundplayers", []);
 			MEMBER("airplayers", []);
 			MEMBER("queuesector", []);
@@ -41,10 +42,12 @@
 		PUBLIC FUNCTION("","getGroundPlayers") FUNC_GETVAR("groundplayers");
 
 		PUBLIC FUNCTION("", "getPlayers") {
+			DEBUG(#, "OO_CONTROLLER::getPlayers")
 			(allPlayers - (entities "HeadlessClient_F"));
 		};
 
 		PUBLIC FUNCTION("string", "getPlayersOfType") {
+			DEBUG(#, "OO_CONTROLLER::getPlayersOfType")
 			private _array = [];
 			{
 				if(typeOf _x == _this) then { _array pushBack _x; };
@@ -54,6 +57,7 @@
 		};
 
 		PUBLIC FUNCTION("", "setPlayers") {
+			DEBUG(#, "OO_CONTROLLER::setPlayers")
 			{
 				if((getpos _x) select 2 < 250) then {
 					MEMBER("groundplayers", nil) pushBack _x;
@@ -65,6 +69,7 @@
 		};
 
 		PUBLIC FUNCTION("", "getNewSector") {
+			DEBUG(#, "OO_CONTROLLER::getNewSector")
 			private _newsector = [];
 			private _sector = [];
 			private _array = [];
@@ -81,6 +86,7 @@
 		};
 
 		PUBLIC FUNCTION("", "getNewSectorAround") {
+			DEBUG(#, "OO_CONTROLLER::getNewSectorAround")
 			private _around = [];
 			{
 				_around append (["getAllSectorsAroundSector", [_x, wcpopsquaredistance]] call global_grid);
@@ -91,10 +97,12 @@
 
 
 		PUBLIC FUNCTION("array", "expandSector"){
+			DEBUG(#, "OO_CONTROLLER::expandSector")
 			MEMBER("queuesector", nil) pushBack _this;
 		};
 
 		PUBLIC FUNCTION("array", "getNumberNeighour"){
+			DEBUG(#, "OO_CONTROLLER::getNumberNeighour")
 			private _key = _this;
 			private _neighbour = 1;
 			private _sector = [];
@@ -111,7 +119,8 @@
 			_neighbour;
 		};
 
-		PUBLIC FUNCTION("array", "canExpandToNeighbour"){	
+		PUBLIC FUNCTION("array", "canExpandToNeighbour"){
+			DEBUG(#, "OO_CONTROLLER::canExpandToNeighbour")
 			private _key = _this;
 			private _can = true;
 			private _boundaries = MEMBER("getNumberNeighour", _key);
@@ -129,6 +138,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "canExpandToNeighbour2"){
+			DEBUG(#, "OO_CONTROLLER::canExpandToNeighbour2")
 			private _count = 1;
 			private _sector = [];
 			{
@@ -139,11 +149,13 @@
 		};
 
 		PUBLIC FUNCTION("array", "isplayerAroundSector"){
+			DEBUG(#, "OO_CONTROLLER::isplayerAroundSector")
 			private _sector = [];
 			private _cost = 0;	
-			private _costmin = 10;	
+			private _costmin = 10;
+			private _key = _this;
 			{
-				_sector = ["getSectorFromPos", position _this] call global_grid;
+				_sector = ["getSectorFromPos", position _x] call global_grid;
 				_cost = ["GetEstimateCost", [_sector, _key]] call global_grid;
 				if(_cost < _costmin) then {_costmin = _cost;};
 				sleep 0.0000001;
@@ -152,15 +164,14 @@
 		};
 
 		PUBLIC FUNCTION("", "getSectorFarOfPlayers"){
+			DEBUG(#, "OO_CONTROLLER::getSectorFarOfPlayers")
 			private _sector = selectRandom ("entrySet" call MEMBER("zone_hashmap",nil));
-			if( !MEMBER("isplayerAroundSector", _sector))  then {
-				sleep 0.0000001;
-				_sector = MEMBER("getSectorFarOfPlayers", nil);
-			};
+			if( !MEMBER("isplayerAroundSector", "getSector" call _sector) ) then { _sector = MEMBER("getSectorFarOfPlayers", nil); };
 			_sector;
 		};
 
 		PUBLIC FUNCTION("array", "canExpandToSector"){
+			DEBUG(#, "OO_CONTROLLER::canExpandToSector")
 			private _key = _this;
 			private _costmin = 4;
 			private _sector = [];
@@ -181,6 +192,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
+			DEBUG(#, "OO_CONTROLLER::expandSectorAround")
 			private _sector = _this select 0;
 			private _iteration = _this select 1;
 			private _rate = (90 - (_this select 1)) / 100;
@@ -200,6 +212,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandFriendlyAround"){
+			DEBUG(#, "OO_CONTROLLER::expandFriendlyAround")
 			private _position = _this;
 			private _sector = ["getSectorFromPos", _position] call global_grid;
 
@@ -219,6 +232,7 @@
 		};		
 
 		PUBLIC FUNCTION("code", "expandAlertAround"){
+			DEBUG(#, "OO_CONTROLLER::expandAlertAround")
 			["setAlert", true] call _this;
 			private _sector = "getSector" call _this;
 			{
@@ -231,6 +245,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "deleteSector"){
+			DEBUG(#, "OO_CONTROLLER::deleteSector")
 			private _key = _this;
 			private _sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
 			["remove", str(_key)] call MEMBER("zone_hashmap",nil);
@@ -238,6 +253,7 @@
 		};
 
 		PUBLIC FUNCTION("", "queueSector"){
+			DEBUG(#, "OO_CONTROLLER::queueSector")
 			private _key = [];
 			private _position = [];
 			private _sector = [];
@@ -261,26 +277,31 @@
 		};
 
 		PUBLIC FUNCTION("object", "getPlayerSector") {
+			DEBUG(#, "OO_CONTROLLER::getPlayerSector")
 			["getSectorFromPos", position _this] call global_grid;
 		};
 
 		PUBLIC FUNCTION("object", "getPlayerSaveSector") {
+			DEBUG(#, "OO_CONTROLLER::getPlayerSaveSector")
 			private _sector = ["get", (name _this)] call MEMBER("player_hashmap",nil);
 			if(isnil "_sector") then {_sector = [];};
 			_sector;
 		};
 	
 		PUBLIC FUNCTION("object", "getPlayerNewSector") {
+			DEBUG(#, "OO_CONTROLLER::getPlayerNewSector")
 			private _sector = MEMBER("getPlayerSector", _this);
 			private _oldsector = MEMBER("getPlayerSaveSector", _this);
 			if(str(_sector) == str(_oldsector)) then { [];} else {_sector;};
 		};
 
 		PUBLIC FUNCTION("array", "setPlayerSaveSector") {
+			DEBUG(#, "OO_CONTROLLER::setPlayerSaveSector")
 			["put", [(name (_this select 0)), (_this select 1)]] call MEMBER("player_hashmap",nil);
 		};
 
 		PUBLIC FUNCTION("", "spawnSector") {
+			DEBUG(#, "OO_CONTROLLER::spawnSector")
 			private _sector = [];
 			{
 				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
@@ -292,6 +313,7 @@
 		};
 
 		PUBLIC FUNCTION("", "startConvoy") {
+			DEBUG(#, "OO_CONTROLLER::startConvoy")
 			if(wcconvoytime > 0) then {
 				while { true } do {
 					if(count MEMBER("getPlayers", nil) > 0) then { MEMBER("spawnConvoy", nil); };
@@ -300,7 +322,8 @@
 			};
 		};		
 
-		PUBLIC FUNCTION("", "spawnConvoy") {	
+		PUBLIC FUNCTION("", "spawnConvoy") {
+			DEBUG(#, "OO_CONTROLLER::spawnConvoy")
 			private _sector = MEMBER("getSectorFarOfPlayers", nil);
 			private _startposition = ["getPosFromSector", "getSector" call _sector] call global_grid;
 			private _convoy = ["new", _startposition] call OO_CONVOY;
@@ -308,6 +331,7 @@
 		};
 
 		PUBLIC FUNCTION("", "checkVictory") {
+			DEBUG(#, "OO_CONTROLLER::checkVictory")
 			private _victory = true;
 			{
 				scopename "oo_check_victory";
@@ -321,6 +345,7 @@
 		};
 
 		PUBLIC FUNCTION("", "startZone") {
+			DEBUG(#, "OO_CONTROLLER::startZone")
 			while { true } do {
 				MEMBER("setPlayers", nil);
 				MEMBER("spawnSector", nil);
@@ -329,6 +354,7 @@
 		};
 		
 		PUBLIC FUNCTION("", "startParaDrop") {
+			DEBUG(#, "OO_CONTROLLER::startParaDrop")
 			while { true } do {
 				{
 					if(random 1 > 0.95) then { "popParachute" call _x; };
@@ -338,7 +364,8 @@
 			};
 		};
 
-		PUBLIC FUNCTION("","deconstructor") { 
+		PUBLIC FUNCTION("","deconstructor") {
+			DEBUG(#, "OO_CONTROLLER::deconstructor")
 			DELETE_VARIABLE("queuesector");
 			DELETE_VARIABLE("groundplayers");
 			DELETE_VARIABLE("airplayers");

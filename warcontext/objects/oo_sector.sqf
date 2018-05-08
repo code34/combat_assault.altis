@@ -34,6 +34,7 @@
 		PRIVATE VARIABLE("bool","antiairactive");
 		PRIVATE VARIABLE("code","antiair");
 		PRIVATE VARIABLE("scalar","bucket");
+		PRIVATE VARIABLE("code","this");
 
 		PUBLIC FUNCTION("array","constructor") {
 			private _index = MEMBER("index",nil);
@@ -69,7 +70,7 @@
 		PUBLIC FUNCTION("","getAntiAir") FUNC_GETVAR("antiair");
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
 		PUBLIC FUNCTION("","getState") FUNC_GETVAR("state");
-		PUBLIC FUNCTION("", "getThis") { _self; };
+		PUBLIC FUNCTION("", "getThis") { MEMBER("this", nil); };
 
 		// state (0:unspawn, 1:spawn, 2:completed) 
 		PRIVATE FUNCTION("scalar", "setState") {
@@ -460,6 +461,7 @@
 			DELETE_VARIABLE("artillery");
 			DELETE_VARIABLE("antiairactive");
 			["delete", MEMBER("antiair", nil)] call OO_ANTIAIR;
-			DELETE_VARIABLE("antiair");			
+			DELETE_VARIABLE("antiair");
+			DELETE_VARIABLE("this");
 		};
 	ENDCLASS;

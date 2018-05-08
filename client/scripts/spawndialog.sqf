@@ -187,7 +187,7 @@
 			} else {
 				_ctrl ctrlSetText (localize "STR_ROLLMESSAGEOFF_BUTTON");
 			};
-			_ctrl ctrlcommit 0;				
+			_ctrl ctrlcommit 0;
 		};
 
 		if(wcaction == "unittags") then {
@@ -198,7 +198,7 @@
 			} else {
 				_ctrl5 ctrlSetText (localize "STR_UNITTAGOFF_BUTTON");
 			};
-			_ctrl5 ctrlcommit 0;				
+			_ctrl5 ctrlcommit 0;	
 		};
 
 		if ((lbCurSel 2002) != -1) then {
@@ -225,7 +225,7 @@
 			// si le joueur ne choisit rien
 			// on lui propose le paradrop
 			if(_player isequalto player) then {
-				_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");				
+				_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");	
 				_map ctrlMapAnimAdd [0, 0, _deathposition]; 
 				ctrlMapAnimCommit _map;
 				
@@ -272,10 +272,6 @@
 	if(_player == player) then {
 		// si le joueur se selectionne
 		// alors ouverture de la map + paradrop
-		openMap [false, false] ;
-		openMap [true, true];
-		mapAnimAdd [1, 0.30, _deathposition]; 
-		mapAnimCommit;
 		[] call WC_fnc_paradrop;
 	} else {
 		// si le joueur selectionne un autre joueur loin de la base

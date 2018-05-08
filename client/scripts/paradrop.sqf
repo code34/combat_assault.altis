@@ -19,8 +19,16 @@
 	*/
 
 	private ["_position", "_list", "_vehicle", "_backpack", "_items"];
-
 	_position = position player;
+
+	if (["remoteCall", ["BME_netcode_server_isPackedBase", "", 2, false, 2]] call client_bme) exitWith { 
+		"Paradrop" hintC "Base should be Unpack";
+	};
+
+	openMap [false, false] ;
+	openMap [true, true];
+	mapAnimAdd [1, 0.30, _deathposition]; 
+	mapAnimCommit;
 
 	_title = localize "STR_TELEPORT_TITLE";
 	_text = localize "STR_TELEPORT_TEXT";
@@ -29,10 +37,11 @@
 	wcteleport = [];
 	wcteleportposition = [];
 	onMapSingleClick {
-		if(_pos distance getMarkerPos "respawn_west" > 1500) then {
+		if(_pos distance getMarkerPos "respawn_west" > (getMarkerSize "globalbasedeploy" select 0)) then {
 			_title = localize "STR_TELEPORT_TITLE_TOOFAR";
 			_text = localize "STR_TELEPORT_TEXT_TOOFAR";
 			["hint", [_title, _text]] call hud;
+			wcteleportposition = getMarkerPos "respawn_west";
 		} else {
 			wcteleportposition = _pos;
 		};

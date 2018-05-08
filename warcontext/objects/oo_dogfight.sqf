@@ -261,7 +261,7 @@
 							sleep 10;
 						};
 						MEMBER("counter", 0);
-						["remoteSpawn", ["wcaircraftstart", true, "client"]] call global_bme;
+						["remoteSpawn", ["BME_netcode_client_wcaircraftstart", true, "client"]] call global_bme;
 					} else {
 						_counter = _counter + 1;
 						MEMBER("counter", _counter);

@@ -137,7 +137,7 @@
 	};
 
 	player addEventHandler ['Killed', {
-		["remoteSpawn", ["wcdeath", [(_this select 0), (_this select 1)], "all"]] call global_bme;
+		["remoteSpawn", ["BME_netcode_client_wcdeath", [(_this select 0), (_this select 1)], "all"]] call global_bme;
 	}];
 
 	player addEventHandler ['HandleDamage', {

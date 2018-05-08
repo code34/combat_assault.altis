@@ -69,13 +69,11 @@
 	call compile preprocessFileLineNumbers "warcontext\objects\oo_basegenerator.sqf";
 	call compile preprocessFileLineNumbers "warcontext\objects\oo_namegenerator.sqf";
 
-	if(!local player) then {
-		global_bme = "new" call OO_BME;
-	};
+	server_bme = "new" call OO_BME;
 
 	_size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
 	_sectorsize = 100;
-	
+
 	global_grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
 	global_namegenerator = "new" call OO_NAMEGENERATOR;
 
@@ -85,10 +83,8 @@
 	global_base  = "new" call OO_BASEGENERATOR;
 
 	// CONFIG VARIABLE 
-
 	// square distance enemi unpop/pop
 	// wcpopsquaredistance = 3;
-
 	wcserverpassword = "serverisme";
 
 	// enemies light vehicles type

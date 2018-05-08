@@ -168,7 +168,6 @@
 		};
 
 		if(wcaction isEqualTo "friendsmanagement") then {
-			//[] execVM "client\scripts\givehug.sqf";
 			wcaction = "";
 			wcwithfriendsmarkers = !wcwithfriendsmarkers;
 			if(wcwithfriendsmarkers) then {

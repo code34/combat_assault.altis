@@ -37,7 +37,7 @@
 			private _time = 0;
 			private _message = false;
 			private _vehicle = MEMBER("vehicle", nil);
-			private _airports = ["remoteCall", ["BME_netcode_server_getairports", "", "server"]] call global_bme;
+			private _airports = ["remoteCall", ["BME_netcode_server_getairports", "", 2,[],2]] call client_bme;
 
 			while { MEMBER("run", nil) } do {
 				MEMBER("setFuel", nil);

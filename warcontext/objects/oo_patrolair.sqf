@@ -29,7 +29,7 @@
 		PRIVATE VARIABLE("array", "target");
 		PRIVATE VARIABLE("code", "marker");
 			
-		PUBLIC FUNCTION("array","constructor") {				
+		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("popMember",  _this select 1);
 			MEMBER("sector", _this select 0);
 			MEMBER("getSectorAround", nil);
@@ -41,7 +41,7 @@
 			private _y = (_this select 1) + random 100;
 			private _z = (_this select 2) + random 200;
 
-			private _array = [[ _x, _y, _z], 0, (wcairchoppers call BIS_fnc_selectRandom), east] call bis_fnc_spawnvehicle;			
+			private _array = [[ _x, _y, _z], 0, (wcairchoppers call BIS_fnc_selectRandom), east] call bis_fnc_spawnvehicle;
 			{
 				[_x, ""] spawn WC_fnc_setskill;
 				sleep 0.1;

@@ -25,20 +25,17 @@
 
 	BME_netcode_server_isPackedBase = { "isPackedBase" call global_base; };
 
-	BME_netcode_server_wcunpackbase = { "unpackBase" call global_base; };
+	BME_netcode_server_wcunpackbase = { 
+		"unpackBase" call global_base;
+	};
 
-	BME_netcode_server_wcpackbase = { "packBase" call global_base; };
+	BME_netcode_server_wcpackbase = { 
+		"packBase" call global_base; 
+	};
 
 	BME_netcode_server_getairports = { "getAirports" call global_atc; };
 
 	BME_netcode_server_getfactorys = { "getFactorys" call global_factory; };
-
-	BME_netcode_server_gettickets = { "send" call global_ticket; };
-
-	BME_netcode_server_bme_log = {
-		bme_log = _this;
-		diag_log format["BME: %1", bme_log];
-	};
 
 	BME_netcode_server_playervehicle = {
 		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object"];
@@ -64,17 +61,16 @@
 		};
 
 		_alive = "getAlive" call _vehicle;
-		
 		if(_alive > 0) then {
 			"sanity" call _vehicle;
-			["remoteSpawn", ["vehicleavalaible", _alive, "client", _netid]] call global_bme;
 		} else {
 			_object = ["pop", [_position, _netid, _name]] call _vehicle;
 			"checkAlive" spawn _vehicle;
 		};
-	};		
+		_alive;
+	};
 
-	BME_netcode_server_wcdeath = {
+	BME_netcode_server_setDeath = {
 		private ["_score", "_uid", "_killer", "_victim"];
 
 		_victim = _this select 0;
@@ -82,7 +78,6 @@
 
 		if((isplayer _killer) && !(_victim isEqualTo _killer)) then {
 			_uid = getPlayerUID _killer;
-
 			_score = ["get", _uid] call global_scores;
 			if(isnil "_score") then {
 				_score = ["new", [_uid]] call OO_SCORE;

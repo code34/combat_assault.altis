@@ -28,15 +28,14 @@
 		PRIVATE VARIABLE("object","base");
 		PRIVATE VARIABLE("bool","packed");
 		PRIVATE VARIABLE("code", "grid");
-
 		PRIVATE VARIABLE("bool", "medicactive");
 		PRIVATE VARIABLE("bool", "radaractive");
 		PRIVATE VARIABLE("bool", "toweractive");
 		PRIVATE VARIABLE("bool", "bunkeractive");
 		PRIVATE VARIABLE("bool", "researchactive");
 
-
 		PUBLIC FUNCTION("","constructor") {
+			DEBUG(#, "OO_BASEGENERATOR::constructor")
 			private _size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
 			private _sectorsize = 12;
 			private _grid = ["new", [0,0, _size, _size,_sectorsize,_sectorsize]] call OO_GRID;
@@ -60,23 +59,27 @@
 		PUBLIC FUNCTION("","getPosition") FUNC_GETVAR("position");
 
 		PUBLIC FUNCTION("array", "setPosition"){
+			DEBUG(#, "OO_BASEGENERATOR::setPosition")
 			MEMBER("position", _this);
 		};
 
 		PUBLIC FUNCTION("array", "buildTerrain"){
+			DEBUG(#, "OO_BASEGENERATOR::buildTerrain")
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_this,[], 150]);
 		}; 
 
 		PUBLIC FUNCTION("", "isAlive"){
-			//if (getDammage MEMBER("base", nil) > 0) then { true; } else { false;};
+			DEBUG(#, "OO_BASEGENERATOR::isAlive")
 			alive MEMBER("base", nil);
 		};
 
 		PUBLIC FUNCTION("", "isPackedBase"){
+			DEBUG(#, "OO_BASEGENERATOR::isPackedBase")
 			MEMBER("packed", nil);
 		};
 
 		PUBLIC FUNCTION("", "getRandomStructure"){
+			DEBUG(#, "OO_BASEGENERATOR::getRandomStructure")
 			private _kind = "";
 			private _type = [
 				["Land_Radar_Small_F", 0.97, MEMBER("radaractive", nil)],
@@ -101,6 +104,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "buildStructures"){
+			DEBUG(#, "OO_BASEGENERATOR::buildStructures")
 			private _position = _this;
 			private _grid = MEMBER("grid", nil);
 			private _object = objNull;
@@ -117,6 +121,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "buildHQ"){
+			DEBUG(#, "OO_BASEGENERATOR::buildHQ")
 			private _position = _this;
 			private _base = objNull;
 
@@ -132,11 +137,13 @@
 		};
 
 		PUBLIC FUNCTION("", "deleteBase"){
+			DEBUG(#, "OO_BASEGENERATOR::deleteBase")
 			deleteVehicle MEMBER("base", nil);
 			deleteMarker MEMBER("marker", nil);
 		};
 
 		PUBLIC FUNCTION("", "generateRandomPosition"){
+			DEBUG(#, "OO_BASEGENERATOR::generateRandomPosition")
 			private _flag = false;
 			private _size = getNumber (configfile >> "CfgWorlds" >> worldName >> "mapSize");
 			private _sectorsize = 100;
@@ -157,6 +164,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "createMarker"){
+			DEBUG(#, "OO_BASEGENERATOR::createMarker")
 			private _marker = createMarker ["globalbase", _this];
 			_marker setMarkerText (toUpper ((["generateName", (ceil (random 3) + 1)] call global_namegenerator)  + " Base"));
 			_marker setMarkerType "b_hq";
@@ -164,6 +172,7 @@
 		};
 
 		PUBLIC FUNCTION("array", "createDeployMarker"){
+			DEBUG(#, "OO_BASEGENERATOR::createDeployMarker")
 			private _marker = createMarker ["globalbasedeploy", _this];
 			_marker setMarkerShape "ELLIPSE";
 			_marker setMarkerBrush "border";
@@ -173,24 +182,45 @@
 		};		
 
 		PUBLIC FUNCTION("", "unpackBase"){
+			DEBUG(#, "OO_BASEGENERATOR::unpackBase")
 			private _position = getMarkerPos "respawn_west";
 			private _dir = 0;
+			if(!MEMBER("packed", nil)) exitWith { };
+			MEMBER("packed", false);
+			//_position =  (_position findEmptyPosition [5,50]);
+			if(_position isEqualTo []) exitWith { MEMBER("packed", true);};
+			_dir = getDir MEMBER("base", nil);
+			deleteVehicle MEMBER("base", nil);
+			MEMBER("buildHQ", _position);
+			["remoteSpawn", ["BME_netcode_client_notifyBaseUnpack", "", "client"]] call server_bme;
+		};
 
-			if(MEMBER("packed", nil)) then {
-				MEMBER("packed", false);
-				_dir = getDir MEMBER("base", nil);
-				deleteVehicle MEMBER("base", nil);
-
-				_position =  (_position findEmptyPosition [5,50]);
-				if(_position isEqualTo []) exitWith {};
-
-				MEMBER("buildHQ", _position);
-				//MEMBER("checkStructuresAvalaible", nil);
-				//MEMBER("buildStructures", _position);
+		PUBLIC FUNCTION("", "packBase"){
+			DEBUG(#, "OO_BASEGENERATOR::packBase")
+			private _position = getMarkerPos "respawn_west";
+			private _base = objNull;
+			if(MEMBER("packed", nil)) exitWith { };
+			MEMBER("packed", true);
+			//_position =  (_position findEmptyPosition [0,15]);
+			if(_position isEqualTo []) exitWith {MEMBER("packed", false);};
+			deleteVehicle MEMBER("base", nil);
+			{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);
+			_base = "B_Truck_01_transport_F" createVehicle _position;
+			[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+			MEMBER("base", _base);
+			[_base, MEMBER("marker", nil), MEMBER("deploymarker", nil)] spawn {
+				while { alive (_this select 0)} do {
+					(_this select 1) setMarkerPos (getpos (_this select 0));
+					(_this select 2) setMarkerPos (getpos (_this select 0));
+					"respawn_west" setmarkerpos (getpos (_this select 0));
+					sleep 0.1;
+				};
 			};
+			["remoteSpawn", ["BME_netcode_client_notifyBasePack", "", "client"]] call server_bme;
 		};
 
 		PUBLIC FUNCTION("", "checkStructuresAvalaible"){
+			DEBUG(#, "OO_BASEGENERATOR::checkStructuresAvalaible")
 			if (("countWest" call global_atc) > 0) then { MEMBER("toweractive", true); } else { MEMBER("toweractive", false); };
 			if (("countWest" call global_atc) > 0) then { MEMBER("radaractive", true); } else { MEMBER("radaractive", false); };
 			if (("countWest" call global_factory) > 0) then { MEMBER("bunkeractive", true); } else { MEMBER("bunkeractive", false); };
@@ -198,33 +228,8 @@
 			if (("getTicket" call global_ticket) > 100) then { MEMBER("medicactive", true); } else { MEMBER("medicactive", false); };
 		};
 
-		PUBLIC FUNCTION("", "packBase"){		
-			private _position = getMarkerPos "respawn_west";
-			private _base = objNull;
-
-			if(!MEMBER("packed", nil)) then {
-				MEMBER("packed", true);
-				deleteVehicle MEMBER("base", nil);
-				{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);
-				_position =  (_position findEmptyPosition [0,15]);
-				if(_position isEqualTo []) exitWith {};
-
-				_base = "B_Truck_01_transport_F" createVehicle _position;
-				[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;			
-				MEMBER("base", _base);
-
-				[_base, MEMBER("marker", nil), MEMBER("deploymarker", nil)] spawn {
-					while { alive (_this select 0)} do {
-						(_this select 1) setMarkerPos (getpos (_this select 0));
-						(_this select 2) setMarkerPos (getpos (_this select 0));
-						"respawn_west" setmarkerpos (getpos (_this select 0));
-						sleep 0.1;
-					};
-				};
-			};
-		};		
-
-		PUBLIC FUNCTION("","deconstructor") { 
+		PUBLIC FUNCTION("","deconstructor") {
+			DEBUG(#, "OO_BASEGENERATOR::deconstructor")
 			MEMBER("deleteBase", nil);
 			DELETE_VARIABLE("position");
 			DELETE_VARIABLE("marker");

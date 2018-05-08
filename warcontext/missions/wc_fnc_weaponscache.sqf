@@ -56,11 +56,11 @@
 
 			if(_win)	then {
 				["setTicket", "mission"] call global_ticket;
-				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call server_bme;
 				while { count crew _vehicle > 0} do {
 					sleep 30;
 				};
 			} else {
-				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [false, _text], "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [false, _text], "client"]] call server_bme;
 			};
 			deletevehicle _vehicle;

@@ -163,12 +163,17 @@
 					_parameters		= _message select 1;
 					_sourceid		= _message select 2;
 					_transactid		= _message select 4;
-					_code 			= nil;
+					_code 	= {};
 
 					_code = missionNamespace getVariable _remotefunction;
 					if!(isnil "_code") then {
-						bme_add_loopback = [_transactid, (_parameters call _code)];
-						_sourceid publicVariableClient "bme_add_loopback";
+						if !(typeName _code isEqualTo "CODE") then {
+							_log = format ["Server receive an unknow remote call: %1", _remotefunction];
+							MEMBER("log", _log);
+						} else {
+							bme_add_loopback = [_transactid, (_parameters call _code)];
+							_sourceid publicVariableClient "bme_add_loopback";
+						};
 					} else {
 						_log = format["Server handler function for %1 doesnt exist", _remotefunction];
 						MEMBER("log", _log);
@@ -261,37 +266,37 @@
 					_parameters		= _message select 1;
 					_destination 		= _message select 2;
 					_targetid		= _message select 3;
-					_code 			= nil;
+					_code 			= {};
 
 					if (isNil "_targetid") then { _targetid = 0;};
 
 					if(isserver and ((_destination isEqualTo "server") or (_destination isEqualTo "all"))) then {
 						_code = missionNamespace getVariable _remotefunction;
-						if !(typeName _code isEqualTo "CODE") then { 
-							_log = format ["Server receive an unknow remote spawn: %1", _remotefunction];
-							MEMBER("log", _log);
-						} else {
-							if!(isnil "_code") then {
-								_parameters spawn _code;
-							} else {
-								_log = format["Server handler function for %1 doesnt exist", _remotefunction];
+						if!(isnil "_code") then {
+							if !(typeName _code isEqualTo "CODE") then {
+								_log = format ["Server receive an unknow remote spawn: %1", _remotefunction];
 								MEMBER("log", _log);
+							} else {
+								_parameters spawn _code;
 							};
+						} else {
+							_log = format["Server handler function for %1 doesnt exist", _remotefunction];
+							MEMBER("log", _log);
 						};
 					};
 
 					if(local player and ((_destination isEqualTo "client") or (_destination isEqualTo "all"))) then {
 						_code = missionNamespace getVariable _remotefunction;
-						if !(typeName _code isEqualTo "CODE") then { 
-							_log = format ["Client receive an unknow remote spawn: %1", _remotefunction];
-							MEMBER("log", _log);
-						} else {
-							if!(isnil "_code") then {
-								_parameters spawn _code;
-							} else {
-								_log = format["Client handler function for %1 doesnt exist", _remotefunction];
+						if!(isnil "_code") then {
+							if !(typeName _code isEqualTo "CODE") then { 
+								_log = format ["Client receive an unknow remote spawn: %1", _remotefunction];
 								MEMBER("log", _log);
+							} else {
+								_parameters spawn _code;
 							};
+						} else {
+							_log = format["Client handler function for %1 doesnt exist", _remotefunction];
+							MEMBER("log", _log);
 						};
 					};
 				};

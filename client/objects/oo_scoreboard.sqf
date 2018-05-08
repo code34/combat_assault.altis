@@ -78,7 +78,7 @@
 
 		PUBLIC FUNCTION("array", "getText") {
 			DEBUG(#, "OO_SCOREBOARD::getText")
-			private _scores = _this;		
+			private _scores = _this;
 			private _top = "<t align='center'>Top<br/>";
 			private _players = "Players<br/>";
 			private _ranks = "<t align='center'>Game Ranking<br/>";
@@ -94,7 +94,7 @@
 
 			{
 				_score = _x select 1;
-				_tmp  = str(_foreachindex + 1) + "<br/>";			
+				_tmp  = str(_foreachindex + 1) + "<br/>";
 				_top = _top + _tmp;
 				_tmp = (_x select 0) + "<br/>";
 				_players = _players + _tmp;
@@ -130,7 +130,7 @@
 		};
 
 		PUBLIC FUNCTION("scalar", "getRankText") {
-			DEBUG(#, "OO_SCOREBOARD::getRankText")		
+			DEBUG(#, "OO_SCOREBOARD::getRankText")
 			private _ratio = _this;
 			private _rank = "";
 
@@ -140,8 +140,8 @@
 				case (_ratio > 2 and _ratio < 2.99) : {_rank = "SERGEANT";};
 				case (_ratio > 3 and _ratio < 3.99) : {_rank = "LIEUTENANT";};
 				case (_ratio > 4 and _ratio < 4.99) : {_rank = "CAPTAIN";};
-				case (_ratio > 5 and _ratio < 5.99) : {_rank = "MAJOR";	};				
-				case (_ratio > 6) : {_rank = "COLONEL" ;};		
+				case (_ratio > 5 and _ratio < 5.99) : {_rank = "MAJOR";	};
+				case (_ratio > 6) : {_rank = "COLONEL" ;};
 				default {_rank = "PRIVATE";};
 			};
 			_rank;

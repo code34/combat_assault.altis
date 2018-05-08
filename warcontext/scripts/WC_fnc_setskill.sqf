@@ -173,8 +173,8 @@
 	}];
 
 	_unit addeventhandler ['Killed', {
-		["remoteSpawn", ["BME_netcode_server_wcdeath", [(_this select 0), (_this select 1)], "server"]] call global_bme;
-		["remoteSpawn", ["BME_netcode_client_wcdeath", [(_this select 0), (_this select 1)], "client"]] call global_bme;
+		["remoteSpawn", ["BME_netcode_server_setDeath", [(_this select 0), (_this select 1)], "server"]] call server_bme;
+		["remoteSpawn", ["BME_netcode_client_hintDeath", [(_this select 0), (_this select 1)], "client"]] call server_bme;
 	}];
 
 	true;

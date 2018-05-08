@@ -140,7 +140,7 @@
 			_this setrank _rank;
 			private _kill = MEMBER("getKill", nil);
 			private _death = MEMBER("getDeath", nil);
-			["remoteSpawn", ["BME_netcode_client_playerstats", [(name _this), [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]], "client"]] call global_bme;
+			["remoteSpawn", ["BME_netcode_client_playerstats", [(name _this), [_gameranking, _serverranking, _matches, _gamescore, _kill, _death]], "client"]] call server_bme;
 		};
 
 

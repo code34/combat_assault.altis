@@ -56,7 +56,7 @@
 			if(_win)	then {
 				["expandFriendlyAround", MEMBER("position", nil)] call global_controller;
 				["setTicket", "mission"] call global_ticket;
-				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call server_bme;
 			} else {
-				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [false, _text], "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [false, _text], "client"]] call server_bme;
 			};

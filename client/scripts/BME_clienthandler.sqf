@@ -26,15 +26,6 @@
 		bme_message = _this;
 		hint bme_message;
 	};
-	
-	BME_netcode_client_vehicleavalaible = {
-		"Vehicle servicing" hintC format ["Vehicle will be avalaible in %1 seconds", _this];
-	};
-
-	BME_netcode_client_wcunblacklist = {
-		wcblacklist = wcblacklist - [name _this];
-		diag_log format ["You unblacklist by a BIG HUG : %1 %2", name _this, _this];
-	};
 
 	BME_netcode_client_wcbonusvehicle = {
 		private _sector = ["getSectorFromPos", position _this] call client_grid ;
@@ -49,14 +40,6 @@
 		rollmessage pushBack _message;
 		_message = "<t align='center'><t color='#FF9933'>"+ localize "STR_ENEMYCONVOY_TEXT" + "</t> " + localize "STR_SPOTTED_TEXT" + "</t>";
 		killzone pushBack _message;
-	};
-
-	BME_netcode_client_wccommanderoff = {
-		private _message =  "";
-		_message = "<t color='#FF9933'>"+ localize "STR_COMMANDEROFF_TEXT" + "</t><br/>";
-		rollmessage pushBack _message;
-		_message = "<t align='center'><t color='#FF9933'>"+ localize "STR_COMMANDEROFF_TEXT" + "</t> ";
-		killzone pushBack _message;	
 	};
 
 	BME_netcode_client_wcaircraftstart = {
@@ -103,28 +86,7 @@
 		_reload = ["new", _this] call OO_RELOADPLANE;
 	};
 
-	BME_netcode_client_wcaideath = {		
-		private _array = _this;
-		private _unit = _array select 0;
-		private _killer = _array select 1;
-		private _weapon = _array select 2;
-		private _playerkill =_array select 3;
-		private _playerdeath = _array select 4;
-		private _displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
-
-		if!(_killer isEqualTo "") then {
-			_message = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";
-			if(_killer isEqualTo name player) then {
-				playerkill = _playerkill; 
-				playerdeath = _playerdeath;
-			};
-		} else {
-			_message = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
-		};
-		rollmessage pushBack _message;		
-	};
-
-	BME_netcode_client_wcdeath = {	
+	BME_netcode_client_hintDeath = {
 		private _victim = _this select 0;
 		private _killer = _this select 1;
 		private _weapon = currentWeapon _killer;
@@ -235,13 +197,13 @@
 		}foreach alldead;
 	};
 
-	BME_netcode_client_end = {
-		if(toLower(_this select 0) isEqualTo "win") then {
-			["end1",false,2] call BIS_fnc_endMission;
-		} else {
-			["epicFail",false,2] call BIS_fnc_endMission;
-		};
+	BME_netcode_client_notifyBaseUnpack = {
+		hint "Base has been unpacked";
 	};
-
+	
+	BME_netcode_client_notifyBasePack = {
+		hint "Base has been packed";
+	};
+	
 	// return true when read
 	true;

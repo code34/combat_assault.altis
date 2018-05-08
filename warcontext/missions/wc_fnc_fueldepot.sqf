@@ -58,7 +58,7 @@
 					_x setVariable ["isenemy", false];
 					_text= "Bring completed: " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 					["setTicket", "mission"] call global_ticket;
-					["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call global_bme;
+					["remoteSpawn", ["BME_netcode_client_wcmissioncompleted", [true, _text], "client"]] call server_bme;
 					_supply = 100;
 				} else {
 					if(_supply > 20) then {

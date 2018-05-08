@@ -46,7 +46,7 @@
 			if(MEMBER("ticket", nil) > -1) then { MEMBER("send", nil); };
 		};
 
-		PUBLIC FUNCTION("", "send"){ 	["remoteSpawn", ["BME_netcode_client_wcticket", MEMBER("ticket", nil), "client"]] call global_bme; };
+		PUBLIC FUNCTION("", "send"){ 	["remoteSpawn", ["BME_netcode_client_wcticket", MEMBER("ticket", nil), "client"]] call server_bme; };
 
 		PUBLIC FUNCTION("string", "getCredit"){
 			private _credit = 0;

@@ -253,7 +253,7 @@
 			private _counter = MEMBER("counter", nil);
 			
 			if(_airport > 0) then {
-				private _size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);			
+				private _size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);	
 				if(_size > 0) then {
 					if(_counter >  3) then {
 						for "_i" from 1 to _size do {
@@ -261,7 +261,7 @@
 							sleep 10;
 						};
 						MEMBER("counter", 0);
-						["remoteSpawn", ["BME_netcode_client_wcaircraftstart", true, "client"]] call global_bme;
+						["remoteSpawn", ["BME_netcode_client_wcaircraftstart", true, "client"]] call server_bme;
 					} else {
 						_counter = _counter + 1;
 						MEMBER("counter", _counter);

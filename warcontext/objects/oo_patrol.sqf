@@ -22,8 +22,8 @@
 
 	CLASS("OO_PATROL")
 		PRIVATE VARIABLE("bool","alert");
-		PRIVATE VARIABLE("scalar","areasize");		
-		PRIVATE VARIABLE("array","around");		
+		PRIVATE VARIABLE("scalar","areasize");
+		PRIVATE VARIABLE("array","around");
 		PRIVATE VARIABLE("array","buildings");
 		PRIVATE VARIABLE("bool","city");
 		PRIVATE VARIABLE("group","group");

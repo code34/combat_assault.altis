@@ -16,8 +16,8 @@ class Mission
 	randomSeed=12604725;
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.39.93";
-		overviewText="By Code34 - www.combat-assault.eu";
+		briefingName="COMBAT ASSAULT 1.40";
+		overviewText="By Code34";
 		resistanceWest=0;
 		resistanceEast=1;
 		startWeather=0.099999994;

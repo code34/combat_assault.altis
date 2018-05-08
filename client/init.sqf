@@ -40,7 +40,6 @@
 	player setpos _position;
 
 	WC_fnc_spawndialog 	= compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
-	WC_fnc_spawnvehicle 	= compilefinal preprocessFileLineNumbers "client\scripts\spawnvehicle.sqf";
 	WC_fnc_paradrop	= compilefinal preprocessFileLineNumbers "client\scripts\paradrop.sqf";
 	WC_fnc_keymapperup 	= compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
@@ -62,7 +61,7 @@
 	call compile preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compile preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
 
-	global_bme = "new" call OO_BME;
+	client_bme = "new" call OO_BME;
 
 	rollmessage = [];
 	killzone = [];
@@ -123,9 +122,9 @@
 	[] execVM "real_weather\real_weather.sqf";
 
 	setGroupIconsVisible [false,false];
-	disableUserInput false;	
+	disableUserInput false;
 	disableUserInput true;
-	disableUserInput false;	
+	disableUserInput false;
 
 	if(wcambiant == 2) then {
 		enableEnvironment false;
@@ -137,7 +136,8 @@
 	};
 
 	player addEventHandler ['Killed', {
-		["remoteSpawn", ["BME_netcode_client_wcdeath", [(_this select 0), (_this select 1)], "all"]] call global_bme;
+		["remoteSpawn", ["BME_netcode_server_setDeath", [(_this select 0), (_this select 1)], "server"]] call client_bme;
+		["remoteSpawn", ["BME_netcode_client_hintDeath", [(_this select 0), (_this select 1)], "client"]] call client_bme;
 	}];
 
 	player addEventHandler ['HandleDamage', {
@@ -151,7 +151,7 @@
 
 	playertype = "ammobox";
 	[] spawn {
-		private ["_action", "_script", "_oldplayertype", "_hug", "_earplug"];
+		private ["_action", "_script", "_oldplayertype", "_earplug"];
 		_oldplayertype = playertype;
 
 		while { true} do {
@@ -164,27 +164,19 @@
 			};
 			if(vehicle player == player) then {
 				if(isnil "_action") then {
-					_action = player addAction [localize "STR_AIRDROPREQUEST_TITLE", "client\scripts\popvehicle.sqf", nil, 1.5, false];
+					_action = player addAction [localize "STR_VEHICLESSERVICING_TITLE", "client\scripts\popvehicle.sqf", nil, 1.5, false];
 				};
-				//if(isnil "_hug") then {
-				//	_hug = player addAction ["Friends Management", "client\scripts\givehug.sqf", nil, 1.5, false];
-				//};
 			} else {
 				if(!isnil "_action") then {
 					player removeAction _action;
 					_action = nil;
 				};
-				//if(!isnil "_hug") then {
-				//	player removeAction _hug;
-				//	_hug = nil;
-				//};
 			};
 			if(isnil "_earplug") then {
 				_earplug = player addAction ["Add/Remove earplugs", "client\scripts\earplugs.sqf", nil, 1.5, false, true];	
 			};
 			if(!alive player) then {
 				_action = nil; 
-				//_hug = nil; 
 				_earplug = nil;
 			};
 			sleep 1;
@@ -337,7 +329,6 @@
 		
 		_body = player;
 		_group = group player;
-
 		waituntil {!alive player};
 		_view = cameraView;
 

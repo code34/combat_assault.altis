@@ -22,7 +22,7 @@ class deployvehicle {
 		y = 0.02;
 		h = 0.16;
 		sizeEx = 0.05;
-		text = $STR_AIRDROPREQUEST_TITLE;
+		text = $STR_VEHICLESSERVICING_TITLE;
 	};
 
 	class playerlist : StdListBox {

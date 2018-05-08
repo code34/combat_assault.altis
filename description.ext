@@ -23,7 +23,6 @@ class Header
 #include "ui\intromenu.hpp"
 #include "ui\mission_params.hpp"
 #include "ui\deployvehicle.hpp"
-#include "ui\huglist.hpp"
 
 class CfgDebriefing
 {  

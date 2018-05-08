@@ -45,7 +45,7 @@
 			private _rate = 0;
 			private _text = "";
 			
-			["remoteSpawn", ["wcconvoystart", true, "client"]] call global_bme;
+			["remoteSpawn", ["BME_netcode_client_wcconvoystart", true, "client"]] call global_bme;
 
 			while { ((alive _leader) and !(vehicle _leader isEqualTo _leader)) } do {
 				if(speed _leader < 5) then {
@@ -63,12 +63,12 @@
 
 			if(_rate > 99) then {
 				private _sector = ["getSectorFromPos", position _leader] call global_grid;
-				["remoteSpawn", ["wcconvoy", true, "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcconvoy", true, "client"]] call global_bme;
 				["expandSector", _sector] call global_controller;
 				["expandSectorAround", [_sector, floor(random 2)]] call global_controller;
 				["setText", "Truck - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
-				["remoteSpawn", ["wcconvoy", false, "client"]] call global_bme;
+				["remoteSpawn", ["BME_netcode_client_wcconvoy", false, "client"]] call global_bme;
 				["setText", "Truck - Expanding failed"] spawn MEMBER("marker", nil);
 			};
 		

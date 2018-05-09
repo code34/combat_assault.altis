@@ -187,7 +187,7 @@
 			private _dir = 0;
 			if(!MEMBER("packed", nil)) exitWith { };
 			MEMBER("packed", false);
-			//_position =  (_position findEmptyPosition [5,50]);
+			_position =  (_position findEmptyPosition [5,50]);
 			if(_position isEqualTo []) exitWith { MEMBER("packed", true);};
 			_dir = getDir MEMBER("base", nil);
 			deleteVehicle MEMBER("base", nil);
@@ -202,7 +202,7 @@
 			private _base = objNull;
 			if(MEMBER("packed", nil)) exitWith { };
 			MEMBER("packed", true);
-			//_position =  (_position findEmptyPosition [0,15]);
+			_position =  (_position findEmptyPosition [0,15]);
 			if(_position isEqualTo []) exitWith {MEMBER("packed", false);};
 			deleteVehicle MEMBER("base", nil);
 			{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);

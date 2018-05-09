@@ -36,7 +36,7 @@
 	};
 
 	//progressLoadingScreen 1;
-	_position = ((getMarkerPos "globalbase") findEmptyPosition [2,100]);
+	_position = ((getMarkerPos "globalbase") findEmptyPosition [5,100]);
 	player setpos _position;
 
 	WC_fnc_spawndialog 	= compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";

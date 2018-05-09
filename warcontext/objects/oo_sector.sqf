@@ -412,13 +412,13 @@
 			};
 
 			_position = _position findEmptyPosition [0,50];
-			if(_position isEqualTo []) exitWith {[];};					
+			if(_position isEqualTo []) exitWith {[];};
 			
 			_array = [_position, random 359, _vehicle, east] call bis_fnc_spawnvehicle;
 			_vehicle = _array select 0;
 			_group = _array select 2;
 			
-			[_vehicle] spawn WC_fnc_vehiclehandler;			
+			[_vehicle] spawn WC_fnc_vehiclehandler;
 			private _patrol = ["new", [_vehicle, _group, MEMBER("getThis", nil)]] call OO_PATROLVEHICLE;
 			"patrol" spawn _patrol;
 			
@@ -439,11 +439,10 @@
 				sleep 0.2;
 				if(west countside _list isEqualTo 0) exitwith {
 					_patrol = ["new", [MEMBER("getThis", nil), _position]] call OO_PATROLAIR;
-					"patrol" spawn _patrol;	
+					"patrol" spawn _patrol;
 				};
 			};
 		};
-
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("alert");

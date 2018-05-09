@@ -71,21 +71,10 @@
 			MEMBER("marker", _mark);
 		};
 
-		PUBLIC FUNCTION("", "setType") {	
-			private _airport = false;
-			private _type = "";
-			{
-				if(MEMBER("position", nil) distance getmarkerpos _x < 1000) then { _airport = true; };
-			}foreach ("getAirports" call global_atc);
-			
-			if(_airport) then {
-				_type = selectRandom ["B_Heli_Light_01_F", "B_Heli_Light_01_armed_F", "O_Heli_Light_02_F", "O_Heli_Light_02_unarmed_F", "I_Heli_light_03_F", "I_Heli_light_03_unarmed_F"];
-			} else {
-				_type = selectRandom ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"];
-			};
+		PUBLIC FUNCTION("", "setType") {
+			private _type = selectRandom ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"];
 			MEMBER("type", _type);
 		};
-
 
 		PUBLIC FUNCTION("", "checkAlive") {
 			private _counter = 0;
@@ -102,28 +91,28 @@
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("object", "paraVehicle") {	 	
+		PUBLIC FUNCTION("object", "paraVehicle") {	
 		 	private _para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
 		 	_para setDir getDir _this; 
 		 	_para setPos getPos _this; 
 		 	_this attachTo [_para, [0,0,-1]]; 
 		 	_this addEventHandler ["HandleDamage", {false}]; 	
 
-		 	[_this, _para] spawn { 
-				private _vel = 0;		 		
+		 	[_this, _para] spawn {
+				private _vel = 0;
 		 		private _vehicle = _this select 0; 
 		 		private _paras = _this select 1;
 		 		while { !(getPos _vehicle select 2 < 1) } do {sleep 0.1;};
-		 		detach _vehicle;  		 
-	 			detach _para; 
+		 		detach _vehicle;
+	 			detach _para;
 	 			_x disableCollisionWith _vehicle; 
 		 		sleep 2;
 				if (!isNull _para) then {deleteVehicle _para;};
 		 		_vehicle removeAllEventHandlers "HandleDamage";
 		 		_vehicle setDamage 0;
 		 		_vehicle setFuel 1;
-		 	};			
-		};		
+		 	};
+		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			["delete", MEMBER("marker", nil)] call OO_MARKER;

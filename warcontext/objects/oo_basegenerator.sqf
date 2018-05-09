@@ -185,6 +185,13 @@
 			DEBUG(#, "OO_BASEGENERATOR::unpackBase")
 			private _position = getMarkerPos "respawn_west";
 			private _dir = 0;
+			private _empty = true;
+
+			{
+				if (alive _x) then { _empty = false; };
+			}foreach crew MEMBER("base", nil);
+
+			if(!_empty) exitWith{ };
 			if(!MEMBER("packed", nil)) exitWith { };
 			MEMBER("packed", false);
 			_position =  (_position findEmptyPosition [5,50]);

@@ -75,7 +75,7 @@
 
 		_victim = _this select 0;
 		_killer = _this select 1;
-
+		["remoteSpawn", ["BME_netcode_client_hintDeath", [_victim, _killer], "client"]] call client_bme;
 		if((isplayer _killer) && !(_victim isEqualTo _killer)) then {
 			_uid = getPlayerUID _killer;
 			_score = ["get", _uid] call global_scores;

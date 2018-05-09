@@ -137,7 +137,6 @@
 
 	player addEventHandler ['Killed', {
 		["remoteSpawn", ["BME_netcode_server_setDeath", [(_this select 0), (_this select 1)], "server"]] call client_bme;
-		["remoteSpawn", ["BME_netcode_client_hintDeath", [(_this select 0), (_this select 1)], "client"]] call client_bme;
 	}];
 
 	player addEventHandler ['HandleDamage', {

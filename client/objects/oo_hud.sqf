@@ -194,7 +194,7 @@
 				_ctrl10 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerdeath];
 				_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1020;
 				{ _x ctrlCommit 0; true; } count  [_ctrl, _ctrl2, _ctrl4, _ctrl5, _ctrl6, _ctrl7, _ctrl8, _ctrl9, _ctrl10, _ctrl11];
-				sleep 0.1;
+				sleep 1;
 			};
 		};
 

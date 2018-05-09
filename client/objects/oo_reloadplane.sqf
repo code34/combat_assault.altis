@@ -47,8 +47,8 @@
 						_message = true;
 					};
 					{
-						if((getmarkerpos _x) distance _vehicle < 300) then {
-							if(getMarkerColor _x isEqualTo "ColorBlue") then {
+						if((getmarkerpos _x) distance _vehicle < (getMarkerSize _x) select 0) then {
+							if(toLower(getMarkerColor _x) isEqualTo "colorblue") then {
 								MEMBER("reFuel", nil);
 								MEMBER("reFuelMessage", _x);
 								_message = false;

@@ -59,7 +59,7 @@
 			}foreach _positions;
 		};
 
-		PUBLIC FUNCTION("", "isFriendly") {	
+		PUBLIC FUNCTION("", "isFriendly") {
 			private _sector = [];
 			private _around = [];
 			private _enemies = false;
@@ -112,8 +112,7 @@
 			MEMBER("run", false);
 		};
 
-
-		PUBLIC FUNCTION("","deconstructor") { 
+		PUBLIC FUNCTION("","deconstructor") {
 			DELETE_VARIABLE("west");
 			DELETE_VARIABLE("east");
 			DELETE_VARIABLE("run");

@@ -100,7 +100,7 @@ class spawndialog {
 		y = (0.57 * safezoneH + safezoneY);
 		h = (0.025 * safezoneH);
 		sizeEx = 0.018 * safezoneH;
-		text = $STR_ENEMYTAGOFF_BUTTON;
+		text = $STR_UNITTAGOFF_BUTTON;
 		action = "wcaction = 'unittags';";
 	};	
 

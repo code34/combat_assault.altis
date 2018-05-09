@@ -1,176 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <Project name="COMBAT ASSAULT">
-                <Package name="COMBAT ASSAULT">
-                <Key ID="STR_MISSION_TITLE">
-                        <Original>COMBAT ASSAULT</Original>
-                </Key>
-                <Key ID="STR_MISSION_AUTHOR">
-                        <Original>Code34</Original>
-                </Key>
-                <Key ID="STR_INTRO_WELCOME">
-                        <Original>Welcome on Combat Assault mission</Original>
-                        <French>Bienvenue sur Combat Assault</French>
-                </Key>
-                <Key ID="STR_INTRO_WEBSITE">
-                        <Original>You can find more informations about this project on BIS forum</Original>
-                        <French>Vous pouvez trouver plus d'informations sur le forum de BIS</French>
-                </Key>
-                <Key ID="STR_INTRO_TRAIN">
-                        <Original>Train you in real fighting conditions</Original>
-                        <French>Entrainez-vous en condition réelle</French>
-                </Key>
-                <Key ID="STR_INTRO_RANK">
-                        <Original>Try to gain a better server ranking</Original>
-                        <French>Essayez de monter en rang</French>
-                </Key>
-                <Key ID="STR_INTRO_WINWAR">
-                        <Original>Try to win this war</Original>
-                        <French>Essayez de gagner cette guerre</French>
-                </Key>
-                <Key ID="STR_INTRO_GOODLUCK">
-                        <Original>Good luck ! Have a good game !</Original>
-                        <French>Bonne chance!</French>
-                </Key>
-                <Key ID="STR_INTRO_AUTHOR">
-                        <Original>Code34</Original>
-                </Key>
-                <Key ID="STR_INTRO_MISSIONNAME">
-                        <Original>COMBAT ASSAULT</Original>
-                </Key>
-                <Key ID="STR_INTRO_MISSIONWEBSITE">
-                        <Original>combat-assault</Original>
-                </Key>
-                <Key ID="STR_INTRO_MISSIONTS3">
-                        <Original>combat-assault</Original>
-                </Key>
-                <Key ID="STR_REDEPLOY_TITLE">
-                        <Original>Redeployment</Original>
-                        <French>Redeploiement</French>
-                </Key>
-                <Key ID="STR_VEHICLESSERVICING_TITLE">
-                        <Original>Vehicles servicing</Original>
-                        <French>Vehicles servicing</French>
-                </Key>
-                <Key ID="STR_REDEPLOY_STANCE">
-                        <Original>No enemies near your. Use menu to redeploy</Original>
-                        <French>Pas d'ennemis près de vous. Utilisez le menu pour vous redéployer</French>
-                </Key>
-                <Key ID="STR_EQUIPMENT_TITLE">
-                        <Original>Select your equipment</Original>
-                        <French>Choisissez votre équipement</French>
-                </Key>
-                <Key ID="STR_EQUIPMENT_TEXT">
-                        <Original>Take magazines as items of your vest or bag and go ahead to deployement!</Original>
-                        <French>Prenez des munitions et placez les dans votre veste ou sac, et déployez vous!</French>
-                </Key>
-                <Key ID="STR_TELEPORT_TITLE">
-                        <Original>Select your paradrop zone</Original>
-                        <French>Choissisez votre zone de parachutage</French>
-                </Key>
-                <Key ID="STR_TELEPORT_TEXT">
-                        <Original>Click once on the map near the red square where you'd like to be deploy!</Original>
-                        <French>Cliquez une fois sur la carte près des zones rouges ou vous voulez être déployé!</French>
-                </Key>
-                <Key ID="STR_TELEPORT_TITLE_TOOFAR">
-                        <Original>Drop zone is too far</Original>
-                        <French>La zone de parachutage est trop loin</French>
-                </Key>
-                <Key ID="STR_TELEPORT_TEXT_TOOFAR">
-                        <Original>You can only drop into the blue drop zone of your base</Original>
-                        <French>Vous pouvez vous parachuter uniquement dans la zone bleue de votre base</French>
-                </Key>
-                <Key ID="STR_SERVICING_TITLE">
-                        <Original>Vehicle Servicing</Original>
-                        <French>Service logistique</French>
-                </Key>
-                <Key ID="STR_SERVICING_NEARAIRPORT">
-                        <Original>You are not enough near of an allied Airport</Original>
-                        <French>Vous n'êtes pas assez prêt d'un aéroport allié</French>
-                </Key>
-                <Key ID="STR_SERVICING_TOOENEMY">
-                        <Original>Too much enemy near your position</Original>
-                        <French>Trop d'ennemis prêt de votre position</French>
-                </Key>
-                <Key ID="STR_DEPLOY_SELECTLOCATION">
-                        <Original>Select location</Original>
-                        <French>Choisissez la zone</French>
-                </Key>
-                <Key ID="STR_DEPLOY_BUTTON">
-                        <Original>Deployement</Original>
-                        <French>Deploiement</French>
-                </Key>
-                <Key ID="STR_PARADROP_BUTTON">
-                        <Original>Paradrop</Original>
-                        <French>Parachutage</French>
-                </Key>
-                <Key ID="STR_SEND_BUTTON">
-                        <Original>Send</Original>
-                        <French>Envoyer</French>
-                </Key>
-                <Key ID="STR_CANCEL_BUTTON">
-                        <Original>Cancel</Original>
-                        <French>Annuler</French>                        
-                </Key>
-                <Key ID="STR_EXIT_BUTTON">
-                        <Original>Exit</Original>
-                </Key>
-                <Key ID="STR_UNITTAGON_BUTTON">
-                        <Original>Units tags On</Original>
-                </Key>  
-                <Key ID="STR_UNITTAGOFF_BUTTON">
-                        <Original>Units tags Off</Original>
-                </Key>
-                <Key ID="STR_ROLLMESSAGEON_BUTTON">
-                        <Original>Rollmessage On</Original>
-                </Key>
-                <Key ID="STR_ROLLMESSAGEOFF_BUTTON">
-                        <Original>Rollmessage Off</Original>
-                </Key>
-                <Key ID="STR_FRIENDSMARKERSON_BUTTON">
-                        <Original>Friends markers On</Original>
-                </Key>
-                <Key ID="STR_FRIENDSMARKERSOFF_BUTTON">
-                        <Original>Friends markers Off</Original>
-                </Key>
-                <Key ID="STR_HIDEMAP_BUTTON">
-                        <Original>Hide map</Original>
-                        <French>Cacher la carte</French>
-                </Key> 
-                <Key ID="STR_SHOWMAP_BUTTON">
-                        <Original>Show map</Original>
-                        <French>Montrer la carte</French>
-                </Key> 
-                <Key ID="STR_ENEMYCONVOY_TEXT">
-                        <Original>An Enemy truck</Original>
-                        <French>Un camion enemi</French>
-                </Key>        
-                <Key ID="STR_SPOTTED_TEXT">
-                        <Original>has been spotted</Original>
-                        <French>a été localisé</French>
-                </Key>
-                <Key ID="STR_SUPPLYEMPTY">
-                        <Original>Fuel Depot empty: Bring a truck</Original>
-                        <French>Stock Fuel vide: Amenez un camion</French>
-                </Key>
-                <Key ID="STR_SUPPLYFULL">
-                        <Original>Fuel Depot</Original>
-                        <French>Depot Fuel</French>
-                </Key>
-                <Key ID="STR_COMMANDEROFF_TEXT">
-                        <Original>Commander Site has been destroyed. No more deployement avalaible</Original>
-                        <French>Le centre de commandement a été détruit. Plus de déploiement disponible.</French>
-                </Key> 
-                <Key ID="STR_EARPLUGSOFF_TEXT">
-                        <Original>Earplugs are off</Original>
-                        <French>Les bouchons sont enlevés</French>
-                </Key>
-                <Key ID="STR_EARPLUGSON_TEXT">
-                        <Original>Earplugs are on</Original>
-                        <French>Les bouchons sont mis</French>
-                </Key>
-                <Key ID="STR_DROPPED_TEXT">
-                        <Original> has been paradropped at sector </Original>
-                        <French> a été parachuté sur le secteur </French>
-                </Key>
-                </Package>
-        </Project>
+	<Project name="COMBAT ASSAULT">
+		<Package name="COMBAT ASSAULT">
+		<Key ID="STR_MISSION_TITLE">
+			<Original>COMBAT ASSAULT</Original>
+		</Key>
+		<Key ID="STR_MISSION_AUTHOR">
+			<Original>Code34</Original>
+		</Key>
+		<Key ID="STR_INTRO_WELCOME">
+			<Original>Welcome on Combat Assault mission</Original>
+			<French>Bienvenue sur Combat Assault</French>
+		</Key>
+		<Key ID="STR_INTRO_WEBSITE">
+			<Original>You can find more informations about this project on BIS forum</Original>
+			<French>Vous pouvez trouver plus d'informations sur le forum de BIS</French>
+		</Key>
+		<Key ID="STR_INTRO_TRAIN">
+			<Original>Train you in real fighting conditions</Original>
+			<French>Entrainez-vous en condition réelle</French>
+		</Key>
+		<Key ID="STR_INTRO_RANK">
+			<Original>Try to gain a better server ranking</Original>
+			<French>Essayez de monter en rang</French>
+		</Key>
+		<Key ID="STR_INTRO_WINWAR">
+			<Original>Try to win this war</Original>
+			<French>Essayez de gagner cette guerre</French>
+		</Key>
+		<Key ID="STR_INTRO_GOODLUCK">
+			<Original>Good luck ! Have a good game !</Original>
+			<French>Bonne chance!</French>
+		</Key>
+		<Key ID="STR_INTRO_AUTHOR">
+			<Original>Code34</Original>
+		</Key>
+		<Key ID="STR_INTRO_MISSIONNAME">
+			<Original>COMBAT ASSAULT</Original>
+		</Key>
+		<Key ID="STR_INTRO_MISSIONWEBSITE">
+			<Original>combat-assault</Original>
+		</Key>
+		<Key ID="STR_INTRO_MISSIONTS3">
+			<Original>combat-assault</Original>
+		</Key>
+		<Key ID="STR_REDEPLOY_TITLE">
+			<Original>Redeployment</Original>
+			<French>Redeploiement</French>
+		</Key>
+		<Key ID="STR_VEHICLESSERVICING_TITLE">
+			<Original>Vehicles servicing</Original>
+			<French>Vehicles servicing</French>
+		</Key>
+		<Key ID="STR_REDEPLOY_STANCE">
+			<Original>No enemies near your. Use menu to redeploy</Original>
+			<French>Pas d'ennemis près de vous. Utilisez le menu pour vous redéployer</French>
+		</Key>
+		<Key ID="STR_EQUIPMENT_TITLE">
+			<Original>Select your equipment</Original>
+			<French>Choisissez votre équipement</French>
+		</Key>
+		<Key ID="STR_EQUIPMENT_TEXT">
+			<Original>Take magazines as items of your vest or bag and go ahead to deployement!</Original>
+			<French>Prenez des munitions et placez les dans votre veste ou sac, et déployez vous!</French>
+		</Key>
+		<Key ID="STR_TELEPORT_TITLE">
+			<Original>Select your paradrop zone</Original>
+			<French>Choissisez votre zone de parachutage</French>
+		</Key>
+		<Key ID="STR_TELEPORT_TEXT">
+			<Original>Click once on the map near the red square where you'd like to be deploy!</Original>
+			<French>Cliquez une fois sur la carte près des zones rouges ou vous voulez être déployé!</French>
+		</Key>
+		<Key ID="STR_TELEPORT_TITLE_TOOFAR">
+			<Original>Drop zone is too far</Original>
+			<French>La zone de parachutage est trop loin</French>
+		</Key>
+		<Key ID="STR_TELEPORT_TEXT_TOOFAR">
+			<Original>You can only drop into the blue drop zone of your base</Original>
+			<French>Vous pouvez vous parachuter uniquement dans la zone bleue de votre base</French>
+		</Key>
+		<Key ID="STR_SERVICING_TITLE">
+			<Original>Vehicle Servicing</Original>
+			<French>Service logistique</French>
+		</Key>
+		<Key ID="STR_SERVICING_NEARAIRPORT">
+			<Original>You are not enough near of an allied Airport</Original>
+			<French>Vous n'êtes pas assez prêt d'un aéroport allié</French>
+		</Key>
+		<Key ID="STR_SERVICING_TOOENEMY">
+			<Original>Too much enemy near your position</Original>
+			<French>Trop d'ennemis prêt de votre position</French>
+		</Key>
+		<Key ID="STR_DEPLOY_SELECTLOCATION">
+			<Original>Select location</Original>
+			<French>Choisissez la zone</French>
+		</Key>
+		<Key ID="STR_DEPLOY_BUTTON">
+			<Original>Deployement</Original>
+			<French>Deploiement</French>
+		</Key>
+		<Key ID="STR_PARADROP_BUTTON">
+			<Original>Paradrop</Original>
+			<French>Parachutage</French>
+		</Key>
+		<Key ID="STR_SEND_BUTTON">
+			<Original>Send</Original>
+			<French>Envoyer</French>
+		</Key>
+		<Key ID="STR_CANCEL_BUTTON">
+			<Original>Cancel</Original>
+			<French>Annuler</French>
+		</Key>
+		<Key ID="STR_EXIT_BUTTON">
+			<Original>Exit</Original>
+		</Key>
+		<Key ID="STR_UNITTAGON_BUTTON">
+			<Original>Units tags On</Original>
+		</Key>  
+		<Key ID="STR_UNITTAGOFF_BUTTON">
+			<Original>Units tags Off</Original>
+		</Key>
+		<Key ID="STR_ROLLMESSAGEON_BUTTON">
+			<Original>Rollmessage On</Original>
+		</Key>
+		<Key ID="STR_ROLLMESSAGEOFF_BUTTON">
+			<Original>Rollmessage Off</Original>
+		</Key>
+		<Key ID="STR_FRIENDSMARKERSON_BUTTON">
+			<Original>Friends markers On</Original>
+		</Key>
+		<Key ID="STR_FRIENDSMARKERSOFF_BUTTON">
+			<Original>Friends markers Off</Original>
+		</Key>
+		<Key ID="STR_HIDEMAP_BUTTON">
+			<Original>Hide map</Original>
+			<French>Cacher la carte</French>
+		</Key> 
+		<Key ID="STR_SHOWMAP_BUTTON">
+			<Original>Show map</Original>
+			<French>Montrer la carte</French>
+		</Key> 
+		<Key ID="STR_ENEMYCONVOY_TEXT">
+			<Original>An Enemy truck</Original>
+			<French>Un camion enemi</French>
+		</Key>
+		<Key ID="STR_SPOTTED_TEXT">
+			<Original>has been spotted</Original>
+			<French>a été localisé</French>
+		</Key>
+		<Key ID="STR_SUPPLYEMPTY">
+			<Original>Fuel Depot empty: Bring a truck</Original>
+			<French>Stock Fuel vide: Amenez un camion</French>
+		</Key>
+		<Key ID="STR_SUPPLYFULL">
+			<Original>Fuel Depot</Original>
+			<French>Depot Fuel</French>
+		</Key>
+		<Key ID="STR_COMMANDEROFF_TEXT">
+			<Original>Commander Site has been destroyed. No more deployement avalaible</Original>
+			<French>Le centre de commandement a été détruit. Plus de déploiement disponible.</French>
+		</Key> 
+		<Key ID="STR_EARPLUGSOFF_TEXT">
+			<Original>Earplugs are off</Original>
+			<French>Les bouchons sont enlevés</French>
+		</Key>
+		<Key ID="STR_EARPLUGSON_TEXT">
+			<Original>Earplugs are on</Original>
+			<French>Les bouchons sont mis</French>
+		</Key>
+		<Key ID="STR_DROPPED_TEXT">
+			<Original> has been paradropped at sector </Original>
+			<French> a été parachuté sur le secteur </French>
+		</Key>
+		</Package>
+	</Project>

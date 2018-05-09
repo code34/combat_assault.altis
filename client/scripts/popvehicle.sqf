@@ -37,7 +37,7 @@
 	_factorys = ["remoteCall", ["BME_netcode_server_getfactorys", "", 2,[],2]] call client_bme;
 
 	{
-		if(position player distance (getMarkerPos _x)  < 300) then {
+		if(position player distance (getMarkerPos _x)  < ((getMarkerSize _x) select 0 )) then {
 			_list = (position player) nearEntities [["Man", "Tank"], 300];
 			sleep 0.5;
 			if(east countside _list isEqualTo 0) then { _air = true;};
@@ -45,7 +45,7 @@
 	} forEach _airports;
 
 	{
-		if(position player distance  (getMarkerPos _x) <150) then {
+		if(position player distance  (getMarkerPos _x) < ((getMarkerSize _x) select 0 )) then {
 			_list = (position player) nearEntities [["Man", "Tank"], 300];
 			sleep 0.5;
 			if(east countside _list isEqualTo 0) then { _armor = true; };

@@ -138,6 +138,7 @@
 	};
 
 	player addEventHandler ['Killed', {
+		killer = (_this select 1);
 		["remoteSpawn", ["BME_netcode_server_setDeath", [(_this select 0), (_this select 1)], "server"]] call client_bme;
 	}];
 
@@ -332,7 +333,6 @@
 		_group = group player;
 		waituntil {!alive player};
 		_view = cameraView;
-
 		if(isnil "killer") then { killer = _body;};
 		if(isNull killer) then  { killer = _body;};
 

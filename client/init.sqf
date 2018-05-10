@@ -18,6 +18,9 @@
 
 	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
+	15203 cutText ["Loading...","BLACK FADED", 1000];
+	//startLoadingScreen ["Loading Mission", _layer2];
+
 	diag_log "Waiting BIS_fnc_init ...";
 	waitUntil {BIS_fnc_init;};
 
@@ -30,7 +33,6 @@
 	diag_log "Waiting player is alive ...";
 	waitUntil {alive player && !(isNull player);};
 
-	startLoadingScreen ["Loading Mission"];	
 	while { (getMarkerPos "globalbase") isEqualTo [0,0,0] } do { 
 		sleep 0.1; 
 	};
@@ -89,9 +91,9 @@
 		wcwithunitstagslocked = false;
 	};
 
-	endLoadingScreen;
+	//endLoadingScreen;
 	sleep 2;
-
+	15203 cutText ["","PLAIN", 0];
 	[] call WC_fnc_introcam;
 	
 	scoreboard = ["new", []] call OO_SCOREBOARD;
@@ -289,7 +291,7 @@
 				if(vehicle player isKindOf "Air") then {
 					setviewdistance wcairvehicleviewdistance;
 				} else {
-					setviewdistance wcvehicleviewdistance;	
+					setviewdistance wcvehicleviewdistance;
 				};
 			};
 			sleep 10;

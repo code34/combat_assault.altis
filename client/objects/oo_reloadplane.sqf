@@ -22,17 +22,18 @@
 
 	CLASS("OO_RELOADPLANE")
 		PRIVATE VARIABLE("bool","run");
-		PRIVATE VARIABLE("string","type");
-		
-		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("type", _this select 0);
+		PRIVATE VARIABLE("object","vehicle");
+				
+		PUBLIC FUNCTION("object","constructor") {
+			MEMBER("vehicle", _this);
 		};
 
 		PUBLIC FUNCTION("", "start") {
-			private ["_message", "_time"];
+			private ["_message", "_time", "_vehicle"];
 			MEMBER("run", true);
 			_time = 0;
 			_message = false;
+			_vehicle = MEMBER("vehicle", nil);
 
 			while { MEMBER("run", nil) } do {
 				MEMBER("setFuel", nil);
@@ -42,7 +43,7 @@
 						_message = true;
 					};
 					{
-						if((getmarkerpos _x) distance player < 300) then {
+						if((getmarkerpos _x) distance _vehicle < 300) then {
 							if(getMarkerColor _x == "ColorBlue") then {
 								MEMBER("reFuel", nil);
 								MEMBER("reFuelMessage", _x);
@@ -53,9 +54,13 @@
 						sleep 0.001;
 					}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 				};
+				if(getDammage _vehicle > 0.9) then {
+					MEMBER("run", false);
+				};
 				_time = _time + 1;
 				sleep 1;
 			};
+			MEMBER("deconstructor", nil);
 		};
 
 		PUBLIC FUNCTION("", "stop") {
@@ -63,9 +68,11 @@
 		};
 
 		PUBLIC FUNCTION("", "reFuel") {
-			(vehicle player) setVehicleAmmoDef 1;
-			(vehicle player) setdamage 0;
-			(vehicle player) setfuel 1;
+			private ["_vehicle"];
+			_vehicle = MEMBER("vehicle", nil);
+			_vehicle setVehicleAmmoDef 1;
+			_vehicle setdamage 0;
+			_vehicle setfuel 1;
 		};
 
 		PUBLIC FUNCTION("", "airportAvalaibleMessage") {
@@ -83,15 +90,15 @@
 
 		PUBLIC FUNCTION("", "setFuel") {
 			private ["_conso", "_vehicle", "_fuel"];
-			_vehicle = vehicle player;
+			_vehicle = MEMBER("vehicle", nil);
 			_fuel = fuel _vehicle;
 			
-			_conso = (speed _vehicle * 0.0010) / 100;
+			_conso = (speed _vehicle * 0.0005) / 100;
 			_vehicle setfuel (_fuel - _conso);
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
+			DELETE_VARIABLE("vehicle");
 			DELETE_VARIABLE("run");
-			DELETE_VARIABLE("type");
 		};
 	ENDCLASS;

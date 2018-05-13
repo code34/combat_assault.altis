@@ -16,22 +16,43 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_body", "_icon", "_index", "_position", "_mark", "_vehicle", "_group", "_reload"];
+	private ["_action", "_body", "_dir", "_index", "_position", "_mark", "_group", "_units", "_view"];
 
+	WC_fnc_spawndialog = compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_teleport = compilefinal preprocessFile "client\scripts\teleport.sqf";
-	WC_fnc_teleportplane = compilefinal preprocessFile "client\scripts\teleport_plane.sqf";
+	WC_fnc_keymapperup = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
+	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 
+	
 	call compilefinal preprocessFileLineNumbers "client\scripts\task.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_circularlist.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_marker.sqf";
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_inventory.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_hud.sqf";
 	call compilefinal preprocessFileLineNumbers "client\objects\oo_reloadplane.sqf";
-	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";	
+	call compilefinal preprocessFileLineNumbers "client\objects\oo_scoreboard.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_hashmap.sqf";
+	call compilefinal preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";	
+	call compilefinal preprocessFileLineNumbers "client\BME\init.sqf";
 
-	mystats = [0,0,0];
+	wcboard = false;
+	wcwithrollmessages = true;
+	
+	wcticket = 0;
+	
+	scoreboard = ["new", []] call OO_SCOREBOARD;
+
+	rollmessage = ["<br/>", "<br/>","<br/>", "<br/>","<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<br/>", "<t size='1.2'>"+(localize "STR_INTRO_WELCOME")+"</t><br/>", (localize "STR_INTRO_WEBSITE")+"<br/>","<br/>", (localize "STR_INTRO_TRAIN")+"<br/>", (localize "STR_INTRO_RANK")+"<br/>", (localize "STR_INTRO_WINWAR")+"<br/> ", "<br/>", "<br/>", (localize "STR_INTRO_GOODLUCK")+"<br/>",  (localize "STR_INTRO_AUTHOR")+"<br/><br/>"];
+	rollprintmessage = "";
 
 	hud = ["new", []] call OO_HUD;
 	"drawAll" spawn hud;
+	"rollMessage" spawn hud;
 	"bottomHud" spawn hud;
+	"scoreboardHud" spawn hud;
+
+	inventory = ["new", []] call OO_INVENTORY;
+	["save", player] call inventory;
 
 	[] execVM "real_weather\real_weather.sqf";
 
@@ -39,10 +60,11 @@
 	enableEnvironment false;
 
 	player addEventHandler ['Killed', {
-		private ["_name"];
+		private ["_name", "_weapon"];
 		
 		killer = _this select 1;
 		_name = "";
+		_weapon = currentWeapon killer;
 
 		if(killer isKindOf "Man") then {
 			_name = name killer;
@@ -51,7 +73,7 @@
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf killer) >> "DisplayName");
 		};
 
-		wcdeath = [name player, playertype, _name];
+		wcdeath = [name player, playertype, _name, _weapon];
 		["wcdeath", "server"] call BME_fnc_publicvariable;
 	}];
 
@@ -66,121 +88,126 @@
 
 	playMusic "BackgroundTrack02_F_EPC";
 
-	["-- Birth of a New Empire --<br/><br/><t size='3'>COMBAT ASSAULT</t><br/><br/><t size='2'><t color='#ff9900'>GOLD</t> Version<br/>Author: code34</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: combat-assault.eu<br/>Teamspeak: combat-assault.eu<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
+	[(localize "STR_INTRO_CAMPAIGNNAME") + "<br/><br/><t size='3'>"+(localize "STR_INTRO_MISSIONNAME")+"</t><br/><br/><t size='2'><t color='#ff9900'>"+(localize "STR_INTRO_MISSIONVERSION")+"</t> Version<br/>Author: "+(localize "STR_INTRO_MISSIONAUTHOR")+"</t><br/><t size='1'>Make Arma Not War contest 2014<br/>Website: "+(localize "STR_INTRO_MISSIONWEBSITE")+"<br/>Teamspeak: "+(localize "STR_INTRO_MISSIONTS3")+"<br/></t>",0.02,-0.7,25,5,2,3011] spawn bis_fnc_dynamicText;
 
 	_body = player;
-	_vehicle = vehicle player;
-
+	_view = cameraView;
 	_mark = ["new", position player] call OO_MARKER;
-	localplayerstats = [];
 
-	playertype = player getvariable "type";
-	if((playertype == "bomber") or (playertype == "fighter")) then {
-		setviewdistance 3000;
-		_reload = ["new", [playertype]] call OO_RELOADPLANE;
+	playertype = "ammobox";
+
+	[] spawn {
+		private ["_action", "_script", "_oldplayertype"];
+		_oldplayertype = playertype;
+
+		while { true} do {
+			if(_oldplayertype != playertype) then {
+				_oldplayertype = playertype;
+				player removeAction _action;
+				_action = nil;				
+			};
+			if(vehicle player == player) then {
+				if(isnil "_action") then {
+					_script = format ["client\scripts\pop%1.sqf", playertype];
+					_action = player addAction [format ["Get %1", playertype], _script, nil, 1.5, false];
+				};
+			} else {
+				if(!isnil "_action") then {
+					player removeAction _action;
+					_action = nil;
+				};
+			};
+			if(!alive player) then {_action = nil;};
+			sleep 1;
+		};
+	};
+	
+	[] spawn {
+		while { true } do {
+			if((damage player > 0) and (damage player  < 1.01)) then {
+				sleep 10;
+				player setDamage (damage player + 0.01); 
+				player setBleedingRemaining 30;
+			};
+			sleep 20;
+		};
 	};
 
-	if((playertype == "chopper") or (playertype == "tank") or (playertype == "tankaa")) then {
+	if(wcredeployement isEqualTo 1) then {
 		[] spawn {
-			private ["_action", "_script"];
-			while { true} do {
-				if(vehicle player == player) then {
-					if(isnil "_action") then {
-						_script = format ["client\scripts\pop%1.sqf", playertype];
-						_action = player addAction [format ["Get %1", playertype], _script];
-					};
-				} else {
-					if(!isnil "_action") then {
-						player removeAction _action;
-						_action = nil;
+			private ["_list", "_counter", "_text"];
+			_counter = 10;
+
+			while { true } do {
+				if(player distance getmarkerpos "respawn_west" > 1300) then {
+					if((alive player) and (vehicle player == player)) then {		
+
+						_list = position player nearEntities [["Man", "Tank"], 1000];
+						sleep 0.5;
+
+						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
+							if(stance player == "CROUCH") then {
+								if(_counter < 10) then {
+									_title = localize "STR_REDEPLOY_TITLE";
+									_text = format ["%1<br/><t size='3'>%2</t>", localize "STR_REDEPLOY_COUNTER", _counter];
+									["hint", [_title, _text]] call hud;
+								};
+								_counter = _counter - 1 ;
+							} else {
+								_title = localize "STR_REDEPLOY_TITLE";
+								_text = localize "STR_REDEPLOY_STANCE";
+								_counter = 10;
+								["hint", [_title, _text]] call hud;
+							};
+						} else {
+							hintsilent "";
+							_counter = 10;
+						};
+						if(_counter < 0) then {
+							_counter = 10;
+							hintsilent "";
+							[player] call WC_fnc_spawndialog;
+						};
+					} else {
+						_counter = 10;
 					};
 				};
-				if(!alive player) then {_action = nil;};
 				sleep 1;
 			};
 		};
 	};
 
+	[] spawn {
+		sleep 5;
+		findDisplay 46 displayAddEventHandler ["KeyDown", {_this call WC_fnc_keymapperdown;}];
+		findDisplay 46 displayAddEventHandler ["KeyUp", {_this call WC_fnc_keymapperup;}];
+	};
+
 	// MAIN LOOP
 	while {true} do {
 		_index = player addEventHandler ["HandleDamage", {false}];
-		if !(player hasWeapon "ItemGPS") then {
-			player addWeapon "ItemGPS";
-		};
+		setviewdistance 1500;
 
-		_position = position player;
-
-		_title = "Select your equipment";
-		_text = "Take magazines as items of your vest or bag and go ahead to teleport on zone!";
-		["hint", [_title, _text]] call hud;
-		
-		["Open",[true,nil,player]] call bis_fnc_arsenal;
-		while { _position distance position player < 2 } do {
-			sleep 0.1
-		};
+		if(wcfatigue == 2) then { player enableFatigue false; };
 	
-		openMap [true, true];
-		mapAnimAdd [1, 0.01, _body]; 
-		mapAnimCommit;
-		deletevehicle _body;
-		_vehicle spawn {
-			while { count (crew _this) > 0 } do { sleep 1; };
-			deletevehicle _this;
-		};
-		
+		["load", player] spawn inventory;	
+		[_body] call WC_fnc_spawndialog;
 
-		switch (playertype) do {
-			case "soldier": {
-				[] call WC_fnc_teleport;
-				_icon =	"mil_arrow2";
-			};
+		 player switchCamera _view;
 
-			case "medic": {
-				[] call WC_fnc_teleport;
-				_icon = "b_med";
-			};
-	
-			case "fighter": {
-				[] call WC_fnc_teleportplane;
-				"start" spawn _reload;
-				_icon = "b_plane";
-			};
-	
-			case "bomber": {
-				[] call WC_fnc_teleportplane;
-				"start" spawn _reload;
-				_icon = "b_plane";
-			};
-	
-			case "tank": {
-				[] call WC_fnc_teleport;
-				_icon = "mil_arrow2";
-			};
-
-			case "tankaa": {
-				[] call WC_fnc_teleport;
-				_icon = "mil_arrow2";
-			};
-
-			case "chopper": {
-				[] call WC_fnc_teleport;
-				_icon = "mil_arrow2";
-			};
-		};
-
-		openMap [false, false];
 		// debug end	
 		player removeEventHandler ["HandleDamage", _index];
 		["attachTo", player] spawn _mark;
 		["setText", name player] spawn _mark;
 		["setColor", "ColorGreen"] spawn _mark;
-		["setType", _icon] spawn _mark;
+		["setType", "mil_arrow2"] spawn _mark;
 		["setSize", [0.5,0.5]] spawn _mark;
+		
 		_body = player;
-		_vehicle = vehicle player;
 		_group = group player;
 
 		waituntil {!alive player};
+		_view = cameraView;
 
 		if(isnil "killer") then { killer = _body;};
 		wccam = "camera" camCreate (position killer);
@@ -200,11 +227,6 @@
 		["setPos", position _body] spawn _mark;
 		["setType", "mil_flag"] spawn _mark;
 		["draw", "ColorRed"] spawn _mark;
-
-
-		if((playertype == "bomber") or (playertype == "fighter")) then {
-			"stop" call _reload;
-		};
 
 		waituntil {alive player};
 

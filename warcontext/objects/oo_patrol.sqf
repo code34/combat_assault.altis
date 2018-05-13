@@ -106,22 +106,36 @@
 			}else{
 				MEMBER("city", false);
 			};
-		};		
+		};
+
+		PUBLIC FUNCTION("", "fireFlare") {
+			private ["_flare", "_target", "_leader"];
+
+			_leader = leader MEMBER("group", nil);
+			_target = MEMBER("target", nil);
+
+			if(_leader distance _target < 200) then {
+				_flare = "F_40mm_White" createvehicle ((_target) ModelToWorld [0,0,200]); 
+				_flare setVelocity [0,0,-10];
+			};
+		};
 
 		PUBLIC FUNCTION("", "engageTarget") {
-			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden"];
+			private ["_target", "_isvehicle", "_isbuilding", "_isvisible", "_ishidden", "_needflare"];
 
 			_target = MEMBER("target", nil);
-			_isvehicle = (_target  != vehicle _target);
+			_isvehicle = !(_target isKindOf "MAN") ;
 			_isbuilding = if((nearestbuilding _target) distance _target < 10) then { true; } else { false; };
 			_isvisible = MEMBER("seeTarget", nil);
+			_needflare = if((date select 3 > 21) or (date select 3 <6)) then { true; } else {false;};
 
 			if(_isvehicle) then {
 				MEMBER("setMoveMode", nil);
 				MEMBER("moveAround", 50);
+				MEMBER("putMine", nil);
 			} else {
 				if(_isbuilding) then {
-					hint "movebuilding";
+					//hint "movebuilding";
 					if(_isvisible) then {
 						MEMBER("doFire", nil);
 					};
@@ -129,15 +143,15 @@
 					//MEMBER("setMoveMode", nil);
 					MEMBER("moveInto", nearestbuilding _target);
 				} else {
+					if((_needflare) and (random 1 > 0.5)) then { MEMBER("fireFlare", nil);};
 					if(_isvisible) then {
-						hint format ["moveto %1", MEMBER("target", nil)];
+						//hint format ["moveto %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
 						MEMBER("doFire", nil);
 						MEMBER("moveToTarget", nil);
 					} else {
-						hint format ["movearound %1", MEMBER("target", nil)];
+						//hint format ["movearound %1", MEMBER("target", nil)];
 						MEMBER("setCombatMode", nil);
-						//MEMBER("setMoveMode", nil);
 						MEMBER("moveAround", 25);
 					};
 				};
@@ -240,14 +254,26 @@
 		};
 
 		PUBLIC FUNCTION("", "doFire") {
-			private ["_target"];
+			private ["_target", "_skill"];
 			
 			_target = MEMBER("target", nil);
 			{
+				_skill = MEMBER("getSkill", (_x distance _target));
+				_x setskill ["aimingAccuracy", _skill];
+				_x setskill ["aimingShake", _skill];
 				_x dotarget _target;
 				_x dofire _target;
+				_x setUnitPos "Middle";
 				sleep 0.0001;
 			}foreach units MEMBER("group", nil);
+		};
+
+		PUBLIC FUNCTION("scalar", "getSkill") {
+			private ["_skill", "_distance"];
+			_distance = _this;
+			if(_distance > 300) then {_distance = 300};
+			_skill = wcskill * (1 - (_this / 300));
+			_skill;
 		};
 
 		// moveInto Buildings
@@ -291,9 +317,21 @@
 			if(_dir > 359) then {_dir = _dir - 360};
 			if(_dir < 0) then {_dir = _dir + 360};
 
-			_position = [position _target, 25, _dir] call BIS_fnc_relPos;
+			_position = [position _target, _areasize, _dir] call BIS_fnc_relPos;
 			MEMBER("moveTo", _position);
 		};
+
+		// put mine
+		PUBLIC FUNCTION("", "putMine") {
+			private ["_leader", "_target"];
+			
+			_target = MEMBER("target", nil);
+			_leader = leader MEMBER("group", nil);
+
+			if((_target distance _leader < 10) and (damage _target < 0.9)) then {
+				createVehicle ["ATMine_Range_Ammo", position _target,[], 0, "can_collide"];
+			};
+		};		
 
 		// moveTo position
 		PUBLIC FUNCTION("array", "moveTo") {
@@ -301,11 +339,6 @@
 
 			_position = _this;
 			_group = MEMBER("group", nil);
-			//_wp = _group addWaypoint [_position, 5];
-			//_wp setWaypointPosition [_position, 5];
-			//_wp setWaypointType "HOLD";
-			//_wp setWaypointSpeed "FULL";
-			//_group setCurrentWaypoint _wp;
 
 			{
 				_x domove _position;
@@ -313,7 +346,6 @@
 			}foreach units _group;
 
 			sleep 30;
-			//deletewaypoint _wp;
 		};		
 
 		PUBLIC FUNCTION("", "isCompleteGroup") {
@@ -363,7 +395,7 @@
 			if("isArtillery" call _sector) then { 
 				_artillery = "getArtillery" call _sector;
 				_key = ["getSectorFromPos", position _target] call MEMBER("grid", nil);
-				_sector = ["Get", str(_key)] call global_zone_hashmap;
+				_sector = ["get", str(_key)] call global_zone_hashmap;
 				if(!isnil "_sector") then {
 					["setSuppression", true] call _artillery;
 				} else {

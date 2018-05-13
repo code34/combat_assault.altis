@@ -24,8 +24,8 @@
 		PRIVATE VARIABLE("scalar","ticket");
 		PRIVATE VARIABLE("bool","active");
 
-		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("ticket", 1000);
+		PUBLIC FUNCTION("scalar","constructor") {
+			MEMBER("ticket", _this);
 			MEMBER("active", false);
 		};
 
@@ -61,9 +61,7 @@
 					"flushBDD" call _x;
 				} foreach ("entrySet" call global_scores);
 
-				end = "loose";
-				["end", "client"] call BME_fnc_publicvariable;
-				["epicFail",false,2] call BIS_fnc_endMission;
+				"epicFail" call BIS_fnc_endMissionServer;
 			};
 		};
 
@@ -76,10 +74,14 @@
 			private ["_type", "_credit"];
 
 			_type = _this;
+
 			switch (_type) do { 
 				case "chopper": {
 					_credit = -3;
 				};
+				case "achopper": {
+					_credit = -5;
+				};				
 				case "tank": {
 					_credit = -3;
 				};

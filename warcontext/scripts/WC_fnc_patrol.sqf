@@ -72,11 +72,6 @@
 			};
 
 			_newposition = [position _cible, (50 + random (_areasize)), random 359] call BIS_fnc_relPos;
-			while { (position _cible) distance _newposition < 25 } do {
-				_newposition = [position _cible, (50 + random (_areasize)), random 359] call BIS_fnc_relPos;
-				sleep 0.1;
-			};
-
 			_wp = _group addWaypoint [_newposition, 25];
 			_wp setWaypointPosition [_newposition, 25];
 			_wp setWaypointType "MOVE";
@@ -95,12 +90,7 @@
 			_formationtype = ["COLUMN", "STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE","FILE","DIAMOND"] call BIS_fnc_selectRandom;
 			_group setFormation _formationtype;
 
-			_newposition = [_position, random (_areasize), random 359] call BIS_fnc_relPos;
-			while { (position (leader _group)) distance _newposition < 20 } do {
-				_newposition = [_position, random (_areasize), random 359] call BIS_fnc_relPos;
-				sleep 0.1;
-			};
-
+			_newposition = [_position, (75 + random (_areasize)), random 359] call BIS_fnc_relPos;
 			_wp = _group addWaypoint [_newposition, 25];
 			_wp setWaypointPosition [_newposition, 25];
 			_wp setWaypointType (_wptype call BIS_fnc_selectRandom);

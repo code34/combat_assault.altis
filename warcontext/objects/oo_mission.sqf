@@ -26,14 +26,38 @@
 		PRIVATE VARIABLE("array", "position");
 
 		PUBLIC FUNCTION("array","constructor") {
+			private ["_position", "_random"];
+
 			_position = (_this select 0);
+
 			MEMBER("position", _position);
 
 			if(MEMBER("setTarget", nil)) then {
 				MEMBER("destroy", nil);
 			} else {
-				if(random 1 > 0.97) then {
-					MEMBER("rescue", _position);
+				if(random 1 > 0.9) then {
+					_random = random 1;
+					switch (true) do {
+						case ((_random > 0 ) and (_random < 0.33)) : {
+							MEMBER("rescue", _position);
+						};
+
+						case ((_random > 0.32 ) and (_random < 0.66)) : {
+							MEMBER("rob", _position);
+						};
+
+						case ((_random > 0.65 ) and (_random < 0.81))  : {
+							MEMBER("weaponCache",  _position);
+						};
+
+						case (_random > 0.8 ) : {
+							MEMBER("getMen",  _position);
+						};																	
+
+						default {
+							MEMBER("rescue", _position);
+						};
+					};
 				};
 			};
 			MEMBER("deconstructor", nil);
@@ -77,7 +101,7 @@
 			
 			_target = MEMBER("target", nil);
 			
-			_text= "Destroy: " + getText (configFile >> "CfgVehicles" >> (typeOf _target) >> "DisplayName");
+			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _target) >> "DisplayName");
 			MEMBER("setMarker", _text);
 
 			_mark = MEMBER("marker", nil);
@@ -86,7 +110,7 @@
 			_win = false;
 			
 			_counter = 3600;
-			_text = "getText" call _mark;
+			//_text = "getText" call _mark;
 
 			while { _run } do {
 				if(getdammage _target > 0.7) then {
@@ -103,19 +127,114 @@
 			if(_win)	then {
 				["expandFriendlyAround", MEMBER("position", nil)] call global_controller;
 				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = true;
+				wcmissioncompleted = [true, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			} else {
-				wcmissioncompleted = false;
+				wcmissioncompleted = [false, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 		};
 
-		PUBLIC FUNCTION("array", "rescue") {
-			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list"];
+		PUBLIC FUNCTION("array", "weaponCache") {
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle"];
 
 			_position = _this;
-			_position = [_position, 0, 50, 1, 0, 1, 0 ] call BIS_fnc_findSafePos;
+			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
+			
+			_type = "Box_FIA_Wps_F";
+
+			_vehicle = createVehicle [_type, _position,[], 0, "NONE"];
+			MEMBER("target", _vehicle);
+
+			_counter = 3600;
+			_run = true;
+
+			_text= "Destroy " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			MEMBER("setMarker", _text);	
+			_win = false;
+
+			while { _run } do {
+				if(getdammage _vehicle > 0.7) then {
+					_run = false;
+					_win = true;
+				};
+				if(_position distance _vehicle > 200) then {
+					_run = false;
+					_win = true;
+				};
+				if(_counter < 1) then {
+					_run = false;
+				};
+				_counter = _counter  - 1;
+				sleep 1;
+			};
+
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				while { count crew _vehicle > 0} do {
+					sleep 30;
+				};
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+			deletevehicle _vehicle;
+		};
+
+		PUBLIC FUNCTION("array", "rob") {
+			private ["_type", "_position", "_run", "_counter", "_text", "_win", "_vehicle"];
+
+			_position = _this;
+			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
+			
+			_type = ["O_Truck_02_covered_F", "O_Truck_02_transport_F","O_Truck_03_transport_F","O_Truck_03_covered_F","O_Truck_03_repair_F","O_Truck_03_ammo_F","O_Truck_03_fuel_F"] call BIS_fnc_selectRandom;
+
+			_vehicle = createVehicle [_type, _position,[], 0, "NONE"];
+			MEMBER("target", _vehicle);
+
+			_counter = 3600;
+			_run = true;
+
+			_text= "Rob " + getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
+			MEMBER("setMarker", _text);	
+			_win = false;
+
+			while { _run } do {
+				if(getdammage _vehicle > 0.7) then {
+					_run = false;
+				};
+				if(_position distance _vehicle > 200) then {
+					_run = false;
+					_win = true;
+				};
+				if(_counter < 1) then {
+					_run = false;
+				};
+				_counter = _counter  - 1;
+				sleep 1;
+			};
+
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+				while { count crew _vehicle > 0} do {
+					sleep 30;
+				};
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+			deletevehicle _vehicle;
+		};
+
+		PUBLIC FUNCTION("array", "rescue") {
+			private ["_civil", "_civils", "_group", "_type", "_position", "_unit", "_count", "_list", "_text"];
+
+			_position = _this;
+			_position = [_position, 0, 50, 1, 0, 3, 0 ] call BIS_fnc_findSafePos;
 
 			_civils = ["C_man_1","C_man_p_fugitive_F","C_man_p_fugitive_F_afro","C_man_p_fugitive_F_euro","C_man_p_fugitive_F_asia","C_man_p_beggar_F","C_man_p_beggar_F_afro","C_man_p_beggar_F_euro","C_man_p_beggar_F_asia","C_man_p_scavenger_1_F","C_man_p_scavenger_1_F_afro","C_man_p_scavenger_1_F_euro","C_man_p_scavenger_1_F_asia","C_man_p_scavenger_2_F","C_man_p_scavenger_2_F_afro","C_man_p_scavenger_2_F_euro","C_man_p_scavenger_2_F_asia","C_man_w_farmer_1_F","C_man_w_fisherman_1_F","C_man_w_farmer_2_F","C_man_w_fisherman_2_F","C_man_w_worker_F","C_man_hunter_1_F","C_man_hunter_2_F","C_man_1_1_F","C_man_1_1_F_afro","C_man_1_1_F_euro","C_man_1_1_F_asia","C_man_1_2_F","C_man_1_2_F_afro","C_man_1_2_F_euro","C_man_1_2_F_asia","C_man_1_3_F","C_man_1_3_F_afro","C_man_1_3_F_euro","C_man_1_3_F_asia","C_man_2_1_F","C_man_2_1_F_afro","C_man_2_1_F_euro","C_man_2_1_F_asia","C_man_2_2_F","C_man_2_3_F","C_man_2_3_F_afro","C_man_2_3_F_euro","C_man_2_3_F_asia","C_man_3_1_F","C_man_3_1_F_afro","C_man_3_1_F_euro","C_man_3_1_F_asia","C_man_shepherd_F","C_man_p_scavenger_3_F","C_man_p_scavenger_3_F_afro","C_man_p_scavenger_3_F_euro","C_man_p_scavenger_3_F_asia","C_man_4_1_F","C_man_4_1_F_afro","C_man_4_1_F_euro","C_man_4_1_F_asia","C_man_4_2_F","C_man_4_2_F_afro","C_man_4_2_F_euro","C_man_4_2_F_asia","C_man_4_3_F","C_man_4_3_F_afro","C_man_4_3_F_euro","C_man_4_3_F_asia","C_man_priest_F","C_man_p_shorts_1_F","C_man_p_shorts_1_F_afro","C_man_p_shorts_1_F_euro","C_man_p_shorts_1_F_asia","C_man_p_shorts_2_F","C_man_p_shorts_2_F_afro","C_man_p_shorts_2_F_euro","C_man_p_shorts_2_F_asia","C_man_shorts_1_F","C_man_shorts_1_F_afro","C_man_shorts_1_F_euro","C_man_shorts_1_F_asia","C_man_shorts_2_F","C_man_shorts_2_F_afro","C_man_shorts_2_F_euro","C_man_shorts_2_F_asia","C_man_shorts_3_F","C_man_shorts_3_F_afro","C_man_shorts_3_F_euro","C_man_shorts_3_F_asia","C_man_shorts_4_F","C_man_shorts_4_F_afro","C_man_shorts_4_F_euro","C_man_shorts_4_F_asia","C_man_pilot_F","C_man_polo_1_F","C_man_polo_1_F_afro","C_man_polo_1_F_euro","C_man_polo_1_F_asia","C_man_polo_2_F","C_man_polo_2_F_afro","C_man_polo_2_F_euro","C_man_polo_2_F_asia","C_man_polo_3_F","C_man_polo_3_F_afro","C_man_polo_3_F_euro","C_man_polo_3_F_asia","C_man_polo_4_F","C_man_polo_4_F_afro","C_man_polo_4_F_euro","C_man_polo_4_F_asia","C_man_polo_5_F","C_man_polo_5_F_afro","C_man_polo_5_F_euro","C_man_polo_5_F_asia","C_man_polo_6_F","C_man_polo_6_F_afro","C_man_polo_6_F_euro","C_man_polo_6_F_asia","C_Orestes","C_Nikos"];
 
@@ -131,7 +250,7 @@
 			
 			MEMBER("target", _civil);
 
-			_text = "Rescue: " + name _civil;
+			_text = "Rescue " + name _civil;
 			MEMBER("setMarker", _text);
 
 			_run = true;
@@ -141,17 +260,17 @@
 
 			while { _run } do {
 				_count = count (units (group _civil));
-				_list = nearestObjects [_position, ["MAN"], 5];
-				sleep 0.1;
+				_list = nearestObjects [position _civil, ["MAN"], 5];
+				sleep 0.5;
 				if((count _list > 1) and (_count ==1)) then {
-					_unit = _list select 0;
-					if(isPlayer _unit) then {
-						[_civil] joinSilent group _unit;
-					};
+					{
+						if(isPlayer _x) then {
+							[_civil] joinSilent group _x;
+						};
+					}foreach _list;
 				};
-
 				if(_count > 1) then {
-					_list = nearestObjects [_position, ["MAN"], 100];
+					_list = nearestObjects [position _civil, ["MAN"], 100];
 					sleep 0.5;
 					_count = east countSide _list;
 					if(_count == 0) then {
@@ -159,13 +278,9 @@
 						_win = true;
 					};
 				};
-
 				if(getdammage _civil > 0.9) then {
 					_run = false;
-				};
-				if(_civil distance getmarkerpos "respawn_west" < 300) then {
-					_run = false;
-					_win = true;
+					_win = false;
 				};
 				if(_counter < 1) then {
 					_run = false;
@@ -176,16 +291,89 @@
 
 			if(_win)	then {
 				["setTicket", "mission"] call global_ticket;
-				wcmissioncompleted = true;
+				wcmissioncompleted = [true, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			} else {
-				wcmissioncompleted = false;
+				wcmissioncompleted = [false, _text];
 				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
 			};
 			sleep 60;
 			deletevehicle _civil;
 			deletegroup _group;
 		};
+
+		PRIVATE FUNCTION("array", "getMen") {
+			private ["_alive", "_handle","_type","_position","_group", "_position2", "_run", "_win", "_counter", "_text", "_vehicle"];
+
+			_position = _this;
+	
+			_type = ["BUS_InfSquad_Weapons","BUS_InfSquad", "BUS_InfTeam", "BUS_InfTeam_AA", "BUS_InfTeam_AT", "BUS_ReconTeam"] call BIS_fnc_selectRandom;
+		
+			_position = [_position, 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+			_position2 = getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition");
+			if(_position isequalto _position2)  exitwith {[];};
+		
+			_group = [_position, west, (configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "infantry" >> _type)] call BIS_fnc_spawnGroup;
+			MEMBER("target", leader _group);
+			 _group setBehaviour "STEALTH";
+			 _group setCombatMode "GREEN";
+
+			{
+				_x setskill wcskill;
+				sleep 0.1;
+			}foreach (units _group);			 
+
+			_text = "Support " + rank (leader _group) + " " +name (leader _group);
+			MEMBER("setMarker", _text);
+
+			_run = true;
+			_win = false;
+			
+			_counter = 3600;
+
+			while { _run } do {
+				_list = nearestObjects [position (leader _group), ["MAN"], 300];
+				_list2 = nearestObjects [position (leader _group), ["MAN"], 25];
+				sleep 0.5;
+				if(((east countSide _list) == 0) and ((west countSide _list2) > count (units _group))) then {
+					_run = false;
+					_win = true;
+				};
+
+				_alive = false;
+				{
+					if(alive _x) then {
+						_alive = true;
+					};
+				}foreach (units _group);
+				if(!_alive) then {
+					_run = false;
+					_win = false;
+				};
+				if(_counter < 1) then {
+					_run = false;
+					_win = false;
+				};
+				if((position (leader _group)) distance _position > 300) then {
+					_run = false;
+					_win = true;
+				};
+				_counter = _counter  - 1;
+				sleep 1;
+			};
+			
+			if(_win)	then {
+				["setTicket", "mission"] call global_ticket;
+				wcmissioncompleted = [true, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			} else {
+				wcmissioncompleted = [false, _text];
+				["wcmissioncompleted", "client"] call BME_fnc_publicvariable;
+			};
+			sleep 60;
+			{deletevehicle _x;} foreach  (units _group);
+			deletegroup _group;					
+		};		
 
 
 		PUBLIC FUNCTION("string", "setMarker") {
@@ -198,7 +386,7 @@
 			["setText", _text] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "hd_objective"] spawn _mark;
-			["setSize", [0.5,0.5]] spawn _mark;
+			["setSize", [1,1]] spawn _mark;
 			MEMBER("marker", _mark);
 		};		
 

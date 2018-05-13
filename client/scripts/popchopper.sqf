@@ -1,15 +1,22 @@
 	private ["_list", "_title"];
 
-	_list = (position player) nearEntities [["Man", "Tank"], 250];
-	sleep 0.5;
+	_continue = false;
+	{
+		if(player distance getmarkerpos _x < 300) then {
+			if(getmarkercolor _x == "ColorBlue") then {
+				_continue = true;
+			};
+		};
+	}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
 
-	if(east countSide _list > 0) then {
-		_title = "Vehicle Servicing";
-		_text = "Too near of enemy position";
+	if(!_continue) exitwith {
+		_title = localize "STR_SERVICING_TITLE";
+		_text = localize "STR_SERVICING_NEARAIRPORT";
 		["hint", [_title, _text]] call hud;
-	} else {
-		playervehicle = [name player, position player, "chopper"];
-		["playervehicle", "server"] call BME_fnc_publicvariable;
 	};
+
+	playervehicle = [name player, position player, "chopper"];
+	["playervehicle", "server"] call BME_fnc_publicvariable;
+
 	
 

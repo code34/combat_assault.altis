@@ -1,8 +1,8 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013 Nicolas BOITEUX
+	Copyright (C) 2013-2015 Nicolas BOITEUX
 
-	Real weather for MP GAMES v 1.2 
+	Real weather for MP GAMES v 1.4
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_lastrain", "_rain", "_fog", "_mintime", "_maxtime", "_overcast", "_realtime", "_random", "_skiptime", "_startingdate", "_startingweather", "_timeforecast", "_timeratio", "_timesync", "_wind"];
+	private ["_lastrain", "_rain", "_fog", "_mintime", "_maxtime", "_overcast", "_realtime", "_random","_startingdate", "_startingweather", "_timeforecast", "_daytimeratio", "_nighttimeratio", "_timesync", "_wind"];
 	
 	// Real time vs fast time
 	// true: Real time is more realistic weather conditions change slowly (ideal for persistent game)
@@ -38,19 +38,20 @@
 
 	// If Fastime is on
 	// Ratio 1 real time second for x game time seconds
-	// Default: 1 real second = 3.6 second in game
-	_timeratio = 3.6;
+	// Default: 1 real second = 6 second in game
+	_daytimeratio = 6;
+	_nighttimeratio = 24;
 
 	// send sync data across the network each xxx seconds
-	// 60 seconds by default is a good value
+	// 60 real seconds by default is a good value
 	// shortest time do not improve weather sync
 	_timesync = 60;
 
-	// Mission starting date is 28/010/2014 at 06:45
-	_startingdate = [2014, 10, 28, 6, 45];
+	// Mission starting date is 25/09/2013 at 12:00
+	_startingdate = [2015, 07, 01, 07, 00];
 
 	// Mission starting weather "CLEAR|CLOUDY|RAIN";
-	_startingweather = "CLEAR";
+	_startingweather = ["CLEAR", "CLOUDY", "RAIN"] call BIS_fnc_selectRandom;
 
 	/////////////////////////////////////////////////////////////////
 	// Do not edit below
@@ -58,9 +59,6 @@
 	
 	if(_mintime > _maxtime) exitwith {hint format["Real weather: Max time: %1 can no be higher than Min time: %2", _maxtime, _mintime];};
 	_timeforecast = _mintime;
-
-	// we check the skiptime for 10 seconds
-	_skiptime = _timeratio * 0.000278 * 10;
 
 	setdate _startingdate;
 	switch(toUpper(_startingweather)) do {
@@ -109,23 +107,6 @@
 		};
 	};
 
-	// accelerate time 
-	if!(_realtime) then {
-		[_skiptime] spawn {
-			private["_skiptime"];
-			_skiptime = _this select 0;
-
-			while {true} do {
-				if((date select 3 > 17) and (date select 3 <6)) then {
-					skiptime (_skiptime * 2);
-				} else {
-					skiptime _skiptime;
-				};
-				sleep 10;
-			};
-		};
-	};
-
 	// SERVER SIDE SCRIPT
 	if (!isServer) exitWith{};
 
@@ -140,13 +121,24 @@
 	setdate (wcweather select 4);
 
 	// sync server & client weather & time
-	[_timesync] spawn {
-		private["_timesync"];
-		_timesync = _this select 0;
+	[_realtime, _timesync, _daytimeratio, _nighttimeratio] spawn {
+		private["_realtime", "_timesync", "_daytimeratio", "_nighttimeratio"];
+		
+		_realtime = _this select 0;
+		_timesync = _this select 1;
+		_daytimeratio = _this select 2;
+		_nighttimeratio =  _this select 3;
 
 		while { true } do {
 			wcweather set [4, date];
 			publicvariable "wcweather";
+			if(!_realtime) then { 
+				if((date select 3 > 16) or (date select 3 <6)) then {
+					setTimeMultiplier _nighttimeratio;
+				} else {
+					setTimeMultiplier _daytimeratio;
+				};
+			};
 			sleep _timesync;
 		};
 	};
@@ -157,13 +149,17 @@
 
 	while {true} do {
 		_overcast = random 1;
-		if(_overcast > 0.68) then {
+		if(_overcast > 0.70) then {
 			_rain = random 1;
 		} else {
 			_rain = 0;
 		};
 		if((date select 3 > 2) and (date select 3 <6)) then {
-			_fog = 0.4 + (random 0.6);
+			if(random 1 > 0.75) then {
+				_fog = 0.4 + (random 0.6);
+			} else {
+				_fog = 0.1 + (random 0.3);
+			};
 		} else {
 			if((_lastrain > 0.6) and (_rain < 0.2)) then {
 				_fog = random 0.3;

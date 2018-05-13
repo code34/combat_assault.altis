@@ -1,20 +1,90 @@
-version=12;
+version=53;
+class EditorData
+{
+	moveGridStep=1;
+	angleGridStep=0.2617994;
+	scaleGridStep=1;
+	autoGroupingDist=10;
+	toggles=1;
+	class ItemIDProvider
+	{
+		nextID=51;
+	};
+	class MarkerIDProvider
+	{
+		nextID=12;
+	};
+	class Camera
+	{
+		pos[]={3748.5205,30.375481,12752.324};
+		dir[]={0.85910648,-0.43521711,-0.26931193};
+		up[]={0.41528922,0.90032351,-0.13018444};
+		aside[]={-0.29912609,-4.4761691e-008,-0.95421487};
+	};
+};
+binarizationWanted=0;
+addons[]=
+{
+	"A3_Ui_F",
+	"A3_Missions_F_Beta",
+	"A3_Characters_F"
+};
+class AddonsMetaData
+{
+	class List
+	{
+		items=3;
+		class Item0
+		{
+			className="A3_Ui_F";
+			name="Arma 3 - User Interface";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item1
+		{
+			className="A3_Missions_F_Beta";
+			name="Arma 3 Beta - Playable Content";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item2
+		{
+			className="A3_Characters_F";
+			name="Arma 3 Alpha - Characters and Clothing";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+	};
+};
+randomSeed=4117491;
+class ScenarioData
+{
+	author="Code34";
+};
+class Intro
+{
+	class Intel
+	{
+		timeOfChanges=1800.0002;
+		startWeather=0.30000001;
+		startWind=0.1;
+		startWaves=0.1;
+		forecastWeather=0.30000001;
+		forecastWind=0.1;
+		forecastWaves=0.1;
+		forecastLightnings=0.1;
+		year=2035;
+		month=6;
+		day=24;
+		hour=12;
+		minute=0;
+		startFogDecay=0.013;
+		forecastFogDecay=0.013;
+	};
+};
 class Mission
 {
-	addOns[]=
-	{
-		"A3_Characters_F_BLUFOR",
-		"a3_characters_f",
-		"a3_map_altis",
-		"A3_Air_F_Beta_Heli_Transport_01"
-	};
-	addOnsAuto[]=
-	{
-		"A3_Characters_F_BLUFOR",
-		"a3_characters_f",
-		"a3_map_altis"
-	};
-	randomSeed=12604725;
 	class Intel
 	{
 		briefingName="COMBAT ASSAULT 1.00 - MANW RELEASE";
@@ -38,421 +108,29 @@ class Mission
 		startFogDecay=0.013;
 		forecastFogDecay=0.013;
 	};
-	class Groups
+	class Entities
 	{
-		items=7;
+		items=19;
 		class Item0
 		{
-			side="WEST";
-			class Vehicles
-			{
-				items=6;
-				class Item0
-				{
-					position[]={13555.041,16.519388,12091.936};
-					id=0;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item1
-				{
-					position[]={13546.732,16.596031,12090.885};
-					id=1;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item2
-				{
-					position[]={13549.929,16.259077,12098.946};
-					id=2;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item3
-				{
-					position[]={13563.639,16.28269,12095.11};
-					id=3;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item4
-				{
-					position[]={13560.036,16.164936,12085.06};
-					id=4;
-					side="WEST";
-					vehicle="B_soldier_exp_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item5
-				{
-					position[]={13551.845,16.711176,12084.712};
-					id=5;
-					side="WEST";
-					vehicle="B_medic_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
-				};
-			};
-		};
-		class Item1
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=6;
-				class Item0
-				{
-					position[]={13562.374,15.241214,12112.521};
-					id=6;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item1
-				{
-					position[]={13568.515,15.127953,12117.288};
-					id=7;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item2
-				{
-					position[]={13559.305,14.152425,12119.088};
-					id=8;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item3
-				{
-					position[]={13568.196,15.934416,12109.242};
-					id=9;
-					side="WEST";
-					vehicle="B_soldier_exp_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item4
-				{
-					position[]={13554.752,14.953021,12111.889};
-					id=10;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item5
-				{
-					position[]={13560.786,15.495601,12106.49};
-					id=11;
-					side="WEST";
-					vehicle="B_medic_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
-				};
-			};
-		};
-		class Item2
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=6;
-				class Item0
-				{
-					position[]={13583.547,14.442578,12099.049};
-					id=12;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item1
-				{
-					position[]={13589.688,13.082727,12103.815};
-					id=13;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item2
-				{
-					position[]={13580.478,15.389274,12105.615};
-					id=14;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item3
-				{
-					position[]={13589.369,12.774197,12095.77};
-					id=15;
-					side="WEST";
-					vehicle="B_soldier_exp_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item4
-				{
-					position[]={13575.925,16.123266,12098.416};
-					id=16;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item5
-				{
-					position[]={13581.959,14.410699,12093.018};
-					id=17;
-					side="WEST";
-					vehicle="B_medic_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
-				};
-			};
-		};
-		class Item3
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=6;
-				class Item0
-				{
-					position[]={13539.646,13.353453,12117.124};
-					id=18;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item1
-				{
-					position[]={13545.786,12.659101,12121.891};
-					id=19;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item2
-				{
-					position[]={13536.576,11.395371,12123.69};
-					id=20;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item3
-				{
-					position[]={13545.468,14.435697,12113.845};
-					id=21;
-					side="WEST";
-					vehicle="B_soldier_exp_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item4
-				{
-					position[]={13532.023,12.739202,12116.491};
-					id=22;
-					side="WEST";
-					vehicle="B_Soldier_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""soldier""];";
-				};
-				class Item5
-				{
-					position[]={13538.058,14.319768,12111.093};
-					id=23;
-					side="WEST";
-					vehicle="B_medic_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""medic""];";
-				};
-			};
-		};
-		class Item4
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=3;
-				class Item0
-				{
-					position[]={13592.218,14.82205,12071.161};
-					id=24;
-					side="WEST";
-					vehicle="B_crew_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""tankaa""];";
-					description="Tank Anti Air";
-				};
-				class Item1
-				{
-					position[]={13596.087,14.054802,12067.131};
-					id=25;
-					side="WEST";
-					vehicle="B_crew_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""tank""];";
-					description="Tank - Offensive";
-				};
-				class Item2
-				{
-					position[]={13589.106,15.211679,12074.613};
-					id=26;
-					side="WEST";
-					vehicle="B_crew_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""tank""];";
-					description="Tank - Offensive";
-				};
-			};
-		};
-		class Item5
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=3;
-				class Item0
-				{
-					position[]={13567.505,12.809404,12065.875};
-					id=27;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""bomber""];";
-					description="Bomber - Plane";
-				};
-				class Item1
-				{
-					position[]={13564.999,13.403589,12068.586};
-					id=28;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""fighter""];";
-					description="Fighter - Plane";
-				};
-				class Item2
-				{
-					position[]={13571.369,12.940662,12062.887};
-					id=29;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""fighter""];";
-					description="Fighter - Plane";
-				};
-			};
-		};
-		class Item6
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=2;
-				class Item0
-				{
-					position[]={13553.7,11.980171,12053.862};
-					special="NONE";
-					id=30;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.60000002;
-					init="this setvariable [""type"", ""chopper""];";
-					description="Chopper - transport";
-				};
-				class Item1
-				{
-					position[]={13550.002,11.521226,12057.56};
-					special="NONE";
-					id=31;
-					side="WEST";
-					vehicle="B_Pilot_F";
-					player="PLAY CDG";
-					skill=0.60000002;
-					init="this setvariable [""type"", ""chopper""];";
-					description="Chopper - transport";
-				};
-			};
-		};
-	};
-	class Markers
-	{
-		items=12;
-		class Item0
-		{
+			dataType="Marker";
 			position[]={13558.62,16.108418,12100.498};
 			name="respawn_west";
 			type="Empty";
+			id=0;
 		};
 		class Item1
 		{
+			dataType="Marker";
 			position[]={13563.753,16.284613,12094.836};
 			name="base_lamp";
 			type="Empty";
 			colorName="Color4_FD_F";
+			id=1;
 		};
 		class Item2
 		{
+			dataType="Marker";
 			position[]={11529.202,22.994894,11672.126};
 			name="crocodile";
 			text="crocodile";
@@ -462,9 +140,11 @@ class Mission
 			fillName="FDiagonal";
 			a=300;
 			b=300;
+			id=2;
 		};
 		class Item3
 		{
+			dataType="Marker";
 			position[]={14881.773,17.929546,16549.014};
 			name="coconuts";
 			text="coconuts";
@@ -474,23 +154,29 @@ class Mission
 			fillName="FDiagonal";
 			a=300;
 			b=300;
+			id=3;
 		};
 		class Item4
 		{
+			dataType="Marker";
 			position[]={11526.13,23.053497,11649.581};
 			name="CROCODILE AIRPORT";
 			text="CROCODILE AIRPORT";
 			type="mil_pickup";
+			id=4;
 		};
 		class Item5
 		{
+			dataType="Marker";
 			position[]={14908.812,18.166849,16542.092};
 			name="COCONUTS AIRPORT";
 			text="COCONUTS AIRPORT";
 			type="mil_pickup";
+			id=5;
 		};
 		class Item6
 		{
+			dataType="Marker";
 			position[]={9173.4424,16.552162,21523.377};
 			name="liberty";
 			text="liberty";
@@ -500,16 +186,20 @@ class Mission
 			fillName="FDiagonal";
 			a=300;
 			b=300;
+			id=6;
 		};
 		class Item7
 		{
+			dataType="Marker";
 			position[]={9170.3701,16.590117,21500.834};
 			name="LIBERTY AIRPORT";
 			text="LIBERTY AIRPORT";
 			type="mil_pickup";
+			id=7;
 		};
 		class Item8
 		{
+			dataType="Marker";
 			position[]={26972.115,21.095276,24730.303};
 			name="hurricane";
 			text="hurricane";
@@ -519,16 +209,20 @@ class Mission
 			fillName="FDiagonal";
 			a=300;
 			b=300;
+			id=8;
 		};
 		class Item9
 		{
+			dataType="Marker";
 			position[]={26999.152,21.393234,24723.381};
 			name="HURRICANE AIRPORT";
 			text="HURRICANE AIRPORT";
 			type="mil_pickup";
+			id=9;
 		};
 		class Item10
 		{
+			dataType="Marker";
 			position[]={21091.389,20.704063,7334.8657};
 			name="viking";
 			text="viking";
@@ -538,27 +232,733 @@ class Mission
 			fillName="FDiagonal";
 			a=300;
 			b=300;
+			id=10;
 		};
 		class Item11
 		{
+			dataType="Marker";
 			position[]={21118.426,20.739408,7327.9438};
 			name="VIKING AIRPORT";
 			text="VIKING AIRPORT";
 			type="mil_pickup";
+			id=11;
+		};
+		class Item12
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=6;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13555.041,16.517729,12092.035};
+						angles[]={0.062584557,0,6.2206011};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=13;
+					type="B_Soldier_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13560.041,16.232172,12087.085};
+						angles[]={6.2498641,0,6.2725158};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=14;
+					type="B_Soldier_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13550.041,16.693083,12087.085};
+						angles[]={6.2698488,0,0.027993103};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=15;
+					type="B_Soldier_F";
+				};
+				class Item3
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13565.041,15.940394,12082.085};
+						angles[]={6.0973544,0,6.272521};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=16;
+					type="B_Soldier_F";
+					atlOffset=-9.5367432e-007;
+				};
+				class Item4
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13545.041,17.200562,12082.085};
+						angles[]={6.1545668,0,6.2631865};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=17;
+					type="B_soldier_exp_F";
+				};
+				class Item5
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13570.041,15.045393,12077.085};
+						angles[]={6.0973544,0,0.027993103};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""medic""];";
+						isPlayable=1;
+					};
+					id=18;
+					type="B_medic_F";
+					atlOffset=-9.5367432e-007;
+				};
+			};
+			class Attributes
+			{
+			};
+			id=12;
+		};
+		class Item13
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=6;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13562.374,15.236677,12112.621};
+						angles[]={0.11811461,0,0.10230836};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=20;
+					type="B_Soldier_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13567.374,15.999207,12107.671};
+						angles[]={0.049293593,0,0.10230836};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=21;
+					type="B_Soldier_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13557.374,15.307377,12107.671};
+						angles[]={0.15214851,0,6.2192731};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=22;
+					type="B_Soldier_F";
+				};
+				class Item3
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13572.374,16.224525,12102.671};
+						angles[]={0.02399601,0,0.0053377044};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=23;
+					type="B_soldier_exp_F";
+					atlOffset=1.9073486e-006;
+				};
+				class Item4
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13552.374,16.120087,12102.671};
+						angles[]={0.041309625,0,6.2805333};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=24;
+					type="B_Soldier_F";
+					atlOffset=1.9073486e-006;
+				};
+				class Item5
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13577.374,15.807546,12097.671};
+						angles[]={0.02399601,0,6.0552182};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""medic""];";
+						isPlayable=1;
+					};
+					id=25;
+					type="B_medic_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=19;
+		};
+		class Item14
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=6;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13583.547,14.447374,12099.148};
+						angles[]={6.2166171,0,6.0213385};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=27;
+					type="B_Soldier_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13588.547,12.991647,12094.198};
+						angles[]={6.2805333,0,6.0213385};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=28;
+					type="B_Soldier_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13578.547,15.288185,12094.198};
+						angles[]={6.2086568,0,6.0552182};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=29;
+					type="B_Soldier_F";
+				};
+				class Item3
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13593.547,12.212603,12089.198};
+						angles[]={0.043971907,0,6.1663861};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=30;
+					type="B_soldier_exp_F";
+				};
+				class Item4
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13573.547,15.726236,12089.198};
+						angles[]={6.2206001,0,6.2020307};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=31;
+					type="B_Soldier_F";
+					atlOffset=-9.5367432e-007;
+				};
+				class Item5
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13598.547,11.759417,12084.198};
+						angles[]={0.043970551,0,6.0857897};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""medic""];";
+						isPlayable=1;
+					};
+					id=32;
+					type="B_medic_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=26;
+		};
+		class Item15
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=6;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13539.646,13.345035,12117.224};
+						angles[]={0.19483002,0,0.086450629};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=34;
+					type="B_Soldier_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13544.646,14.749024,12112.273};
+						angles[]={0.17292239,0,0.086450629};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=35;
+					type="B_Soldier_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13534.646,13.723957,12112.273};
+						angles[]={0.11021867,0,0.13517068};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=36;
+					type="B_Soldier_F";
+				};
+				class Item3
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13549.646,15.64062,12107.273};
+						angles[]={0.17292239,0,6.2805109};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=37;
+					type="B_soldier_exp_F";
+				};
+				class Item4
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13529.646,13.056607,12107.273};
+						angles[]={0.012000273,0,0.1909772};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""soldier""];";
+						isPlayable=1;
+					};
+					id=38;
+					type="B_Soldier_F";
+				};
+				class Item5
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13554.646,16.139038,12102.273};
+						angles[]={0.041309625,0,0.0013372133};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""medic""];";
+						isPlayable=1;
+					};
+					id=39;
+					type="B_medic_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=33;
+		};
+		class Item16
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=3;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13592.218,14.819007,12071.261};
+						angles[]={0.090419561,0,6.0040054};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""tankaa""];";
+						description="Tank Anti Air";
+						isPlayable=1;
+					};
+					id=41;
+					type="B_crew_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13597.218,13.755044,12066.311};
+						angles[]={0.02666023,0,6.0040054};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""tank""];";
+						description="Tank - Offensive";
+						isPlayable=1;
+					};
+					id=42;
+					type="B_crew_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13587.218,15.235364,12066.311};
+						angles[]={6.042604,0,0.090419561};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""tank""];";
+						description="Tank - Offensive";
+						isPlayable=1;
+					};
+					id=43;
+					type="B_crew_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=40;
+		};
+		class Item17
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=3;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13567.505,12.819413,12065.975};
+						angles[]={6.111557,0,0.16644555};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""bomber""];";
+						description="Bomber - Plane";
+						isPlayable=1;
+					};
+					id=45;
+					type="B_Pilot_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13572.505,12.801317,12061.024};
+						angles[]={6.111557,0,0.16644555};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""fighter""];";
+						description="Fighter - Plane";
+						isPlayable=1;
+					};
+					id=46;
+					type="B_Pilot_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13562.505,11.605648,12061.024};
+						angles[]={5.9844055,0,0.097027354};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""fighter""];";
+						description="Fighter - Plane";
+						isPlayable=1;
+					};
+					id=47;
+					type="B_Pilot_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=44;
+		};
+		class Item18
+		{
+			dataType="Group";
+			side="West";
+			class Entities
+			{
+				items=2;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13553.7,11.98161,12053.912};
+						angles[]={0.19483033,0,6.2658529};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""chopper""];";
+						description="Chopper - transport";
+						isPlayable=1;
+					};
+					id=49;
+					type="B_Pilot_F";
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={13550.002,11.522665,12057.609};
+						angles[]={0.19483033,0,6.183517};
+					};
+					side="West";
+					flags=4;
+					class Attributes
+					{
+						skill=0.60000002;
+						init="this setvariable [""type"", ""chopper""];";
+						description="Chopper - transport";
+						isPlayable=1;
+					};
+					id=50;
+					type="B_Pilot_F";
+				};
+			};
+			class Attributes
+			{
+			};
+			id=48;
 		};
 	};
 };
-class Intro
+class OutroLoose
 {
-	addOns[]=
-	{
-		"a3_map_altis"
-	};
-	addOnsAuto[]=
-	{
-		"a3_map_altis"
-	};
-	randomSeed=14797468;
 	class Intel
 	{
 		timeOfChanges=1800.0002;
@@ -580,45 +980,6 @@ class Intro
 };
 class OutroWin
 {
-	addOns[]=
-	{
-		"a3_map_altis"
-	};
-	addOnsAuto[]=
-	{
-		"a3_map_altis"
-	};
-	randomSeed=16237839;
-	class Intel
-	{
-		timeOfChanges=1800.0002;
-		startWeather=0.30000001;
-		startWind=0.1;
-		startWaves=0.1;
-		forecastWeather=0.30000001;
-		forecastWind=0.1;
-		forecastWaves=0.1;
-		forecastLightnings=0.1;
-		year=2035;
-		month=6;
-		day=24;
-		hour=12;
-		minute=0;
-		startFogDecay=0.013;
-		forecastFogDecay=0.013;
-	};
-};
-class OutroLoose
-{
-	addOns[]=
-	{
-		"a3_map_altis"
-	};
-	addOnsAuto[]=
-	{
-		"a3_map_altis"
-	};
-	randomSeed=6194945;
 	class Intel
 	{
 		timeOfChanges=1800.0002;

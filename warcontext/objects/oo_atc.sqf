@@ -48,7 +48,7 @@
 				_sector = ["getSectorFromPos", getmarkerpos _x] call MEMBER("grid", nil);
 				_around = ["getSectorAround", _sector] call MEMBER("grid", nil);
 				{
-					_sector = ["Get", str(_x)] call global_zone_hashmap;
+					_sector = ["get", str(_x)] call global_zone_hashmap;
 					if(!isnil "_sector") then {
 						if("getState" call _sector < 2) then {
 							_enemies = true;

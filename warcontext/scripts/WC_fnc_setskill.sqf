@@ -23,101 +23,121 @@
 	_unit 	= _this select 0;
 	_type 	= _this select 1; 
 
-	switch (_type) do {
-		case "OIA_InfSquad_Weapons":{
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.6];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
-		};
-			
-		case "OIA_InfSquad": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
+	switch (wclevel) do {
+		case "novice": {
+			_unit setskill (random wcskill);
 		};
 
-		case "OIA_InfTeam": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
+		case "recruit": {
+			_unit setskill (wcskill + (random 0.1));
 		};
 
-		case "OIA_InfTeam_AA": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.7];
-			_unit setskill ["spotTime", 0.7];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.5];
-			_unit setskill ["commanding", 1];	
+		case "veteran": {
+			_unit setskill (wcskill + (random 0.2));
 		};
 
-		case "OIA_InfTeam_AT": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.6];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.7];
-			_unit setskill ["spotTime", 0.6];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.5];
-			_unit setskill ["commanding", 1];
-		};
+		case "cheated":{
+			switch (_type) do {
+				case "OIA_InfSquad_Weapons":{
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", 0.6];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
+					
+				case "OIA_InfSquad": {
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", wcskill + round(random 0.4)];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
 
-		case "OI_SniperTeam": {
-			_unit setskill ["aimingAccuracy", 0.8];
-			_unit setskill ["aimingShake", 0.8];
-			_unit setskill ["aimingSpeed", 0.7];
-			_unit setskill ["endurance", 0.5];
-			_unit setskill ["spotDistance", 1];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.3];
-			_unit setskill ["commanding", 1];	
-		};
+				case "OIA_InfTeam": {
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", wcskill + round(random 0.4)];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
 
-		case "OI_ReconTeam": {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.8];
-			_unit setskill ["aimingSpeed", 0.6];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.8];
-			_unit setskill ["commanding", 1];	
-		};
+				case "OIA_InfTeam_AA": {
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", wcskill + round(random 0.4)];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.7];
+					_unit setskill ["spotTime", 0.7];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.5];
+					_unit setskill ["commanding", 1];	
+				};
+
+				case "OIA_InfTeam_AT": {
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", wcskill + round(random 0.4)];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.7];
+					_unit setskill ["spotTime", 0.6];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.5];
+					_unit setskill ["commanding", 1];
+				};
+
+				case "OI_SniperTeam": {
+					_unit setskill ["aimingAccuracy", 0.8];
+					_unit setskill ["aimingShake", 0.8];
+					_unit setskill ["aimingSpeed", 0.7];
+					_unit setskill ["endurance", 0.5];
+					_unit setskill ["spotDistance", 1];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.3];
+					_unit setskill ["commanding", 1];	
+				};
+
+				case "OI_ReconTeam": {
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", 0.6];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.8];
+					_unit setskill ["commanding", 1];	
+				};
+
+				default {
+					_unit setskill ["aimingAccuracy", wcskill + round(random 0.4)];
+					_unit setskill ["aimingShake", wcskill + round(random 0.4)];
+					_unit setskill ["aimingSpeed", wcskill + round(random 0.4)];
+					_unit setskill ["endurance", 0.8];
+					_unit setskill ["spotDistance", 0.5];
+					_unit setskill ["spotTime", 0.9];
+					_unit setskill ["courage", 1];
+					_unit setskill ["reloadSpeed", 0.7];
+					_unit setskill ["commanding", 1];	
+				};
+			};
+		};	
 
 		default {
-			_unit setskill ["aimingAccuracy", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingShake", 0.2 + round(random (wcskill))];
-			_unit setskill ["aimingSpeed", 0.2 + round(random (wcskill))];
-			_unit setskill ["endurance", 0.8];
-			_unit setskill ["spotDistance", 0.5];
-			_unit setskill ["spotTime", 0.9];
-			_unit setskill ["courage", 1];
-			_unit setskill ["reloadSpeed", 0.7];
-			_unit setskill ["commanding", 1];	
+			_unit setskill (random wcskill);
 		};
 	};
 
@@ -150,6 +170,43 @@
 				_x reveal (_this select 3);
 			}foreach (units (group (_this select 0)));
 		};
+	}];
+
+	_unit addeventhandler ['Killed', {
+		private ["_unit", "_killer", "_name", "_score", "_distance", "_weapon"];
+
+		_unit = _this select 0;
+		_killer = _this select 1;
+		_weapon = currentWeapon _killer;
+
+		_distance = _unit distance _killer;
+		_uid = getPlayerUID _killer;
+		
+		_name = "";
+		
+		if(_killer isKindOf "Man") then {
+			_name = name _killer;
+			if(_name == "Error: No unit") then { _name = "";} ;
+		} else {
+			_name= getText (configFile >> "CfgVehicles" >> (typeOf _killer) >> "DisplayName");
+			if(_unit isKindOf "Man") then {
+				_distance = 1000;
+			};
+		};
+
+		if(_name != "") then {
+			if!( _unit isequalto _killer) then {
+					_score = ["get", _uid] call global_scores;
+					if(isnil "_score") then {
+						_score = ["new", [_uid]] call OO_SCORE;
+						["put", [_uid, _score]] call global_scores;
+					};
+				["setScore", _distance] call _score;
+			};
+		};
+
+		wcaideath = [name  _unit, _name, _weapon];
+		["wcaideath", "client"] call BME_fnc_publicvariable;
 	}];
 
 	true;

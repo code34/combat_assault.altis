@@ -28,30 +28,122 @@
 	};
 	
 	BME_netcode_vehicleavalaible = {
-		["hint", ["Vehicle servicing", "Vehicle is not yet avalaible"]] call hud;
+		private ["_alive"];
+		_alive = _this select 0;
+		["hint", ["Vehicle servicing", format ["Vehicle will be avalaible in %1 seconds", _alive]]] call hud;
+	};
+
+	BME_netcode_wcconvoystart = {
+		private ["_expand", "_message"];
+		
+		_message = "<t color='#FF9933'>An Enemy convoy</t> has been discovered<br/>";
+		rollmessage = rollmessage + [_message];
+		_message = "<t align='center'><t color='#FF9933'>An Enemy convoy</t> has been discovered</t>";
+		killzone = killzone + [_message];
+	};	
+
+	BME_netcode_wcconvoy = {
+		private ["_expand", "_message", "_message2"];
+		
+		_expand = _this select 0;
+		if(_expand) then {
+			_message = "<t color='#FF9933'>Enemy convoy</t> - expanding done<br/>";
+			_message2 = "<t align='center'><t color='#FF9933'>Enemy convoy</t> - expanding done</t>";
+		} else {
+			_message = "<t color='#FF9933'>Enemy Convoy</t> - expanding failed<br/>";
+			_message2 = "<t align='center'><t color='#FF9933'>Enemy Convoy</t> - expanding failed</t>";
+		};
+		rollmessage = rollmessage + [_message];
+		killzone = killzone + [_message2];
+	};
+
+	BME_netcode_vehiclegetin = {
+		private ["_vehicle"];
+		_vehicle = _this select 0;
+		player moveindriver _vehicle;
+		waituntil {speed _vehicle > 60};
+		_reload = ["new", _vehicle] call OO_RELOADPLANE;
+		"start" spawn _reload;
+	};
+
+	BME_netcode_wcaideath = {
+		private ["_unit", "_killer", "_message", "_weapon", "_displayname"];
+		
+		_array = _this select 0;
+		_unit = _array select 0;
+		_killer = _array select 1;
+		_weapon = _array select 2;
+		_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
+
+		if!(_killer == "") then {
+			_message = "<t color='#FF9933'>"+_killer + "</t>  ["+_displayname+"] <t color='#FF9933'>"+_unit+"</t><br/>";
+		} else {
+			_message = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
+		};
+		rollmessage = rollmessage + [_message];		
 	};
 
 	BME_netcode_wcdeathlistner = {
-		private ["_player", "_killer", "_message"];
+		private ["_unit", "_killer", "_message", "_message2", "_displayname", "_weapon"];
 		_array = _this select 0;
-		_player = _array select 0;
+		_unit = _array select 0;
 		_killer = _array select 2;
+		_weapon = _array select 3;
 
 		if!(_killer == "") then {
-			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed by <t color='#FF9933'>"+_killer+"</t></t>";
+			if(_unit == _killer) then {
+				_message = [
+					"was killed by a flying melon", 
+					"was killed like a jackass", 
+					"was killed in total humiliation", 
+					"was killed like a moron", 
+					"was killed like a geek", 
+					"was killed like an hero", 
+					"was killed by masturbation", 
+					"was killed jumping over his weapon", 
+					"was killed by internal explosion", 
+					"was killed by a dancing cow", 
+					"was killed by a zombie", 
+					"was killed by a brain dammage", 
+					"was killed. WTF ????", 
+					"was killed by a dubstep song", 
+					"was killed by Altis life outage", 
+					"was killed over feeding",  
+					"was killed. Good lesson", 
+					"was killed drinking again", 
+					"was killed by his weapon"
+				] call BIS_fnc_selectRandom;
+				_message2 = "<t color='#FF9933'>"+_unit + "</t> "+_message+"<br/>";
+				_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> "+_message + "</t>";
+			} else {
+				_displayname =  (getText (configfile >> "CfgWeapons" >> _weapon >> "displayName"));
+				if(_displayname == "") then {
+					_displayname = "was killed";
+				} else {
+					_displayname = "["+_displayname+"]";
+				};
+				_message = "<t align='center'><t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t></t><br/>";
+				_message2 = "<t color='#FF9933'>"+_killer + "</t>  "+_displayname+" <t color='#FF9933'>"+_unit+"</t><br/>";			
+			};
 		} else {
-			_message = "<t align='center'><t color='#FF9933'>"+_player + "</t> was killed</t>";
+			_message = "<t align='center'><t color='#FF9933'>"+_unit + "</t> was killed</t>";
+			_message2 = "<t color='#FF9933'>"+_unit + "</t> was killed<br/>";
 		};
 		killzone = killzone + [_message];
+		rollmessage = rollmessage + [_message2];
 	};
 
 	BME_netcode_wcmissioncompleted = {
-		private ["_message", "_win"];
-		_win = _this select 0;
+		private ["_array", "_message", "_win", "_text"];
+		_array = _this select 0;
+		
+		_win = _array select 0;
+		_text = _array select 1;
+
 		if(_win) then {
-			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t></t>";
+			_message = "<t align='center'>Mission <t color='#FF9933'>Completed</t>: "+_text+"</t><br/>";
 		} else {
-			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t></t>";
+			_message = "<t align='center'>Mission <t color='#ff0000'>Failed</t>: "+_text+"</t><br/>";
 		};
 		killzone = killzone + [_message];
 	};
@@ -62,6 +154,7 @@
 		_ticket = _value select 0;
 		_type = _value select 1;
 		_credit = _value select 2;
+		wcticket = _ticket;
 
 		_index = round ((random 30) + 87);
 		_entry = configFile >> "CfgMusic";
@@ -95,9 +188,13 @@
 	};
 
 	BME_netcode_playerstats = {
-		private ["_player", "_stats", "_done", "_value"];
-
-		mystats = (_this select 0);
+		private ["_score", "_rank"];
+		_score = _this select 0;
+		["addScore", _score] call scoreboard;
+		_rank = ["getRankText", ((_score select 1) select 0)] call scoreboard;
+		{
+			if((_score select 0) == name _x) then { _x setrank _rank; };
+		}foreach alldead;
 	};
 
 	BME_netcode_end = {

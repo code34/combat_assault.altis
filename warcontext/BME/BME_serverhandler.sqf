@@ -28,7 +28,7 @@
 	};
 
 	BME_netcode_server_playervehicle = {
-		private ["_array", "_vehicle", "_name", "_position", "_netid", "_type"];
+		private ["_alive", "_array", "_vehicle", "_name", "_position", "_netid", "_type", "_object", "_para"];
 		
 		_array = _this select 0;
 		_name = _array select 0;
@@ -45,33 +45,67 @@
 		switch (_type) do {
 			case "chopper" : {
 				_type = "B_Heli_Transport_01_camo_F";
+				_para = false;
 			};
+
+			case "achopper" : {
+				_type = "B_Heli_Attack_01_F";
+				_para = false;
+			};
+
+			case "bomber" : {
+				_type = "B_Plane_CAS_01_F";
+				_para = false;
+			};
+
+			case "fighter" : {
+				_type = "I_Plane_Fighter_03_AA_F";
+				_para = false;
+			};			
 
 			case "tank" : {
 				_type = "B_MBT_01_cannon_F";
+				_para = true;
 			};
 
 			case "tankaa" : {
 				_type = "B_APC_Tracked_01_AA_F";
+				_para = true;
+			};
+
+			case "ammobox" : {
+				_type = "B_supplyCrate_F";
+				_para = true;
 			};
 
 			default {
 				_type = "B_MBT_01_cannon_F";
+				_para = true;
 			};
 		};
-		
+
 		_vehicle = ["get", _name] call global_vehicles;
 		if(isnil "_vehicle") then {
-			_vehicle = ["new", [_type]] call OO_PLAYERVEHICLE;
-			["Put", [_name, _vehicle]] call global_vehicles;
+			_vehicle = ["new", [_type, _para]] call OO_PLAYERVEHICLE;
+			["put", [_name, _vehicle]] call global_vehicles;
 		} else {
 			["setType", _type] call _vehicle;
+			["setPara", _para] call _vehicle;
 		};
-		_vehicle = ["pop", [_position, _netid, _name]] spawn _vehicle;
+
+		_alive = "getAlive" call _vehicle;
+		
+		if(_alive > 0) then {
+			vehicleavalaible = _alive;
+			["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
+		} else {
+			_object = ["pop", [_position, _netid, _name]] call _vehicle;
+			"checkAlive" spawn _vehicle;
+		};
 	};		
 
 	BME_netcode_server_wcdeath = {
-		private ["_array", "_name", "_player", "_ratio", "_score", "_death", "_playertype", "_uid", "_killer", "_points", "_netid"];
+		private ["_array", "_name", "_player", "_gameranking", "_serverranking","_score", "_death", "_playertype", "_uid", "_killer", "_points", "_netid", "_rank", "_gamescore", "_matches"];
 
 		_array = _this select 0;
 		_name = _array select 0;
@@ -81,34 +115,45 @@
 		wcdeathlistner = _array;
 		["wcdeathlistner", "client"] call BME_fnc_publicvariable;
 
+		if(_playertype == "ammobox") then {_playertype = "soldier";};
 		["setTicket", _playertype] call global_ticket;
 
+		_netid = -1;
 		{	
 			if(_name == name _x) then {
 				_uid = getPlayerUID _x;
 				_points = score _x;
 				_netid = owner _x;	
+				_player = _x;
 			};
 			sleep 0.0001;
 		}forEach (allDead + playableUnits);
+		if(_netid == -1) exitwith {};
 
 		_score = ["get", _uid] call global_scores;
 		if(isnil "_score") then {
 			_score = ["new", [_uid]] call OO_SCORE;
-			["Put", [_uid, _score]] call global_scores;
+			["put", [_uid, _score]] call global_scores;
 		};
 
 		"addDeath" call _score;
-		["setScore", _points] call _score;
-		_ratio = "getRatio" call _score;
-		_number = "getNumber" call _score;
-		_globalratio = "getGlobalRatio" call _score;
-		playerstats = [_ratio, _globalratio, _number];
-		["playerstats", "client", _netid] call BME_fnc_publicvariable;
+		["setKill", _points] call _score;
+
+		_gameranking = "getGameRanking" call _score;
+		_serverranking = "getServerRanking" call _score;
+		
+		_matches = "getMatches" call _score;
+		_gamescore = "getScore" call _score;
+
+		_rank = ["getRank", _gameranking] call _score;
+		_player setrank _rank;
+
+		playerstats = [_name, [_gameranking, _serverranking, _matches, _gamescore]];
+		["playerstats", "client"] call BME_fnc_publicvariable;
 	};		
 
 	BME_netcode_server_wcteleport = {
-		private ["_name", "_playerid", "_position", "_grid", "_sector", "_result", "_around"];
+		private ["_name", "_playerid", "_position", "_sector", "_result", "_around"];
 
 		_wcteleport = _this select 0;
 		_name = _wcteleport select 0;
@@ -130,11 +175,10 @@
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
 		};
 
-		_grid = ["new", [31000,31000,100,100]] call OO_GRID;
-		_sector = ["getSectorFromPos", _position] call _grid;
+		_sector = ["getSectorFromPos", _position] call global_grid;
+		_pos = ["getPosFromSector", _sector] call global_grid;
 
-		_pos = ["getPosFromSector", _sector] call _grid;
-		_list = _pos nearEntities [["Man"], 50];
+		_list = _pos nearEntities [["Man"], 100];
 		if(east countSide _list > 0) exitwith {
 			wcteleportack = [0,0];
 			["wcteleportack", "client", _playerid] call BME_fnc_publicvariable;
@@ -142,7 +186,7 @@
 
 		_result = _position;
 
-		_around = ["getSectorAround", _sector] call _grid;
+		_around = ["getSectorAround", _sector] call global_grid;
 		{
 			_sector = ["Get", str(_x)] call global_zone_hashmap;
 			if(!isnil "_sector") then {

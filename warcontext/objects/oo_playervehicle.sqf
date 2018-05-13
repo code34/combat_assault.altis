@@ -24,34 +24,45 @@
 		PRIVATE VARIABLE("string","type");
 		PRIVATE VARIABLE("object","vehicle");
 		PRIVATE VARIABLE("code","marker");
-		PRIVATE VARIABLE("bool","alive");
+		PRIVATE VARIABLE("scalar","alive");
+		PRIVATE VARIABLE("bool","para");
 		
 		PUBLIC FUNCTION("array","constructor") {
-			private ["_type"];			
-			_type = _this select 0;
-			MEMBER("type", _type);
+			MEMBER("type", _this select 0);
+			MEMBER("para", _this select 1);
 			MEMBER("vehicle", objnull);
-			MEMBER("alive", false);
+			MEMBER("alive", 0);
 		};
 
 		PUBLIC FUNCTION("","getType") FUNC_GETVAR("type");
+		PUBLIC FUNCTION("","getAlive") FUNC_GETVAR("alive");
 
 		PUBLIC FUNCTION("string", "setType") {
 			MEMBER("type", _this);
 		};
 
+		PUBLIC FUNCTION("bool", "setPara") {
+			MEMBER("para", _this);
+		};		
+
 		PUBLIC FUNCTION("", "checkAlive") {
 			private ["_counter", "_vehicle"];
 
-			_counter = 0;
+			_counter = 240;
 			_vehicle = MEMBER("vehicle", nil);
-			MEMBER("alive", true);
-			while { _counter < 60} do {
-				if(count (crew _vehicle) == 0) then { _counter = _counter + 1} else {_counter = 0;};
-				if(getDammage _vehicle > 0.9) then { _counter = 60; sleep 240;};
+
+			while { position _vehicle select 2 > 2} do { sleep 1;};
+			sleep 10;
+		 	MEMBER("setHandler", _vehicle);
+
+			while { _counter > 1 } do {
+				if(count (crew _vehicle) == 0) then { _counter = _counter - 1;} else {_counter = 240;};
+				if(getDammage _vehicle > 0.9) then { _counter = _counter - 1;};
+				MEMBER("alive", _counter);
 				sleep 1;
 			}; 
-			MEMBER("alive", false);
+
+			MEMBER("alive",  0);
 			MEMBER("unPop", nil);
 		};
 
@@ -62,21 +73,124 @@
 			_netid = _this select 1;
 			_name = _this select 2;
 			_type = MEMBER("type", nil);
-
-			if(MEMBER("alive", nil)) exitwith {
-				vehicleavalaible = false;
-				["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
-			};
-			if(_position distance (getmarkerpos "respawn_west") < 300) exitwith {
-				vehicleavalaible = false;
-				["vehicleavalaible", "client", _netid] call BME_fnc_publicvariable;
-			};
-			_vehicle = createVehicle [_type, _position, [], 0, "NONE"];
+			MEMBER("alive", 240);
 			
-			MEMBER("setHandler", _vehicle);
+			switch (_type) do {
+				case "B_Heli_Transport_01_camo_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle _position;
+
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "B_Heli_Attack_01_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle _position;
+
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "B_Plane_CAS_01_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_position = [_position select 0, _position select 1, 200];
+					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;
+					_vehicle = _array select 0;
+					{
+						_x setdammage 1;
+						deletevehicle _x;
+					}foreach units (_array select 2);
+					deletegroup (_array select 2);
+
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "I_Plane_Fighter_03_AA_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_position = [_position select 0, _position select 1, 200];
+					_array = [_position, 0, _type, west] call bis_fnc_spawnvehicle;
+					_vehicle = _array select 0;
+					{
+						_x setdammage 1;
+						deletevehicle _x;
+					}foreach units (_array select 2);
+					deletegroup (_array select 2);
+
+					_vehicle setdamage 0;
+					vehiclegetin = _vehicle;
+					["vehiclegetin", "client", _netid] call BME_fnc_publicvariable;
+				};
+				case "B_MBT_01_cannon_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
+				case "B_APC_Tracked_01_AA_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
+				case "B_supplyCrate_F" : {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+					["AmmoboxInit",[_vehicle,true,{true}]] spawn BIS_fnc_arsenal;
+				};
+				default {
+					_position = [[_position select 0, _position select 1], 0,50,1,0,3,0] call BIS_fnc_findSafePos;
+					_vehicle = _type createVehicle [0,0,5000];
+					_vehicle setdir (random 360); 
+
+					_vehicle setpos [_position select 0, _position select 1,  150];
+					MEMBER("paraVehicle", _vehicle);
+				};
+			};	
+			
 			MEMBER("vehicle", _vehicle);
 			MEMBER("mark", nil);
-			MEMBER("checkAlive", nil);
+			_vehicle;
+		};
+
+		PUBLIC FUNCTION("object", "paraVehicle") {
+		 	private ["_para","_paras","_p"]; 
+		 	
+		 	_para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+		 	_para setDir getDir _this; 
+		 	_para setPos getPos _this; 
+		 	_paras = [_para]; 
+		 	_this attachTo [_para, [0,0,-1]]; 
+		 	_this addEventHandler ["HandleDamage", {false}]; 	
+
+		 	[_this, _paras] spawn { 
+		 		private ["_vehicle", "_vel", "_paras"];
+		 		
+		 		_vehicle = _this select 0; 
+		 		_paras = _this select 1;
+		 		
+		 		while { !(getPos _vehicle select 2 < 3) } do {sleep 0.1;};
+
+		 		detach _vehicle; 
+
+		 		{ 
+		 			detach _x; 
+		 			_x disableCollisionWith _vehicle; 
+		 		} count _paras; 
+		 		
+		 		sleep 2;
+		 		{ if (!isNull _x) then {deleteVehicle _x};} count _paras; 
+		 		_vehicle removeAllEventHandlers "HandleDamage";
+		 	};			
 		};
 
 		PUBLIC FUNCTION("", "unPop") {
@@ -119,8 +233,8 @@
 			_name= getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "DisplayName");
 			["setText", _name] spawn _mark;
 			["setColor", "ColorGreen"] spawn _mark;
-			["setType", "b_air"] spawn _mark;
-			["setSize", [0.8,0.8]] spawn _mark;
+			["setType", "b_armor"] spawn _mark;
+			["setSize", [1,1]] spawn _mark;
 			MEMBER("marker", _mark);
 		};
 
@@ -129,9 +243,10 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("type", nil);
-			DELETE_VARIABLE("vehicle", nil);
-			DELETE_VARIABLE("marker", nil);
-			DELETE_VARIABLE("alive", nil);
+			DELETE_VARIABLE("type");
+			DELETE_VARIABLE("vehicle");
+			DELETE_VARIABLE("marker");
+			DELETE_VARIABLE("alive");
+			DELETE_VARIABLE("para");
 		};
 	ENDCLASS;

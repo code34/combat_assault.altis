@@ -37,7 +37,10 @@
 			if(_counter < 8) exitwith {};
 			MEMBER("counter", 0);
 
-			_position = _this select 0;
+			// increase difficulty
+			wcskill = wcskill + 0.01;
+
+			_position = _this;
 			MEMBER("position", _position);
 			MEMBER("setType", nil);
 			MEMBER("popVehicle", nil);
@@ -66,6 +69,10 @@
 				};
 			}];
 			MEMBER("vehicle", _vehicle);
+			if(random 1 > 0.9) then {
+				 _position = [_position, 3, random 360] call BIS_fnc_relPos;
+				createVehicle ["APERSBoundingMine_Range_Ammo", _position,[], 0, "can_collide"];
+			};
 		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {
@@ -86,7 +93,22 @@
 		};
 
 		PUBLIC FUNCTION("", "setType") {
-			_type = ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"] call BIS_fnc_selectRandom;
+			private ["_position", "_airport", "_type"];
+			
+			_position = MEMBER("position", nil);
+			_airport = false;
+
+			{
+				if(_position distance getmarkerpos _x < 1000) then {
+					_airport = true;
+				};
+			}foreach ["viking","hurricane","crocodile", "coconuts", "liberty"];
+			
+			if(_airport) then {
+				_type = ["B_Heli_Light_01_F", "B_Heli_Light_01_armed_F", "O_Heli_Light_02_F", "O_Heli_Light_02_unarmed_F", "I_Heli_light_03_F", "I_Heli_light_03_unarmed_F"]  call BIS_fnc_selectRandom;
+			} else {
+				_type = ["B_Truck_01_transport_F", "B_APC_Wheeled_01_cannon_F", "B_MBT_01_TUSK_F", "B_MBT_01_cannon_F"] call BIS_fnc_selectRandom;
+			};
 			MEMBER("type", _type);
 		};
 

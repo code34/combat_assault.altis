@@ -21,140 +21,52 @@
 	#include "oop.h"
 
 	CLASS("OO_GRID")
-		PRIVATE VARIABLE("scalar","markerindex");
 		PRIVATE VARIABLE("scalar","xstart");
 		PRIVATE VARIABLE("scalar","ystart");
 		PRIVATE VARIABLE("scalar","xsize");
 		PRIVATE VARIABLE("scalar","ysize");
 		PRIVATE VARIABLE("scalar","xsector");
 		PRIVATE VARIABLE("scalar","ysector");
-		PRIVATE VARIABLE("array","gridmarker");
-		PRIVATE VARIABLE("array","playersector");
-		PRIVATE VARIABLE("bool","monitored");
-		PRIVATE VARIABLE("bool","printed");
 
 		PUBLIC FUNCTION("array","constructor") {
-			private["_array"];
-			_array = [];
-			MEMBER("markerindex", 0);
-			MEMBER("gridmarker", _array);
-			MEMBER("playersector", _array);
-			MEMBER("monitored", false);
-			MEMBER("printed", false);
 			MEMBER("xsize", _this select 0);
 			MEMBER("ysize", _this select 1);
 			MEMBER("xsector", _this select 2);
 			MEMBER("ysector", _this select 3);
 			MEMBER("xstart", MEMBER("xsector", nil) / 2);
 			MEMBER("ystart", MEMBER("ysector", nil) / 2);
-		};	
+		};
+
 		PUBLIC FUNCTION("scalar","setXstart") {
 			MEMBER("xstart", _this);
 		};
+
 		PUBLIC FUNCTION("scalar","setYstart") {
 			MEMBER("ystart", _this);
 		};
+
 		PUBLIC FUNCTION("scalar","setXsize") {
 			MEMBER("xsize", _this);
 		};
+
 		PUBLIC FUNCTION("scalar","setYsize") {
 			MEMBER("ysize", _this);
 		};
+
 		PUBLIC FUNCTION("scalar","setXsector") {
 			MEMBER("xsector", _this);
 		};
+
 		PUBLIC FUNCTION("scalar","setYsector") {
 			MEMBER("ysector", _this);
 		};
+
 		PUBLIC FUNCTION("","getXstart") FUNC_GETVAR("xstart");
 		PUBLIC FUNCTION("","getYstart") FUNC_GETVAR("ystart");
 		PUBLIC FUNCTION("","getXsize") FUNC_GETVAR("xsize");
 		PUBLIC FUNCTION("","getYsize") FUNC_GETVAR("ysize");
 		PUBLIC FUNCTION("","getXsector") FUNC_GETVAR("xsector");
 		PUBLIC FUNCTION("","getYsector") FUNC_GETVAR("ysector");
-		PUBLIC FUNCTION("","getPlayersector") FUNC_GETVAR("playersector");
-
-		PUBLIC FUNCTION("string", "Draw") {
-
-			private["_index", "_marker", "_y", "_x", "_position", "_gridmarker", "_sector"];
-
-			MEMBER("xstart", MEMBER("xsector", nil) / 2);
-			MEMBER("ystart", MEMBER("ysector", nil) / 2);
-
-			_index = 0;
-			_gridmarker = MEMBER("gridmarker", nil);
-
-			for "_y" from MEMBER("ystart", nil) to MEMBER("ysize", nil) step MEMBER("ysector", nil) do {
-				for "_x" from MEMBER("xstart", nil) to MEMBER("xsize", nil) step MEMBER("xsector", nil) do {
-
-					_position = [_x, _y];
-					_sector = MEMBER("getSectorFromPos", _position);
-
-					_marker = createMarker [format["mrk_text_%1", _index], _position];
-					_marker setMarkerShape "ICON";
-					_marker setMarkerType "mil_triangle";
-					_marker setmarkerbrush "Solid";
-					_marker setmarkercolor "ColorBlack";
-					_marker setmarkersize [0.5,0.5];
-
-					_marker setmarkertext format["%1", _sector];
-					_gridmarker = _gridmarker + [_marker];
-		
-					_marker = createMarker [format["mrk_grid_%1", _index], _position];
-					_marker setMarkerShape "RECTANGLE";
-					_marker setMarkerType "mil_triangle";
-					_marker setmarkerbrush "Border";
-					_marker setmarkercolor "ColorBlack";
-					_marker setmarkersize [(MEMBER("xsector", nil)/2),(MEMBER("ysector", nil)/2)];
-					_gridmarker = _gridmarker + [_marker];
-					_index = _index + 1;
-				};
-			};
-			MEMBER("gridmarker", _gridmarker);
-		};
-
-		PUBLIC FUNCTION("array", "DrawSector") {
-			private ["_index", "_gridmarker", "_marker", "_sector"];
-
-			_sector = _this;
-			_index = MEMBER("markerindex", nil);
-			_gridmarker = MEMBER("gridmarker", nil);
-
-			_position = MEMBER("getPosFromSector", _sector);
-
-			_marker = createMarker [format["mrk_text_%1", _index], _position];
-			_marker setMarkerShape "ICON";
-			_marker setMarkerType "mil_triangle";
-			_marker setmarkerbrush "Solid";
-			_marker setmarkercolor "ColorBlack";
-			_marker setmarkersize [0.5,0.5];
-
-			_marker setmarkertext format["%1", _sector];
-			_gridmarker = _gridmarker + [_marker];
-		
-			_marker = createMarker [format["mrk_grid_%1", _index], _position];
-			_marker setMarkerShape "RECTANGLE";
-			_marker setMarkerType "mil_triangle";
-			_marker setmarkerbrush "Border";
-			_marker setmarkercolor "ColorBlack";
-			_marker setmarkersize [(MEMBER("xsector", nil)/2),(MEMBER("ysector", nil)/2)];
-			_gridmarker = _gridmarker + [_marker];
-
-			_index = _index + 1;
-			MEMBER("gridmarker", _gridmarker);
-			MEMBER("markerindex", _index);
-		};
-
-		PUBLIC FUNCTION("", "UnDraw") {
-			private["_array"];
-			{
-				deletemarker _x;
-				sleep 0.0001;
-			}foreach MEMBER("gridmarker", nil);
-			_array = [];
-			MEMBER("gridmarker", _array);			
-		};
-
 
 		// call a loopback parsing function and return sectors that are concerned
 		// example of string parameter
@@ -174,13 +86,12 @@
 					if(MEMBER(_function, _sector)) then {
 						_array = _array + [_sector];
 					};
-					//hint format["%1 %2 %3", _array, _function, _sector];
 				};
 			};
 			_array;
 		};
 
-		// Return sector where is object
+		// Return sector from a position 
 		PUBLIC FUNCTION("array", "getSectorFromPos") {
 			private ["_position", "_xpos", "_ypos"];
 
@@ -188,17 +99,21 @@
 
 			_xpos = floor((_position select 0) / MEMBER("xsector", nil));
 			_ypos = floor((_position select 1) / MEMBER("ysector", nil));
-
 			[_xpos, _ypos];
 		};
 
-		PUBLIC FUNCTION("array", "getMiddlePos") {
+		// Return position center of the sector
+		PUBLIC FUNCTION("array", "getCenterPos") {
+			private ["_position", "_sector"];			
+
 			_position = _this;
+
 			_sector = MEMBER("getSectorFromPos", _position);
 			_position = MEMBER("getPosFromSector", _sector);
 			_position;
 		};
 
+		// Return an array of adjacent sectors around one sector
 		PUBLIC FUNCTION("array", "getSectorAround") {
 			private ["_grid", "_params", "_sector"];
 
@@ -206,10 +121,10 @@
 			_params = [_sector, 1];
 			
 			_grid = MEMBER("getSectorAllAround", _params);
-
 			_grid;
 		};
 
+		// Return an array of adjacent cross sectors around one sector
 		PUBLIC FUNCTION("array", "getSectorCrossAround") {
 			private ["_grid", "_sector"];
 
@@ -224,7 +139,7 @@
 			_grid;
 		};
 
-
+		// Return an array of adjacent sectors at x sector distance around one sector
 		PUBLIC FUNCTION("array", "getSectorAllAround") {
 			private ["_grid", "_scale", "_sector", "_botx", "_boty", "_topx", "_topy", "_x", "_y"];
 
@@ -246,24 +161,7 @@
 			_grid;
 		};
 
-
-		PUBLIC FUNCTION("array", "addSucessor") {
-			private ["_grid", "_position", "_sector"];
-
-			_sector = _this;
-			_grid = MEMBER("getSectorAround", _sector);
-			
-			{
-				_position = MEMBER("getPosFromSector", _x);
-				if!(surfaceIsWater _position) then {
-					_cost = 10;
-				} else {
-					_cost = 1;
-				};
-				sleep 0.0001;
-			}foreach _grid;
-		};
-
+		// Return if there is building in the sector
 		PUBLIC FUNCTION("array", "isBuilding") {
 			private ["_positions", "_result"];
 
@@ -273,6 +171,7 @@
 			_result;
 		};
 
+		// Parse indexed building at sector position
 		PUBLIC FUNCTION("array", "getPositionsBuilding") {
 			private ["_index", "_buildings", "_position", "_positions", "_result"];
 
@@ -296,7 +195,7 @@
 			_positions;
 		};
 
-
+		// Return a position from a sector
 		PUBLIC FUNCTION("array", "getPosFromSector") {		
 			private ["_sector", "_x", "_y"];
 
@@ -308,6 +207,7 @@
 			[_x,_y];
 		};
 
+		// Check distance cost between tow sectors
 		PUBLIC FUNCTION("array", "GetEstimateCost") {
 			private ["_start", "_dx", "_dy", "_goal"];
 
@@ -320,6 +220,7 @@
 			_dy max _dx;
 		};
 
+		// Path finding  - retrieve next sector on the way
 		PUBLIC FUNCTION("array", "getNextSector") {
 			private ["_currentsector", "_dx", "_dy", "_goalsector", "_neighbors", "_nextsector", "_performance", "_position"];
 
@@ -345,6 +246,7 @@
 			_nextsector;
 		};
 
+		// Path finding - find the best way
 		PUBLIC FUNCTION("array", "getPathToSector") {
 			private ["_array", "_sectors", "_currentsector", "_goalsector"];
 
@@ -356,52 +258,12 @@
 				_sectors = _sectors + [_currentsector];
 				_array = [_currentsector, _goalsector];
 				_currentsector = MEMBER("getNextSector", _array);
-				["DrawSector", _currentsector] call _grid;
 				sleep 0.0001;
 			};
 			_sectors;
 		};
 
-		PUBLIC FUNCTION("", "Monitor") {
-			private ["sector", "_sectors"];
-			MEMBER("monitored", true);
-			while { MEMBER("monitored", nil) } do {
-				_sectors = [];
-				{
-					_sector = MEMBER("getSectorFromPos", position _x);
-					_sectors = _sectors + [sector];
-					sleep 0.0001;
-				}foreach playableunits;
-				MEMBER("playersector", _sectors);
-				sleep 10;
-			};
-			_sectors = [];
-			MEMBER("playersector", _sectors);
-		};
-
-		PUBLIC FUNCTION("", "UnMonitor") {
-			MEMBER("monitored", false);
-		};
-
-
-		PUBLIC FUNCTION("", "Print") {
-			MEMBER("printed", true);
-			while { MEMBER("printed", nil) } do {
-				hint format["Players Sector: %1", MEMBER("playersector", nil)];
-				sleep 1;
-			};
-		};
-
-		PUBLIC FUNCTION("", "UnPrinted") {
-			MEMBER("printed", false);
-		};
-
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("markerindex");
-			DELETE_VARIABLE("playersector");
-			DELETE_VARIABLE("gridmarker");
-			DELETE_VARIABLE("monitored");
-			DELETE_VARIABLE("printed");
 			DELETE_VARIABLE("xstart");
 			DELETE_VARIABLE("ystart");
 			DELETE_VARIABLE("xsize");

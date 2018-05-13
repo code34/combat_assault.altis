@@ -46,9 +46,16 @@
 		PUBLIC FUNCTION("","getGroundPlayers") FUNC_GETVAR("groundplayers");
 
 		PUBLIC FUNCTION("", "getPlayers") {
-			private ["_temp"];
-			_temp = MEMBER("groundplayers", nil) + MEMBER("airplayers", nil);
-			_temp;
+			private ["_array"];
+
+			_array = [];
+
+			{
+				if (isplayer _x) then {_array pushBack _x};
+				sleep 0.0000001;
+			} foreach (playableunits + alldead);
+
+			_array;			
 		};
 
 		PUBLIC FUNCTION("string", "getPlayersOfType") {
@@ -70,7 +77,7 @@
 			_airplayers = [];
 
 			{
-				if((getpos _x) select 2 < 20) then {
+				if((getpos _x) select 2 < 4) then {
 					_groundplayers = _groundplayers + [_x];
 				} else {
 					_airplayers = _airplayers + [_x];
@@ -168,6 +175,32 @@
 			if(_count > 2) then {false;}else{true;};
 		};
 
+		PUBLIC FUNCTION("array", "isplayerAroundSector"){
+			private ["_sector", "_cost", "_costmin", "_grid"];
+
+			_grid = MEMBER("grid", nil);
+			_sector = _this;
+			_costmin = 10;
+			
+			{
+				_sector = ["getSectorFromPos", position _x] call _grid;
+				_cost = ["GetEstimateCost", [_sector, _key]] call _grid;
+				if(_cost < _costmin) then {_costmin = _cost;};
+				sleep 0.0000001;
+			}foreach MEMBER("groundplayers", nil);
+			if(_costmin < 10) then {false;}else{true;};
+		};
+
+		PUBLIC FUNCTION("", "getSectorFarOfPlayers"){
+			private ["_sector"];
+			_sector = ("entrySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
+			if( !MEMBER("isplayerAroundSector", _sector))  then {
+				sleep 10;
+				_sector = MEMBER("getSectorFarOfPlayers", nil);
+			};
+			_sector;
+		};
+
 		PUBLIC FUNCTION("array", "canExpandToSector"){
 			private ["_key", "_sector", "_cost", "_costmin", "_grid", "_neighbour", "_return"];
 
@@ -194,18 +227,26 @@
 		};
 
 		PUBLIC FUNCTION("array", "expandSectorAround"){
-			private ["_around", "_sector"];
+			private ["_around", "_sector", "_iteration", "_rate", "_x"];
 
-			_sector = _this;
+			_sector = _this select 0;
+			_iteration = _this select 1;
+			_rate = (90 - (_this select 1)) / 100;
+			if(_rate < 0) then {_rate = 0;};
+
 			_around = ["getSectorAllAround", [_sector,3]] call MEMBER("grid", nil);
 
-			{
-				_sector = _x;
-				if(random 1 > 0.90) then {
-					MEMBER("expandSector", _sector);
+			while { count _around > 0 } do {
+				_x = _around call BIS_fnc_selectRandom;
+				_around = _around - [_x];
+				_rate = ["GetEstimateCost", [_x, _sector]] call MEMBER("grid", nil);
+				_rate = (_rate / 10) + 0.5;
+				if((random 1 > _rate) and (_iteration > 0)) then {
+					MEMBER("expandSector", _x);
+					_iteration = _iteration - 1;					
 				};
-				sleep 0.0000001;
-			}foreach _around;
+				sleep 0.0001;
+			};
 		};
 
 		PUBLIC FUNCTION("array", "expandFriendlyAround"){
@@ -288,7 +329,8 @@
 
 		PUBLIC FUNCTION("object", "getPlayerSaveSector") {
 			private ["_sector"];
-			_sector = ["Get", [name _this]] call MEMBER("player_hashmap",nil);
+			_sector = ["get", (name _this)] call MEMBER("player_hashmap",nil);
+			if(isnil "_sector") then {_sector = [];};
 			_sector;
 		};
 	
@@ -303,11 +345,7 @@
 			private ["_player", "_sector"];
 			_player = _this select 0;
 			_sector = _this select 1;
-			if(["containsKey", [name _player]] call MEMBER("player_hashmap",nil)) then {
-				["Set", [name _player, _sector]] call MEMBER("player_hashmap",nil);
-			} else {
-				["Put", [name _player, _sector]] call MEMBER("player_hashmap",nil);
-			};
+			["put", [(name _player), _sector]] call MEMBER("player_hashmap",nil);
 		};
 
 		PUBLIC FUNCTION("", "spawnSector") {
@@ -325,15 +363,17 @@
 
 		PUBLIC FUNCTION("", "startConvoy") {
 			while { true } do {
-				MEMBER("spawnConvoy", nil);
+				if(count MEMBER("getPlayers", nil) > 0) then {
+					MEMBER("spawnConvoy", nil);
+				};
 				sleep 1200;
 			};
 		};		
 
 		PUBLIC FUNCTION("", "spawnConvoy") {
 			private ["_key", "_position", "_end", "_endposition", "_startposition", "_sector"];
-
-			_sector = ("entrySet" call MEMBER("zone_hashmap",nil)) call BIS_fnc_selectRandom;
+			
+			_sector = MEMBER("getSectorFarOfPlayers", nil);
 			_startposition = ["getPosFromSector", "getSector" call _sector] call MEMBER("grid",nil);
 	
 			_convoy = ["new", _startposition] call OO_CONVOY;

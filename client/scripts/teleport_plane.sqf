@@ -18,55 +18,48 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	private ["_position", "_array"];
+	private ["_continue", "_position", "_array", "_vehicle"];
 
 	_position = position player;
 
-	_title = "Select your destination zone";
-	_text = "Click on the map where you'd like to Insert!";
-	["hint", [_title, _text]] call hud;
+	setviewdistance 3000;
 
-	while { _position distance position player < 50 } do {
-		wcteleport = position player;
-		onMapSingleClick {
-			wcteleport = _pos;
-		};
-		while { !surfaceIsWater wcteleport} do {
-			_title = "Select your destination zone";
-			_text = "Click on the sea where you'd like to Insert!";
-			["hint", [_title, _text]] call hud;
-			sleep 0.1;
-		};
-		onMapSingleClick "";
-
-		_newposition = [wcteleport select 0, wcteleport select 1, 500];
-		if(playertype == "bomber") then {
-			_array = [_newposition, 0, "B_Plane_CAS_01_F", west] call bis_fnc_spawnvehicle;
-		};
-
-		if(playertype == "fighter") then {
-			_array = [_newposition, 0, "I_Plane_Fighter_03_AA_F", west] call bis_fnc_spawnvehicle;
-		};
-		_vehicle = _array select 0;
-
-		_vehicle removeAllEventHandlers "HandleDamage";
-		_vehicle addeventhandler ['HandleDamage', {
-			if(damage (_this select 0) > 0.9) then {
-					(_this select 0) setdamage 1;
-					(_this select 0) removeAllEventHandlers "HandleDamage";
-					{
-						_x setdamage 1;
-					}foreach (crew (_this select 0));
-			};
-		}];
-
-		{
-			_x setdammage 1;
-			deletevehicle _x;
-		}foreach units (_array select 2);
-		deletegroup (_array select 2);
-
-		player moveindriver (_array select 0);
+	_newposition = [_position select 0,  _position select 1, 500];
+	if(playertype == "bomber") then {
+		_array = [_newposition, 0, "B_Plane_CAS_01_F", west] call bis_fnc_spawnvehicle;
 	};
-	
+
+	if(playertype == "fighter") then {
+		_array = [_newposition, 0, "I_Plane_Fighter_03_AA_F", west] call bis_fnc_spawnvehicle;
+	};
+
+	_vehicle = _array select 0;
+	_reload = ["new", _vehicle] call OO_RELOADPLANE;
+	"start" spawn _reload;
+
+	_vehicle removeAllEventHandlers "HandleDamage";
+	_vehicle addeventhandler ['HandleDamage', {
+		if(damage (_this select 0) > 0.9) then {
+				(_this select 0) setdamage 1;
+				(_this select 0) removeAllEventHandlers "HandleDamage";
+				{
+					_x setdamage 1;
+				}foreach (crew (_this select 0));
+		};
+	}];
+
+	{
+		_x setdammage 1;
+		deletevehicle _x;
+	}foreach units (_array select 2);
+	deletegroup (_array select 2);
+
+	player moveindriver (_array select 0);
+
+	_vehicle spawn {
+		while { damage _this < 0.9 } do { sleep 1; };
+		sleep 30;
+		deletevehicle _this;
+	};	
+
 	hintSilent "";

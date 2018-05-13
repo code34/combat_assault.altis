@@ -30,28 +30,36 @@
 		PRIVATE VARIABLE("array", "target");
 		PRIVATE VARIABLE("code", "marker");
 			
-		PUBLIC FUNCTION("array","constructor") {
-			MEMBER("popMember", nil);
-			MEMBER("sector", _this select 0);
+		PUBLIC FUNCTION("array","constructor") {			
 			_grid = ["new", [31000,31000,100,100]] call OO_GRID;
 			MEMBER("grid", _grid);
+			
+			MEMBER("popMember", nil);
+			MEMBER("sector", _this select 0);
 			MEMBER("setMarker", nil);
 			MEMBER("getSectorAround", nil);
 			MEMBER("setCombatMode", nil);
 		};
 
 		PUBLIC FUNCTION("", "popMember") {
-			private ["_array", "_group", "_vehicle"];
+			private ["_array", "_group", "_vehicle", "_marker"];
+
+			_array = "getEast" call global_atc;
+			_marker =  _array call BIS_fnc_selectRandom;
+			_position = getmarkerpos _marker;
+			_position = [_position select 0, _position select 1, 100];
 			
 			_vehicle = ["O_Heli_Attack_02_F", "O_Heli_Attack_02_black_F"] call BIS_fnc_selectRandom;
-			_array = [[2000 + random(500), 8000 + random(500),100], 0, _vehicle, east] call bis_fnc_spawnvehicle;
+			_array = [_position, 0, _vehicle, east] call bis_fnc_spawnvehicle;
 		
 			_vehicle = _array select 0;
 			_group = _array select 2;
+			
 			{
 				_handle = [_x, ""] spawn WC_fnc_setskill;
 				sleep 0.1;
 			}foreach (units _group);
+			
 			_vehicle setVehicleLock "LOCKED";
 			_handle = [_vehicle] spawn WC_fnc_vehiclehandler;
 			
@@ -117,7 +125,7 @@
 			private ["_around", "_sectors", "_nextsector"];
 			_sectors = [];
 			{
-				_nextsector = ["Get", str(_x)] call global_zone_hashmap;
+				_nextsector = ["get", str(_x)] call global_zone_hashmap;
 				if!(isnil "_nextsector") then {
 					if("getAlert" call _nextsector) then {
 						_sectors = _sectors + [_nextsector];

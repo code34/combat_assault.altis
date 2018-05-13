@@ -41,8 +41,8 @@
 			_array = [];
 			MEMBER("vehicle", _array);
 			MEMBER("escort", _array);
-			MEMBER("setTarget", nil);
-			MEMBER("popSupport", nil);
+			MEMBER("setTarget", _startposition);
+			MEMBER("popConvoy", nil);
 			MEMBER("popEscort", nil);
 		};
 
@@ -55,48 +55,65 @@
 			MEMBER("moveTo", _array);
 			_vehicle = MEMBER("vehicle", nil);
 
+			wcconvoystart = true;
+			["wcconvoystart", "client"] call BME_fnc_publicvariable;	
+
 			_rate = 0;
 			while { ((damage _vehicle < 0.9) and (alive (driver _vehicle))) } do {
 				if(speed _vehicle < 1) then {
 					_rate = _rate + 1;
-					_text = format["Support - Expanding %1", _rate] +"%";
+					_text = format["Convoy - Expanding %1", _rate] +"%";
 					["setText", _text] spawn MEMBER("marker", nil);
 					if(_rate > 99) then {
 						_vehicle setdammage 1;
 					};
 				} else {
 					_rate = 0;
-					["setText", "Support"] spawn MEMBER("marker", nil);
+					["setText", "Convoy"] spawn MEMBER("marker", nil);
 				};
 				sleep 1;
 			};
 
 			if(_rate > 99) then {
 				_sector = ["getSectorFromPos", position _vehicle] call MEMBER("grid", nil);
+				wcconvoy = true;
+				["wcconvoy", "client"] call BME_fnc_publicvariable;				
 				["expandSector", _sector] call global_controller;
-				["expandSectorAround", _sector] call global_controller;
-				["setText", "Support - Expanding done"] spawn MEMBER("marker", nil);
+				["expandSectorAround", [_sector, 10]] call global_controller;
+				["setText", "Convoy - Expanding done"] spawn MEMBER("marker", nil);
 			} else {
-				["setText", "Support - Expanding failed"] spawn MEMBER("marker", nil);
+				wcconvoy = false;
+				["wcconvoy", "client"] call BME_fnc_publicvariable;				
+				["setText", "Convoy - Expanding failed"] spawn MEMBER("marker", nil);
 				["setTicket", "convoy"] call global_ticket;
 			};
 			sleep 60;
 			MEMBER("deconstructor", nil);
 		};
 
-		PUBLIC FUNCTION("", "setTarget") {
-			private ["_endposition", "_marker"];
+		PUBLIC FUNCTION("array", "setTarget") {
+			private ["_distance", "_endposition", "_markers", "_marker", "_position"];
 
-			if("countWest" call global_atc > 1) then {
-				_marker = ("getWest" call global_atc) call BIS_fnc_selectRandom;
+			_position = _this;
+
+			if("countWest" call global_atc >  0) then {
+				_markers = "getWest" call global_atc;
+				_distance = 30000;
+				{
+					if ((getmarkerpos _x ) distance _position < _distance) then {
+						_distance = (getmarkerpos _x ) distance _position;
+						_marker = _x;
+					};
+					sleep 0.0001;
+				}foreach _markers;
 				_endposition = getmarkerpos _marker;				
 			} else {
-				_endposition = [_startposition, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
+				_endposition = [_position, 3000,5000,10,0,2000,0] call BIS_fnc_findSafePos;
 			};
 			MEMBER("endposition", _endposition);
 		};
 
-		PUBLIC FUNCTION("", "popSupport") {
+		PUBLIC FUNCTION("", "popConvoy") {
 			private ["_array", "_type", "_position", "_vehicle"];
 
 			_position = MEMBER("startposition", nil);
@@ -104,7 +121,7 @@
 			if(random 1 > 0.5) then {
 				_type = ["O_Truck_02_covered_F", "O_Truck_02_transport_F","O_Truck_03_transport_F","O_Truck_03_covered_F","O_Truck_03_repair_F","O_Truck_03_ammo_F","O_Truck_03_fuel_F"] call BIS_fnc_selectRandom;
 			} else {
-				_type = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_MBT_02_arty_F","O_APC_Wheeled_02_rcws_F","I_APC_Wheeled_03_cannon_F"] call BIS_fnc_selectRandom;
+				_type = ["O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F","O_MBT_02_cannon_F","O_MBT_02_arty_F","O_APC_Wheeled_02_rcws_F","O_APC_Wheeled_02_rcws_F"] call BIS_fnc_selectRandom;
 			};
 
 			_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
@@ -116,7 +133,7 @@
 
 			_mark = ["new", position _vehicle] call OO_MARKER;
 			["attachTo", _vehicle] spawn _mark;
-			["setText", "Support"] spawn _mark;
+			["setText", "Convoy"] spawn _mark;
 			["setColor", "ColorRed"] spawn _mark;
 			["setType", "mil_arrow"] spawn _mark;
 			["setSize", [0.5,0.5]] spawn _mark;
@@ -188,6 +205,12 @@
 			_wp setWaypointType "MOVE";
 			_wp setWaypointSpeed "FULL";
 			_group setCurrentWaypoint _wp;
+
+			//_mark = ["new", _position] call OO_MARKER;
+			//["setText", "Destination convoy"] spawn _mark;
+			//["setColor", "ColorRed"] spawn _mark;
+			//["setType", "mil_arrow"] spawn _mark;
+			//["setSize", [1,1]] spawn _mark;
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 

@@ -25,20 +25,103 @@
 
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("playertag", true);
+			cutrsc ['bottomhud','PLAIN'];
 		};
 
 		PUBLIC FUNCTION("", "setPlayerTag") {
 			MEMBER("playertag", true);
 		};
 
-		PUBLIC FUNCTION("", "bottomHud") {
-			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_text", "_weight", "_time", "_message"];
-
+		PUBLIC FUNCTION("", "scoreboardHud") {
+			private ["_ctrl8", "_ctrl9", "_ctrl10", "_ctrl11", "_ctrl12", "_ctrl13", "_ctrl14","_ctrl15", "_ctrl16"];
 			disableSerialization;
-			cutrsc ['bottomhud','PLAIN'];
+			
+			while { true} do {
+				if((!alive player) or wcboard) then {
+					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
+					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.4];
+
+					_scores = "topByScore" call scoreboard;
+
+					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
+					_ctrl10 ctrlSetStructuredText parsetext (_scores select 0);
+
+					_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
+					_ctrl11 ctrlSetStructuredText parsetext (_scores select 1);
+
+					_ctrl12 =(uiNamespace getVariable "wcdisplay") displayCtrl 1011;
+					_ctrl12 ctrlSetStructuredText parsetext (_scores select 2);
+
+					_ctrl13 =(uiNamespace getVariable "wcdisplay") displayCtrl 1012;
+					_ctrl13 ctrlSetStructuredText parsetext (_scores select 3);
+
+					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
+					_ctrl14 ctrlSetStructuredText parsetext (_scores select 4);
+
+					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
+					_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);
+
+					_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
+					_ctrl16 ctrlSetStructuredText parsetext ("<t align='center'>Tickets: "+ str(wcticket) + "</t>");
+					_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
+				} else {
+					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
+					_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
+
+					_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
+					_ctrl10 ctrlSetStructuredText parsetext "";
+
+					_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
+					_ctrl11 ctrlSetStructuredText parsetext "";
+
+					_ctrl12 =(uiNamespace getVariable "wcdisplay") displayCtrl 1011;
+					_ctrl12 ctrlSetStructuredText parsetext "";
+
+					_ctrl13 =(uiNamespace getVariable "wcdisplay") displayCtrl 1012;
+					_ctrl13 ctrlSetStructuredText parsetext "";
+
+					_ctrl14 =(uiNamespace getVariable "wcdisplay") displayCtrl 1013;
+					_ctrl14 ctrlSetStructuredText parsetext "";
+
+					_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
+					_ctrl15 ctrlSetStructuredText parsetext "";
+
+					_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
+					_ctrl16 ctrlSetStructuredText parsetext "";		
+					_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0];								
+				};
+				_ctrl8 ctrlcommit 0;
+				_ctrl10 ctrlcommit 0;
+				_ctrl11 ctrlcommit 0;
+				_ctrl12 ctrlcommit 0;
+				_ctrl13 ctrlcommit 0;
+				_ctrl14 ctrlcommit 0;
+				_ctrl15 ctrlcommit 0;
+				_ctrl16 ctrlcommit 0;
+				sleep 0.1;
+			};
+		};
+
+		PUBLIC FUNCTION("", "getCompass") {
+			private ["_ctrl"];
+			disableSerialization;
+
+			while { true} do {
+				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
+				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl 1003;
+				_text = "<t align='center'>"+format ["%1", round(getdir player)] + "</t>";
+				_ctrl ctrlSetStructuredText parseText _text;
+				_ctrl ctrlcommit 0;
+				sleep 0.1;
+			};
+		};
+
+		PUBLIC FUNCTION("", "bottomHud") {
+			private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_text", "_weight", "_time", "_message", "_scores"];
 
 			_time = 0;
 			killzone = [];
+			disableSerialization;
 
 			while { true} do {
 				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
@@ -56,19 +139,20 @@
 				_ctrl3 ctrlSetStructuredText parseText _text;
 		
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;
-				_text = format ["Weight: %1 %2", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				
-				_ratio = mystats select 0;
-				_globalratio = mystats select 1;
-				_number = mystats select 2;
+				_score = ["getPlayerScore", name player] call scoreboard;
+				_ratio = _score select 0;
+				_globalratio = _score select 1;
+				_number = _score select 2;
 
-				_rank = MEMBER("getRankText", _ratio);
+				_rank = ["getRankText", _ratio] call scoreboard;
 				_img = [_rank,"texture"] call BIS_fnc_rankParams;
-				_text = _text + "<br/><img image='" + _img + "'/> " + format ["%1", _rank];
+				_text = "<img image='" + _img + "'/> " + format ["%1", _rank];
 
-				_rank = MEMBER("getRankText", _globalratio);
+				_rank = ["getRankText", _globalratio] call scoreboard;
 				_text = _text + format ["<br/><t size='0.7'>Server Ranking: %1</t>", _rank];
-				_text = _text + format ["<br/><t size='0.7'>Match: %1</t>", _number];
+				_text = _text + format ["<br/><t size='0.7'>Games: %1</t>", _number];
+				_text = _text + format ["<br/><t size='0.7'>Weight: %1 %2</t>", round (((loadAbs player)*0.1)/2.2), "Kg"];
 				_ctrl4 ctrlSetStructuredText parseText _text;
 
 				if(vehicle player != player) then {
@@ -98,13 +182,43 @@
 					};
 					_time = _time  + 1;
 				};
+
+				_ctrl7 =(uiNamespace getVariable "wcdisplay") displayCtrl 1005;
+				if(wcwithrollmessages) then {
+					_ctrl7 ctrlSetStructuredText parsetext rollprintmessage;
+					if(rollprintmessage == "") then {
+						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
+					} else {
+						_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0.3];
+					};
+				} else {
+					_ctrl7 ctrlSetStructuredText parsetext "";
+					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
+				};
+
 				_ctrl ctrlcommit 0;
 				_ctrl2 ctrlcommit 0;
 				_ctrl3 ctrlcommit 0;
 				_ctrl4 ctrlcommit 0;
 				_ctrl5 ctrlcommit 0;
 				_ctrl6 ctrlcommit 0;
+				_ctrl7 ctrlcommit 0;
 				sleep 1;			
+			};
+		};
+
+		PUBLIC FUNCTION("", "rollMessage") {
+			private ["_temp"];
+
+			while { true } do {
+				_temp = "";
+				{
+					sleep 0.001;
+					_temp =  _temp  + "<t shadow='1' size='1.2' >" + _x + "</t>";
+				}foreach rollmessage;
+				rollprintmessage = _temp;
+				rollmessage deleteat 0;
+				sleep 1.5;
 			};
 		};
 
@@ -121,59 +235,25 @@
 			_text;
 		};
 
-
-		PUBLIC FUNCTION("scalar", "getRankText") {
-			private ["_img", "_player", "_ratio", "_text", "_rank", "_stats"];
-			
-			_ratio = _this;
-
-			switch (true) do {
-				case (_ratio < 2) : {
-					_rank = "PRIVATE";
-				};
-
-				case (_ratio > 1.99 and _ratio < 4) : {
-					_rank = "CORPORAL";
-				};
-
-				case (_ratio > 3.99 and _ratio < 6) : {
-					_rank = "SERGEANT";
-				};
-
-				case (_ratio > 5.99 and _ratio < 8) : {
-					_rank = "LIEUTENANT";
-				};
-
-				case (_ratio > 7.99 and _ratio < 10) : {
-					_rank = "CAPTAIN";
-				};
-
-				case (_ratio > 9.99 and _ratio < 12) : {
-					_rank = "MAJOR";
-				};				
-
-				case (_ratio > 11.99) : {
-					_rank = "COLONEL" ;
-				};		
-
-				default {
-					_rank = "PRIVATE";
-				};
-			};
-			_rank;
-		};
-
-		PUBLIC FUNCTION("", "drawPlayerTag") {
-			private ["_code", "_vehicle"];
-			
+		PUBLIC FUNCTION("", "drawPlayerTag") {	
 			_code = "
+					private ['_code', '_vehicle', '_rank', '_img', '_color'];
 					if(vehicle player == player) then {
-						{	_vehicle = _x;
-							_distance = (player distance _vehicle) / 15;
-							_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
-							_color set [3, 1 - _distance];
-							 drawIcon3D ['', _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 0, 0, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
-						}foreach playableunits - [player];
+						{	
+							if(_x distance player < 40) then {
+								_vehicle = _x;
+								_rank = rank _vehicle;
+								_img = [_rank, 'texture'] call BIS_fnc_rankParams;
+								_distance = (player distance _vehicle) / 40;
+								if(side _vehicle == west) then {
+									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
+								} else {
+									_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorEnemy');
+								};
+								_color set [3, 1 - _distance];
+								 drawIcon3D [_img, _color, [ visiblePosition _vehicle select 0, visiblePosition _vehicle select 1, (visiblePosition _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaMedium' ];
+							 };
+						}foreach playableUnits;
 					};
 			";
 			_code;
@@ -188,6 +268,8 @@
 		};
 
 		PUBLIC FUNCTION("array", "hintScore") {
+			private ["_message", "_title", "_text"];
+
 			_ticket = _this select 0;
 			_type = _this select 1;
 			_credit = _this select 2;
@@ -195,9 +277,8 @@
 			_title = str(_ticket);
 			_text = format["%2 ticket(s) for %1", _type, _credit];
 
-			waituntil { alive player};
-			_title=  "<t size='2.2' color='#ff0000'>"+ _title + "</t><br />";
-			hintsilent parseText (_title + _text); 			
+			_message = "<t color='#ff0000'>"+ _title + "</t> "+_text+"<br />";
+			rollmessage = rollmessage + [_message];
 		};		
 
 		PUBLIC FUNCTION("", "drawAll") {
@@ -210,6 +291,6 @@
 		};
 
 		PUBLIC FUNCTION("","deconstructor") { 
-			DELETE_VARIABLE("playertag", nil);
+			DELETE_VARIABLE("playertag");
 		};
 	ENDCLASS;

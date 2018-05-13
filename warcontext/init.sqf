@@ -49,14 +49,12 @@
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_grid.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_group.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_mission.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_node.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrol.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_patrolair.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_playervehicle.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_score.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_sector.sqf";
 	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_ticket.sqf";
-	call compilefinal preprocessFileLineNumbers "warcontext\objects\oo_tree.sqf";
 
 	[] execVM "real_weather\real_weather.sqf";
 	_temp = "Land_LampDecor_F" createVehicle (getMarkerPos "base_lamp");
@@ -73,23 +71,24 @@
 		deletemarker _name;
 	};
 
-	global_zone_hashmap  = ["new", []] call OO_TREE;
+	global_grid = ["new", [31000,31000,100,100]] call OO_GRID;
+	global_zone_hashmap  = ["new", []] call OO_HASHMAP;
 	global_controller = ["new", []] call OO_CONTROLLER;
-	global_scores = ["new", []] call OO_TREE;
-	global_vehicles = ["new", []] call OO_TREE;
-	global_ticket = ["new", []] call OO_TICKET;
+	global_scores = ["new", []] call OO_HASHMAP;
+	global_vehicles = ["new", []] call OO_HASHMAP;
+	global_ticket = ["new", wcnumberofticket] call OO_TICKET;
 	global_atc = ["new", []] call OO_ATC;
 	global_dogfight = ["new", [global_atc]] call OO_DOGFIGHT;
-	
+
 	"queueSector" spawn global_controller;
 	"startZone" spawn global_controller;
-	[global_zone_hashmap] call WC_fnc_computezone;
+	[] call WC_fnc_computezone;
 	
-	"startPatrol" spawn global_dogfight;
+	"start" spawn global_dogfight;
 	"start" spawn global_atc;
 
 	// init for slow server
-	sleep 120;
+	sleep 60;
 
 	"startConvoy" spawn global_controller;
 	["setActive", true] call global_ticket;
@@ -107,5 +106,7 @@
 		"flushBDD" call _x;
 	} foreach ("entrySet" call global_scores);
 
-	end = "win";
-	["end", "all"] call BME_fnc_publicvariable;
+	//end = "win";
+	//["end", "all"] call BME_fnc_publicvariable;
+
+	"End1" call BIS_fnc_endMissionServer;

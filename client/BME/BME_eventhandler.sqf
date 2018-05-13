@@ -25,7 +25,7 @@
 		_variablevalue 	= missionNamespace getVariable _variablename;
 		_destination	= tolower(_this select 1);
 		_playerid 	= _this select 2;
-
+		
 		if(isnil "_destination") exitwith {"BME: missing destination parameter" call BME_fnc_log;};
 		if(isnil "_variablevalue") exitwith {format["BME: variable %1 is nil", _variablename] call BME_fnc_log;};
 		if!(typename _variablename == "STRING") exitwith {"BME: wrong type variablename parameter, should be STRING" call BME_fnc_log;};
@@ -33,7 +33,7 @@
 		if!(_destination in ["client", "server", "all"]) exitwith {"BME: wrong destination parameter should be client|server|all" call BME_fnc_log;};
 
 		bme_addqueue = [_variablename, _variablevalue, _destination];
-
+		
 		switch (_destination) do {
 			case "server": {
 				publicvariableserver "bme_addqueue";
@@ -43,37 +43,38 @@
 				if(!isnil "_playerid") then {
 					_playerid publicvariableclient "bme_addqueue";
 				} else {
-					//if((local player) and (isserver)) then {
-					//	(owner player) publicvariableclient "bme_addqueue";
-					//};
-					bme_queue set [count bme_queue, bme_addqueue];
+					if((local player) and (isserver)) then {
+						(owner player) publicvariableclient "bme_addqueue";
+					};
 					publicvariable "bme_addqueue";
 				};
 			};
 
 			default {
-				//if((local player) and (isserver)) then {
-				//	(owner player) publicvariableclient "bme_addqueue";
-				//};
-				bme_queue set [count bme_queue, bme_addqueue];
+				if((local player) and (isserver)) then {
+					(owner player) publicvariableclient "bme_addqueue";
+				};
 				publicvariable "bme_addqueue";
 			};
 		};
 	};
 
-	"bme_addqueue" addPublicVariableEventHandler {
-		private ["_destination", "_bme_addqueue"];
+	BME_fnc_addqueue = {
+		private ["_destination"];
 
-		_bme_addqueue = _this select 1;
-		_destination = _bme_addqueue select 2;
+		_destination = _this select 2;
 
 		// insert message in the queue if its for server or everybody
 		if((isserver) and ((_destination == "server") or (_destination == "all"))) then {
-			bme_queue set [count bme_queue, bme_addqueue];
+			bme_queue pushBack _this;
 		};
-
+		
 		// insert message in the queue if its for client or everybody
-		if((local player) and ((_destination == "client") or (_destination == "all"))) then {
-			bme_queue set [count bme_queue, bme_addqueue];
+		if((local player) and ((_destination == "client") or (_destination == "all"))) then {	
+			bme_queue pushBack _this;
 		};
+	};
+
+	"bme_addqueue" addPublicVariableEventHandler {
+		(_this select 1) call BME_fnc_addqueue;
 	};

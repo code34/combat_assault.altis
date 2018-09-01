@@ -126,9 +126,11 @@
 			private _base = objNull;
 
 			_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
-			[[_base, ["Pack Base", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+			[[_base, ["Pack HQ", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+			[[_base, ["HQ Menu", "client\scripts\deployment.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+
 			//_base addEventHandler ['HandleDamage', { false; }];
-			
+
 			"respawn_west" setmarkerpos _position;
 			MEMBER("marker", nil) setMarkerPos _position;
 			MEMBER("deploymarker", nil) setMarkerPos _position;
@@ -214,7 +216,7 @@
 			deleteVehicle MEMBER("base", nil);
 			{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);
 			_base = "B_Truck_01_transport_F" createVehicle _position;
-			[[_base, ["Unpack Base", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
+			[[_base, ["Unpack HQ", "client\scripts\unpackbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 			MEMBER("base", _base);
 			[_base, MEMBER("marker", nil)] spawn {
 				while { alive (_this select 0)} do {

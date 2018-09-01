@@ -71,5 +71,3 @@
 
 	_camera cameraEffect ["Terminate", "BACK"];
 	camDestroy _camera;
-
-	

@@ -345,7 +345,7 @@
 		["setColor", "ColorRed"] spawn _mark;
 		["setPos", position _body] spawn _mark;
 		["setType", "mil_flag"] spawn _mark;
-		["draw", "ColorRed"] spawn _mark;
+		"draw" spawn _mark;
 
 		waituntil {alive player};
 		deletevehicle _body;

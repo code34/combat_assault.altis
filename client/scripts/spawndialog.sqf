@@ -16,17 +16,16 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/		
 
-	private ["_cam", "_deathposition",  "_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_player", "_position", "_dir", "_old_fullmap", "_players", "_indexplayer", "_map", "_newevent"];
+	private ["_ctrl", "_ctrl2", "_ctrl3", "_ctrl4", "_player", "_dir", "_players", "_indexplayer", "_map", "_newevent"];
 
-	_deathposition = _this;
-
+	private _deathposition = _this;
 	fullmap = 0;
-	_old_fullmap = 0;
-
-	_position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
+	private _old_fullmap = 0;
+	private _camtarget = objNull;
+	private _position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
 
 	showCinemaBorder false;
-	_cam = "camera" camCreate _position;
+	private _cam = "camera" camCreate _position;
 	detach _cam;
 	_cam cameraEffect ["internal","top"];
 	_cam camsettarget player;
@@ -69,7 +68,7 @@
 	};
 
 	_indexplayer = -1;
-	_players = allPlayers;
+	_players = allUnits;
 	lbClear 2002;
 	{ 
 			if(alive _x) then {
@@ -140,7 +139,7 @@
 			};
 
 			_indexplayer = -1;
-			_players = allplayers;
+			_players = allUnits;
 			lbClear 2002;
 			{ 
 				if(alive _x) then {
@@ -214,43 +213,44 @@
 		};
 
 		if(_newevent) then {
-			// si le joueur ne choisit rien
-			// on lui propose le paradrop
-			if(_player isequalto player) then {
-				_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");	
-				_map ctrlMapAnimAdd [0, 0, _deathposition]; 
-				ctrlMapAnimCommit _map;
-				
-				detach _cam;
-				_cam cameraEffect ["internal","top"];
-				_cam camsettarget player;
-				_cam camSetRelPos [0,100,50];
-				_cam CamCommit 0;
-			} else {
-				// si le joueur choisit un autre joueur
-				// on affiche la camera derrière le joueur
-				// on propose le bouton deployer
-				_ctrl4 ctrlSetText (localize "STR_DEPLOY_BUTTON");
-				_map ctrlMapAnimAdd [0, 0, _player]; 
-				ctrlMapAnimCommit _map;
-
-				detach _cam;
-				if(vehicle _player isEqualTo _player) then {
-					_cam cameraEffect ["internal", "BACK"];
-					_cam camSetTarget _player;
-					_cam attachto [_player,[0.7,-3, + 0.5], "neck"];
+			if!(_camtarget isEqualTo _player) then {
+				_camtarget = _player;
+				// si le joueur ne choisit rien
+				// on lui propose le paradrop
+				if(_player isequalto player) then {
+					_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");	
+					_map ctrlMapAnimAdd [0, 0, _deathposition]; 
+					ctrlMapAnimCommit _map;
+					
+					detach _cam;
+					_cam cameraEffect ["internal","top"];
+					_cam camsettarget player;
+					_cam camSetRelPos [0,100,50];
 					_cam CamCommit 0;
 				} else {
-					_cam cameraEffect ["internal", "BACK"];
-					_cam camSetTarget (vehicle _player);	
-					_cam attachto [(vehicle _player),[-50,-50,+15], "neck"];
-					_cam CamCommit 0;
+					// si le joueur choisit un autre joueur
+					// on affiche la camera derrière le joueur
+					// on propose le bouton deployer
+					_ctrl4 ctrlSetText (localize "STR_DEPLOY_BUTTON");
+					_map ctrlMapAnimAdd [0, 0, _player]; 
+					ctrlMapAnimCommit _map;
+					detach _cam;
+					if(vehicle _player isEqualTo _player) then {
+						_cam cameraEffect ["internal", "BACK"];
+						_cam camSetTarget _player;
+						_cam attachto [_player,[0.7,-3, + 0.5], "neck"];
+						_cam CamCommit 0;
+					} else {
+						_cam cameraEffect ["internal", "BACK"];
+						_cam camSetTarget (vehicle _player);	
+						_cam attachto [(vehicle _player),[-50,-50,+15], "neck"];
+						_cam CamCommit 0;
+					};
 				};
+				_newevent  = false;
 			};
-			_newevent  = false;
 		};
-
-		sleep 0.01;
+		sleep 0.1;
 	};
 	closeDialog 0;
 

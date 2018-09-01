@@ -44,8 +44,16 @@
 			<Original>combat-assault</Original>
 		</Key>
 		<Key ID="STR_REDEPLOY_TITLE">
-			<Original>Redeployment</Original>
-			<French>Redeploiement</French>
+			<Original>Headquarter</Original>
+			<French>Etat Major</French>
+		</Key>
+		<Key ID="STR_HQ_UNPACK_TEXT">
+			<Original> Headquarter has been unpack </Original>
+			<French>L'Etat Major a ete deploye </French>
+		</Key>
+		<Key ID="STR_HQ_PACK_TEXT">
+			<Original> Headquarter has been pack </Original>
+			<French>L'Etat Major a ete replie</French>
 		</Key>
 		<Key ID="STR_VEHICLESSERVICING_TITLE">
 			<Original>Vehicles servicing</Original>

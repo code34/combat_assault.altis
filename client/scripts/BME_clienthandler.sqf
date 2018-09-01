@@ -198,11 +198,11 @@
 	};
 
 	BME_netcode_client_notifyBaseUnpack = {
-		hint "Base has been unpacked";
+		hint localize "STR_HQ_UNPACK_TEXT";
 	};
 	
 	BME_netcode_client_notifyBasePack = {
-		hint "Base has been packed";
+		hint localize "STR_HQ_PACK_TEXT";
 	};
 	
 	// return true when read

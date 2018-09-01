@@ -76,8 +76,9 @@ class Params
 		title = "REDEPLOYEMENT SYSTEM";
 		values[] = {1, 2};
 		texts[] = {"ON", "OFF"};
-		default = 1;
+		default = 2;
 	};
+	
 	class wcpopchopperprobparam
 	{
 		title = "KAJMAN POP PROBALITIES";

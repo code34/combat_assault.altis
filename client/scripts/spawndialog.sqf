@@ -68,7 +68,7 @@
 	};
 
 	_indexplayer = -1;
-	_players = allUnits;
+	_players = allPlayers;
 	lbClear 2002;
 	{ 
 			if(alive _x) then {
@@ -139,7 +139,7 @@
 			};
 
 			_indexplayer = -1;
-			_players = allUnits;
+			_players = allPlayers;
 			lbClear 2002;
 			{ 
 				if(alive _x) then {

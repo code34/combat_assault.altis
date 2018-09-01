@@ -228,7 +228,7 @@
 
 	if(wcredeployement isEqualTo 1) then {
 		[] spawn {
-			private ["_list", "_list2", "_counter", "_text", "_candeploy", "_teleport"];
+			private ["_list", "_list2", "_counter", "_candeploy", "_teleport"];
 			
 			_counter = 10;
 			_teleport = nil;
@@ -243,18 +243,13 @@
 				}foreach _list2;
 
 				_candeploy = false;
-				//if(player distance getmarkerpos "respawn_west" > 1300) then {
-					if((alive player) and (vehicle player == player)) then {		
-						if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
-							//_title = localize "STR_REDEPLOY_TITLE";
-							//_text = localize "STR_REDEPLOY_STANCE";
-							//["hint", [_title, _text]] call hud;
-							_candeploy = true;
-						} else {
-							hint "";
-						};
+				if((alive player) and (vehicle player == player)) then {
+					if( (east countSide _list == 0) and (resistance countSide _list == 0) ) then {
+						_candeploy = true;
+					} else {
+						hint "";
 					};
-				//};
+				};
 
 				if(_candeploy) then {
 					if(isnil "_teleport") then {
@@ -315,10 +310,8 @@
 		if(wcsway == 2) then { player setCustomAimCoef 0;};
 
 		_index = player addEventHandler ["HandleDamage", {false}];
-
 		["load", player] spawn inventory;	
 		(position _body) call WC_fnc_spawndialog;
-
 		 player switchCamera _view;
 
 		// debug end	

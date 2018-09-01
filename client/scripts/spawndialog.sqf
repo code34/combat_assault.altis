@@ -68,10 +68,6 @@
 		};
 	};
 
-	if(wcredeployement isEqualTo 2) then {
-		_ctrl4 ctrlEnable false;
-	};
-
 	_indexplayer = -1;
 	_players = allPlayers;
 	lbClear 2002;
@@ -143,10 +139,6 @@
 				};
 			};
 
-			if(wcredeployement isEqualTo 2) then {
-				_ctrl4 ctrlEnable false;
-			};
-			
 			_indexplayer = -1;
 			_players = allplayers;
 			lbClear 2002;

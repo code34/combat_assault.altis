@@ -20,7 +20,7 @@
 
 	private _deathposition = _this;
 	fullmap = 0;
-	private _old_fullmap = 0;
+	private _old_fullmap = 1;
 	private _camtarget = objNull;
 	private _position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
 

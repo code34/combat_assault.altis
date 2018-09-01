@@ -97,7 +97,7 @@ class Params
 		title = "POP AN ENEMY CONVOY EACH";
 		values[] = {1,2,3,4};
 		texts[] = {"3 Minutes ", "5 Minutes", "30 Minutes", "NEVER"};
-		default = 1;
+		default = 3;
 	};
 	class wcpopplayervehiclecooldown
 	{

@@ -148,28 +148,25 @@
 
 		PUBLIC FUNCTION("object", "paraVehicle") {
 			DEBUG(#, "OO_PLAYERVEHICLE::paraVehicle")	
-		 	private _para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
-		 	_para setDir getDir _this; 
-		 	_para setPos getPos _this; 
-		 	_this attachTo [_para, [0,0,-1]]; 
-		 	_this addEventHandler ["HandleDamage", {false}]; 	
+			private _para = createVehicle ["B_parachute_02_F", [0,0,0], [], 0, "FLY"]; 
+			_para setDir getDir _this; 
+			_para setPos getPos _this; 
+			_this attachTo [_para, [0,0,-1]]; 
+			_this addEventHandler ["HandleDamage", {false}]; 	
 
-		 	[_this, _para] spawn {  		
+		 	[_this, _para] spawn {
 		 		private _vehicle = _this select 0; 
 		 		private _para = _this select 1;
-		 		
 		 		while { !(getPos _vehicle select 2 < 1) } do {sleep 0.1;};
-		 		detach _vehicle; 
-
-	 			detach _para; 
-	 			_para disableCollisionWith _vehicle; 
-		 		
+		 		detach _vehicle;
+	 			detach _para;
+	 			_x disableCollisionWith _vehicle; 
 		 		sleep 2;
-		 		if (!isNull _para) then {deleteVehicle _para};
+				if (!isNull _para) then {deleteVehicle _para;};
 		 		_vehicle removeAllEventHandlers "HandleDamage";
 		 		_vehicle setDamage 0;
 		 		_vehicle setFuel 1;
-		 	};			
+		 	};
 		};
 
 		PUBLIC FUNCTION("", "unPop") {

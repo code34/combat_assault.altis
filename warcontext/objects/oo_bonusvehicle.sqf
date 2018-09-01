@@ -99,9 +99,8 @@
 		 	_this addEventHandler ["HandleDamage", {false}]; 	
 
 		 	[_this, _para] spawn {
-				private _vel = 0;
 		 		private _vehicle = _this select 0; 
-		 		private _paras = _this select 1;
+		 		private _para = _this select 1;
 		 		while { !(getPos _vehicle select 2 < 1) } do {sleep 0.1;};
 		 		detach _vehicle;
 	 			detach _para;

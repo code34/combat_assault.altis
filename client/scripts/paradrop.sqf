@@ -22,7 +22,7 @@
 	_position = position player;
 
 	if (["remoteCall", ["BME_netcode_server_isPackedBase", "", 2, false, 2]] call client_bme) exitWith { 
-		"Paradrop" hintC "Base should be Unpack";
+		(localize "STR_PARADROP_BUTTON") hintC (localize "STR_PARADROP_BASEREQUIREMENT");
 	};
 
 	openMap [false, false] ;

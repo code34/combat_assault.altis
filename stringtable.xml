@@ -87,6 +87,10 @@
 			<Original>You can only drop into the blue drop zone of your base</Original>
 			<French>Vous pouvez vous parachuter uniquement dans la zone bleue de votre base</French>
 		</Key>
+		<Key ID="STR_PARADROP_BASEREQUIREMENT">
+			<Original>HQ should be Unpack</Original>
+			<French>Etat Major doit etre deploye</French>
+		</Key>
 		<Key ID="STR_SERVICING_TITLE">
 			<Original>Vehicle Servicing</Original>
 			<French>Service logistique</French>

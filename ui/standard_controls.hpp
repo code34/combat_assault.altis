@@ -270,7 +270,7 @@
 		fontLevel = "TahomaB";
 		sizeExLevel = 0.02;
 		text = "#(argb,8,8,3)color(1,1,1,1)";
-
+		widthRailWay = 1;
 		 class LineMarker
 		 {
 		 	lineDistanceMin = 3e-005;

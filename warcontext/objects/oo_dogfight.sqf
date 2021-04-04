@@ -30,9 +30,8 @@
 		PRIVATE VARIABLE("array","targets");
 		PRIVATE VARIABLE("array","target");
 		PRIVATE VARIABLE("bool","patrol");
-		PRIVATE VARIABLE("scalar","squadronsize");
+		PRIVATE VARIABLE("scalar","squadronsizemax");
 		PRIVATE VARIABLE("scalar","counter");
-
 			
 		PUBLIC FUNCTION("array","constructor") {
 			MEMBER("atc", _this select 0);
@@ -43,7 +42,7 @@
 			MEMBER("playertargets", []);
 			MEMBER("targets", []);
 			MEMBER("target", []);
-			MEMBER("squadronsize", 0);
+			MEMBER("squadronsizemax", 0);
 			MEMBER("counter", 5);
 			MEMBER("age", 10);
 		};
@@ -65,7 +64,7 @@
 		};
 
 		// Defini la taille de l'escadre
-		PUBLIC FUNCTION("", "setSquadronSize") {
+		PUBLIC FUNCTION("", "setSquadronSizeMax") {
 			// compte le nombre de vehicules au sol bluefor
 			private _ground = count MEMBER("groundtargets", nil);
 
@@ -79,7 +78,7 @@
 			private _size = _ground + (2 * _air) + round(_player / 5);
 
 			if(_size > 6) then { _size = 6;};
-			MEMBER("squadronsize", _size);		
+			MEMBER("squadronsizemax", _size);		
 		};
 
 		PUBLIC FUNCTION("","getSquadronSize") {
@@ -90,12 +89,12 @@
 			MEMBER("patrol", true);
 			while { MEMBER("patrol", nil) } do {
 				MEMBER("checkTargets", nil);
-				MEMBER("setSquadronSize", nil);
+				MEMBER("setSquadronSizeMax", nil);
 				MEMBER("popSquadron", nil);
 				MEMBER("intercept", nil);
 				MEMBER("setFuel", nil);
 				MEMBER("cleaner", nil);
-				sleep 10;
+				sleep 30;
 			};
 		};
 
@@ -253,13 +252,10 @@
 			private _counter = MEMBER("counter", nil);
 			
 			if(_airport > 0) then {
-				private _size = MEMBER("squadronsize", nil) - MEMBER("getSquadronSize", nil);	
-				if(_size > 0) then {
-					if(_counter >  3) then {
-						for "_i" from 1 to _size do {
-							MEMBER("popMember", nil);
-							sleep 10;
-						};
+				private _size = MEMBER("getSquadronSize", nil);	
+				if(_size < MEMBER("squadronsizemax", nil)) then {
+					if(_counter >  600) then {
+						MEMBER("popMember", nil);
 						MEMBER("counter", 0);
 						["remoteSpawn", ["BME_netcode_client_wcaircraftstart", true, "client"]] call server_bme;
 					} else {
@@ -286,7 +282,7 @@
 			DELETE_VARIABLE("patrol");
 			DELETE_VARIABLE("squadron");
 			DELETE_VARIABLE("targets");
-			DELETE_VARIABLE("squadronsize");
+			DELETE_VARIABLE("squadronsizemax");
 			DELETE_VARIABLE("counter");
 			DELETE_VARIABLE("age");
 		};

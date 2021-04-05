@@ -28,7 +28,9 @@
 	private _armor = false;
 	private _type = "";
 
-	if (["remoteCall", ["BME_netcode_server_isPackedBase", "", 2, false, 2]] call client_bme) exitWith { 
+	private _answer = ["remoteCall", ["BME_netcode_server_isPackedBase", "", 2, false, 2]] call client_bme;
+
+	if (_answer) exitWith { 
 		"Vehicles servicing" hintC "Base should be Unpack";
 	};
 	createDialog "deployvehicle";

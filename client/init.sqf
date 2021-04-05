@@ -1,6 +1,6 @@
 	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2013-2018 Nicolas BOITEUX
+	Copyright (C) 2013-2021 Nicolas BOITEUX
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -347,7 +347,6 @@
 		["setColor", "ColorRed"] spawn _mark;
 		["setPos", position _body] spawn _mark;
 		["setType", "mil_flag"] spawn _mark;
-		"draw" spawn _mark;
 
 		waituntil {alive player};
 		deletevehicle _body;

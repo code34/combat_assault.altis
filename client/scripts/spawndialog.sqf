@@ -259,12 +259,16 @@
 	_cam cameraEffect ["terminate","back"];
 	camDestroy _cam;
 
-	if(wcaction isEqualTo "exit") exitWith {};
+	if(wcaction != "deploy") exitWith {};
 
 	if(_player == player) then {
 		// si le joueur se selectionne
 		// alors ouverture de la map + paradrop
-		[] call WC_fnc_paradrop;
+		if(!isNil "newdeploymentmark") then {
+			_position = getMarkerPos "newdeploymentmark";
+			deleteMarkerLocal "newdeploymentmark";
+			_position call WC_fnc_paradrop2;
+		};
 	} else {
 		// si le joueur selectionne un autre joueur loin de la base
 		// alors on le teleport sur _position + _dir de la camere derrière le joueur
@@ -281,6 +285,4 @@
 			};
 		};
 	};
-
-	openMap [false, false];
 	[] call WC_fnc_spawncam;

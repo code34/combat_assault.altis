@@ -43,10 +43,12 @@
 
 	WC_fnc_spawndialog 	= compilefinal preprocessFileLineNumbers "client\scripts\spawndialog.sqf";
 	WC_fnc_paradrop	= compilefinal preprocessFileLineNumbers "client\scripts\paradrop.sqf";
+	WC_fnc_paradrop2	= compilefinal preprocessFileLineNumbers "client\scripts\paradrop2.sqf";
 	WC_fnc_keymapperup 	= compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperup.sqf";
 	WC_fnc_keymapperdown = compilefinal preprocessFileLineNumbers "client\scripts\WC_fnc_keymapperdown.sqf";
 	WC_fnc_introcam 	= compileFinal preprocessFileLineNumbers "client\scripts\intro_cam.sqf";
 	WC_fnc_spawncam 	= compileFinal preprocessFileLineNumbers "client\scripts\spawn_cam.sqf";
+	WC_fnc_newdeployment 	= compileFinal preprocessFileLineNumbers "client\scripts\newdeployment.sqf";
 
 	call compile preprocessFileLineNumbers "client\scripts\task.sqf";
 	call compile preprocessFileLineNumbers "warcontext\scripts\paramsarray_parser.sqf";

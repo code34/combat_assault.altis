@@ -209,7 +209,7 @@
 		type = 101;
 		style = 48;
 		sizeEx = 0.026;
-		moveOnEdges = 1;
+		moveOnEdges = 0;
 		x = safezoneX + 0.02;
 		y = safezoneY + safezoneh - 0.03 - 0.55;
 		w = 0.55 * 3/4;
@@ -227,8 +227,8 @@
 		ptsPerSquareObj = 9;
 		showCountourInterval = 0;
 		scaleMin = 0.05;
-		scaleMax = 0.05;
-		scaleDefault = 0.05;
+		scaleMax = 0.1;
+		scaleDefault = 0.1;
 		maxSatelliteAlpha = 0.7;
 		alphaFadeStartScale = 0.35;
 		alphaFadeEndScale = 0.7;

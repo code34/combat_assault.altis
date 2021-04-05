@@ -1,4 +1,4 @@
-version=53;
+version=54;
 class EditorData
 {
 	moveGridStep=1;
@@ -17,12 +17,13 @@ class EditorData
 	class Camera
 	{
 		pos[]={3748.5205,30.375481,12752.324};
-		dir[]={0.85910648,-0.43521711,-0.26931193};
-		up[]={0.41528922,0.90032351,-0.13018444};
-		aside[]={-0.29912609,-4.4761691e-008,-0.95421487};
+		dir[]={0.85910362,-0.43521568,-0.26931116};
+		up[]={0.41528881,0.90032625,-0.13018443};
+		aside[]={-0.29912621,0,-0.95421374};
 	};
 };
 binarizationWanted=0;
+sourceName="combat_assault";
 addons[]=
 {
 	"A3_Ui_F",
@@ -79,7 +80,7 @@ class Mission
 {
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.41";
+		briefingName="COMBAT ASSAULT 1.42";
 		overviewText="By Code34";
 		resistanceWest=0;
 		resistanceEast=1;
@@ -286,7 +287,7 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={423.66162,0.036171939,252.65607};
+						position[]={423.66162,0.036171935,252.65607};
 					};
 					side="West";
 					class Attributes

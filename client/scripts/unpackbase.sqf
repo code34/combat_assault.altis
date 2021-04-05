@@ -18,4 +18,4 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	["remoteSpawn", ["BME_netcode_server_wcunpackbase", "", "server"]] call client_bme;
+	["remoteSpawn", ["BME_netcode_server_wcunpackbase", (player getRelPos [15,0]), "server"]] call client_bme;

@@ -18,7 +18,17 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
-	if([_this select 0, _this select 1] distance getMarkerPos "respawn_west" < 100) exitWith {};
+	private _position = [_this select 0, _this select 1];
+	if(_position distance getMarkerPos "respawn_west" < 100) exitWith {};
+	if (["remoteCall", ["BME_netcode_server_isPackedBase", "", 2, false, 2]] call client_bme) exitWith { 
+		(localize "STR_PARADROP_BUTTON") hintC (localize "STR_PARADROP_BASEREQUIREMENT");
+	};
+	if(_position distance getMarkerPos "respawn_west" > (getMarkerSize "globalbasedeploy" select 0)) exitWith {
+		_title = localize "STR_TELEPORT_TITLE_TOOFAR";
+		_text = localize "STR_TELEPORT_TEXT_TOOFAR";
+		["hint", [_title, _text]] call hud;
+	};
+
 	player setpos [_this select 0, _this select 1, 500];
 	player setVelocity [0, 0, 10];
 

@@ -125,7 +125,8 @@
 			private _position = _this;
 			private _base = objNull;
 
-			_base = "Land_Cargo_HQ_V2_F" createVehicle (_position findEmptyPosition [5,50]);
+			_base = "Land_Cargo_HQ_V2_F" createVehicle _position;
+			_base setpos _position;
 			[[_base, ["Pack HQ", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 			[[_base, ["HQ Menu", "client\scripts\deployment.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 
@@ -183,9 +184,9 @@
 			MEMBER("deploymarker", _marker);
 		};		
 
-		PUBLIC FUNCTION("", "unpackBase"){
+		PUBLIC FUNCTION("array", "unpackBase"){
 			DEBUG(#, "OO_BASEGENERATOR::unpackBase")
-			private _position = getMarkerPos "respawn_west";
+			private _position = _this;
 			private _dir = 0;
 			private _empty = true;
 
@@ -196,8 +197,6 @@
 			if(!_empty) exitWith{ };
 			if(!MEMBER("packed", nil)) exitWith { };
 			MEMBER("packed", false);
-			_position =  (_position findEmptyPosition [5,50]);
-			if(_position isEqualTo []) exitWith { MEMBER("packed", true);};
 			_dir = getDir MEMBER("base", nil);
 			deleteVehicle MEMBER("base", nil);
 			MEMBER("buildHQ", _position);
@@ -212,7 +211,6 @@
 			if(MEMBER("packed", nil)) exitWith { };
 			MEMBER("packed", true);
 			_position =  (_position findEmptyPosition [0,15]);
-			if(_position isEqualTo []) exitWith {MEMBER("packed", false);};
 			deleteVehicle MEMBER("base", nil);
 			{deleteVehicle _x; sleep 0.1; } forEach MEMBER("structures", nil);
 			_base = "B_Truck_01_transport_F" createVehicle _position;

@@ -23,10 +23,10 @@
 
 	// Example function write log on server side
 
-	BME_netcode_server_isPackedBase = { "isPackedBase" call global_base; };
+	BME_netcode_server_isPackedBase = { "isPackedBase" call global_base;};
 
 	BME_netcode_server_wcunpackbase = { 
-		"unpackBase" call global_base;
+		["unpackBase", _this] call global_base;
 	};
 
 	BME_netcode_server_wcpackbase = { 

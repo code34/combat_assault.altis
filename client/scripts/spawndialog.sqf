@@ -23,6 +23,7 @@
 	private _old_fullmap = 1;
 	private _camtarget = objNull;
 	private _position = [(getMarkerPos "respawn_west") select 0, (getMarkerPos "respawn_west") select 1, 300];
+	private _baseposition = _position;
 
 	showCinemaBorder false;
 	private _cam = "camera" camCreate _position;
@@ -80,7 +81,7 @@
 	lbSetCurSel [ 2002, _indexplayer];
 	_player = player;
 
-	_map ctrlMapAnimAdd [0, 0, _deathposition];
+	_map ctrlMapAnimAdd [0, 0, _baseposition];
 	ctrlMapAnimCommit _map;
 	
 	_newevent  = false;
@@ -219,7 +220,7 @@
 				// on lui propose le paradrop
 				if(_player isequalto player) then {
 					_ctrl4 ctrlSetText (localize "STR_PARADROP_BUTTON");	
-					_map ctrlMapAnimAdd [0, 0, _deathposition]; 
+					_map ctrlMapAnimAdd [0, 0, _baseposition]; 
 					ctrlMapAnimCommit _map;
 					
 					detach _cam;

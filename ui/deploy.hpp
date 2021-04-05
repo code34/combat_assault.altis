@@ -21,6 +21,7 @@ class spawndialog {
 		y = (0.12 * safezoneH + safezoneY) - (3 * BORDERSIZE);
 		w = (0.6 * safezoneW);
 		h = (0.80 * safezoneH) + (6 * BORDERSIZE);
+		onMouseButtonClick = "_this call WC_fnc_newdeployment";
 	};	
 	
 	class title : StdHeader{

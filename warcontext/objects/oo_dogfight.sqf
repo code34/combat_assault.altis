@@ -78,7 +78,7 @@
 			private _size = _ground + (2 * _air) + round(_player / 5);
 
 			if(_size > 6) then { _size = 6;};
-			MEMBER("squadronsizemax", _size);		
+			MEMBER("squadronsizemax", _size);
 		};
 
 		PUBLIC FUNCTION("","getSquadronSize") {

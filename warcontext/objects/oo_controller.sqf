@@ -24,7 +24,7 @@
 		PRIVATE VARIABLE("array","groundplayers");
 		PRIVATE VARIABLE("array","airplayers");
 		PRIVATE VARIABLE("array","queuesector");
-		PRIVATE VARIABLE("code","zone_hashmap");
+		PRIVATE VARIABLE("hashmap","zone_hashmap");
 		PRIVATE VARIABLE("code","player_hashmap");
 
 		PUBLIC FUNCTION("array","constructor") {
@@ -108,7 +108,7 @@
 			private _sector = [];
 
 			{
-				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				_sector = MEMBER("zone_hashmap",nil) get str(_x);
 				if!(isnil "_sector") then {
 					if("getState" call _sector < 2) then {
 						_neighbour = _neighbour + 1;
@@ -142,7 +142,7 @@
 			private _count = 1;
 			private _sector = [];
 			{
-				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				_sector = MEMBER("zone_hashmap",nil) get str(_x);
 				if!(isnil "_sector") then { _count = _count + 1; };
 			}foreach (["getSectorsCrossAroundSector", _this] call global_grid);
 			if(_count > 2) then {false;}else{true;};
@@ -165,7 +165,8 @@
 
 		PUBLIC FUNCTION("", "getSectorFarOfPlayers"){
 			DEBUG(#, "OO_CONTROLLER::getSectorFarOfPlayers")
-			private _sector = selectRandom ("entrySet" call MEMBER("zone_hashmap",nil));
+			private _key = selectRandom (keys MEMBER("zone_hashmap",nil));
+			private _sector = MEMBER("zone_hashmap",nil) get _key;
 			if( !MEMBER("isplayerAroundSector", "getSector" call _sector) ) then { _sector = MEMBER("getSectorFarOfPlayers", nil); };
 			_sector;
 		};
@@ -217,14 +218,14 @@
 			private _sector = ["getSectorFromPos", _position] call global_grid;
 
 			{
-				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				_sector = MEMBER("zone_hashmap",nil) get str(_x);
 				if(isnil "_sector") then {
 					if(random 1 > 0.95) then {
 						_position = ["getPosFromSector", _x] call global_grid;
 						_sector = ["new", [str(_x), _position, global_grid]] call OO_SECTOR;
 						"draw" call _sector;
 						"setVictory" call _sector;
-						["put", [str(_x), _sector]] call MEMBER("zone_hashmap",nil);
+						MEMBER("zone_hashmap",nil) set [str(_x), _sector];
 					};
 				};
 				sleep 0.0000001;
@@ -236,7 +237,7 @@
 			["setAlert", true] call _this;
 			private _sector = "getSector" call _this;
 			{
-				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				_sector = MEMBER("zone_hashmap",nil) get str(_x);
 				if!(isnil "_sector") then {
 					if(("getState" call _sector) < 2) then { ["setAlert", true] call _sector; };
 				};
@@ -247,8 +248,8 @@
 		PUBLIC FUNCTION("array", "deleteSector"){
 			DEBUG(#, "OO_CONTROLLER::deleteSector")
 			private _key = _this;
-			private _sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
-			["remove", str(_key)] call MEMBER("zone_hashmap",nil);
+			private _sector = MEMBER("zone_hashmap",nil) get str(_key);
+			MEMBER("zone_hashmap",nil) deleteAt str(_key);
 			["delete", _sector] call OO_SECTOR;
 		};
 
@@ -261,14 +262,14 @@
 			while { true } do {
 				_key = MEMBER("queuesector", nil) deleteAt 0;
 				if!(isNil "_key") then {
-					_sector = ["get", str(_key)] call MEMBER("zone_hashmap",nil);
+					_sector = MEMBER("zone_hashmap",nil) get str(_key);
 					if(isnil "_sector") then {
 						_position = ["getPosFromSector", _key] call global_grid;
 						if(!surfaceIsWater _position) then {
 							if(MEMBER("canExpandToSector", _key)) then {
 								_sector = ["new", [_key, _position, global_grid]] call OO_SECTOR;
 								"draw" call _sector;
-								["put", [str(_key), _sector]] call MEMBER("zone_hashmap",nil);
+								MEMBER("zone_hashmap",nil) set [str(_key), _sector];
 							};
 						};
 					};
@@ -304,7 +305,7 @@
 			DEBUG(#, "OO_CONTROLLER::spawnSector")
 			private _sector = [];
 			{
-				_sector = ["get", str(_x)] call MEMBER("zone_hashmap",nil);
+				_sector = MEMBER("zone_hashmap",nil) get str(_x);
 				if!(isnil "_sector") then {
 					if("getState" call _sector == 0) then { "Spawn" spawn _sector; };
 				};
@@ -335,12 +336,13 @@
 			private _victory = true;
 			{
 				scopename "oo_check_victory";
-				if("getState" call _x < 2) then { 
+				private _sector = MEMBER("zone_hashmap",nil) get _x;
+				if("getState" call _sector < 2) then { 
 					_victory = false;
 					breakout "oo_check_victory";
 				};
 				sleep 0.0000001;
-			}foreach ("entrySet" call MEMBER("zone_hashmap",nil));
+			}foreach (keys MEMBER("zone_hashmap",nil));
 			_victory;
 		};
 
@@ -357,9 +359,12 @@
 			DEBUG(#, "OO_CONTROLLER::startParaDrop")
 			while { true } do {
 				{
-					if(random 1 > 0.95) then { "popParachute" call _x; };
+					if(random 1 > 0.95) then { 
+						private _sector = MEMBER("zone_hashmap",nil) get _x;
+						"popParachute" call _sector;
+					};
 					sleep 0.1;
-				} foreach ("entrySet" call MEMBER("zone_hashmap",nil));
+				}foreach (keys MEMBER("zone_hashmap",nil));
 				sleep 60;
 			};
 		};

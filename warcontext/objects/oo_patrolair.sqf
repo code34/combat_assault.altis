@@ -105,7 +105,7 @@
 			private _nextsector = [];
 			MEMBER("underalert", []);
 			{
-				_nextsector = ["get", str(_x)] call global_zone_hashmap;
+				_nextsector = global_zone_hashmap get str(_x);
 				if!(isnil "_nextsector") then {
 					if("getAlert" call _nextsector) then {
 						MEMBER("underalert", []) pushBack _nextsector;

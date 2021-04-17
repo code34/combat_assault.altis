@@ -72,7 +72,7 @@
 	rollprintmessage = "";
 	wcblacklist = [name player];
 	wcfriendlist = [];
-	wcbannerserver = "COMBAT ASSAULT MOD 1.42";
+	wcbannerserver = "COMBAT ASSAULT MOD 1.44";
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;	
@@ -113,7 +113,7 @@
 	"rollMessage" spawn hud;
 	"bottomHud" spawn hud;
 	"scoreboardHud" spawn hud;
-	
+
 	switch (wcwithunitstags) do {
 		case 1 :{["setPlayerTag", true] spawn hud;};
 		case 2: {["setPlayerTag", false] spawn hud;};

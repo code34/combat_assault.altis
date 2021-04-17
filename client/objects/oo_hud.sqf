@@ -233,7 +233,12 @@
 					if(wcwithunitstags) then {
 						if(vehicle player == player) then {
 							{	
-								if(_x distance player < 30) then {
+								if((_x != player) and (_x distance player < 30)) then {
+									_height = 1.3;
+									switch (stance _x) do {
+										case 'CROUCH' : {_height = 0.8;};
+										case 'PRONE' : {_height = 0.2;};
+									};
 									_vehicle = _x;
 									_rank = rank _vehicle;
 									_img = [_rank, 'texture'] call BIS_fnc_rankParams;
@@ -241,7 +246,7 @@
 									if((side _vehicle == west) and !(_vehicle in wcblacklist)) then {
 										_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
 										_color set [3, 1 - _distance];
-										drawIcon3D [_img, _color, [ getPosATLVisual _vehicle select 0, getPosATLVisual _vehicle select 1, (getPosATLVisual _vehicle select 2) + 1.9 ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaSemiBold' ];
+										drawIcon3D [_img, _color, [ getPosATLVisual _vehicle select 0, getPosATLVisual _vehicle select 1, (getPosATLVisual _vehicle select 2) + _height ], 1, 1, 0, name _vehicle, 2, 0.03, 'PuristaSemiBold' ];
 									} else {
 										_color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorEnemy');
 										_color set [3, 1 - _distance];

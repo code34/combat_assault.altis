@@ -380,7 +380,7 @@
 			if("isArtillery" call _sector) then { 
 				private _artillery = "getArtillery" call _sector;
 				private _key = ["getSectorFromPos", position _target] call global_grid;
-				_sector = ["get", str(_key)] call global_zone_hashmap;
+				_sector = global_zone_hashmap get str(_key);
 				if(!isnil "_sector") then { ["setSuppression", true] call _artillery; } else { ["setSuppression", false] call _artillery;	};
 				["callFireOnTarget", _target] call _artillery;
 			};

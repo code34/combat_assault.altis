@@ -72,7 +72,7 @@
 				_sector = ["getSectorFromPos", getmarkerpos _x] call global_grid;
 				_around = ["getSectorsAroundSector", _sector] call global_grid;
 				{
-					_sector = ["get", str(_x)] call global_zone_hashmap;
+					_sector = global_zone_hashmap get str(_x);
 					if(!isnil "_sector") then {
 						if("getState" call _sector < 2) then {
 							_enemies = true;

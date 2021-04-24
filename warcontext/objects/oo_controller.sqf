@@ -261,7 +261,6 @@
 
 			while { true } do {
 				_key = MEMBER("queuesector", nil) deleteAt 0;
-				systemChat format ["Queue size: %1 %2", count MEMBER("queuesector", nil), count MEMBER("zone_hashmap",nil)];
 				if!(isNil "_key") then {
 					_sector = MEMBER("zone_hashmap",nil) get str(_key);
 					if(isnil "_sector") then {

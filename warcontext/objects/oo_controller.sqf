@@ -261,16 +261,17 @@
 
 			while { true } do {
 				_key = MEMBER("queuesector", nil) deleteAt 0;
+				systemChat format ["Queue size: %1 %2", count MEMBER("queuesector", nil), count MEMBER("zone_hashmap",nil)];
 				if!(isNil "_key") then {
 					_sector = MEMBER("zone_hashmap",nil) get str(_key);
 					if(isnil "_sector") then {
 						_position = ["getPosFromSector", _key] call global_grid;
 						if(!surfaceIsWater _position) then {
-							if(MEMBER("canExpandToSector", _key)) then {
+							//if(MEMBER("canExpandToSector", _key)) then {
 								_sector = ["new", [_key, _position, global_grid]] call OO_SECTOR;
 								"draw" call _sector;
 								MEMBER("zone_hashmap",nil) set [str(_key), _sector];
-							};
+							//};
 						};
 					};
 				};

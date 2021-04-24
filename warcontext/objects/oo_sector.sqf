@@ -293,6 +293,17 @@
 			MEMBER("alert", _this);
 		};
 
+		PUBLIC FUNCTION("bool", "setAlertAround") {
+			private _sector = MEMBER("sector", nil);
+			{
+				_around = global_zone_hashmap get str(_x);
+				if!(isnil "_around") then {
+					if(("getState" call _around) < 2) then { ["setAlert", true] call _around;};
+				};
+				sleep 0.0000001;
+			}foreach (["getAllSectorsAroundSector", [_sector,3]] call global_grid);
+		};
+
 		PUBLIC FUNCTION("", "UnSpawn") {
 			MEMBER("marker", nil) setmarkercolor "ColorRed";
 			MEMBER("unPopSector", nil);

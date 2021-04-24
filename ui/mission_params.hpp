@@ -19,7 +19,7 @@ class Params
 		title = "NUMBER OF ZONES AT BEGINING";
 		values[] = {15,100,500,1000,2000,5000};
 		texts[] = {"15", "100","500","1000", "2000","5000"};
-		default = 100;
+		default = 500;
 	};
 	class wcviewdistance
 	{
@@ -59,9 +59,9 @@ class Params
 	class wcfatigue
 	{
 		title = "FATIGUE";
-		values[] = {1, 2};
-		texts[] = {"ON", "OFF"};
-		default = 2;
+		values[] = {0, 1};
+		texts[] = {"OFF", "ON"};
+		default = 0;
 	};
 	class wcsway
 	{

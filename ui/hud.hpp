@@ -36,54 +36,54 @@ class RscTitles {
 				text = ""; 
 			}; 
 
-			class health { 
-				idc = 1001; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_VCENTER; 
-				shadow = 1;
-				x = safeZoneX + safeZoneW - 0.3 * 3 / 4; 
-				y = safeZoneY + safeZoneH - 0.24 * 4/3;
-				w = 0.08 * 3 / 4;
-				h = 0.03 * 4/3;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.038;
-				colorBackground[] = {1,0,0,1}; 
-				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
-			}; 
-
-			class stamina { 
-				idc = 1002; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_VCENTER; 
-				shadow = 1;
-				x = safeZoneX + safeZoneW - 0.2 * 3 / 4; 
-				y = safeZoneY + safeZoneH - 0.24 * 4/3;
-				w = 0.08 * 3 / 4;
-				h = 0.03 * 4/3;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.038; 
-				colorBackground[] = {0,1,0, 1}; 
-				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
-			}; 	
-
 			class infohud { 
 				idc = 1004; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
 				shadow = 1;
-				x = safeZoneX + safeZoneW - 0.59 * 3 / 4; 
-				y = safeZoneY + safeZoneH - 0.20 * 4/3;
-				w = 0.58 * 3 / 4;
-				h = 0.19 * 4/3;
+
+				x = safeZoneX + safeZoneW - 0.45;
+				y = safeZoneY + safeZoneH - 0.25;
+				w = 0.45;
+				h = 0.25;
+
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.035;
 				//colorBackground[] = {0,0.4,0.8,0.4};
 				colorBackground[] = {0,0,0,0.4};
 				colorText[] = {0.5,1,1,1}; 
 				text = ""; 
-			}; 			
+			}; 
+
+			class killM { 
+				idc = 1018; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_CENTER; 
+				x = safeZoneX + safeZoneW - 0.45; 
+				y = safeZoneY + safeZoneH - 0.29;
+				w = 0.05;
+				h = 0.04;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {0,0.4,0.8,0.6};
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			}; 
+
+			class deathM { 
+				idc = 1019; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_CENTER; 
+				x = safeZoneX + safeZoneW - 0.401; 
+				y = safeZoneY + safeZoneH - 0.29;
+				w = 0.05;
+				h = 0.04;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.03;
+				colorBackground[] = {1,0,0,0.6}; 
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			};
 
 			class rollmessage { 
 				idc = 1005; 
@@ -100,21 +100,36 @@ class RscTitles {
 				text = ""; 
 			}; 
 
-			class scoreboard { 
+			class scoreboard_title { 
+				idc = 1016; 
+				type = CT_STRUCTURED_TEXT; 
+				style = ST_CENTER; 
+				x = -0.004; 
+				y = -0.001;
+				w = 1.008;
+				h = 1.01;
+				font = "EtelkaNarrowMediumPro"; 
+				size = 0.1;
+				colorBackground[] = {0,0,0,0.5};
+				colorText[] = {0.5,1,1,1}; 
+				text = ""; 
+			};
+
+			class scoreboard_background { 
 				idc = 1007; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT;  
 				x = 0; 
 				y = 0.1;
 				w = 1;
-				h = 0.8;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0.9,0.9,0.9,0.1};
 				colorText[] = {0,0.4,0.8,0.2}; 
 				text = ""; 
 				sizeEx = 0;
-			}; 
+			};
 
 			class scoreboard_subtitle1 { 
 				idc = 1009; 
@@ -123,10 +138,10 @@ class RscTitles {
 				x = 0; 
 				y = 0.1;
 				w = 0.05;
-				h = 0.77;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0,0,0,0.1};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Top"; 
 			};
@@ -138,10 +153,10 @@ class RscTitles {
 				x = 0.05 ; 
 				y = 0.1;
 				w = 0.25;
-				h = 0.77;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0,0,0,0.2};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Player Name"; 
 			};
@@ -153,10 +168,10 @@ class RscTitles {
 				x = 0.3; 
 				y = 0.1;
 				w = 0.2;
-				h = 0.77;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0,0,0,0.1};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Game Ranking"; 
 			};
@@ -168,10 +183,10 @@ class RscTitles {
 				x = 0.5 ; 
 				y = 0.1 ;
 				w = 0.2 ;
-				h = 0.77;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0,0,0,0.2};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Server Ranking"; 
 			};
@@ -183,10 +198,10 @@ class RscTitles {
 				x = 0.7; 
 				y = 0.1;
 				w = 0.1;
-				h = 0.77;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0,0,0,0.1};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Matchs"; 
 			};
@@ -198,75 +213,13 @@ class RscTitles {
 				x = 0.8; 
 				y = 0.1;
 				w = 0.2;
-				h = 0.77;
+				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0.4,0.8,0};
+				colorBackground[] = {0,0,0,0.2};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Score"; 
 			};
-
-			class scoreboard_subtitle7 { 
-				idc = 1016; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_CENTER; 
-				x = 0; 
-				y = 0;
-				w = 1;
-				h = 0.095;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.1;
-				colorBackground[] = {0,0.4,0.8,0};
-				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
-			};						
-
-
-			class sector { 
-				idc = 1017; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_LEFT; 
-				x = safeZoneX ; 
-				y = safeZoneY ;
-				w = 0.60;
-				h = 0.10;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.10;
-				valign = "middle";
-				colorBackground[] = {0.0,0,0.0,0.5};
-				colorText[] = {1,1,1,1}; 
-				text = ""; 
-			}; 
-
-			class killM { 
-				idc = 1018; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_CENTER; 
-				x = 0.36; 
-				y = safeZoneY ;
-				w = 0.14;
-				h = 0.10;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.10;
-				colorBackground[] = {0,0.4,0.8,0.6};
-				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
-			}; 
-
-			class deathM { 
-				idc = 1019; 
-				type = CT_STRUCTURED_TEXT; 
-				style = ST_CENTER; 
-				x = 0.5; 
-				y = safeZoneY ;
-				w = 0.14;
-				h = 0.10;
-				font = "EtelkaNarrowMediumPro"; 
-				size = 0.10;
-				colorBackground[] = {1,0,0,0.6}; 
-				colorText[] = {0.5,1,1,1}; 
-				text = ""; 
-			}; 												
 		};
 	}; 	
 };

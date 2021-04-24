@@ -109,9 +109,9 @@ class Params
 	class wcambiant
 	{
 		title = "AMBIANT LIFES AND SOUNDS";
-		values[] = {1, 2};
-		texts[] = {"ON", "OFF"};
-		default = 2;
+		values[] = {0, 1};
+		texts[] = {"OFF", "ON"};
+		default = 1;
 	};
 	class wcwithunitstagsparam
 	{
@@ -119,5 +119,12 @@ class Params
 		values[] = {0, 1};
 		texts[] = {"OFF", "ON"};
 		default = 1;
+	};
+	class wcwithhealthregen
+	{
+		title = "HEALTH AUTO-REGEN";
+		values[] = {0, 1};
+		texts[] = {"OFF", "ON"};
+		default = 0;
 	};
 };

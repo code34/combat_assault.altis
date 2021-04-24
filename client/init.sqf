@@ -130,13 +130,16 @@
 	disableUserInput true;
 	disableUserInput false;
 
-	if(wcambiant == 2) then {
+	if(wcambiant isEqualTo 0) then {
 		enableEnvironment false;
 		enableSentences false;
 		player disableConversation true;
 		enableRadio false;
 		showSubtitles false;
 		player setVariable ["BIS_noCoreConversations", true];
+		systemchat "Ambiant life is off";
+	} else {
+		systemchat "Ambiant life is on";
 	};
 
 	player addEventHandler ['Killed', {
@@ -186,46 +189,49 @@
 			sleep 1;
 		};
 	};
-	
-	[] spawn {
-		while { true } do {
-			//if((damage player > 0) and (damage player  < 1.01)) then {
-			//	player setDamage (damage player - 0.01); 
-			//	player setBleedingRemaining 30;
-			//};
-			switch (true) do {
-				case (damage player < 0.40) : {
-					player setDamage (damage player - 0.01); 
-					player setBleedingRemaining 30;
-					sleep 0.5;
+
+	// systeme de regen de vie auto ne fonctionne que si ACE est off
+	private _isace = isClass(configFile >> "CfgPatches" >> "ace_main");
+	if((wcwithhealthregen isEqualTo 1) and !_isace) then {
+		systemchat "Health regen is on";
+		[] spawn {
+			while { true } do {
+				switch (true) do {
+					case (damage player < 0.40) : {
+						player setDamage (damage player - 0.01); 
+						player setBleedingRemaining 30;
+						sleep 0.5;
+					};
+
+					case (damage player < 0.60) : {
+						player setDamage (damage player - 0.01); 
+						player setBleedingRemaining 30;
+						sleep 0.6;
+					};
+
+					case (damage player < 0.70) : {
+						player setDamage (damage player - 0.01); 
+						player setBleedingRemaining 30;
+						sleep 0.7;
+					};
+
+					case (damage player < 0.80) : {
+						player setDamage (damage player - 0.01); 
+						player setBleedingRemaining 30;
+						sleep 0.8;
+					};			
+
+					case (damage player < 1.01) : {
+						player setDamage (damage player - 0.01); 
+						player setBleedingRemaining 30;
+						sleep 0.9;
+					};			
 				};
 
-				case (damage player < 0.60) : {
-					player setDamage (damage player - 0.01); 
-					player setBleedingRemaining 30;
-					sleep 0.6;
-				};
-
-				case (damage player < 0.70) : {
-					player setDamage (damage player - 0.01); 
-					player setBleedingRemaining 30;
-					sleep 0.7;
-				};
-
-				case (damage player < 0.80) : {
-					player setDamage (damage player - 0.01); 
-					player setBleedingRemaining 30;
-					sleep 0.8;
-				};			
-
-				case (damage player < 1.01) : {
-					player setDamage (damage player - 0.01); 
-					player setBleedingRemaining 30;
-					sleep 0.9;
-				};			
 			};
-
 		};
+	} else {
+		systemchat "Health autoregen is off";
 	};
 
 	if(wcredeployement isEqualTo 1) then {

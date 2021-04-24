@@ -214,7 +214,8 @@
 	};
 
 
-	global_zone_hashmap  = ["new", []] call OO_HASHMAP;
+	//global_zone_hashmap  = ["new", []] call OO_HASHMAP;
+	global_zone_hashmap = createHashMap;
 	global_controller = ["new", []] call OO_CONTROLLER;
 	global_scores = ["new", []] call OO_HASHMAP;
 	global_vehicles = ["new", []] call OO_HASHMAP;

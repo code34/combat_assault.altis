@@ -28,19 +28,8 @@
 
 	_size = _this;
 
-	_sectors = [];
-	while { count _sectors < 30 } do {
-		_sector = [ceil (random _size), ceil (random _size)];
-		_position = ["getPosFromSector", _sector] call global_grid;
-		if(getmarkerpos "respawn_west" distance _position > 1300) then {
-			if!(surfaceIsWater _position) then {
-				_sectors = _sectors + [_sector];
-			};
-		};
-	};
-
-	for "_x" from 0 to wcnumberofzone step 1 do {
-		_key = _sectors call BIS_fnc_selectRandom;
+	for "_i" from 1 to wcnumberofzone do {
+		_key = [ceil (random _size), ceil (random _size)];
 		["expandSector", _key] call global_controller;
 		["expandSectorAround", [_key, 7]] call global_controller;
 	};

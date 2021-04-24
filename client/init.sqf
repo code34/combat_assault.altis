@@ -302,6 +302,12 @@
 		};
 	};
 
+	if(wcfatigue isEqualTo 0) then { 
+		systemchat "Fatigue is off";
+	} else {
+		systemchat "Fatigue is on";
+	};
+
 	// MAIN LOOP
 	while {true} do {
 		if(wcspeedcoeef == 1) then {
@@ -309,11 +315,11 @@
 		};
 		
 		// Should be here to be effective each respawn
-		if(wcfatigue == 2) then { 
+		if(wcfatigue isEqualTo 0) then { 
 			player enableFatigue false; 
 			player enableStamina false;
 			player allowSprint true;
-		} ;
+		};
 
 		if(wcsway == 2) then { player setCustomAimCoef 0;};
 

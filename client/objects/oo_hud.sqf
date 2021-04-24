@@ -42,7 +42,7 @@
 			while { true} do {
 				if((!alive player) or wcboard) then {
 						_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
-						_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0.4];
+						//_ctrl8 ctrlSetBackgroundColor [1,1,1,0.4];
 						_scores = "topByScore" call scoreboard;
 						_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
 						_ctrl10 ctrlSetStructuredText parsetext (_scores select 0);
@@ -58,12 +58,14 @@
 						_ctrl15 ctrlSetStructuredText parsetext (_scores select 5);
 						_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
 						_ctrl16 ctrlSetStructuredText parsetext ("<t align='center'>Tickets: "+ str(wcticket) + "</t>");
-						_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0.6];
+						//_ctrl16 ctrlSetBackgroundColor [1,1,1,0.4];
 						_count = _count + 1;
 						if(_count > 10) then { wcboard = false; _count = 0;};
+						//{ _x ctrlCommit 0; true; } count  [_ctrl8, _ctrl10, _ctrl11, _ctrl12, _ctrl13, _ctrl14, _ctrl15, _ctrl16];
+						{ _x ctrlShow true; true; } count  [_ctrl8, _ctrl10, _ctrl11, _ctrl12, _ctrl13, _ctrl14, _ctrl15, _ctrl16];						
 					} else {
 						_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1007;
-						_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
+						//_ctrl8 ctrlSetBackgroundColor [0,0.4,0.8,0];
 						_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1009;
 						_ctrl10 ctrlSetStructuredText parsetext "";
 						_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1010;
@@ -77,10 +79,10 @@
 						_ctrl15 =(uiNamespace getVariable "wcdisplay") displayCtrl 1014;
 						_ctrl15 ctrlSetStructuredText parsetext "";
 						_ctrl16 =(uiNamespace getVariable "wcdisplay") displayCtrl 1016;
-						_ctrl16 ctrlSetStructuredText parsetext "";		
-						_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0];								
+						_ctrl16 ctrlSetStructuredText parsetext "";
+						//_ctrl16 ctrlSetBackgroundColor [0,0.4,0.8,0];
+						{ _x ctrlShow false; true; } count  [_ctrl8, _ctrl10, _ctrl11, _ctrl12, _ctrl13, _ctrl14, _ctrl15, _ctrl16];
 					};
-				{ _x ctrlCommit 0; true; } count  [_ctrl8, _ctrl10, _ctrl11, _ctrl12, _ctrl13, _ctrl14, _ctrl15, _ctrl16];
 				sleep 0.1;
 			};
 		};
@@ -113,16 +115,12 @@
 		PUBLIC FUNCTION("", "bottomHud") {
 			DEBUG(#, "OO_HUD::bottomHud")
 			disableSerialization;
-			private ["_ctrl", "_ctrl2", "_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10" , "_ctrl11", "_text", "_weight", "_time", "_message", "_scores", "_sector", "_dir", "_direction"];
+			private ["_ctrl4", "_ctrl5", "_ctrl6", "_ctrl7", "_ctrl8", "_ctrl9", "_ctrl10" , "_ctrl11", "_text", "_weight", "_time", "_message", "_scores", "_sector", "_dir", "_direction"];
 			_time = 0;
 			while { true} do {
 				if(isnull (uiNamespace getVariable "wcdisplay")) then { cutrsc ['bottomhud','PLAIN'];};
-				_ctrl =(uiNamespace getVariable "wcdisplay") displayCtrl 1001;
-				_text = "<t align='center'>"+format ["%1", (100 - round(getDammage player * 100))] + "</t>";
-				_ctrl ctrlSetStructuredText parseText _text;
-				_ctrl2 =(uiNamespace getVariable "wcdisplay") displayCtrl 1002;
-				_text = "<t align='center'>"+ format ["%1", (100 - round(getfatigue player * 100))] + "</t>";
-				_ctrl2 ctrlSetStructuredText parseText _text;
+				
+				// affichage du hud en bas à gauche
 				_ctrl4 =(uiNamespace getVariable "wcdisplay") displayCtrl 1004;	
 				_score = ["getPlayerScore", name player] call scoreboard;
 				_ratio = _score select 0;
@@ -138,18 +136,24 @@
 				} else {
 					_text = _text + "<br/><t size='1'>Situation : Unsafe</t>";
 				};
+				_sector = ["getSectorFromPos", position player] call client_grid;
+				_text = _text + format["<br/><t size='1'>Sector %1%2 - %3°</t>", _sector select 0, _sector select 1, ceil(getdir player)];
 				_text = _text + format ["<br/><t size='1'>%1</t>", wcbannerserver];
 				_ctrl4 ctrlSetStructuredText parseText _text;
+
+				// affichage du hud vehicle
 				if(vehicle player != player) then {
 					_ctrl5 =(uiNamespace getVariable "wcdisplay") displayCtrl 1000;
 					_text = MEMBER("getCrewText", nil);
 					_ctrl5 ctrlSetStructuredText parseText _text;
-					_ctrl5 ctrlSetBackgroundColor [0, 0, 0, 0.4];			
+					_ctrl5 ctrlSetBackgroundColor [0, 0, 0, 0.4];
 				} else {
 					_ctrl5 =(uiNamespace getVariable "wcdisplay") displayCtrl 1000;
 					_ctrl5 ctrlSetStructuredText parseText "";
 					_ctrl5 ctrlSetBackgroundColor [0, 0, 0, 0];
 				};
+
+				// death message hud
 				_ctrl6 =(uiNamespace getVariable "wcdisplay") displayCtrl 999;
 				if(count killzone > 0) then {
 					if(_time > 2) then {
@@ -165,6 +169,8 @@
 					};
 					_time = _time  + 1;
 				};
+
+				//affichage des rollmessages
 				_ctrl7 =(uiNamespace getVariable "wcdisplay") displayCtrl 1005;
 				if(wcwithrollmessages) then {
 					_ctrl7 ctrlSetStructuredText parsetext rollprintmessage;
@@ -177,23 +183,15 @@
 					_ctrl7 ctrlSetStructuredText parsetext "";
 					_ctrl7 ctrlSetBackgroundColor [0, 0, 0, 0];
 				};
-				_direction = format["%1°", round(getdir player)];
-				if(vehicle player isEqualTo player) then {
-					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1017;
-					_sector = ["getSectorFromPos", position player] call client_grid;
-					_ctrl8 ctrlSetStructuredText parsetext format ["<t shadow='1' size='0.9' >SECTOR %1%2 - %3", _sector select 0, _sector select 1, _direction];
-					_ctrl8 ctrlSetBackgroundColor [0,0,0,0.5];	
-				} else {
-					_ctrl8 =(uiNamespace getVariable "wcdisplay") displayCtrl 1017;
-					_ctrl8 ctrlSetStructuredText parsetext "";		
-					_ctrl8 ctrlSetBackgroundColor [0,0,0,0];	
-				};
+
+				// affichage des kill & mort
 				_ctrl9 =(uiNamespace getVariable "wcdisplay") displayCtrl 1018;
 				_ctrl9 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerkill];
 				_ctrl10 =(uiNamespace getVariable "wcdisplay") displayCtrl 1019;
 				_ctrl10 ctrlSetStructuredText parsetext format ["<t align='center'>%1</t>", playerdeath];
+				
 				_ctrl11 =(uiNamespace getVariable "wcdisplay") displayCtrl 1020;
-				{ _x ctrlCommit 0; true; } count  [_ctrl, _ctrl2, _ctrl4, _ctrl5, _ctrl6, _ctrl7, _ctrl8, _ctrl9, _ctrl10, _ctrl11];
+				{ _x ctrlCommit 0; true; } count  [_ctrl4, _ctrl5, _ctrl6, _ctrl7, _ctrl9, _ctrl10, _ctrl11];
 				sleep 1;
 			};
 		};

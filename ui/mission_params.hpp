@@ -17,9 +17,9 @@ class Params
 	class wcnumberofzone
 	{
 		title = "NUMBER OF ZONES AT BEGINING";
-		values[] = {5,10,15,20,25,30};
-		texts[] = {"5 - easy game", "10","15","20", "25","30 - hard game"};
-		default = 15;
+		values[] = {15,100,500,1000,2000,5000};
+		texts[] = {"15", "100","500","1000", "2000","5000"};
+		default = 100;
 	};
 	class wcviewdistance
 	{

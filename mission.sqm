@@ -80,7 +80,7 @@ class Mission
 {
 	class Intel
 	{
-		briefingName="COMBAT ASSAULT 1.42";
+		briefingName="COMBAT ASSAULT 1.44";
 		overviewText="By Code34";
 		resistanceWest=0;
 		resistanceEast=1;

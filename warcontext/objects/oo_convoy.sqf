@@ -23,7 +23,8 @@
 	CLASS("OO_CONVOY")
 		PRIVATE VARIABLE("array","startposition");
 		PRIVATE VARIABLE("array","endposition");
-		PRIVATE VARIABLE("object","vehicle");
+		PRIVATE VARIABLE("array","vehicles");
+		PRIVATE VARIABLE("object","theleader");
 		PRIVATE VARIABLE("code","marker");
 		PRIVATE VARIABLE("group","group");
 		PRIVATE VARIABLE("string","locationname");
@@ -32,15 +33,18 @@
 			MEMBER("locationname", "");
 			MEMBER("startposition", _this);
 			MEMBER("endposition", _this);
-			MEMBER("vehicle", objNull);
+			private _array = [];
+			MEMBER("vehicles", _array);
 			MEMBER("setTarget", _this);
 			MEMBER("popTruck", nil);
+			MEMBER("popEscort", nil);
 		};
 
 		PUBLIC FUNCTION("","getVehicle") FUNC_GETVAR("vehicle");
 
-		PUBLIC FUNCTION("", "startConvoy") {	
-			private _leader = leader MEMBER("group", nil);
+		PUBLIC FUNCTION("", "startConvoy") {			
+			private _leader = MEMBER("theleader", nil);
+			MEMBER("group", nil) selectLeader _leader;
 			private _vehicle = vehicle _leader;
 			private _rate = 0;
 			private _text = "";
@@ -103,7 +107,7 @@
 					};
 					sleep 0.0001;
 				}foreach _markers;
-				_endposition = getmarkerpos _marker;	
+				_endposition = getmarkerpos _marker;
 				_locationname = _marker;
 			} else {
 				"(getText (_x >> 'type') in ['NameVillage', 'NameCity', 'NameCityCapital', 'CityCenter']) && {(_positions pushBack getArray (_x >> 'position')) > -1}" configClasses (configFile >> "CfgWorlds" >> worldName >> "Names");			
@@ -133,11 +137,27 @@
 			private _vehicle = _array select 0;
 			private _group = _array select 2;
 			MEMBER("createMarker",  leader _group);
+			MEMBER("theleader", leader _group);
 			_vehicle setvariable ["isenemy", true];
 			_array = [MEMBER("endposition", nil),  _group];
 			MEMBER("moveTo", _array);
-			MEMBER("vehicle", _vehicle);
+			MEMBER("vehicles", nil) pushBack _vehicle;
 			MEMBER("group", _group);
+		};
+
+		// Creer plusieurs trucks
+		PRIVATE FUNCTION("", "popEscort") {
+			private _number = selectRandom [0,1];
+			for "_i" from 0 to _number do {
+				private _position = MEMBER("startposition", nil);
+				private _type = selectRandom ["O_MBT_02_cannon_F", "O_APC_Tracked_02_AA_F", "O_MRAP_02_hmg_F", "O_MRAP_02_gmg_F"];
+				_position = [_position, 0,50,10,0,2000,0] call BIS_fnc_findSafePos;
+				private _array = [_position, random 359, _type, east] call bis_fnc_spawnvehicle;
+				private _vehicle = _array select 0;
+				private _units = units (_array select 2);
+				_vehicle setvariable ["isenemy", true];
+				_units joinsilent MEMBER("group", nil);
+			};
 		};
 
 		PRIVATE FUNCTION("object", "createMarker") {
@@ -152,20 +172,20 @@
 		};
 
 		PUBLIC FUNCTION("", "removeVehicle") {
-			private _vehicle = MEMBER("vehicle", nil);
+			private _vehicles = MEMBER("vehicles", nil);
 			{
-				_x setdammage 1;
+				{
+					_x setdamage 1;
+					deletevehicle _x;
+				}foreach crew _x;
+				_x setdamage 1;
 				deletevehicle _x;
-				sleep 0.001;
-			}foreach (crew _vehicle);
-			_vehicle setdammage 1;
-			deletevehicle _vehicle;
+			}foreach _vehicles;
 		};
 
 		PUBLIC FUNCTION("array", "moveTo") {
 			private _position = _this select 0;
 			private _group = _this select 1;
-			
 			private _wp = _group addwaypoint [_position, 0];
 			_wp setWaypointPosition [_position, 5];
 			_wp setWaypointType "MOVE";

@@ -18,4 +18,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 	*/
 
+	player playMoveNow "Acts_carFixingWheel";
+	sleep 8;
+	if(!alive player)exitWith {};
 	["remoteSpawn", ["BME_netcode_server_wcunpackbase", (player getRelPos [15,0]), "server"]] call client_bme;

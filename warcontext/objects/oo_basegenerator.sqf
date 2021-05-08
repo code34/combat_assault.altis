@@ -130,8 +130,7 @@
 			[[_base, ["Pack HQ", "client\scripts\packbase.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 			[[_base, ["HQ Menu", "client\scripts\deployment.sqf", nil, 1.5, false]],"addAction",true,true] call BIS_fnc_MP;
 
-			//_base addEventHandler ['HandleDamage', { false; }];
-
+			_base addEventHandler ['HandleDamage', { false; }];
 			"respawn_west" setmarkerpos _position;
 			MEMBER("marker", nil) setMarkerPos _position;
 			MEMBER("deploymarker", nil) setMarkerPos _position;

@@ -72,7 +72,7 @@
 	rollprintmessage = "";
 	wcblacklist = [name player];
 	wcfriendlist = [];
-	wcbannerserver = "COMBAT ASSAULT MOD 1.44";
+	wcbannerserver = parsetext (localize "STR_MISSION_TITLE");
 	wcboard = false;
 	wcwithrollmessages = true;
 	wcwithfriendsmarkers = true;	

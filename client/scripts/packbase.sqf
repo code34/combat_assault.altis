@@ -17,5 +17,12 @@
 	*/
 
 	player playMoveNow "Acts_carFixingWheel";
-	sleep 8;
+	sleep 2;
+	private _path = [(str missionConfigFile), 0, -15] call BIS_fnc_trimString;
+	private _sound = _path + "client\sounds\hammer.ogg";
+	playSound3D [_sound, player, false, getPosASL player, 2, 1, 150];
+	sleep 4;
+	if(!alive player)exitWith {};
 	["remoteSpawn", ["BME_netcode_server_wcpackbase", "", "server"]] call client_bme;
+	private _sound = _path + "client\sounds\builddone.ogg";
+	playSound3D [_sound, player, false, getPosASL player, 2, 1, 150];

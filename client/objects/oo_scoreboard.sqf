@@ -21,35 +21,47 @@
 	#include "oop.h"
 
 	CLASS("OO_SCOREBOARD")
-		PRIVATE VARIABLE("code","map");
+		PRIVATE VARIABLE("hashmap","map");
 
 		PUBLIC FUNCTION("array","constructor") {
 			DEBUG(#, "OO_SCOREBOARD::constructor")
-			_map = ["new", []] call OO_HASHMAP;
+			private _map = createHashMap;
 			MEMBER("map", _map);
 		};
 
 		PUBLIC FUNCTION("array", "addScore") {
 			DEBUG(#, "OO_SCOREBOARD::addScore")
-			["put", _this] call MEMBER("map", nil);
+			MEMBER("map", nil) set [_this select 0, _this select 1];
 		};
 
 		PUBLIC FUNCTION("string", "getPlayerScore") {
 			DEBUG(#, "OO_SCOREBOARD::getPlayerScore")
-			private _result = ["get", _this] call MEMBER("map", nil);
+			private _result = MEMBER("map", nil) get _this;
 			if(isnil "_result") then {	_result = [0,0,0,0,0,0]; };
 			_result;
+		};
+
+		PUBLIC FUNCTION("", "generateRandomScore") {
+			DEBUG(#, "OO_SCOREBOARD::generateRandomScore")
+			for "_i" from 0 to 29 do {
+				private _pseudo = "";
+				for "_f" from 0 to 8 do {
+					_pseudo = _pseudo + selectRandom["a","b","c","d","e","f","g"];
+				};
+				_score = [_pseudo, [ceil(random 4), ceil(random 4), ceil(random 10), ceil(random 10), ceil(random 10), ceil(random 10)]];
+				MEMBER("addScore", _score);
+			};
 		};
 
 		PUBLIC FUNCTION("", "getScore") {
 			DEBUG(#, "OO_SCOREBOARD::getScore")
 			private _map = MEMBER("map", nil);
-			private _players = "keySet" call _map;
+			private _players = keys _map;
 			private _globalscore = [];
 			private _scores = [];
 
 			{
-				_scores = ["get", _x] call _map;
+				_scores = _map get _x;
 				_globalscore pushBack [_x, _scores];
 				sleep 0.0001;
 			}foreach _players;
@@ -175,7 +187,7 @@
 			DEBUG(#, "OO_SCOREBOARD::sortMaxByColumn")
 			private _array = _this select 0;
 			private _column = _this select 1;
-			private 	_temp = [];
+			private _temp = [];
 			private _score = 0;
 			private _max = -1000000;
 			private _index = 0;
@@ -197,7 +209,6 @@
 
 		PUBLIC FUNCTION("","deconstructor") { 
 			DEBUG(#, "OO_SCOREBOARD::deconstructor")
-			["delete", MEMBER("map", nil)] call OO_HASHMAP;
 			DELETE_VARIABLE("map");
 		};
 	ENDCLASS;

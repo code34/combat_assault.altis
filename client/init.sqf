@@ -114,6 +114,9 @@
 	"bottomHud" spawn hud;
 	"scoreboardHud" spawn hud;
 
+	// generate random scoreboard
+	//"generateRandomScore" call scoreboard;
+
 	switch (wcwithunitstags) do {
 		case 1 :{["setPlayerTag", true] spawn hud;};
 		case 2: {["setPlayerTag", false] spawn hud;};

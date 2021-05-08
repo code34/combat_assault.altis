@@ -141,7 +141,7 @@ class RscTitles {
 				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0,0,0.1};
+				colorBackground[] = {0,0,0,0.2};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Top"; 
 			};
@@ -171,7 +171,7 @@ class RscTitles {
 				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0,0,0.1};
+				colorBackground[] = {0,0,0,0.2};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Game Ranking"; 
 			};
@@ -201,7 +201,7 @@ class RscTitles {
 				h = 0.9;
 				font = "EtelkaNarrowMediumPro"; 
 				size = 0.03;
-				colorBackground[] = {0,0,0,0.1};
+				colorBackground[] = {0,0,0,0.2};
 				colorText[] = {0.5,1,1,1}; 
 				text = "Matchs"; 
 			};
@@ -210,7 +210,7 @@ class RscTitles {
 				idc = 1014; 
 				type = CT_STRUCTURED_TEXT; 
 				style = ST_LEFT; 
-				x = 0.8; 
+				x = 0.801; 
 				y = 0.1;
 				w = 0.2;
 				h = 0.9;
